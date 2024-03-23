@@ -1,0 +1,20 @@
+[
+    {
+      "id": 1,
+      "name": "Beach bla bla bla",
+      "author": "AI powered",
+      "image": "https://images.stockcake.com/public/8/c/b/8cb5e10f-104b-4155-a01f-09667d0b6ae2_large/seaside-travel-gear-stockcake.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Mountain bla bla bla",
+      "author": "AI powered",
+      "image": "https://images.stockcake.com/public/1/3/2/13211f7b-af18-4e0c-a0a2-d5628ba80944_large/mountain-peak-solitude-stockcake.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Museum bla bla bla",
+      "author": "AI powered",
+      "image": "https://images.stockcake.com/public/e/1/7/e17a5e3d-bff0-4238-a1f5-8567e02e8db4_large/grand-museum-hallway-stockcake.jpg"
+    }
+  ]
