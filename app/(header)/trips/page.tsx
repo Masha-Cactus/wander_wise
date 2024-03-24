@@ -1,5 +1,5 @@
-import { TripShort } from "@/app/components/TripShort";
-import { TripShortType } from "@/app/types/TripType";
+import Gallery from "@/app/components/trips/Gallery";
+import { TripLongType, TripShortType } from "@/app/types/TripType";
 import { promises as fs } from 'fs';
 
 const atmospheres = ['relax', 'loud', 'quiet', 'sunny'];
@@ -17,8 +17,20 @@ async function getCards() {
   // return res.json();
 }
 
-export default async function Home() {
+async function getCard(id: string) {
+  const file = await fs.readFile(process.cwd() + `/public/cards/${id}.json`, 'utf8');
+  const card: TripLongType = JSON.parse(file);
+
+  return card;
+}
+
+export default async function Home({
+  params: { id },
+}: {
+  params: { id: string }
+}) {
   const cards: TripShortType[] = await getCards();
+  const card = await getCard('1');
 
   return (
     <main className="grid grid-cols-4 grid-rows-3">
@@ -126,10 +138,7 @@ export default async function Home() {
 
       <div className="flex items-center justify-center gap-6 
       col-start-2 col-span-3 row-start-2">
-        
-        {cards.map((card) => (
-          <TripShort key={card.id} card={card} />
-        ))}
+        <Gallery cards={cards} card={card} />
       </div>
       
       <div className="flex flex-col gap-4 justify-center

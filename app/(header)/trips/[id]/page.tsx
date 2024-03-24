@@ -1,4 +1,4 @@
-import { TripLong } from "@/app/components/TripLong";
+import { TripLong } from "@/app/components/shared/TripLong";
 import { TripLongType } from "@/app/types/TripType";
 import { promises as fs } from 'fs';
 // import Link from "next/link";
@@ -18,7 +18,7 @@ export default async function CardPage({
 
   const card = await getTrip(params.id);
 
-  console.log('hi from trip')
+  console.log('hi from trip');
 
   return (
     <div className="relative w-2/3 h-2/3 bg-pink-800">

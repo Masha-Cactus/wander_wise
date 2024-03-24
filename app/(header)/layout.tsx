@@ -1,4 +1,4 @@
-import Header from "@/app/components/Header";
+import Header from "@/app/components/rootLayout/Header";
 
 export default function HomeLayout({
   children,

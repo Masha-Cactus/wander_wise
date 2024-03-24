@@ -1,7 +1,6 @@
-import { TripLong } from "@/app/components/TripLong";
-import Modal from "@/app/components/Modal";
 import { TripLongType } from "@/app/types/TripType";
 import { promises as fs } from 'fs';
+import { TripTrip } from "@/app/components/trips/TripTrip";
 
 async function getCard(id: string) {
   const file = await fs.readFile(process.cwd() + `/public/cards/${id}.json`, 'utf8');
@@ -17,13 +16,12 @@ export default async function TripModal({
 }) {
   const card = await getCard(params.id);
 
-  console.log('cardModalPage');
+  // console.log('cardModalPage');
 
   return (
-    <div className="h-screen bg-grey-800 bg-opacity-80" id="bla">
-      <Modal navigate> 
-        <TripLong card={card}/> 
-      </Modal>
+    <div className="h-screen bg-grey-800 bg-opacity-80">
+      <p>bla</p>
+      <TripTrip card={card} />
     </div>
   );
 }
