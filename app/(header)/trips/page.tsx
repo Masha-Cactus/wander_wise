@@ -1,4 +1,5 @@
 import Gallery from "@/app/components/trips/Gallery";
+import LocationInput from "@/app/components/trips/LocationInput";
 import { TripLongType, TripShortType } from "@/app/types/TripType";
 import { promises as fs } from 'fs';
 
@@ -41,11 +42,12 @@ export default async function Home({
       >
         <div className="flex flex-col">
           <h2>Where are you now?</h2>
-          <input 
+          {/* <input 
             type="text" 
             placeholder="enter location" 
             className="text-zinc-950 px-2 outline-none"
-          />
+          /> */}
+          <LocationInput />
         </div>
 
         <div className="flex flex-col">
