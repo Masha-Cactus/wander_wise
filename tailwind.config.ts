@@ -8,10 +8,31 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        inter: "var(--font-inter)",
+        maven: "var(--font-maven)",
+      },
+      colors: {
+        yellow: "#FFC015",
+
+        black: "#080808",
+        gray100: "#202020",
+        gray80: "#373737",
+        gray70: "#666666",
+        gray50: "#959595",
+        gray30: "#959595",
+        gray20: "#DADADA",
+        gray10: "#E9E9E9",
+        gray5: "#F5F5F5",
+        white: "#F9F9F9",
+
+        error: "#E41E1E",
+        info: "#009EE2",
+        warning: "FFDD2A",
+        success: "#1DD000",
+      },
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        start_1: "url('/imges/start_1.svg')",
       },
     },
   },

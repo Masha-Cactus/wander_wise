@@ -14,6 +14,7 @@
     "@radix-ui/react-dialog": "^1.0.5",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
     "@typescript-eslint/parser": "^7.3.1",
+    "axios": "^1.6.8",
     "classnames": "^2.5.1",
     "eslint-plugin-unused-imports": "^3.1.0",
     "maplibre-gl": "^3.6.2",
@@ -23,7 +24,11 @@
     "react": "^18",
     "react-dom": "^18",
     "react-google-autocomplete": "^2.7.3",
-    "zod": "^3.22.4"
+    "react-icons": "^5.0.1",
+    "swiper": "^11.0.7",
+    "tailwind-merge": "^2.2.2",
+    "zod": "^3.22.4",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/node": "^20",

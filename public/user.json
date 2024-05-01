@@ -1,0 +1,16 @@
+{
+  "id": 1,
+  "name": "John Doe",
+  "lastName": "Doe",
+  "pseudonym": "johndoe",
+  "description": "I'm a description",
+  "email": "nU0wv@example.com",
+  "location": "Seaside, USA",
+  "image": "https://images.stockcake.com/public/7/5/2/752210ff-3ce6-447b-8529-7deec989d405_large/wriggling-earthworm-closeup-stockcake.jpg",
+  "colections": [],
+  "sotials": ["instagram", "twitter", "facebook"],
+  "saved": [],
+  "trips": [],
+  "reviews": [],
+  "liked": []
+}

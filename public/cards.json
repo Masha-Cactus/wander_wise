@@ -2,19 +2,49 @@
     {
       "id": 1,
       "name": "Beach bla bla bla",
-      "author": "AI powered",
+      "author": "AI",
+      "location": "Seaside, USA",
+      "likes": 5,
       "image": "https://images.stockcake.com/public/8/c/b/8cb5e10f-104b-4155-a01f-09667d0b6ae2_large/seaside-travel-gear-stockcake.jpg"
     },
     {
       "id": 2,
       "name": "Mountain bla bla bla",
-      "author": "AI powered",
-      "image": "https://images.stockcake.com/public/1/3/2/13211f7b-af18-4e0c-a0a2-d5628ba80944_large/mountain-peak-solitude-stockcake.jpg"
+      "author": "Nick Babanenko",
+      "location": "Mount Kilimanjaro, Tanzania",
+      "likes": 78,
+      "image": "https://images.stockcake.com/public/7/8/3/7834a057-c8b4-4f91-b872-0df869fc19b2_large/mountain-reflection-serenity-stockcake.jpg"
     },
     {
       "id": 3,
       "name": "Museum bla bla bla",
-      "author": "AI powered",
-      "image": "https://images.stockcake.com/public/e/1/7/e17a5e3d-bff0-4238-a1f5-8567e02e8db4_large/grand-museum-hallway-stockcake.jpg"
+      "author": "AI",
+      "location": "Rome, Italy",
+      "likes": 333,
+      "image": "https://images.stockcake.com/public/7/a/1/7a1fbba7-b365-482c-82c2-5e8716b41171_large/museum-cultural-display-stockcake.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Cityscape at Night",
+      "author": "Samantha Rivers",
+      "location": "Tokyo, Japan",
+      "likes": 215,
+      "image": "https://images.stockcake.com/public/e/8/8/e8885f46-9543-4b23-9d8c-6a616169ef71_large/city-night-lights-stockcake.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Countryside Retreat",
+      "author": "Ethan Zhang",
+      "location": "Provence, France",
+      "likes": 102,
+      "image": "https://images.stockcake.com/public/5/c/0/5c07a365-5441-4089-a468-a5be2e4b8ae5_large/vineyard-country-road-stockcake.jpg"
+    },
+    {
+      "id": 6,
+      "name": "Urban Exploration",
+      "author": "Alexandre Berthelon",
+      "location": "New York City, USA",
+      "likes": 431,
+      "image": "https://images.stockcake.com/public/9/4/4/944fe5cf-112e-422c-b9bc-28b42c743ba9_large/tokyo-cityscape-night-stockcake.jpg"
     }
   ]
