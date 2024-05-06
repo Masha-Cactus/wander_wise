@@ -1,6 +1,6 @@
 import Link from "next/link";
-import ModalSkeleton from "../components/organisms/Modals/ModalSkeleton";
-import Google from "../components/shared/icons/Google";
+import ModalSkeleton from "../../components/organisms/Modals/ModalSkeleton";
+import Google from "../../components/shared/icons/Google";
 import Image from "next/image";
 // import { useRouter } from 'next/router';
 

@@ -1,5 +1,6 @@
 import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import axios from "axios";
+import { initializeInterceptors } from "./interseptors/initializeInterceptors";
 
 const baseURL = 'http://3.91.160.29:8088/';
 
@@ -16,5 +17,7 @@ const formDataConfig: AxiosRequestConfig = {
 };
 
 const formDataConfigApiInstance = axios.create(formDataConfig);
+
+initializeInterceptors(formDataConfigApiInstance);
 
 export const formDataApi: AxiosInstance = formDataConfigApiInstance;

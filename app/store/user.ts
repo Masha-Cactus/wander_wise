@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { UserType } from "../types/User";
+import { IUser } from "@/app/services";
 
 interface UserState {
-  user: UserType | null;
-  setUser: (userData: UserType) => void;
+  user: IUser | null;
+  setUser: (userData: IUser) => void;
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
 };

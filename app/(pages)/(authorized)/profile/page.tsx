@@ -1,7 +1,7 @@
 "use client";
 
 import { ProfilePage } from "@/app/components/pages";
-import { getUser } from "../services/user";
+import { getUser } from "../../../services/user";
 import { useUser } from "@/app/store/user";
 
 const Page = () => {

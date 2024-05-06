@@ -1,5 +1,5 @@
-import ModalSkeleton from "../components/organisms/Modals/ModalSkeleton";
-import MetaForm from "../components/organisms/Modals/MetaForm";
+import ModalSkeleton from "../../components/organisms/Modals/ModalSkeleton";
+import MetaForm from "../../components/organisms/Modals/MetaForm";
 
 const AuthPage = ({}) => {
   return (

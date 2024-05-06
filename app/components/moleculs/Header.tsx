@@ -43,7 +43,7 @@ const Header: React.FC = () => {
           <Divider classes="h-full w-px bg-gray30" />
 
           <Image
-            src={user?.image || "/user.png"}
+            src={user?.profileImage || "/user.png"}
             alt="user avatar"
             width={100}
             height={100}

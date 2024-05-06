@@ -1,5 +1,7 @@
+/* eslint-disable max-len */
 // eslint-disable-next-line max-len
-export const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]){7,24}/;
+export const PWD_REGEX
+  = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]){7,24}/;
 export const pseudonym_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{5,23}/;
 
 export const IMAGES_SLIDES = [

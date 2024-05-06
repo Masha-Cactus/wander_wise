@@ -15,6 +15,7 @@ interface FormData {
 }
 
 const SignUp = () => {
+
   const [user, setUser] = useState<FormData>({
     name: "",
     email: "",

@@ -1,5 +1,6 @@
 import axios from "axios";
 import type { AxiosInstance, AxiosRequestConfig, AxiosStatic } from "axios";
+import { initializeInterceptors } from "./interseptors/initializeInterceptors";
 
 type BaseSuccessResponse<T = object> = T;
 
@@ -18,6 +19,7 @@ class HttpClient {
     };
 
     this.api = _axios.create(config);
+    initializeInterceptors(this.api);
   }
 
   public get<T, R = BaseSuccessResponse<T>>(
