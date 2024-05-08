@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { userService } from "../services/userService/user.service";
-import { IUpdateInfo } from "../services/userService/user.types";
-import { useUser } from "../store/user";
+import { IUpdateInfo, userService } from "@/src/services";
+import { useUser } from "@/src/store/user";
 
 export function useUserProfile() {
   const user = useUser((state) => state.user);

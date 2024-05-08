@@ -1,12 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { 
-  collectionService 
-} from "../services/collectionService/collection.service";
-import { 
-  ICreateCollection, 
-  IUpdateCollection 
-} from "../services/collectionService/collection.types";
-import { useUser } from "../store/user";
+import {
+  ICreateCollection,
+  IUpdateCollection,
+  collectionService,
+} from "@/src/services";
+import { useUser } from "@/src/store/user";
 
 export function useCollection(collectionId: number) {
   return useQuery({

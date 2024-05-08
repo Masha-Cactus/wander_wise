@@ -16,6 +16,10 @@ import { GrLocation } from "react-icons/gr";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { MdOutlineMail } from "react-icons/md";
 import { RiGlobalLine } from "react-icons/ri";
+import { FaRegEye } from "react-icons/fa6";
+import { FaRegEyeSlash } from "react-icons/fa6";
+
+
 
 const Icons = {
   close: IoIosClose,
@@ -35,6 +39,8 @@ const Icons = {
   delete: RiDeleteBinLine,
   mail: MdOutlineMail,
   global: RiGlobalLine,
+  eye: FaRegEye,
+  eyeClosed: FaRegEyeSlash,
 };
 
 export default Icons;

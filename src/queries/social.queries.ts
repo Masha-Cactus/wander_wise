@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { socialService } from "../services/socialService/social.service";
 import { 
   ICreateSocial, 
-  IUpdateSocial 
-} from "../services/socialService/social.types";
-import { useUser } from "../store/user";
+  IUpdateSocial,
+  socialService
+} from "@/src/services";
+import { useUser } from "@/src/store/user";
 
 export function useAddSocial() {
   const user = useUser((state) => state.user);

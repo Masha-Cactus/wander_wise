@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { commentService } from "../services/commentService/comment.service";
-import { 
-  ICreateComment, 
-  IReportComment, 
-  IUpdateComment 
-} from "../services/commentService/comment.types";
+import {
+  ICreateComment,
+  IReportComment,
+  IUpdateComment,
+  commentService,
+} from "@/src/services";
 
 export function useCreateComment() {
   const queryClient = useQueryClient();

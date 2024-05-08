@@ -1,14 +1,17 @@
 import * as Yup from "yup";
 import { ObjectSchema } from "yup";
 
-import { SignUpSchemaType } from "./types";
-import { EMAIL_PATTERN, ONLY_SPACES_PATTERN, TEXT_INPUT_LENGTH } from "../lib/validation";
+import {
+  EMAIL_PATTERN,
+  ONLY_SPACES_PATTERN,
+  TEXT_INPUT_LENGTH,
+} from "../lib/validation";
+import { ISignUp } from "@/app/services";
 
-export const signUpSchema = (
-): ObjectSchema<SignUpSchemaType> =>
+export const signUpSchema = (): ObjectSchema<ISignUp> =>
   Yup.object().shape({
     firstName: Yup.string()
-      .required( "validation required ")
+      .required("validation required ")
       .min(TEXT_INPUT_LENGTH.userName.min, "validation minCharLength")
       .max(TEXT_INPUT_LENGTH.userName.min, "validation maxCharLength")
       .matches(ONLY_SPACES_PATTERN, "validation emptyField"),

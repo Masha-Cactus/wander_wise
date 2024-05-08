@@ -4,11 +4,11 @@ import { IUser } from "@/src/types/User";
 import { authClient } from "../../api/authClient";
 import { baseClient } from "../../api/baseClient";
 import { 
-  IToken, 
   IUpdateEmail, 
   IUpdateInfo, 
   IUpdatePassword, 
 } from "./user.types";
+import { IToken } from "@/app/services";
 
 class UserService {
   private BASE_URL = '/users';

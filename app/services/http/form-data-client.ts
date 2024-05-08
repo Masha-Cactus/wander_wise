@@ -1,5 +1,5 @@
-import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import axios from "axios";
+import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import { initializeInterceptors } from "./interseptors/initializeInterceptors";
 
 const baseURL = 'http://3.91.160.29:8088/';

@@ -18,7 +18,3 @@ export interface IUpdateInfo {
   location: string,
   bio: string,
 }
-
-export interface IToken {
-  token: string;
-}

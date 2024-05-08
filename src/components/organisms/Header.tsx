@@ -5,13 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { Divider } from "@/src/components/atoms";
 import { useState } from "react";
-import { MetaForm, ModalSkeleton } from "../organisms";
+import { MetaForm, ModalSkeleton } from ".";
 
 const Header: React.FC = () => {
   const { user } = useUser();
 
-  const [showModal, setShowModal] 
-    = useState<null | 'login' | 'signup' | 'remind' | 'confirm'>('confirm');
+  const [showModal, setShowModal] = useState<
+  null | "login" | "signup" | "remind" | "confirm"
+  >("confirm");
 
   const isAuthorized = false;
 
@@ -59,14 +60,14 @@ const Header: React.FC = () => {
         <div className="flex gap-8">
           <button
             className="text-black flex justify-center items-center"
-            onClick={() => setShowModal('login')}
+            onClick={() => setShowModal("login")}
           >
             Login
           </button>
           <button
             className="w-36 h-14 bg-black text-white flex 
             justify-center items-center rounded-full"
-            onClick={() => setShowModal('signup')}
+            onClick={() => setShowModal("signup")}
           >
             Sign Up
           </button>
