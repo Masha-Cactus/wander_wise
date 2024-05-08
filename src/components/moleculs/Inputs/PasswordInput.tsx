@@ -1,6 +1,6 @@
 import { UseFormRegister } from "react-hook-form";
-import Icons from "../Icons";
 import classNames from "classnames";
+import { Icons } from "@/src/components/atoms";
 
 interface PasswordInputProps {
   name: string;
