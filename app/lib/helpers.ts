@@ -22,3 +22,11 @@ export const tokenExpiresIn = (token: string) => {
 
 export const getPlainObject = <T>(object: T): T =>
   JSON.parse(JSON.stringify(object));
+
+export const trimObjectFields = <T>(object: T): T => {
+  const jsonString = JSON.stringify(object, (_, value) =>
+    typeof value === "string" ? value.trim() : value
+  );
+
+  return JSON.parse(jsonString);
+};
