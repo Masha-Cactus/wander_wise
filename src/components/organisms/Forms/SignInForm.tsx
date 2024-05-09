@@ -1,15 +1,17 @@
+"use client";
+
 import { memo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ISignIn } from "@/app/services";
-import { signInSchema } from "@/app/validation";
+import { ISignIn } from "@/src/services";
+import { signInSchema } from "@/src/validation";
 import {
   PasswordInput,
   PrimaryBtn,
   TextInput,
-} from "@/app/components/moleculs/";
-import { useSignIn } from "@/app/query";
-import { trimObjectFields } from "@/app/lib/helpers";
+} from "@/src/components/moleculs";
+import { useSignIn } from "@/src/queries";
+import { trimObjectFields } from "@/src/lib/helpers";
 import FormErrorText from "../../atoms/FormErrorText";
 
 const SignInForm = () => {

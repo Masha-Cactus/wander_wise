@@ -1,7 +1,7 @@
-import Stars from "../organisms/Stars";
-import Image from "next/image";
-import IconButton from "./IconButton";
-import Icons from "./Icons";
+// import Image from "next/image";
+import { IconButton } from "@/src/components/moleculs";
+import { Icons } from "@/src/components/atoms";
+import { Stars } from "@/src/components/organisms";
 import { IComment } from "@/src/types/Comment";
 
 type Props = {
@@ -17,13 +17,13 @@ const Review: React.FC<Props> = ({ review }) => {
     <div className="bg-white flex flex-col gap-4 span-1 round p-6 group">
       <div className="flex gap-4 items-start justify-between">
         <div className="flex gap-4">
-          <Image
+          {/* <Image
             src={review.rewiewImage}
             alt="User image"
             width={50}
             height={50}
             className="rounded-full"
-          />
+          /> */}
 
           <div className="flex flex-col justify-between">
             <p>{review.author}</p>

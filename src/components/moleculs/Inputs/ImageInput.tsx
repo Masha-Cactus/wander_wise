@@ -21,11 +21,11 @@ interface FileInputProps<T extends FieldValues> {
   errorText?: string;
 }
 
-const FileInput = <T extends FieldValues>({
+const ImageInput = <T extends FieldValues>({
   isFileUploaded,
   buttonTitles,
   onUploadFile,
-  // onRemoveFile,
+  onRemoveFile,
   register,
   errorText,
   name,
@@ -35,22 +35,19 @@ const FileInput = <T extends FieldValues>({
 
   const handleUploadFile = (
     event: ChangeEvent<HTMLInputElement>,
-    // field: ControllerRenderProps<T, Path<T>>
   ) => {
     const originalFile = event.target.files?.[0];
 
     if (originalFile) {
       onUploadFile(originalFile);
-      // field.onChange(originalFile);
     }
   };
 
   const handleButtonClick = () => inputRef.current?.click();
 
-  // const handleRemoveFile = (field: ControllerRenderProps<T, Path<T>>) => {
-  //   onRemoveFile();
-  //   field.onChange(undefined);
-  // };
+  const handleRemoveFile = () => {
+    onRemoveFile();
+  };
 
   return (
     <div className="">
@@ -81,6 +78,10 @@ const FileInput = <T extends FieldValues>({
         {errorText && <p className="text-red-50">{errorText}</p>}
       </label>
 
+      {isFileUploaded && (
+        <button onClick={handleRemoveFile}>Remove</button>
+      )}
+
       <button onClick={handleButtonClick}>
         {isFileUploaded ? buttonTitles[0] : buttonTitles[1]}
       </button>
@@ -88,4 +89,4 @@ const FileInput = <T extends FieldValues>({
   );
 };
 
-export default FileInput;
+export default ImageInput;

@@ -4,6 +4,8 @@ export { default as ReviewsList } from "./Lists/ReviewsList";
 export { default as RecentlyLikedSection } from "./RecentlyLikedSection";
 export { default as RecentlyReviewsSection } from "./RecentlyReviewsSection";
 export { default as Header } from "./Header";
+export { default as Stars } from "./Stars";
+
 
 export { default as TripShort } from "./Trips/TripShort";
 export { default as TripMedium } from "./Trips/TripMedium";

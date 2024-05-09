@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Radar from "radar-sdk-js";
-import FilterInput from "./FilterInput";
+import { FilterInput } from "@/src/components/moleculs";
 
 const key = "prj_live_pk_6925600add7305492567163191c2abbb9977c348";
 

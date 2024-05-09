@@ -7,9 +7,11 @@ export { default as RoundBtn } from "./Buttons/RoundBtn";
 export { default as CheckboxInput } from "./Inputs/CheckboxInput";
 export { default as TextInput } from "./Inputs/TextInput";
 export { default as ImageInput } from "./Inputs/ImageInput";
-export { default as LocationInput } from "./LocationInput";
-export { default as LoginInput } from "./LoginInput";
-export { default as FilterInput } from "./FilterInput";
+export { default as LocationInput } from "./Inputs/LocationInput";
+export { default as LoginInput } from "./Inputs/LoginInput";
+export { default as FilterInput } from "./Inputs/FilterInput";
+export { default as PasswordInput } from "./Inputs/PasswordInput";
+
 
 export { default as IconLink } from "./IconLink";
 export { default as IconButton } from "./IconButton";

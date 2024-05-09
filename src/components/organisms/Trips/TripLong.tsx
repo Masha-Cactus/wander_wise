@@ -1,10 +1,9 @@
 import { Tab } from "@/src/components/organisms";
-import { Divider } from "@/src/components/atoms";
+import { Divider, Icons } from "@/src/components/atoms";
 import {
   ImagesBlock,
   IconButton,
   PrimaryBtn,
-  Icons,
 } from "@/src/components/moleculs/";
 import { ICard } from "@/src/types/Card";
 

@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 
-import { EmptyStateText, ErrorAlert, Loader } from "@repo/ui/components/atoms";
+import { EmptyStateText, ErrorText, Loader } from "@/src/components/atoms";
 
 interface LoadedContentStateControllerProps {
   isEmpty?: boolean;
@@ -13,25 +13,23 @@ interface LoadedContentStateControllerProps {
   loadingFallbackComponent?: JSX.Element;
   isHidden?: boolean;
   children: ReactNode;
-  fallbackHeight: number | string;
 }
 
 const LoadedContentStateController: React.FC<
-  LoadedContentStateControllerProps
+LoadedContentStateControllerProps
 > = ({
-  fallbackHeight,
   isEmpty,
   emptyText,
   emptyFallbackComponent = (
-    <EmptyStateText height={fallbackHeight} text={emptyText || ""} />
+    <EmptyStateText text={emptyText || ""} />
   ),
   isError,
   errorText,
   errorAlertFallbackComponent = (
-    <ErrorAlert height={fallbackHeight} errorDescription={errorText || ""} />
+    <ErrorText errorText={errorText || ""} />
   ),
   isLoading,
-  loadingFallbackComponent = <Loader containerHeight={fallbackHeight} />,
+  loadingFallbackComponent = <Loader />,
   isHidden,
   children,
 }) => {

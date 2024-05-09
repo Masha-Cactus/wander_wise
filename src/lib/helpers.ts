@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 
 export const isTokenAlive = (expirationTime: number) => {
@@ -29,4 +30,24 @@ export const trimObjectFields = <T>(object: T): T => {
   );
 
   return JSON.parse(jsonString);
+};
+
+export const normalizeError = (error: AxiosError): string => {
+  const errorResponse = error?.response?.data;
+
+  if (typeof errorResponse === "object" && errorResponse !== null) {
+    // get array of errors
+    const errorMessages = Object.values(errorResponse) as string[];
+
+    // normalize that array and join to string
+    const normalizedErrorMessage = errorMessages
+      .map((errorMessage) =>
+        Array.isArray(errorMessage) ? errorMessage.join(" ") : errorMessage
+      )
+      .join(" ");
+
+    return normalizedErrorMessage;
+  }
+
+  return "Unexpected error";
 };
