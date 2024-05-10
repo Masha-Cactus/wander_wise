@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Divider } from "@/src/components/atoms";
-import { IconButton, PrimaryBtn, Icons } from "@/src/components/moleculs/";
+import { Divider, Icons} from "@/src/components/atoms";
+import { IconButton, PrimaryBtn } from "@/src/components/moleculs/";
 import { ICard } from "@/src/types/Card";
 import { useSaveCard } from "@/src/queries/card.queries";
 

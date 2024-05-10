@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { TripShortType } from "../../../types/TripType";
+// import { TripShortType } from "../../../types/TripType";
 
 type Props = {
-  card: TripShortType;
+  card;
   // onClick: () => void;
 };
 

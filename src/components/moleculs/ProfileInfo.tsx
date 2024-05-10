@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Icons } from "@/src/components/moleculs";
-import { Divider } from "@/src/components/atoms";
+import { Divider, Icons } from "@/src/components/atoms";
 // import { useUser } from "@/app/store/user";
 
 const ProfileInfo: React.FC = () => {

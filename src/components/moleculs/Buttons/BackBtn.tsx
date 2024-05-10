@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Icons } from "@/src/components/moleculs";
+import { Icons } from "@/src/components/atoms";
 
 type Props = {};
 

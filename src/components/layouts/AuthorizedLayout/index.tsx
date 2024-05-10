@@ -45,7 +45,7 @@ const AuthorizedLayout = ({ children }: PropsWithChildren) => {
     <LoadedContentStateController
       isError={isErrorWithCurrentUserData}
       errorText="unexpected error"
-      fallbackHeight={300}
+    //   fallbackHeight={300}
     >
       {children}
     </LoadedContentStateController>

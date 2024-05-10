@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Maven_Pro } from "next/font/google";
 import "./globals.css";
-import { Header } from "../components/moleculs";
+import { Header } from "@/src/components/organisms";
 import { QueryProvider } from "./providers";
 
 const inter = Inter({

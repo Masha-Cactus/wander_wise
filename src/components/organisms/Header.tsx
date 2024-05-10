@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Divider } from "@/src/components/atoms";
 import { useState } from "react";
-import { MetaForm, ModalSkeleton } from ".";
+import { MetaForm, ModalSkeleton } from "@/src/components/organisms";
 
 const Header: React.FC = () => {
   const { user } = useUser();
