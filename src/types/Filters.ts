@@ -12,12 +12,16 @@ export enum TripTypes {
   romantic = 'Romantic',
   party = 'Party',
 }
+
+export type TripTypesType = `${TripTypes}`;
   
 export enum Climate {
   polar = 'Polar',
   temperate = 'Temperate',
   tropical = 'Tropical',
 }
+
+export type ClimateType = `${Climate}`;
   
 export enum SpecialRequirements {
   pets = 'With pets',
@@ -25,3 +29,5 @@ export enum SpecialRequirements {
   queer = 'Queer friendly',
   disability = 'Disability',
 }
+
+export type SpecialRequirementsType = `${SpecialRequirements}`;

@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import Google from "../../shared/icons/Google";
-import { PasswordRemind, SignUp, Login } from "@/src/components/organisms";
+import { SignUp } from "@/src/components/organisms";
 import { Dispatch, SetStateAction } from "react";
-import ConfirmEmail from "./ConfirmEmail";
+import RestorePasswordForm from "../Forms/RestorePasswordForm";
+import ConfirmEmailForm from "../Forms/ConfirmEmailForm";
+import SignInForm from "../Forms/SignInForm";
 
 type Props = {
   modal: 'login' | 'signup' | 'remind' | 'confirm',
@@ -45,10 +47,10 @@ const MetaForm: React.FC<Props> = ({ modal, setShow }) => {
           </p>
         ) }
 
-        {modal === "login" && <Login />}
+        {modal === "login" && <SignInForm />}
         {modal === "signup" && <SignUp setShow={setShow} />}
-        {modal === "remind" && <PasswordRemind />}
-        {modal === "confirm" && <ConfirmEmail />}
+        {modal === "remind" && <RestorePasswordForm />}
+        {modal === "confirm" && <ConfirmEmailForm />}
       </div>
 
       <div

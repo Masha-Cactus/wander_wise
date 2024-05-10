@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { authService } from "../services/authService/auth.service";
-import { IEmail, ISignIn, ISignUp } from "../services/authService/auth.types";
-import { useUser } from "../store/user";
+import { authService, IEmail, ISignIn, ISignUp } from "@/src/services";
+import { useUser } from "@/src/store/user";
+// import { saveAccessToken } from "../actions";
 
 export function useSignUp() {
   const setUser = useUser((state) => state.setUser);
@@ -41,7 +41,10 @@ export function useConfirmEmail() {
 export function useSignIn() {
   return useMutation({
     mutationFn: (data: ISignIn) => authService.signIn(data),
-    onSuccess: ({ token }) => {
+    onSuccess: async({ token }) => {
+    //   'use server';
+
+      //   saveAccessToken(token);
       localStorage.setItem('accessToken', token);
     }
   });

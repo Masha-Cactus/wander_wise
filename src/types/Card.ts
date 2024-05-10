@@ -1,5 +1,5 @@
 import { IComment } from "./Comment";
-import { Climate, SpecialRequirements, TripTypes } from "./Filters";
+import { ClimateType, SpecialRequirementsType, TripTypesType } from "./Filters";
 
 export interface ICard {
   id: number,
@@ -14,9 +14,9 @@ export interface ICard {
   likes: number,
   comments: IComment[],
   shown: boolean,
-  tripTypes: TripTypes[],
-  climate: Climate,
-  specialRequirements: SpecialRequirements[],
+  tripTypes: TripTypesType[],
+  climate: ClimateType,
+  specialRequirements: SpecialRequirementsType[],
 }
 
 export type CardWithoutDistance = Omit<ICard, 'distance'>;

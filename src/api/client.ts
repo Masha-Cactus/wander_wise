@@ -1,6 +1,6 @@
 import axios, { CreateAxiosDefaults } from "axios";
 
-const BASE_URL = 'http://3.91.160.29:8088/';
+const BASE_URL = 'http://3.91.160.29:8088/api';
 
 export const createClient = (additionalConfig?: CreateAxiosDefaults) => {
   const config = {

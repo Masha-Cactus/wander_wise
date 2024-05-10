@@ -1,11 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { cardService } from "../services/cardService/card.service";
-import { ICreateCard, IUpdateCard } from "../services/cardService/card.types";
-import { useUser } from "../store/user";
+import {
+  ICreateCard,
+  IUpdateCard,
+  cardService,
+} from "@/src/services";
+import { useUser } from "@/src/store/user";
 
 export function useCardDetails(cardId: number) {
   return useQuery({
-    queryKey: ['card-details', {cardId} ],
+    queryKey: ["card-details", { cardId }],
     queryFn: () => cardService.getCardDetails(cardId),
   });
 }
@@ -16,11 +19,11 @@ export function useCreateCard() {
 
   return useMutation({
     mutationFn: (data: ICreateCard) => cardService.createCard(data),
-    onSuccess: async() => {
+    onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ['user-collections', {userId: user?.id}],
+        queryKey: ["user-collections", { userId: user?.id }],
       });
-    }
+    },
   });
 }
 
@@ -30,16 +33,16 @@ export function useUpdateCard() {
 
   return useMutation({
     mutationFn: (data: IUpdateCard) => cardService.updateCard(data),
-    onSuccess: async({ id }) => {
+    onSuccess: async ({ id }) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: ['user-collections', {userId: user?.id}],
+          queryKey: ["user-collections", { userId: user?.id }],
         }),
         queryClient.invalidateQueries({
-          queryKey: ['card-details', {cardId: id} ],
+          queryKey: ["card-details", { cardId: id }],
         }),
       ]);
-    }
+    },
   });
 }
 
@@ -49,11 +52,11 @@ export function useDeleteCard() {
 
   return useMutation({
     mutationFn: (cardId: number) => cardService.deleteCard(cardId),
-    onSuccess: async() => {
+    onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ['user-collections', {userId: user?.id}],
+        queryKey: ["user-collections", { userId: user?.id }],
       });
-    }
+    },
   });
 }
 
@@ -63,16 +66,16 @@ export function useLikeCard() {
 
   return useMutation({
     mutationFn: (cardId: number) => cardService.postLike(cardId),
-    onSuccess: async(_, cardId) => {
+    onSuccess: async (_, cardId) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: ['user-collections', {userId: user?.id}],
+          queryKey: ["user-collections", { userId: user?.id }],
         }),
         queryClient.invalidateQueries({
-          queryKey: ['card-details', {cardId} ],
+          queryKey: ["card-details", { cardId }],
         }),
       ]);
-    }
+    },
   });
 }
 
@@ -82,16 +85,16 @@ export function useRemoveLikeFromCard() {
 
   return useMutation({
     mutationFn: (cardId: number) => cardService.removeLike(cardId),
-    onSuccess: async(_, cardId) => {
+    onSuccess: async (_, cardId) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: ['user-collections', {userId: user?.id}],
+          queryKey: ["user-collections", { userId: user?.id }],
         }),
         queryClient.invalidateQueries({
-          queryKey: ['card-details', {cardId} ],
+          queryKey: ["card-details", { cardId }],
         }),
       ]);
-    }
+    },
   });
 }
 
@@ -101,11 +104,11 @@ export function useSaveCard() {
 
   return useMutation({
     mutationFn: (cardId: number) => cardService.addToSaved(cardId),
-    onSuccess: async() => {
+    onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ['user-collections', {userId: user?.id}],
+        queryKey: ["user-collections", { userId: user?.id }],
       });
-    }
+    },
   });
 }
 
@@ -115,10 +118,10 @@ export function useRemoveCardFromSaved() {
 
   return useMutation({
     mutationFn: (cardId: number) => cardService.removeFromSaved(cardId),
-    onSuccess: async() => {
+    onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ['user-collections', {userId: user?.id}],
+        queryKey: ["user-collections", { userId: user?.id }],
       });
-    }
+    },
   });
 }
