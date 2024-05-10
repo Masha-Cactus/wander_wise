@@ -7,6 +7,8 @@ interface TextInputProps {
   register: UseFormRegister<any>;
   errorText?: string;
   disabled: boolean;
+  placeholder?: string,
+  label?: string,
 }
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -15,18 +17,20 @@ const TextInput: React.FC<TextInputProps> = ({
   name,
   errorText,
   disabled,
+  placeholder,
+  label,
 }) => {
   return (
     <div className="relative flex flex-col w-full">
       <label className="text-black relative block uppercase 
           flex flex-col w-full items-start">
-        {name}
+        {label ? label : name}
         <input
           id={name}
           type={type}
           {...register(name)}
           disabled={disabled}
-          placeholder={`Enter your ${name}`}
+          placeholder={placeholder ? placeholder : `Enter your ${name}`}
           className={classNames(`border-b border-black bg-white
           text-black hover:bg-gray-50 flex h-10 w-full items-center
           justify-center space-x-3 text-sm shadow-sm

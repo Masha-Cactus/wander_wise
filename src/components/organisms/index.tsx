@@ -12,9 +12,7 @@ export { default as TripMedium } from "./Trips/TripMedium";
 export { default as TripLong } from "./Trips/TripLong";
 
 export { default as MetaForm } from "./Modals/MetaForm";
-export { default as Login } from "./Modals/Login";
 export { default as SignUp } from "./Modals/SignUp";
-export { default as PasswordRemind } from "./Modals/PasswordRemind";
 export { default as ModalSkeleton } from "./Modals/ModalSkeleton";
 
 export { default as SignInForm } from "./Forms/SignInForm";

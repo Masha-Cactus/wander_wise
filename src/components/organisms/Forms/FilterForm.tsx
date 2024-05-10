@@ -6,9 +6,9 @@ import {
   CheckboxInput,
   FilterButton,
   FilterInput,
-  LocationInput,
 } from "@/src/components/moleculs";
 import { Climate, SpecialRequirements, TripTypes } from "@/src/types/Filters";
+import LocationInput from "../../moleculs/Inputs/LocationInput";
 
 type Props = {};
 
@@ -36,16 +36,18 @@ type FormType = {
   currentLocation: string;
 };
 
+const emptyState: FormType = {
+  currentLocation: "",
+  atmosphere: [],
+  distance: "",
+  climate: [],
+  special: [],
+  author: "",
+  specificPlace: "",
+};
+
 const FilterForm: React.FC<Props> = ({}) => {
-  const [form, setForm] = useState<FormType>({
-    currentLocation: "",
-    atmosphere: [],
-    distance: "",
-    climate: [],
-    special: [],
-    author: "",
-    specificPlace: "",
-  });
+  const [form, setForm] = useState<FormType>(emptyState);
 
   const handleButtonClick = (value: string, type: keyof FormType) => {
     setForm((prevForm) => {
@@ -74,15 +76,7 @@ const FilterForm: React.FC<Props> = ({}) => {
   };
 
   const handleCancel = () => {
-    setForm({
-      currentLocation: "",
-      atmosphere: [],
-      distance: "",
-      climate: [],
-      special: [],
-      author: "",
-      specificPlace: "",
-    });
+    setForm(emptyState);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -112,7 +106,6 @@ const FilterForm: React.FC<Props> = ({}) => {
           We need this info to build distance of your trip
         </p>
         <LocationInput
-          value={form.currentLocation}
           onChange={(value) => setForm({ ...form, currentLocation: value })}
         />
       </div>

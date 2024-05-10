@@ -3,16 +3,19 @@
 import React, { useState, useEffect } from "react";
 import Radar from "radar-sdk-js";
 import { FilterInput } from "@/src/components/moleculs";
+import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
 
 const key = "prj_live_pk_6925600add7305492567163191c2abbb9977c348";
 
 type Props = {
   onChange: (value: string) => void;
-  value: string;
 };
 
-const LocationInput: React.FC<Props> = ({ onChange, value }) => {
-  const [autocompleteSuggestions, setAutocompleteSuggestions] = useState([]);
+const LocationInput: React.FC<Props> = ({ onChange }) => {
+  const [autocompleteSuggestions, setAutocompleteSuggestions] 
+  = useState<RadarAutocompleteAddress[]>([]);
+
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
     Radar.initialize(key);
@@ -24,6 +27,7 @@ const LocationInput: React.FC<Props> = ({ onChange, value }) => {
     e.preventDefault();
     const value = e.target.value;
 
+    setInputValue(value);
     onChange(value);
 
     if (value.trim() !== "") {
@@ -39,26 +43,29 @@ const LocationInput: React.FC<Props> = ({ onChange, value }) => {
     }
   };
 
-  const handleSuggestionClick = (address) => {
-    onChange(address.formattedAddress);
-    setAutocompleteSuggestions([]);
+  const handleSuggestionClick = (address: RadarAutocompleteAddress) => {
+    if (address.formattedAddress) {
+      setInputValue(address.formattedAddress);
+      onChange(address.formattedAddress);
+      setAutocompleteSuggestions([]);
+    }
   };
 
   return (
     <div className="relative w-full text-black mt-4">
       <FilterInput
         onChange={handleLocationChange}
-        value={value}
+        value={inputValue}
         id="locationInput"
       />
-      {autocompleteSuggestions.length > 0 && value.trim() !== "" && (
+      {autocompleteSuggestions.length > 0 && (
         <div
           className="absolute bg-white border border-gray-200 
         rounded-b-md shadow-lg mt-1 w-full z-10 text-zinc-950"
         >
           {autocompleteSuggestions.map((address) => (
             <div
-              key={address.id}
+              key={address.addressLabel}
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
               onClick={() => handleSuggestionClick(address)}
             >

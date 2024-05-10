@@ -6,13 +6,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ISignIn } from "@/src/services";
 import { signInSchema } from "@/src/validation";
 import {
-  PasswordInput,
   PrimaryBtn,
   TextInput,
 } from "@/src/components/moleculs";
 import { useSignIn } from "@/src/queries";
 import { trimObjectFields } from "@/src/lib/helpers";
 import FormErrorText from "../../atoms/FormErrorText";
+import PasswordInput from "../../moleculs/Inputs/PasswordInput";
+import { useRouter } from "next/navigation";
 
 const SignInForm = () => {
   const [errorMassage, setErrorMassage] = useState("");
@@ -35,22 +36,23 @@ const SignInForm = () => {
     setErrorMassage(error.message);
   };
 
-  const {
-    isPending,
-    mutate: signIn,
-    isError,
-  } = useSignIn({
-    onError: handleError,
-  });
+  const { isPending, mutate, isError } = useSignIn();
+  const { push } = useRouter();
 
-  const onSubmit = (data: ISignIn) => {
+  const onSubmit = async (data: ISignIn) => {
     const trimmedUserData = trimObjectFields(data);
 
-    signIn(trimmedUserData);
+    mutate(trimmedUserData, {
+      onError: handleError,
+      onSuccess: () => push('/profile'),
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="flex flex-col gap-4 h-full w-full" 
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <TextInput
         type="email"
         name="email"

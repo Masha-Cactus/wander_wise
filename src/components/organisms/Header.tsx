@@ -12,9 +12,7 @@ const Header: React.FC = () => {
 
   const [showModal, setShowModal] = useState<
   null | "login" | "signup" | "remind" | "confirm"
-  >("confirm");
-
-  const isAuthorized = false;
+  >(null);
 
   return (
     <div
@@ -30,7 +28,7 @@ const Header: React.FC = () => {
           className=""
         />
       </Link>
-      {isAuthorized ? (
+      {user ? (
         <div className="flex gap-8 h-10">
           <div className="flex gap-8 text-black justify-center items-center">
             <Link href="/profile" className="">

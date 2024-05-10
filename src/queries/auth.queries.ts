@@ -1,27 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
 import { authService, IEmail, ISignIn, ISignUp } from "@/src/services";
 import { useUser } from "@/src/store/user";
-import { normalizeError } from "@/src/lib/helpers";
 
-export function useSignUp({
-  onError,
-}: {
-  onError: (error: any) => void;
-}) {
+export function useSignUp() {
   const setUser = useUser((state) => state.setUser);
-
-  const handleError = (error: any) => {
-    const errorMessage = normalizeError(error);
-
-    onError(errorMessage);
-  };
 
   return useMutation({
     mutationFn: (data: ISignUp) => authService.signUp(data),
     onSuccess: (user) => {
       setUser(user);
     },
-    onError: handleError,
   });
 }
 
@@ -49,23 +37,12 @@ export function useConfirmEmail() {
 }
 
 // user will come together with token
-export function useSignIn({
-  onError,
-}: {
-  onError: (error: any) => void;
-}) {
-  const handleError = (error: any) => {
-    const errorMessage = normalizeError(error);
-
-    onError(errorMessage);
-  };
-
+export function useSignIn() {
   return useMutation({
     mutationFn: (data: ISignIn) => authService.signIn(data),
-    onSuccess: ({ token }) => {
+    onSuccess: async({ token }) => {
       localStorage.setItem('accessToken', token);
     },
-    onError: handleError,
   });
 }
 

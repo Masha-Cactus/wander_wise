@@ -8,7 +8,7 @@ import {
   IUpdateInfo, 
   IUpdatePassword, 
 } from "./user.types";
-import { IToken } from "@/app/services";
+import { IToken } from "@/src/services";
 
 class UserService {
   private BASE_URL = '/users';

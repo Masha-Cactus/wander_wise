@@ -14,7 +14,6 @@ export interface IUpdateInfo {
   pseudonym: string,
   firstName: string,
   lastName: string,
-  profileImage: string,
   location: string,
   bio: string,
 }
