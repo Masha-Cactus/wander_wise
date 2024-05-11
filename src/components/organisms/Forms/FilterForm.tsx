@@ -8,8 +8,8 @@ import {
   FilterInput,
   RoundedButton,
 } from "@/src/components/moleculs";
-import { Climate, SpecialRequirements, TripTypes } from "@/src/types/Filters";
 import LocationInput from "../../moleculs/Inputs/LocationInput";
+import { Climate, SpecialRequirements, TripTypes } from "@/src/services";
 
 type Props = {};
 

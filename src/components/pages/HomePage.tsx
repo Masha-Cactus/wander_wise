@@ -1,3 +1,5 @@
+"use client";
+
 import { IMAGES_SLIDES } from "@/src/lib/constants";
 import { PrimaryButton } from "@/src/components/moleculs";
 import { Slider } from "@/src/components/organisms";

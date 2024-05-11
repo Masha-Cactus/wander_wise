@@ -1,3 +1,5 @@
+"use client";
+
 import { memo, useState } from "react";
 import ModalSkeleton from "./ModalSkeleton";
 import { ErrorText, Heading, Text } from "@/src/components/atoms";

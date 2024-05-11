@@ -1,3 +1,5 @@
+"use client";
+
 import { ProfileInfoSection } from "@/src/components/organisms";
 import {
   RecentlyLikedSection,

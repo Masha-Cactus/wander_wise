@@ -1,3 +1,5 @@
+"use client";
+
 import { memo, useEffect, useState } from "react";
 import { ModalSkeleton } from "@/src/components/organisms";
 import { ErrorText, Heading, Text } from "@/src/components/atoms";

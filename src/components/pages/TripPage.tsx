@@ -1,3 +1,5 @@
+"use client";
+
 import { memo } from "react";
 import { BackButton } from "@/src/components/moleculs";
 import { TripLongCard, ReviewsList } from "@/src/components/organisms";
