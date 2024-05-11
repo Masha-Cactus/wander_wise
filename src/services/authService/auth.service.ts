@@ -1,5 +1,4 @@
-import { authClient } from "../../api/authClient";
-import { baseClient } from "../../api/baseClient";
+import { baseClient, authClient } from "@/src/api";;
 import { IBannedUser, IEmail, ISignIn, ISignUp, IToken } from "./auth.types";
 
 class AuthService {

@@ -1,20 +1,36 @@
 import { memo } from "react";
 import { ModalSkeleton } from "@/src/components/organisms";
 import { Heading, Text } from "@/src/components/atoms";
+import { RoundedButton } from "@/src/components/moleculs";
 
 interface RemoveTripFromCollectionModalProps {
-  tripName: string;
+  trip: string;
   collectionName: string;
   onClose: () => void;
 }
 
 const RemoveTripFromCollectionModal: React.FC<
-RemoveTripFromCollectionModalProps
-> = ({ tripName, collectionName, onClose }) => {
-  return(
+  RemoveTripFromCollectionModalProps
+> = ({ trip, collectionName, onClose }) => {
+  const handleRemoveTrip = () => {};
+
+  return (
     <ModalSkeleton onClose={onClose}>
-      <Heading text={`Remove ${tripName} from ${collectionName}?`} />
-      <Text text="This action cannot be undone 🫣"/>
+      <Heading text={`Remove ${trip.name} from ${collectionName}?`} />
+      <Text text="This action cannot be undone 🫣" />
+
+      <div className="">
+        <RoundedButton
+          text="Delete"
+          onClick={handleRemoveTrip}
+          classes="bg-red text-white"
+        />
+        <RoundedButton
+          text="Cancel"
+          onClick={onClose}
+          classes="bg-white text-black border border-black"
+        />
+      </div>
     </ModalSkeleton>
   );
 };

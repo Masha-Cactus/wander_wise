@@ -6,13 +6,21 @@ type Props = {
   classes?: string;
   path?: string;
   onClick?: () => void;
+  type?: "button" | "submit" | "reset";
 };
 
-const PrimaryButton: React.FC<Props> = ({ text, classes, path, onClick }) => {
+const PrimaryButton: React.FC<Props> = ({
+  text,
+  classes,
+  path,
+  onClick,
+  type = "button",
+}) => {
   return (
     <>
       {onClick && (
         <button
+          type={type}
           className={twMerge(
             "w-full h-14 bg-yellow rounded-full flex",
             "justify-center items-center font-bold",

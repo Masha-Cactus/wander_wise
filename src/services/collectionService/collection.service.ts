@@ -1,5 +1,5 @@
 import { ICollection } from "@/src/types/Collection";
-import { authClient } from "../../api/authClient";
+import { authClient } from "@/src/api";
 import { ICreateCollection, IUpdateCollection } from "./collection.types";
 
 class CollectionService {

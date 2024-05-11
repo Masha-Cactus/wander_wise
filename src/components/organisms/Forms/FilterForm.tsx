@@ -6,6 +6,7 @@ import {
   CheckboxInput,
   FilterButton,
   FilterInput,
+  RoundedButton,
 } from "@/src/components/moleculs";
 import { Climate, SpecialRequirements, TripTypes } from "@/src/types/Filters";
 import LocationInput from "../../moleculs/Inputs/LocationInput";
@@ -204,18 +205,17 @@ const FilterForm: React.FC<Props> = ({}) => {
       </div>
 
       <div className="flex gap-4 mx-10 my-8">
-        <button
+        <RoundedButton
+          text="Apply"
           type="submit"
-          className="bg-black rounded-full text-white p-4 px-8"
-        >
-          Apply
-        </button>
-        <button
+          classes="bg-black text-white p-4 px-8"
+        />
+        <RoundedButton
+          text="Clear"
+          type="reset"
+          classes="border-2 border-black rounded-full p-4 px-8"
           onClick={handleCancel}
-          className="border-2 border-black rounded-full p-4 px-8"
-        >
-          Clear
-        </button>
+        />
       </div>
     </form>
   );

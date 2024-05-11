@@ -1,14 +1,12 @@
-import { ICollection } from "@/src/types/Collection";
 import { ISocial } from "@/src/types/Social";
 import { IUser } from "@/src/types/User";
-import { authClient } from "../../api/authClient";
-import { baseClient } from "../../api/baseClient";
+import { authClient, baseClient } from "@/src/api";
 import { 
   IUpdateEmail, 
   IUpdateInfo, 
   IUpdatePassword, 
 } from "./user.types";
-import { IToken } from "@/src/services";
+import { ICollection, IToken } from "@/src/services";
 
 class UserService {
   private BASE_URL = '/users';

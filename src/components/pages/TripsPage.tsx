@@ -1,5 +1,5 @@
 import { Gallery, FilterForm } from "@/src/components/organisms";
-import { ICard } from "@/src/types/Card";
+import { ICard } from "@/src/services";
 import { memo } from "react";
 
 type Props = {};

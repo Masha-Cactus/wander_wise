@@ -13,3 +13,5 @@ export * from "./cardService/card.types";
 export * from "./commentService/comment.types";
 export * from "./socialService/social.types";
 export * from "./userService/user.types";
+
+export * from "./types";

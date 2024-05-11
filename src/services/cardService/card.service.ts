@@ -1,45 +1,68 @@
-import { CardWithoutDistance } from "@/src/types/Card";
-import { authClient } from "../../api/authClient";
-import { ICreateCard, IUpdateCard } from "./card.types";
+import { authClient, formDataClient } from "@/src/api";
+import {
+  IAddImages,
+  ICard,
+  ICreateCard,
+  IReportCard,
+  IShortCard,
+} from "./card.types";
 
 class CardService {
-  private BASE_URL = '/cards';
+  private BASE_URL = "/cards";
 
-  getCardDetails(id: number) {
-    return authClient.get<never, CardWithoutDistance>(`${this.BASE_URL}/details/${id}`);
-  };
+  getCards(): Promise<ICard[]> {
+    return authClient.get<never, ICard[]>(this.BASE_URL);
+  }
 
-  createCard(data: ICreateCard) {
-    return authClient.post<never, CardWithoutDistance>(this.BASE_URL, data);
-  };
+  getCardDetails(cardId: number): Promise<ICard> {
+    return authClient.get<never, ICard>(`${this.BASE_URL}/details/${cardId}`);
+  }
 
-  updateCard({id, ...data}: IUpdateCard) {
-    return authClient.put<never, CardWithoutDistance>(`${this.BASE_URL}/update/${id}`, data);
-  };
+  createCard(data: ICreateCard): Promise<ICard> {
+    return authClient.post<never, ICard>(this.BASE_URL, data);
+  }
+
+  updateCard({ cardId, data }: { cardId: number; data: ICreateCard }) {
+    return authClient.put<never, IShortCard>(
+      `${this.BASE_URL}/update/${cardId}`,
+      data
+    );
+  }
+
+  reportCard({ cardId, text }: IReportCard): Promise<void> {
+    return authClient.put<IReportCard, void>(
+      `${this.BASE_URL}/report/${cardId}`,
+      { cardId, text }
+    );
+  }
 
   //currently on the server the method is put
-  addToSaved(id: number) {
-    return authClient.get(`${this.BASE_URL}/add-to-saved/${id}`);
-  };
+  addToSaved(cardId: number) {
+    return authClient.get(`${this.BASE_URL}/add-to-saved/${cardId}`);
+  }
 
   //currently on the server the method is put
-  removeFromSaved(id: number) {
-    return authClient.get(`${this.BASE_URL}/remove-from-saved/${id}`);
-  };
+  removeFromSaved(cardId: number): Promise<void> {
+    return authClient.get(`${this.BASE_URL}/remove-from-saved/${cardId}`);
+  }
 
   //currently on the server the method is put
-  postLike(id: number) {
-    return authClient.get(`${this.BASE_URL}/post-like/${id}`);
-  };
+  likeCard(cardId: number): Promise<void> {
+    return authClient.get(`${this.BASE_URL}/post-like/${cardId}`);
+  }
 
   //currently on the server the method is put
-  removeLike(id: number) {
-    return authClient.get(`${this.BASE_URL}/remove-like/${id}`);
-  };
+  unlikeCard(cardId: number): Promise<void> {
+    return authClient.get(`${this.BASE_URL}/remove-like/${cardId}`);
+  }
 
-  deleteCard(id: number) {
-    return authClient.delete(`${this.BASE_URL}/${id}`);
-  };
+  deleteCard(cardId: number) {
+    return authClient.delete(`${this.BASE_URL}/${cardId}`);
+  }
+
+  addImages({cardId, images}: IAddImages): Promise<ICard> {
+    return formDataClient.put<IAddImages, ICard>(`${this.BASE_URL}/add-images/${cardId}`, images);
+  }
 }
 
 export const cardService = new CardService();

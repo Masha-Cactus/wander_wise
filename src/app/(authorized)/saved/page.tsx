@@ -1,12 +1,11 @@
-// import { getCards } from "@/app/services/cards";
 import { Gallery, FilterForm } from "@/src/components/organisms";
-// import { TripLongType } from "@/app/types/TripType";
+import { ICard } from "@/src/services";
 import { memo } from "react";
 
 type Props = {};
 
 const Page: React.FC<Props> = async ({}) => {
-  const cards = [];
+  const cards: ICard[] = [];
 
   return (
     <main className="grid grid-cols-12 grid-rows-3 text-black bg-gray10 gap-5">

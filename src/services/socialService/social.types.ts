@@ -1,4 +1,7 @@
-import { ISocial } from "@/src/types/Social";
+export interface ISocial {
+  name: string,
+  link: string,
+}
 
 export interface ICreateSocial extends ISocial {
   userId: number,

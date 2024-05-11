@@ -1,20 +1,50 @@
-import { Climate, SpecialRequirements, TripTypes } from "@/src/types/Filters";
+import {
+  ClimateType,
+  IComment,
+  SpecialRequirements,
+  SpecialRequirementsType,
+  TripTypes,
+  TripTypesType,
+} from "@/src/services";
 
+export interface IShortCard {
+  id: number;
+  name: string;
+  author: string;
+  tripTypes: TripTypesType[];
+}
+
+export interface ICard extends IShortCard {
+  whereIs: string;
+  description: string;
+  whyThisPlace: string[];
+  imageLinks: string[];
+  mapLink: string;
+  distance: number;
+  likes: number;
+  comments: IComment[];
+  shown: boolean;
+  climate: ClimateType;
+  specialRequirements: SpecialRequirementsType[];
+}
 export interface ICreateCard {
-  name: string,
-  populatedLocality: string,
-  region: string,
-  country: string,
-  continent: string,
-  tripTypes: TripTypes[],
-  climate: Climate,
-  specialRequirements: SpecialRequirements[],
-  description: string,
-  whyThisPlace: string[],
-  imageLinks: string[],
-  mapLink: string,
+  fullName: string;
+  tripTypes: TripTypes[];
+  climate: ClimateType;
+  specialRequirements: SpecialRequirements[];
+  description: string;
+  whyThisPlace: string[];
+  imageLinks: string[];
+  mapLink: string;
 }
 
-export interface IUpdateCard extends ICreateCard {
-  id: number,
+export interface IReportCard {
+  cardId: number;
+  text: string;
 }
+
+export interface IAddImages {
+  cardId: number;
+  images: File[];
+}
+

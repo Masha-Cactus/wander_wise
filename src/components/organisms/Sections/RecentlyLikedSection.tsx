@@ -1,13 +1,14 @@
-import { PrimaryButton } from "../moleculs";
-import TripShort from "./Trips/TripShort";
+import { PrimaryButton } from "@/src/components/moleculs";
+import { TripShortCard } from "@/src/components/organisms";
 // import { useUser } from "@/src/store/user";
 import { useUserCollections } from "@/src/queries/user.queries";
 
 const RecentlyLikedSection: React.FC = () => {
-//   const { user } = useUser();
+  //   const { user } = useUser();
   const { data: collections } = useUserCollections();
-  const likedCards = collections?.find(collection => 
-    collection.name === 'Liked cards')?.cardWithoutDistanceDtos;
+  const likedCards = collections?.find(
+    (collection) => collection.name === "Liked cards"
+  )?.cardWithoutDistanceDtos;
 
   return (
     <div
@@ -18,7 +19,7 @@ const RecentlyLikedSection: React.FC = () => {
       {likedCards && likedCards.length > 0 ? (
         <div className="">
           {likedCards.map((trip) => (
-            <TripShort key={trip.id} card={trip} />
+            <TripShortCard key={trip.id} card={trip} />
           ))}
         </div>
       ) : (
