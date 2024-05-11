@@ -35,6 +35,11 @@ export interface ICreateCard {
   mapLink: string;
 }
 
+export interface IUpdateCard {
+  cardId: number;
+  data: ICreateCard;
+}
+
 export interface IReportCard {
   cardId: number;
   text: string;

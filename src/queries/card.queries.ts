@@ -6,7 +6,7 @@ import {
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
 
-export function useCardDetails(cardId: number) {
+export function useGetCardDetails(cardId: number) {
   return useQuery({
     queryKey: ["card-details", { cardId }],
     queryFn: () => cardService.getCardDetails(cardId),
@@ -65,7 +65,7 @@ export function useLikeCard() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (cardId: number) => cardService.postLike(cardId),
+    mutationFn: (cardId: number) => cardService.likeCard(cardId),
     onSuccess: async (_, cardId) => {
       await Promise.all([
         queryClient.invalidateQueries({
@@ -84,7 +84,7 @@ export function useRemoveLikeFromCard() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (cardId: number) => cardService.removeLike(cardId),
+    mutationFn: (cardId: number) => cardService.unlikeCard(cardId),
     onSuccess: async (_, cardId) => {
       await Promise.all([
         queryClient.invalidateQueries({
