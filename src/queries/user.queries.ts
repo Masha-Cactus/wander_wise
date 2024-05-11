@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { IUpdateInfo, userService } from "@/src/services";
 import { useUser } from "@/src/store/user";
 
-export function useUserProfile() {
+export function useGetUserProfile() {
   const user = useUser((state) => state.user);
 
   return useQuery({
@@ -18,7 +18,7 @@ export function useUserProfile() {
   });
 }
 
-export function useUserSocials() {
+export function useGetUserSocials() {
   const user = useUser((state) => state.user);
 
   return useQuery({
@@ -34,7 +34,7 @@ export function useUserSocials() {
   });
 }
 
-export function useUserCollections() {
+export function useGetUserCollections() {
   const user = useUser((state) => state.user);
 
   return useQuery({
