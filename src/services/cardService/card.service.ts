@@ -1,6 +1,7 @@
+import { formDataClient } from "@/src/api/formDataClient";
 import { CardWithoutDistance } from "@/src/types/Card";
 import { authClient } from "../../api/authClient";
-import { ICreateCard, IUpdateCard } from "./card.types";
+import { IAddCardImages, ICreateCard, IUpdateCard } from "./card.types";
 
 class CardService {
   private BASE_URL = '/cards';
@@ -15,6 +16,13 @@ class CardService {
 
   updateCard({id, ...data}: IUpdateCard) {
     return authClient.put<never, CardWithoutDistance>(`${this.BASE_URL}/update/${id}`, data);
+  };
+
+  addImages (data: IAddCardImages) {
+    return formDataClient.put<never, CardWithoutDistance>(
+      `${this.BASE_URL}/add-images/${data.id}`,
+      data,
+    );
   };
 
   //currently on the server the method is put

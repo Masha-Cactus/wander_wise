@@ -4,6 +4,7 @@ import { Icons } from "@/src/components/atoms";
 
 interface PasswordInputProps {
   name: string;
+  label?: string,
   register: UseFormRegister<any>;
   errorText?: string;
   placeholder?: string;
@@ -15,6 +16,7 @@ interface PasswordInputProps {
 const PasswordInput: React.FC<PasswordInputProps> = ({
   register,
   name,
+  label,
   errorText,
   placeholder,
   disabled,
@@ -27,7 +29,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
         className="text-black relative block 
           flex flex-col w-full items-start"
       >
-        {name}
+        {label ? label : name}
         <div
           className={classNames(
             `flex w-full items-center justify-between 
@@ -36,7 +38,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
             justify-center space-x-3 text-sm shadow-sm rounded-md 
             transition-all duration-75 focus:outline-none px-3`,
             {
-              "border-red-200 bg-red-50": errorText,
+              "border-error bg-red-50": errorText,
             }
           )}
         >
@@ -52,7 +54,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
             {isShown ? <Icons.eyeClosed /> : <Icons.eye />}
           </button>
         </div>
-        {errorText && <p className="text-red-50">{errorText}</p>}
+        {errorText && <p className="text-error text-sm">{errorText}</p>}
       </label>
     </div>
   );

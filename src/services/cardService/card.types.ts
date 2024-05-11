@@ -18,3 +18,8 @@ export interface ICreateCard {
 export interface IUpdateCard extends ICreateCard {
   id: number,
 }
+
+export interface IAddCardImages {
+  id: number,
+  images: File[],
+}

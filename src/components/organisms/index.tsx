@@ -16,7 +16,6 @@ export { default as SignUpModal } from "./Modals/SignUpModal";
 export { default as RestorePasswordModal } from "./Modals/RestorePasswordModal";
 export { default as ConfirmEmailModal } from "./Modals/ConfirmEmailModal";
 
-export { default as SignUp } from "./Modals/SignUp";
 export { default as ModalSkeleton } from "./Modals/ModalSkeleton";
 
 export { default as SignInForm } from "./Forms/SignInForm";

@@ -1,7 +1,8 @@
 import { memo } from "react";
-import { ModalSkeleton, SignInForm } from "@/src/components/organisms";
+import { ModalSkeleton } from "@/src/components/organisms";
 import { Heading, Text } from "@/src/components/atoms";
 import { UnstyledButton } from "@/src/components/moleculs";
+import SignUpForm from "../Forms/SignUpForm";
 
 interface SignUpModalProps {
   onClose: () => void;
@@ -14,15 +15,12 @@ const SignInModal: React.FC<SignUpModalProps> = ({ onClose, onOpenSignIn }) => {
     onOpenSignIn();
   };
 
-  // todo
-  // change form to SignUpForm
-
   return (
     <ModalSkeleton onClose={onClose}>
       <Heading text="Welcome to Wander Wise" classes="text-center"/>
       <Text text="Let’s begin the adventure ✨" />
 
-      <SignInForm />
+      <SignUpForm />
 
       <div className="flex gap-2">
         <Text text="Already have an account?" classes=""/>

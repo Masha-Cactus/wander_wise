@@ -7,16 +7,25 @@ export const editProfileSchema
 = (): ObjectSchema<Omit<IUpdateInfo, 'userId'>> =>
   Yup.object().shape({
     pseudonym: Yup.string().trim()
-      .required( "validation required ")
-      .min(TEXT_INPUT_LENGTH.userName.min, "validation minCharLength")
-      .max(TEXT_INPUT_LENGTH.userName.min, "validation maxCharLength")
-      .matches(ONLY_SPACES_PATTERN, "validation emptyField"),
+      .required('Username field is required')
+      .min(
+        TEXT_INPUT_LENGTH.userName.min, 
+        'Username must be at lest 2 characters'
+      )
+      .max(
+        TEXT_INPUT_LENGTH.userName.min, 
+        'Username must be maximum 64 characters'
+      )
+      .matches(
+        ONLY_SPACES_PATTERN, 
+        'Username cannot be empty'
+      ),
     firstName: Yup.string().trim()
-      .required( "validation required "),
+      .required('First name field is required'),
     lastName: Yup.string().trim()
-      .required( "validation required "),
+      .required('Last name field is required'),
     bio: Yup.string().trim()
-      .required( "validation required "),
+      .required('Profile description is required'),
     location: Yup.string().trim()
-      .required( "validation required "),
+      .required('Location field is required'),
   });

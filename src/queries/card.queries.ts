@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ICreateCard,
   IUpdateCard,
+  IAddCardImages,
   cardService,
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
@@ -42,6 +43,19 @@ export function useUpdateCard() {
           queryKey: ["card-details", { cardId: id }],
         }),
       ]);
+    },
+  });
+}
+
+export function useAddCardImages() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: IAddCardImages) => cardService.addImages(data),
+    onSuccess: async ({id}) => {
+      await queryClient.invalidateQueries({
+        queryKey: ["card-details", { cardId: id }],
+      });
     },
   });
 }

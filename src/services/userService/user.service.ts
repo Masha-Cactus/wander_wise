@@ -5,10 +5,12 @@ import { authClient } from "../../api/authClient";
 import { baseClient } from "../../api/baseClient";
 import { 
   IUpdateEmail, 
+  IUpdateImage, 
   IUpdateInfo, 
   IUpdatePassword, 
 } from "./user.types";
 import { IToken } from "@/src/services";
+import { formDataClient } from "@/src/api/formDataClient";
 
 class UserService {
   private BASE_URL = '/users';
@@ -55,6 +57,13 @@ class UserService {
     return authClient.put<never, IUser>(
       `${this.BASE_URL}/update-user-info/${userId}`,
       data,
+    );
+  };
+
+  updateImage (data: IUpdateImage) {
+    return formDataClient.put<never, IUser>(
+      `${this.BASE_URL}/update-user-image/${data.id}`,
+      data, 
     );
   }
 

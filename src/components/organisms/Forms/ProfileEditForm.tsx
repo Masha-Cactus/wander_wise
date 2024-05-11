@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useState } from "react";
+import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IUpdateInfo } from "@/src/services";
@@ -13,10 +13,11 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/src/store/user";
 import TextArea from "../../moleculs/Inputs/TextArea";
 import LocationInput from "../../moleculs/Inputs/LocationInput";
+import { useNormalizedError } from "@/src/hooks/useNormalizedError";
 
 const ProfileEditForm = () => {
   const { user } = useUser();
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = editProfileSchema();
 
   const {

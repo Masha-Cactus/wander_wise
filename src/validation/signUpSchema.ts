@@ -1,51 +1,38 @@
 import * as Yup from "yup";
 import { ObjectSchema } from "yup";
 
-import { SignUpSchemaType } from "./types";
-import { EMAIL_PATTERN, ONLY_SPACES_PATTERN, TEXT_INPUT_LENGTH } from "../lib/validation";
+import { 
+  EMAIL_PATTERN, 
+  PASSWORD_PATTERN, 
+  TEXT_INPUT_LENGTH 
+} from "../lib/validation";
+import { ISignUp } from "../services";
 
 export const signUpSchema = (
-): ObjectSchema<SignUpSchemaType> =>
+): ObjectSchema<ISignUp> =>
   Yup.object().shape({
-    firstName: Yup.string()
-      .required( "validation required ")
-      .min(TEXT_INPUT_LENGTH.userName.min, "validation minCharLength")
-      .max(TEXT_INPUT_LENGTH.userName.min, "validation maxCharLength")
-      .matches(ONLY_SPACES_PATTERN, "validation emptyField"),
-    lastName: Yup.string()
-      .required(
-        t("validation.required", { name: t(`${translationPrefix}.lastName`) })
-      )
-      .min(
-        TEXT_INPUT_LENGTH.userName.min,
-        t("validation.minCharLength", {
-          number: TEXT_INPUT_LENGTH.userName.min,
-        })
-      )
-      .max(
-        TEXT_INPUT_LENGTH.userName.max,
-        t("validation.maxCharLength", {
-          number: TEXT_INPUT_LENGTH.userName.max,
-        })
-      )
-      .matches(ONLY_SPACES_PATTERN, t("validation.emptyField")),
     email: Yup.string()
-      .required(t("validation.required", { name: t("email.label") }))
-      .email(t("email.invalid"))
-      .matches(EMAIL_PATTERN, t("email.invalid")),
+      .required('Email is required')
+      .email('Email must be valid')
+      .matches(EMAIL_PATTERN, 'Email must be valid'),
     password: Yup.string()
-      .required(t("validation.required", { name: t("password.label") }))
+      .required('Password is required')
       .min(
         TEXT_INPUT_LENGTH.password.min,
-        t("validation.minCharLength", {
-          number: TEXT_INPUT_LENGTH.password.min,
-        })
+        'Password must be at least 8 characters'
       )
       .max(
         TEXT_INPUT_LENGTH.password.max,
-        t("validation.maxCharLength", {
-          number: TEXT_INPUT_LENGTH.password.max,
-        })
+        'Password must be maximum 128 characters'
       )
-      .matches(ONLY_SPACES_PATTERN, t("validation.emptyField")),
+      .matches(PASSWORD_PATTERN, 
+        'Password must not contain whitespaces'),
+    repeatPassword: Yup.string()
+      .required('Password confirmation is required')
+      .test(
+        'arePasswordsEqual', 
+        'Password and confirmation must be equal', 
+        function (value, testContext) { 
+          return value === testContext.parent.password;
+        }),
   });
