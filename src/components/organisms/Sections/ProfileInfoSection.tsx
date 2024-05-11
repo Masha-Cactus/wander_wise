@@ -2,9 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Divider, Icons } from "@/src/components/atoms";
+import { memo } from "react";
 // import { useUser } from "@/app/store/user";
 
-const ProfileInfo: React.FC = () => {
+const ProfileInfoSection: React.FC = () => {
   // const { user } = useUser();
   const user = {
     id: 1,
@@ -104,4 +105,4 @@ const ProfileInfo: React.FC = () => {
   );
 };
 
-export default ProfileInfo;
+export default memo(ProfileInfoSection);

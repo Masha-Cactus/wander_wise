@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 type Props = {
   selected: boolean;
   value: string;
@@ -25,4 +27,4 @@ const CheckboxInput: React.FC<Props> = ({
   );
 };
 
-export default CheckboxInput;
+export default memo(CheckboxInput);

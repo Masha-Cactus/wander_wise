@@ -2,7 +2,7 @@
 
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { EffectCreative } from "swiper/modules";
-import { useCallback, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { Autoplay } from "swiper/modules";
 import Image from "next/image";
 import "swiper/css";
@@ -74,4 +74,4 @@ const Slider: React.FC<Props> = ({ slides }) => {
   );
 };
 
-export default Slider;
+export default memo(Slider);

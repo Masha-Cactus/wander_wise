@@ -2,7 +2,8 @@
 import { IconButton } from "@/src/components/moleculs";
 import { Icons } from "@/src/components/atoms";
 import { Stars } from "@/src/components/organisms";
-import { IComment } from "@/src/types/Comment";
+import { IComment } from "@/src/services";
+import { memo } from "react";
 
 type Props = {
   review: IComment;
@@ -44,4 +45,4 @@ const Review: React.FC<Props> = ({ review }) => {
   );
 };
 
-export default Review;
+export default memo(Review);

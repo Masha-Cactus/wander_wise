@@ -2,6 +2,7 @@ import { PrimaryButton } from "@/src/components/moleculs";
 import { TripShortCard } from "@/src/components/organisms";
 // import { useUser } from "@/src/store/user";
 import { useUserCollections } from "@/src/queries/user.queries";
+import { memo } from "react";
 
 const RecentlyLikedSection: React.FC = () => {
   //   const { user } = useUser();
@@ -34,4 +35,4 @@ const RecentlyLikedSection: React.FC = () => {
   );
 };
 
-export default RecentlyLikedSection;
+export default memo(RecentlyLikedSection);

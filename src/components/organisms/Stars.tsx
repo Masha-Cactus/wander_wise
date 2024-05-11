@@ -1,5 +1,7 @@
 // 'use client';
 
+import { memo } from "react";
+
 // import { useState } from "react";
 
 type Props = {
@@ -35,4 +37,4 @@ const Stars: React.FC<Props> = ({ stars, onClick }) => {
   );
 };
 
-export default Stars;
+export default memo(Stars);

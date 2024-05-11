@@ -9,14 +9,15 @@ export { default as Slider } from "./Slider";
 export { default as TripShortCard } from "./Trips/TripShortCard";
 export { default as TripMediumCard } from "./Trips/TripMediumCard";
 export { default as TripLongCard } from "./Trips/TripLongCard";
+export { default as ReviewCard } from "./ReviewCard";
 
 export { default as SignInModal } from "./Modals/SignInModal";
 export { default as SignUpModal } from "./Modals/SignUpModal";
 export { default as RestorePasswordModal } from "./Modals/RestorePasswordModal";
 export { default as ConfirmEmailModal } from "./Modals/ConfirmEmailModal";
+export { default as ModalSkeleton } from "./Modals/ModalSkeleton";
 
 export { default as SignUp } from "./Modals/SignUp";
-export { default as ModalSkeleton } from "./Modals/ModalSkeleton";
 
 export { default as SignInForm } from "./Forms/SignInForm";
 export { default as FilterForm } from "./Forms/FilterForm";
@@ -25,3 +26,4 @@ export { default as RestorePasswordForm } from "./Forms/RestorePasswordForm";
 
 export { default as RecentlyLikedSection } from "./Sections/RecentlyLikedSection";
 export { default as RecentlyReviewsSection } from "./Sections/RecentlyReviewsSection";
+export { default as ProfileInfoSection } from "./Sections/ProfileInfoSection";

@@ -2,6 +2,7 @@
 
 import { TripMediumCard } from "@/src/components/organisms";
 import { ICard } from "@/src/services";
+import { memo } from "react";
 
 type Props = {
   cards: ICard[];
@@ -20,4 +21,4 @@ const Gallery: React.FC<Props> = ({ cards }) => {
   );
 };
 
-export default Gallery;
+export default memo(Gallery);

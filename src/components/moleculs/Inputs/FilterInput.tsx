@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 type Props = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string;
@@ -22,4 +24,4 @@ const FilterInput: React.FC<Props> = ({
   );
 };
 
-export default FilterInput;
+export default memo(FilterInput);

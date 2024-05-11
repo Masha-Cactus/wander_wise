@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import Radar from "radar-sdk-js";
 import { FilterInput } from "@/src/components/moleculs";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
@@ -78,4 +78,4 @@ const LocationInput: React.FC<Props> = ({ onChange }) => {
   );
 };
 
-export default LocationInput;
+export default memo(LocationInput);

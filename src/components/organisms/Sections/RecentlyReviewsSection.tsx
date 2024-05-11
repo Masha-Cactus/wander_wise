@@ -1,5 +1,7 @@
-import { PrimaryButton, Review } from "@/src/components/moleculs";
+import { PrimaryButton } from "@/src/components/moleculs";
 import { useUser } from "@/src/store/user";
+import { ReviewCard } from "@/src/components/organisms";
+import { memo } from "react";
 
 const RecentlyLikedSection: React.FC = () => {
   const { user } = useUser();
@@ -15,7 +17,7 @@ const RecentlyLikedSection: React.FC = () => {
       {user && user.reviews.length > 0 ? (
         <div className="">
           {user.reviews.map((review) => (
-            <Review key={review.reviewID} review={review} />
+            <ReviewCard key={review.reviewID} review={review} />
           ))}
         </div>
       ) : (
@@ -31,4 +33,4 @@ const RecentlyLikedSection: React.FC = () => {
   );
 };
 
-export default RecentlyLikedSection;
+export default memo(RecentlyLikedSection);

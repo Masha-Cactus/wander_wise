@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { memo } from "react";
 
 type Props = {
   path: string;
@@ -15,4 +16,4 @@ const IconLink: React.FC<Props> = ({path, icon, text }) => {
   );
 };
 
-export default IconLink;
+export default memo(IconLink);

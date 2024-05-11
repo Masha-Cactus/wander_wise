@@ -11,12 +11,10 @@ export { default as CheckboxInput } from "./Inputs/CheckboxInput";
 export { default as TextInput } from "./Inputs/TextInput";
 export { default as ImageInput } from "./Inputs/ImageInput";
 export { default as LocationInput } from "./Inputs/LocationInput";
-export { default as LoginInput } from "./Inputs/LoginInput";
 export { default as FilterInput } from "./Inputs/FilterInput";
+export { default as TextAreaInput } from "./Inputs/TextAreaInput";
 export { default as PasswordInput } from "./Inputs/PasswordInput";
 
 export { default as IconLink } from "./IconLink";
-export { default as Review } from "./Review";
 export { default as ImagesBlock } from "./ImagesBlock";
-export { default as ProfileInfo } from "./ProfileInfo";
 export { default as LoadedContentStateController } from "./LoadedContentStateController";

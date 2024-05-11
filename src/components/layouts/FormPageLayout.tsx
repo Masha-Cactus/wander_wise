@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { BackButton } from "../moleculs";
 
 const FormPageLayout = () => {
@@ -12,4 +13,4 @@ const FormPageLayout = () => {
   );
 };
 
-export default FormPageLayout;
+export default memo(FormPageLayout);

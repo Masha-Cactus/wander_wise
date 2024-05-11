@@ -2,7 +2,7 @@
 import React, { memo } from "react";
 
 export interface LoaderProps {
-  classes: string;
+  classes?: string;
 }
 
 const Loader: React.FC<LoaderProps> = ({ classes }) => {

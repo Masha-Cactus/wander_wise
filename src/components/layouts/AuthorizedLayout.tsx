@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, memo, useEffect } from "react";
 // import { useGetCurrentUser } from "@/app/query";
 import { useUser } from "@/src/store/user";
 import { LoadedContentStateController } from "@/src/components/moleculs";
@@ -52,4 +52,4 @@ const AuthorizedLayout = ({ children }: PropsWithChildren) => {
   );
 };
 
-export default AuthorizedLayout;
+export default memo(AuthorizedLayout);

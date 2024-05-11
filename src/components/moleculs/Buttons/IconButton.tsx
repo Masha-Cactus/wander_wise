@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 type Props = {
   icon: React.ReactNode;
   onClick?: () => void;
@@ -14,4 +16,4 @@ const IconButton: React.FC<Props> = ({ icon, onClick, text, classes }) => {
   );
 };
 
-export default IconButton;
+export default memo(IconButton);
