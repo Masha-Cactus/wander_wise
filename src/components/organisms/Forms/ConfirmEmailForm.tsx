@@ -60,7 +60,7 @@ const ConfirmEmailForm = () => {
         errorText={errors.confirmationCode?.message}
         disabled={isPending}
       />
-      <PrimaryButton text="Confirm" onClick={() => {}} />
+      <PrimaryButton type ="submit" text="Confirm" disabled={isPending}/>
       {isError && <FormErrorText errorText={errorMessage} />}
     </form>
   );
