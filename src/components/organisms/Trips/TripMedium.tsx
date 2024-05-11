@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Divider, Icons} from "@/src/components/atoms";
-import { IconButton, PrimaryBtn } from "@/src/components/moleculs/";
+import { IconButton, PrimaryButton } from "@/src/components/moleculs/";
 import { ICard } from "@/src/types/Card";
 import { useSaveCard } from "@/src/queries/card.queries";
 
@@ -56,7 +56,7 @@ const TripMedium: React.FC<Props> = ({ card }) => {
         <p className="text-base font-regular">{card.whereIs}</p>
       </Link>
 
-      <PrimaryBtn text="Save" onClick={() => saveCard(card.id)} />
+      <PrimaryButton text="Save" onClick={() => saveCard(card.id)} />
     </article>
   );
 };

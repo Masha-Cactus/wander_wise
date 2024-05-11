@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ISignIn } from "@/src/services";
 import { signInSchema } from "@/src/validation";
 import {
-  PrimaryBtn,
+  PrimaryButton,
   TextInput,
 } from "@/src/components/moleculs";
 import { useSignIn } from "@/src/queries";
@@ -72,7 +72,7 @@ const SignInForm = () => {
 
       {isError && <FormErrorText errorText={errorMassage} />}
 
-      <PrimaryBtn text="Sign In" classes="" />
+      <PrimaryButton text="Sign In" classes="" />
     </form>
   );
 };

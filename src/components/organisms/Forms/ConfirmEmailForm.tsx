@@ -4,7 +4,7 @@ import { useConfirmEmail } from "@/src/queries/auth.queries";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup';
-import { PrimaryBtn } from "@/src/components/moleculs/";
+import { PrimaryButton } from "@/src/components/moleculs/";
 import { useState } from "react";
 import { FormErrorText } from "../../atoms";
 import TextInput from "../../moleculs/Inputs/TextInput";
@@ -60,7 +60,7 @@ const ConfirmEmailForm = () => {
         errorText={errors.confirmationCode?.message}
         disabled={isPending}
       />
-      <PrimaryBtn text="Confirm" onClick={() => {}} />
+      <PrimaryButton text="Confirm" onClick={() => {}} />
       {isError && <FormErrorText errorText={errorMessage} />}
     </form>
   );

@@ -1,6 +1,6 @@
 import { IMAGES_SLIDES } from "@/src/lib/constants";
-import PrimaryBtn from "../moleculs/Buttons/PrimaryBtn";
-import Slider from "../organisms/Slider";
+import { PrimaryButton }from "@/src/components/moleculs";
+import { Slider } from "@/src/components/organisms";
 import { memo } from "react";
 
 type Props = {};
@@ -26,10 +26,9 @@ const HomePage: React.FC<Props> = ({}) => {
         <p className="text-center text-3xl inter max-w-5xl">{`Your AI buddy for thrilling journeys, powered by cutting-edge artificial intelligence technology and personalized recommendations.`}</p>
       </div>
 
-      <PrimaryBtn text="Let's start" path="/trips" classes="h-16 w-1/3" />
+      <PrimaryButton text="Let's start" path="/trips" classes="h-16 w-1/3" />
 
       <div className=""></div>
-
     </main>
   );
 };

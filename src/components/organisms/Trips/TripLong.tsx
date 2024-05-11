@@ -3,7 +3,7 @@ import { Divider, Icons } from "@/src/components/atoms";
 import {
   ImagesBlock,
   IconButton,
-  PrimaryBtn,
+  PrimaryButton,
 } from "@/src/components/moleculs/";
 import { ICard } from "@/src/types/Card";
 
@@ -36,7 +36,7 @@ const TripLong: React.FC<Props> = ({ card }) => {
             <Tab descriptions={descriptions} />
           </div>
 
-          <PrimaryBtn text="Save" onClick={() => {}} classes="mt-6" />
+          <PrimaryButton text="Save" onClick={() => {}} classes="mt-6" />
         </div>
 
         <div className="w-full h-full col-span-7">

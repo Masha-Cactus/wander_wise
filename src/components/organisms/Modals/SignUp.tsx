@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { PWD_REGEX } from "@/src/lib/constants";
 import { validateForm } from "@/src/lib/validateForm";
-import { PrimaryBtn, LoginInput } from "@/src/components/moleculs/";
+import { PrimaryButton, LoginInput } from "@/src/components/moleculs/";
 import { useSignUp } from "@/src/queries/auth.queries";
 
 interface FormData {
@@ -110,7 +110,7 @@ const SignUp: React.FC<Props> = ({ setShow }) => {
           />
         ))}
 
-        <PrimaryBtn text="Sign Up" classes="" onClick={() => {}} />
+        <PrimaryButton text="Sign Up" classes="" onClick={() => {}} />
       </form>
     </div>
   );

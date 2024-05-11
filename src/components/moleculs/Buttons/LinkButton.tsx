@@ -7,7 +7,7 @@ interface LinkBtnProps {
   classes?: string;
 }
 
-const LinkBtn: React.FC<LinkBtnProps> = ({
+const LinkButton: React.FC<LinkBtnProps> = ({
   path,
   text,
   classes,
@@ -19,4 +19,4 @@ const LinkBtn: React.FC<LinkBtnProps> = ({
   );
 };
 
-export default memo(LinkBtn);
+export default memo(LinkButton);

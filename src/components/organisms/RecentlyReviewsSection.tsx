@@ -1,4 +1,4 @@
-import { PrimaryBtn, Review } from "@/src/components/moleculs";
+import { PrimaryButton, Review } from "@/src/components/moleculs";
 import { useUser } from "@/src/store/user";
 
 const RecentlyLikedSection: React.FC = () => {
@@ -24,7 +24,7 @@ const RecentlyLikedSection: React.FC = () => {
             You don&apos;t yet have cards where you left reviews. Wanna find
             some?
           </p>
-          <PrimaryBtn text="Explore" onClick={() => {}} classes="w-1/6" />
+          <PrimaryButton text="Explore" onClick={() => {}} classes="w-1/6" />
         </div>
       )}
     </div>

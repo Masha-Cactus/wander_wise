@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { FormErrorText } from '../../atoms';
-import { PrimaryBtn } from '../../moleculs';
+import { PrimaryButton } from '../../moleculs';
 import TextInput from '../../moleculs/Inputs/TextInput';
 
 const validationSchema = yup
@@ -59,7 +59,7 @@ const RestorePasswordForm = () => {
         disabled={isPending}
       />
 
-      <PrimaryBtn text="Continue" onClick={() => {}} />
+      <PrimaryButton text="Continue" onClick={() => {}} />
 
       {isError && <FormErrorText errorText={errorMessage} />}
     </form>

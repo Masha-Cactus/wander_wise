@@ -1,4 +1,4 @@
-import { PrimaryBtn } from "../moleculs";
+import { PrimaryButton } from "../moleculs";
 import TripShort from "./Trips/TripShort";
 // import { useUser } from "@/src/store/user";
 import { useUserCollections } from "@/src/queries/user.queries";
@@ -26,7 +26,7 @@ const RecentlyLikedSection: React.FC = () => {
           <p className="text-xl font-normal text-gray80">
             You don&apos;t have any liked cards yet. Wanna find some?
           </p>
-          <PrimaryBtn text="Explore" onClick={() => {}} classes="w-1/6" />
+          <PrimaryButton text="Explore" onClick={() => {}} classes="w-1/6" />
         </div>
       )}
     </div>

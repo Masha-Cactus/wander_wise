@@ -3,7 +3,7 @@
 import { useUser } from "@/src/store/user";
 import { useRouter } from "next/navigation";
 import { Divider } from "../atoms";
-import { BackBtn, PrimaryBtn } from "../moleculs";
+import { BackButton, PrimaryButton } from "../moleculs";
 import ProfileEditForm from "../organisms/Forms/ProfileEditForm";
 import SocialLinkForm from "../organisms/Forms/SocialLinkForm";
 
@@ -14,7 +14,7 @@ const ProfileEditPage = () => {
   return (
     <section className="h-full bg-gray10 p-10 flex flex-col 
     gap-8 overflow-scroll">
-      <BackBtn />
+      <BackButton />
       <article className=" w-1/3 self-center flex flex-col gap-6 items-center 
       bg-white px-10 py-12 rounded-3xl">
         <h3 className="self-start font-display text-2xl 
@@ -31,7 +31,7 @@ const ProfileEditPage = () => {
               <p className="text-gray70">{user?.email}</p>
             </div>
             <div className="w-32">
-              <PrimaryBtn 
+              <PrimaryButton 
                 text="Change" 
                 onClick={() => push('/profile/edit/email')} 
               />
@@ -44,7 +44,7 @@ const ProfileEditPage = () => {
               <p className="text-gray70">********</p>
             </div>
             <div className="w-32">
-              <PrimaryBtn 
+              <PrimaryButton 
                 text="Change" 
                 onClick={() => push('/profile/edit/password')} 
               />
