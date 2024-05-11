@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 "use client";
 
 import { useUser } from "@/src/store/user";
@@ -5,14 +6,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { Divider } from "@/src/components/atoms";
 import { useState } from "react";
-import { MetaForm, ModalSkeleton } from "@/src/components/organisms";
+import {
+  ConfirmEmailModal,
+  RestorePasswordModal,
+  SignInModal,
+  SignUpModal,
+} from "@/src/components/organisms";
 
 const Header: React.FC = () => {
   const { user } = useUser();
-
-  const [showModal, setShowModal] = useState<
-  null | "login" | "signup" | "remind" | "confirm"
-  >(null);
+  const [isShowSignInModal, setIsShowSignInModal] = useState(false);
+  const [isShowSignUpModal, setIsShowSignUpModal] = useState(false);
+  const [isShowConfirmEmailModal, setIsShowConfirmEmailModal] = useState(false);
+  const [isShowRestorePasswordModal, setIsShowRestorePasswordModal] = useState(false);
 
   return (
     <div
@@ -58,24 +64,45 @@ const Header: React.FC = () => {
         <div className="flex gap-8">
           <button
             className="text-black flex justify-center items-center"
-            onClick={() => setShowModal("login")}
+            onClick={() => setIsShowSignInModal(true)}
           >
             Login
           </button>
           <button
             className="w-36 h-14 bg-black text-white flex 
             justify-center items-center rounded-full"
-            onClick={() => setShowModal("signup")}
+            onClick={() => setIsShowSignUpModal(true)}
           >
             Sign Up
           </button>
         </div>
       )}
 
-      {showModal && (
-        <ModalSkeleton setShow={setShowModal}>
-          <MetaForm modal={showModal} setShow={setShowModal} />
-        </ModalSkeleton>
+      {isShowSignInModal && (
+        <SignInModal
+          onClose={() => setIsShowSignInModal(false)}
+          onOpenSignUp={() => setIsShowSignUpModal(true)}
+          onOpenRestorePassword={() => setIsShowRestorePasswordModal(true)}
+        />
+      )}
+
+      {isShowSignUpModal && (
+        <SignUpModal
+          onClose={() => setIsShowSignUpModal(false)}
+          onOpenSignIn={() => setIsShowSignInModal(true)}
+        />
+      )}
+
+      {isShowRestorePasswordModal && (
+        <RestorePasswordModal 
+          onClose={() => setIsShowRestorePasswordModal(false)}
+          onOpenSignIn={() => setIsShowSignInModal(true)}
+          onOpenSignUp={() => setIsShowSignUpModal(true)}
+        />
+      )}
+
+      {isShowConfirmEmailModal && (
+        <ConfirmEmailModal onClose={() => setIsShowConfirmEmailModal(false)}/>
       )}
     </div>
   );

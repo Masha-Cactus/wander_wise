@@ -22,7 +22,7 @@ const TextInput: React.FC<TextInputProps> = ({
 }) => {
   return (
     <div className="relative flex flex-col w-full">
-      <label className="text-black relative block uppercase 
+      <label className="text-black relative block
           flex flex-col w-full items-start">
         {label ? label : name}
         <input
@@ -31,10 +31,10 @@ const TextInput: React.FC<TextInputProps> = ({
           {...register(name)}
           disabled={disabled}
           placeholder={placeholder ? placeholder : `Enter your ${name}`}
-          className={classNames(`border-b border-black bg-white
+          className={classNames(`border border-black bg-white
           text-black hover:bg-gray-50 flex h-10 w-full items-center
-          justify-center space-x-3 text-sm shadow-sm
-          transition-all duration-75 focus:outline-none`, {
+          justify-center space-x-3 text-sm shadow-sm rounded-md
+          transition-all duration-75 focus:outline-none px-3`, {
             'border-red-200 bg-red-50': errorText,
           })}
         />

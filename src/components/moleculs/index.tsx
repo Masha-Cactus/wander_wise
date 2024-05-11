@@ -3,6 +3,8 @@ export { default as BackBtn } from "./Buttons/BackBtn";
 export { default as PrimaryBtn } from "./Buttons/PrimaryBtn";
 export { default as FilterButton } from "./Buttons/FilterButton";
 export { default as RoundBtn } from "./Buttons/RoundBtn";
+export { default as LinkBtn } from "./Buttons/LinkBtn";
+export { default as UnstyledButton } from "./Buttons/UnstyledButton";
 
 export { default as CheckboxInput } from "./Inputs/CheckboxInput";
 export { default as TextInput } from "./Inputs/TextInput";

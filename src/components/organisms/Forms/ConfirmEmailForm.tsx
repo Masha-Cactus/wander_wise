@@ -18,7 +18,7 @@ const formSchema = yup
 
 interface FormData extends yup.InferType<typeof formSchema> {};
 
-const ConfirmEmail = () => {
+const ConfirmEmailForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const { 
     register, 
@@ -66,4 +66,4 @@ const ConfirmEmail = () => {
   );
 };
 
-export default ConfirmEmail;
+export default ConfirmEmailForm;
