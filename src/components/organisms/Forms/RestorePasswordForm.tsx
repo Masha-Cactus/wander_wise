@@ -59,7 +59,7 @@ const RestorePasswordForm = () => {
         disabled={isPending}
       />
 
-      <PrimaryButton text="Continue" onClick={() => {}} />
+      <PrimaryButton text="Continue" disabled={isPending} type='submit' />
 
       {isError && <FormErrorText errorText={errorMessage} />}
     </form>

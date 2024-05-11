@@ -1,11 +1,19 @@
 import { IMAGES_SLIDES } from "@/src/lib/constants";
-import { PrimaryButton }from "@/src/components/moleculs";
+import { PrimaryButton } from "@/src/components/moleculs";
 import { Slider } from "@/src/components/organisms";
 import { memo } from "react";
+import { useRouter } from "next/navigation";
 
 type Props = {};
 
-const HomePage: React.FC<Props> = ({}) => {
+const HomePage: React.FC<Props> = ({ }) => {
+  
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push("/trips");
+  };
+
   return (
     <main
       className="h-full text-white flex flex-col 
@@ -26,7 +34,12 @@ const HomePage: React.FC<Props> = ({}) => {
         <p className="text-center text-3xl inter max-w-5xl">{`Your AI buddy for thrilling journeys, powered by cutting-edge artificial intelligence technology and personalized recommendations.`}</p>
       </div>
 
-      <PrimaryButton text="Let's start" path="/trips" classes="h-16 w-1/3" />
+      <PrimaryButton
+        text="Let's start"
+        type="button"
+        classes="h-16 w-1/3"
+        onClick={handleClick}
+      />
 
       <div className=""></div>
     </main>

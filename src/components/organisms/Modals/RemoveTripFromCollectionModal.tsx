@@ -2,15 +2,16 @@ import { memo } from "react";
 import { ModalSkeleton } from "@/src/components/organisms";
 import { Heading, Text } from "@/src/components/atoms";
 import { RoundedButton } from "@/src/components/moleculs";
+import { ICard } from "@/src/services";
 
 interface RemoveTripFromCollectionModalProps {
-  trip: string;
+  trip: ICard;
   collectionName: string;
   onClose: () => void;
 }
 
 const RemoveTripFromCollectionModal: React.FC<
-  RemoveTripFromCollectionModalProps
+RemoveTripFromCollectionModalProps
 > = ({ trip, collectionName, onClose }) => {
   const handleRemoveTrip = () => {};
 

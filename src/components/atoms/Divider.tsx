@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { twMerge } from "tailwind-merge";
 
 const Divider = ({ classes }: { classes: string }) => {
@@ -6,4 +7,4 @@ const Divider = ({ classes }: { classes: string }) => {
   );
 };
 
-export default Divider;
+export default memo(Divider);

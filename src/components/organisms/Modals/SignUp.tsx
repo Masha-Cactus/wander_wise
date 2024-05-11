@@ -110,7 +110,7 @@ const SignUp: React.FC<Props> = ({ setShow }) => {
           />
         ))}
 
-        <PrimaryButton text="Sign Up" classes="" onClick={() => {}} />
+        <PrimaryButton text="Sign Up" type="submit" />
       </form>
     </div>
   );

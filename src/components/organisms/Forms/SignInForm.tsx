@@ -5,10 +5,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ISignIn } from "@/src/services";
 import { signInSchema } from "@/src/validation";
-import {
-  PrimaryButton,
-  TextInput,
-} from "@/src/components/moleculs";
+import { PrimaryButton, TextInput } from "@/src/components/moleculs";
 import { useSignIn } from "@/src/queries";
 import { trimObjectFields } from "@/src/lib/helpers";
 import FormErrorText from "../../atoms/FormErrorText";
@@ -44,13 +41,13 @@ const SignInForm = () => {
 
     mutate(trimmedUserData, {
       onError: handleError,
-      onSuccess: () => push('/profile'),
+      onSuccess: () => push("/profile"),
     });
   };
 
   return (
     <form
-      className="flex flex-col gap-4 h-full w-full" 
+      className="flex flex-col gap-4 h-full w-full"
       onSubmit={handleSubmit(onSubmit)}
     >
       <TextInput
@@ -72,7 +69,12 @@ const SignInForm = () => {
 
       {isError && <FormErrorText errorText={errorMassage} />}
 
-      <PrimaryButton text="Sign In" classes="" />
+      <PrimaryButton
+        text="Sign In"
+        classes=""
+        type="submit"
+        disabled={isPending}
+      />
     </form>
   );
 };

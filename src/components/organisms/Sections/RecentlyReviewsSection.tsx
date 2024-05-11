@@ -24,7 +24,7 @@ const RecentlyLikedSection: React.FC = () => {
             You don&apos;t yet have cards where you left reviews. Wanna find
             some?
           </p>
-          <PrimaryButton text="Explore" onClick={() => {}} classes="w-1/6" />
+          <PrimaryButton text="Explore" type="button" classes="w-1/6" />
         </div>
       )}
     </div>

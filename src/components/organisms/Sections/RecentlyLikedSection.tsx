@@ -27,7 +27,7 @@ const RecentlyLikedSection: React.FC = () => {
           <p className="text-xl font-normal text-gray80">
             You don&apos;t have any liked cards yet. Wanna find some?
           </p>
-          <PrimaryButton text="Explore" onClick={() => {}} classes="w-1/6" />
+          <PrimaryButton text="Explore" classes="w-1/6" type="button"/>
         </div>
       )}
     </div>
