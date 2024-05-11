@@ -1,10 +1,10 @@
-import { IComment } from "@/src/types/Comment";
-import { authClient } from "../../api/authClient";
+import { authClient } from "@/src/api";
 import { 
+  IComment,
   ICreateComment, 
   IReportComment, 
   IUpdateComment 
-} from "./comment.types";
+} from "@/src/services";
 
 class CommentService {
   private BASE_URL = '/comments';

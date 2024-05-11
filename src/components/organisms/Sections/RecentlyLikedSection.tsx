@@ -1,13 +1,15 @@
-import { PrimaryBtn } from "../moleculs";
-import TripShort from "./Trips/TripShort";
+import { PrimaryButton } from "@/src/components/moleculs";
+import { TripShortCard } from "@/src/components/organisms";
 // import { useUser } from "@/src/store/user";
-import { useUserCollections } from "@/src/queries/user.queries";
+import { useGetUserCollections } from "@/src/queries/user.queries";
+import { memo } from "react";
 
 const RecentlyLikedSection: React.FC = () => {
-//   const { user } = useUser();
-  const { data: collections } = useUserCollections();
-  const likedCards = collections?.find(collection => 
-    collection.name === 'Liked cards')?.cardWithoutDistanceDtos;
+  //   const { user } = useUser();
+  const { data: collections } = useGetUserCollections();
+  const likedCards = collections?.find(
+    (collection) => collection.name === "Liked cards"
+  )?.cards;
 
   return (
     <div
@@ -18,7 +20,7 @@ const RecentlyLikedSection: React.FC = () => {
       {likedCards && likedCards.length > 0 ? (
         <div className="">
           {likedCards.map((trip) => (
-            <TripShort key={trip.id} card={trip} />
+            <TripShortCard key={trip.id} card={trip} />
           ))}
         </div>
       ) : (
@@ -26,11 +28,11 @@ const RecentlyLikedSection: React.FC = () => {
           <p className="text-xl font-normal text-gray80">
             You don&apos;t have any liked cards yet. Wanna find some?
           </p>
-          <PrimaryBtn text="Explore" onClick={() => {}} classes="w-1/6" />
+          <PrimaryButton text="Explore" classes="w-1/6" type="button" />
         </div>
       )}
     </div>
   );
 };
 
-export default RecentlyLikedSection;
+export default memo(RecentlyLikedSection);

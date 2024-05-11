@@ -5,7 +5,7 @@ import { useUser } from "@/src/store/user";
 import Image from "next/image";
 import Link from "next/link";
 import { Divider } from "@/src/components/atoms";
-import { useState } from "react";
+import { memo, useState } from "react";
 import {
   ConfirmEmailModal,
   RestorePasswordModal,
@@ -108,4 +108,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default memo(Header);

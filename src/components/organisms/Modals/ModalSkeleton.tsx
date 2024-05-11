@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { memo } from "react";
 
 type Props = {
   children: React.ReactNode;
@@ -32,4 +32,4 @@ const ModalSkeleton: React.FC<Props> = ({ children, onClose }: Props) => {
   );
 };
 
-export default ModalSkeleton;
+export default memo(ModalSkeleton);

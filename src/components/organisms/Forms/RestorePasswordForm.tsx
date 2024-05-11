@@ -7,7 +7,7 @@ import { restorePasswordSchema } from '@/src/validation/restorePasswordSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormErrorText } from '../../atoms';
-import { PrimaryBtn } from '../../moleculs';
+import { PrimaryButton } from '../../moleculs';
 import TextInput from '../../moleculs/Inputs/TextInput';
 
 const RestorePasswordForm = () => {
@@ -53,7 +53,7 @@ const RestorePasswordForm = () => {
         disabled={isPending}
       />
 
-      <PrimaryBtn text="Continue" onClick={() => {}} />
+      <PrimaryButton text="Continue" disabled={isPending} type='submit' />
 
       {isError && <FormErrorText errorText={errorMessage} />}
     </form>

@@ -2,12 +2,13 @@
 
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { EffectCreative } from "swiper/modules";
-import { useCallback, useState } from "react";
+import { memo, useCallback, useState } from "react";
 import { Autoplay } from "swiper/modules";
 import Image from "next/image";
 import "swiper/css";
 
-import { RoundBtn } from "@/src/components/moleculs";
+import { IconButton } from "@/src/components/moleculs";
+import { Icons } from "@/src/components/atoms";
 
 type Props = {
   slides: string[];
@@ -57,15 +58,15 @@ const Slider: React.FC<Props> = ({ slides }) => {
         bottom-20 left-16
         flex gap-7"
         >
-          <RoundBtn
+          <IconButton
             onClick={handlePrevious}
-            direction="left"
-            classes="bg-white"
+            classes="h-11 w-11 rounded-full bg-white border-2"
+            icon={<Icons.arrowLeft color="black"/>}
           />
-          <RoundBtn
+          <IconButton
             onClick={handleNext}
-            direction="right"
-            classes="border-white border-2"
+            classes="h-11 w-11 rounded-full border-white border-2"
+            icon={<Icons.arrowRight />}
           />
         </div>
       </Swiper>
@@ -73,4 +74,4 @@ const Slider: React.FC<Props> = ({ slides }) => {
   );
 };
 
-export default Slider;
+export default memo(Slider);

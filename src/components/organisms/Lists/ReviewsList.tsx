@@ -1,8 +1,9 @@
 "use client";
 
-import { Review } from "@/src/components/moleculs";
+import { ReviewCard } from "@/src/components/organisms";
 import { Divider } from "@/src/components/atoms";
-import { IComment } from "@/src/types/Comment";
+import { IComment } from "@/src/services";
+import { memo } from "react";
 
 type Props = {
   rewiews: IComment[];
@@ -24,11 +25,11 @@ const ReviewsList: React.FC<Props> = ({ rewiews }) => {
 
       <div className="grid grid-cols-3 gap-4">
         {rewiews.map((review) => (
-          <Review review={review} key={review.id} />
+          <ReviewCard review={review} key={review.id} />
         ))}
       </div>
     </div>
   );
 };
 
-export default ReviewsList;
+export default memo(ReviewsList);

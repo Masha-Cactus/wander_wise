@@ -1,3 +1,16 @@
+export interface ResponseWithPagination<T> {
+  page: number;
+  size: number;
+  nextPageNumber: null | number;
+  previousPageNumber: null | number;
+  totalPages: number;
+  results: T[];
+}
+
+export interface StatusResponse {
+  status: string;
+}
+
 export enum TripTypes {
   active = 'Active',
   chill = 'Chill',

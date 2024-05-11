@@ -3,6 +3,8 @@
 import { Divider } from "@/src/components/atoms";
 import {
   CheckboxInput,
+  LocationInput,
+  RoundedButton,
   FilterButton,
 } from "@/src/components/moleculs";
 import { 
@@ -11,10 +13,9 @@ import {
   SpecialRequirements, 
   TravelDistance, 
   TripTypes, 
-} from "@/src/types/Filters";
-import LocationInput from "../../moleculs/Inputs/LocationInput";
+  ISearchCard,
+} from "@/src/services";
 import { Controller, useForm } from "react-hook-form";
-import { ISearchCard } from "@/src/services";
 import { searchCardsSchema } from "@/src/validation/searchCardsSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { trimObjectFields } from "@/src/lib/helpers";
@@ -225,18 +226,17 @@ const FilterForm: React.FC<Props> = ({setFilterParams}) => {
       )}
 
       <div className="flex gap-4 mx-10 my-8">
-        <button
+        <RoundedButton
+          text="Apply"
           type="submit"
-          className="bg-black rounded-full text-white p-4 px-8"
-        >
-          Apply
-        </button>
-        <button
+          classes="bg-black text-white p-4 px-8"
+        />
+        <RoundedButton
+          text="Clear"
+          type="reset"
+          classes="border-2 border-black rounded-full p-4 px-8"
           onClick={() => reset()}
-          className="border-2 border-black rounded-full p-4 px-8"
-        >
-          Clear
-        </button>
+        />
       </div>
     </form>
   );

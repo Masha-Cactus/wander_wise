@@ -5,7 +5,7 @@ import { Icons } from "@/src/components/atoms";
 
 type Props = {};
 
-const BackBtn: React.FC<Props> = ({}) => {
+const BackButton: React.FC<Props> = ({}) => {
   const router = useRouter();
   const back = () => router.back();
 
@@ -17,4 +17,4 @@ const BackBtn: React.FC<Props> = ({}) => {
   );
 };
 
-export default BackBtn;
+export default BackButton;

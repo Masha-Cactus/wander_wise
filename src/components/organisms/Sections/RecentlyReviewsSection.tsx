@@ -1,5 +1,7 @@
-import { PrimaryBtn, Review } from "@/src/components/moleculs";
+import { PrimaryButton } from "@/src/components/moleculs";
 import { useUser } from "@/src/store/user";
+import { ReviewCard } from "@/src/components/organisms";
+import { memo } from "react";
 
 const RecentlyLikedSection: React.FC = () => {
   const { user } = useUser();
@@ -15,7 +17,7 @@ const RecentlyLikedSection: React.FC = () => {
       {user && user.reviews.length > 0 ? (
         <div className="">
           {user.reviews.map((review) => (
-            <Review key={review.reviewID} review={review} />
+            <ReviewCard key={review.reviewID} review={review} />
           ))}
         </div>
       ) : (
@@ -24,11 +26,11 @@ const RecentlyLikedSection: React.FC = () => {
             You don&apos;t yet have cards where you left reviews. Wanna find
             some?
           </p>
-          <PrimaryBtn text="Explore" onClick={() => {}} classes="w-1/6" />
+          <PrimaryButton text="Explore" type="button" classes="w-1/6" />
         </div>
       )}
     </div>
   );
 };
 
-export default RecentlyLikedSection;
+export default memo(RecentlyLikedSection);

@@ -11,7 +11,7 @@ import { useUpdateUserInfo } from "@/src/queries";
 import TextInput from "../../moleculs/Inputs/TextInput";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/src/store/user";
-import TextArea from "../../moleculs/Inputs/TextArea";
+import TextArea from "../../moleculs/Inputs/TextAreaInput";
 import LocationInput from "../../moleculs/Inputs/LocationInput";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
 

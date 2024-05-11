@@ -1,24 +1,34 @@
+"use client";
+
 import { IMAGES_SLIDES } from "@/src/lib/constants";
-import PrimaryBtn from "../moleculs/Buttons/PrimaryBtn";
-import Slider from "../organisms/Slider";
+import { PrimaryButton } from "@/src/components/moleculs";
+import { Slider } from "@/src/components/organisms";
 import { memo } from "react";
+import { useRouter } from "next/navigation";
 
 type Props = {};
 
-const HomePage: React.FC<Props> = ({}) => {
+const HomePage: React.FC<Props> = ({ }) => {
+  
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push("/trips");
+  };
+
   return (
     <main
-      className="h-full text-white flex flex-col 
-    justify-center items-center relative gap-14"
+      className="text-white flex flex-col 
+    justify-center items-center relative gap-20 mx-10"
     >
       <Slider slides={IMAGES_SLIDES} />
 
       <div
         className="flex flex-col justify-center items-center
-        gap-12 z-10 mt-24"
+        gap-14 z-10 mt-24"
       >
         <h1
-          className="text-3xl font-bold maven 
+          className="text-9xl font-bold maven 
         text-8xl text-center font-maven"
         >
           Experience wonder with Wander Wise!
@@ -26,10 +36,14 @@ const HomePage: React.FC<Props> = ({}) => {
         <p className="text-center text-3xl inter max-w-5xl">{`Your AI buddy for thrilling journeys, powered by cutting-edge artificial intelligence technology and personalized recommendations.`}</p>
       </div>
 
-      <PrimaryBtn text="Let's start" path="/trips" classes="h-16 w-1/3" />
+      <PrimaryButton
+        text="Let's start"
+        type="button"
+        classes="h-16 w-1/3"
+        onClick={handleClick}
+      />
 
       <div className=""></div>
-
     </main>
   );
 };

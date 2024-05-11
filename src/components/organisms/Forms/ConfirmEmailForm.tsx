@@ -3,13 +3,11 @@
 import { useConfirmEmail } from "@/src/queries/auth.queries";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { PrimaryBtn } from "@/src/components/moleculs/";
+import { PrimaryButton } from "@/src/components/moleculs/";
 import { FormErrorText } from "../../atoms";
 import TextInput from "../../moleculs/Inputs/TextInput";
 import { confirmEmailSchema } from "@/src/validation/confirmEmailSchema";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
-
-
 
 interface FormData {
   confirmationCode: string,
@@ -59,7 +57,7 @@ const ConfirmEmailForm = () => {
         errorText={errors.confirmationCode?.message}
         disabled={isPending}
       />
-      <PrimaryBtn text="Confirm" onClick={() => {}} />
+      <PrimaryButton type="submit" text="Confirm" disabled={isPending}/>
       {isError && <FormErrorText errorText={errorMessage} />}
     </form>
   );

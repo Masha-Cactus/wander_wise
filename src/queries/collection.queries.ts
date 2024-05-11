@@ -6,7 +6,7 @@ import {
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
 
-export function useCollection(collectionId: number) {
+export function useGetCollection(collectionId: number) {
   return useQuery({
     queryKey: ['collection', {collectionId}],
     queryFn: () => collectionService.getCollection(collectionId),

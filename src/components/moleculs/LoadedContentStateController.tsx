@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, memo } from "react";
 
 import { EmptyStateText, ErrorText, Loader } from "@/src/components/atoms";
 
@@ -52,4 +52,4 @@ LoadedContentStateControllerProps
   return children;
 };
 
-export default LoadedContentStateController;
+export default memo(LoadedContentStateController);

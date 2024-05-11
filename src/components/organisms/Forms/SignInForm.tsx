@@ -5,14 +5,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ISignIn } from "@/src/services";
 import { signInSchema } from "@/src/validation";
-import {
-  PrimaryBtn,
-  TextInput,
-} from "@/src/components/moleculs";
+import { PrimaryButton, TextInput } from "@/src/components/moleculs";
 import { useSignIn } from "@/src/queries";
 import { trimObjectFields } from "@/src/lib/helpers";
-import FormErrorText from "../../atoms/FormErrorText";
-import PasswordInput from "../../moleculs/Inputs/PasswordInput";
+import { FormErrorText } from "@/src/components/atoms";
+import { PasswordInput } from "@/src/components/moleculs";
 import { useRouter } from "next/navigation";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
 
@@ -46,13 +43,13 @@ const SignInForm = () => {
 
     mutate(trimmedUserData, {
       onError: handleError,
-      onSuccess: () => push('/profile'),
+      onSuccess: () => push("/profile"),
     });
   };
 
   return (
     <form
-      className="flex flex-col gap-4 h-full w-full" 
+      className="flex flex-col gap-4 h-full w-full"
       onSubmit={handleSubmit(onSubmit)}
     >
       <TextInput
@@ -76,7 +73,12 @@ const SignInForm = () => {
 
       {isError && <FormErrorText errorText={errorMessage} />}
 
-      <PrimaryBtn text="Sign In" classes="" onClick={() => {}} />
+      <PrimaryButton
+        text="Sign In"
+        classes=""
+        type="submit"
+        disabled={isPending}
+      />
     </form>
   );
 };

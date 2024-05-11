@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { memo, useState } from "react";
 
 type Props = {
   images: string[];
@@ -38,4 +38,4 @@ const ImagesBlock: React.FC<Props> = ({ images }) => {
   );
 };
 
-export default ImagesBlock;
+export default memo(ImagesBlock);

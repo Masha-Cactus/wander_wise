@@ -12,7 +12,7 @@ const TripsPage: React.FC<Props> = ({}) => {
   = useState<ISearchCard>({} as ISearchCard);
   const [page, setPage] = useState(0);
 
-//   const { data: cards } = useSearchCards(page, filterParams);
+  //   const { data: cards } = useSearchCards(page, filterParams);
 
   return (
     <main className="grid grid-cols-12 grid-rows-3 text-black bg-gray10 gap-5">

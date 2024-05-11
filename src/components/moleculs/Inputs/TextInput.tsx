@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { memo } from "react";
 import { UseFormRegister } from "react-hook-form";
 
 interface TextInputProps {
@@ -44,4 +45,4 @@ const TextInput: React.FC<TextInputProps> = ({
   );
 };
 
-export default TextInput;
+export default memo(TextInput);

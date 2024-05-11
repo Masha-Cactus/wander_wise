@@ -1,6 +1,7 @@
 import { UseFormRegister } from "react-hook-form";
 import classNames from "classnames";
 import { Icons } from "@/src/components/atoms";
+import { memo } from "react";
 
 interface PasswordInputProps {
   name: string;
@@ -60,4 +61,4 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
   );
 };
 
-export default PasswordInput;
+export default memo(PasswordInput);

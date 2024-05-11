@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 type Props = {
   value: string;
   selected: boolean;
@@ -26,4 +28,4 @@ const FilterButton: React.FC<Props> = ({ value, selected, onClick }) => {
   );
 };
 
-export default FilterButton;
+export default memo(FilterButton);

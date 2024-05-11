@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { memo } from "react";
 import { UseFormRegister } from "react-hook-form";
 
 interface TextareaProps {
@@ -10,7 +11,7 @@ interface TextareaProps {
   label?: string,
 }
 
-const TextArea: React.FC<TextareaProps> = ({
+const TextAreaInput: React.FC<TextareaProps> = ({
   name, register, errorText, disabled, placeholder, label
 }) => {
   return (
@@ -36,4 +37,4 @@ const TextArea: React.FC<TextareaProps> = ({
   );
 };
 
-export default TextArea;
+export default memo(TextAreaInput);

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useRef } from "react";
+import { ChangeEvent, memo, useRef } from "react";
 import {
   FieldPath,
   FieldValues,
@@ -89,4 +89,4 @@ const ImageInput = <T extends FieldValues>({
   );
 };
 
-export default ImageInput;
+export default memo(ImageInput);

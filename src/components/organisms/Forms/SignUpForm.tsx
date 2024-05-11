@@ -6,13 +6,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ISignUp } from "@/src/services";
 import { signUpSchema } from "@/src/validation";
 import {
-  PrimaryBtn,
+  PrimaryButton,
   TextInput,
 } from "@/src/components/moleculs";
 import { useSignUp } from "@/src/queries";
 import { trimObjectFields } from "@/src/lib/helpers";
-import FormErrorText from "../../atoms/FormErrorText";
-import PasswordInput from "../../moleculs/Inputs/PasswordInput";
+import { FormErrorText } from "@/src/components/atoms";
+import { PasswordInput } from "@/src/components/moleculs";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
 
 const SignUpForm = () => {
@@ -86,7 +86,12 @@ const SignUpForm = () => {
 
       {isError && <FormErrorText errorText={errorMessage} />}
 
-      <PrimaryBtn text="Create account" classes="" onClick={() => {}} />
+      <PrimaryButton
+        text="Create Account"
+        classes=""
+        type="submit"
+        disabled={isPending}
+      />
     </form>
   );
 };

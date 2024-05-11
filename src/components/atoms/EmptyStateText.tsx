@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 interface EmptyStateTextProps {
   text: string;
 }
@@ -14,4 +16,4 @@ const EmptyStateText: React.FC<EmptyStateTextProps> = ({
   );
 };
 
-export default EmptyStateText;
+export default memo(EmptyStateText);

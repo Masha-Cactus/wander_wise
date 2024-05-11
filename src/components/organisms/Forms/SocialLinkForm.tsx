@@ -7,8 +7,8 @@ import { useUser } from "@/src/store/user";
 import { socialLinkSchema } from "@/src/validation/socialLinkSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { FormErrorText } from "../../atoms";
-import TextInput from "../../moleculs/Inputs/TextInput";
+import { FormErrorText } from "@/src/components/atoms";
+import { TextInput } from "@/src/components/moleculs";
 
 type Props = {
   name: string,

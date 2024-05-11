@@ -3,15 +3,16 @@ import { Divider, Icons } from "@/src/components/atoms";
 import {
   ImagesBlock,
   IconButton,
-  PrimaryBtn,
+  PrimaryButton,
 } from "@/src/components/moleculs/";
-import { ICard } from "@/src/types/Card";
+import { ICard } from "@/src/services";
+import { memo } from "react";
 
 type Props = {
   card: ICard;
 };
 
-const TripLong: React.FC<Props> = ({ card }) => {
+const TripLongCard: React.FC<Props> = ({ card }) => {
   const descriptions = {
     description: card.description,
     "why this place?": card.whyThisPlace.join(' '),
@@ -36,7 +37,7 @@ const TripLong: React.FC<Props> = ({ card }) => {
             <Tab descriptions={descriptions} />
           </div>
 
-          <PrimaryBtn text="Save" onClick={() => {}} classes="mt-6" />
+          <PrimaryButton text="Save" onClick={() => {}} classes="mt-6" />
         </div>
 
         <div className="w-full h-full col-span-7">
@@ -81,4 +82,4 @@ const TripLong: React.FC<Props> = ({ card }) => {
   );
 };
 
-export default TripLong;
+export default memo(TripLongCard);

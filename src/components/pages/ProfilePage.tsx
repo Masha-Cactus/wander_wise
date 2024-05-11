@@ -1,4 +1,6 @@
-import { ProfileInfo } from "@/src/components/moleculs";
+"use client";
+
+import { ProfileInfoSection } from "@/src/components/organisms";
 import {
   RecentlyLikedSection,
   RecentlyReviewsSection,
@@ -12,7 +14,7 @@ const ProfilePage: React.FC = () => {
     bg-gray10 grid grid-cols-12 grid-rows-auto h-full"
     >
       <div className="col-span-4 row-span-all">
-        <ProfileInfo />
+        <ProfileInfoSection />
       </div>
 
       <div className="col-span-8 flex flex-col gap-6">

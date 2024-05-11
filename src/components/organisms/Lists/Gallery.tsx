@@ -1,7 +1,8 @@
 "use client";
 
-import { TripMedium } from "@/src/components/organisms";
-import { ICard } from "@/src/types/Card";
+import { TripMediumCard } from "@/src/components/organisms";
+import { ICard } from "@/src/services";
+import { memo } from "react";
 
 type Props = {
   cards: ICard[];
@@ -14,10 +15,10 @@ const Gallery: React.FC<Props> = ({ cards }) => {
     col-start-2 col-span-3 row-start-2"
     >
       {cards.map((card) => (
-        <TripMedium key={card.id} card={card} />
+        <TripMediumCard key={card.id} card={card} />
       ))}
     </section>
   );
 };
 
-export default Gallery;
+export default memo(Gallery);

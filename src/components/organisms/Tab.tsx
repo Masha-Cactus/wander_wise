@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Divider } from "@/src/components/atoms";
 import { twMerge } from "tailwind-merge";
 
@@ -41,4 +41,4 @@ const Tab: React.FC<Props> = ({ descriptions }) => {
   );
 };
 
-export default Tab;
+export default memo(Tab);
