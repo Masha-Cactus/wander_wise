@@ -7,14 +7,11 @@ import {
   TripTypesType,
 } from "@/src/services";
 
-export interface IShortCard {
+export interface ICard {
   id: number;
   name: string;
   author: string;
   tripTypes: TripTypesType[];
-}
-
-export interface ICard extends IShortCard {
   whereIs: string;
   description: string;
   whyThisPlace: string[];

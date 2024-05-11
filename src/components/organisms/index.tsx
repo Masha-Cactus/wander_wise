@@ -11,11 +11,16 @@ export { default as TripMediumCard } from "./Trips/TripMediumCard";
 export { default as TripLongCard } from "./Trips/TripLongCard";
 export { default as ReviewCard } from "./ReviewCard";
 
+export { default as ModalSkeleton } from "./Modals/ModalSkeleton";
 export { default as SignInModal } from "./Modals/SignInModal";
 export { default as SignUpModal } from "./Modals/SignUpModal";
 export { default as RestorePasswordModal } from "./Modals/RestorePasswordModal";
 export { default as ConfirmEmailModal } from "./Modals/ConfirmEmailModal";
-export { default as ModalSkeleton } from "./Modals/ModalSkeleton";
+export { default as ChangeUserEmailModal } from "./Modals/ChangeUserEmailModal";
+export { default as ChangeUserPasswordModal } from "./Modals/ChangeUserPasswordModal";
+export { default as CreateReportModal } from "./Modals/CreateReportModal";
+export { default as CreateReviewModal } from "./Modals/CreateReviewModal";
+export { default as DeleteReviewModal } from "./Modals/DeleteReviewModal";
 
 export { default as SignUp } from "./Modals/SignUp";
 

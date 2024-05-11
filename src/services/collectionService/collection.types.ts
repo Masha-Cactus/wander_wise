@@ -1,4 +1,4 @@
-import { IShortCard } from "../cardService/card.types";
+import { ICard } from "../cardService/card.types";
 
 export interface ICollection {
   id: number,
@@ -6,7 +6,7 @@ export interface ICollection {
   name: string,
   imageLink: string,
   isPublic: boolean,
-  cardWithoutDistanceDtos: IShortCard[],
+  cards: ICard[],
 }
 export interface ICreateCollection {
   userId: number,

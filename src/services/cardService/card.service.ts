@@ -4,7 +4,6 @@ import {
   ICard,
   ICreateCard,
   IReportCard,
-  IShortCard,
 } from "./card.types";
 
 class CardService {
@@ -23,7 +22,7 @@ class CardService {
   }
 
   updateCard({ cardId, data }: { cardId: number; data: ICreateCard }) {
-    return authClient.put<never, IShortCard>(
+    return authClient.put<never, ICard>(
       `${this.BASE_URL}/update/${cardId}`,
       data
     );

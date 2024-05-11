@@ -1,6 +1,6 @@
-import { IComment } from "@/src/types/Comment";
 import { authClient } from "@/src/api";
 import { 
+  IComment,
   ICreateComment, 
   IReportComment, 
   IUpdateComment 
