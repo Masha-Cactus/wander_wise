@@ -2,7 +2,7 @@ import { PropsWithChildren, memo, useEffect } from "react";
 // import { useGetCurrentUser } from "@/app/query";
 import { useUser } from "@/src/store/user";
 import { LoadedContentStateController } from "@/src/components/moleculs";
-import { useUserProfile } from "@/src/queries/user.queries";
+import { useGetUserProfile } from "@/src/queries/user.queries";
 
 const AuthorizedLayout = ({ children }: PropsWithChildren) => {
   const {
@@ -23,7 +23,7 @@ const AuthorizedLayout = ({ children }: PropsWithChildren) => {
     isLoading: isLoadingCurrentUserData,
     isSuccess: isSuccessCurrentUserData,
     isError: isErrorWithCurrentUserData,
-  } = useUserProfile();
+  } = useGetUserProfile();
 
   useEffect(() => {
     if (isLoadingCurrentUserData !== isLoadingCurrentUser) {

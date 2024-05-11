@@ -18,17 +18,17 @@ const HomePage: React.FC<Props> = ({ }) => {
 
   return (
     <main
-      className="h-full text-white flex flex-col 
-    justify-center items-center relative gap-14"
+      className="text-white flex flex-col 
+    justify-center items-center relative gap-20 mx-10"
     >
       <Slider slides={IMAGES_SLIDES} />
 
       <div
         className="flex flex-col justify-center items-center
-        gap-12 z-10 mt-24"
+        gap-14 z-10 mt-24"
       >
         <h1
-          className="text-3xl font-bold maven 
+          className="text-9xl font-bold maven 
         text-8xl text-center font-maven"
         >
           Experience wonder with Wander Wise!

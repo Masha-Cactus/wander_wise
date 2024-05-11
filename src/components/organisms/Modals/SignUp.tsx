@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import { PWD_REGEX } from "@/src/lib/constants";
 import { validateForm } from "@/src/lib/validateForm";
-import { PrimaryButton, LoginInput } from "@/src/components/moleculs/";
+import { PrimaryButton } from "@/src/components/moleculs/";
 import { useSignUp } from "@/src/queries/auth.queries";
 
 interface FormData {
@@ -99,16 +99,16 @@ const SignUp: React.FC<Props> = ({ setShow }) => {
         className="flex flex-col gap-4 h-full w-full"
         onSubmit={(e) => handleSubmit(e)}
       >
-        {Object.keys(user).map((key) => (
-          <LoginInput
-            key={key}
-            name={key}
-            value={user[key as keyof FormData]}
-            setUser={setUser}
-            error={error}
-            user={user}
-          />
-        ))}
+        {/* {Object.keys(user).map((key) => (
+          // <TextInput
+          //   key={key}
+          //   name={key}
+          //   value={user[key as keyof FormData]}
+          //   setUser={setUser}
+          //   error={error}
+          //   user={user}
+          // />
+        ))} */}
 
         <PrimaryButton text="Sign Up" type="submit" />
       </form>
