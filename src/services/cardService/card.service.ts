@@ -1,11 +1,12 @@
-import { authClient, formDataClient } from "@/src/api";
-import {
-  IAddImages,
-  ICard,
-  ICreateCard,
-  IReportCard,
+import { formDataClient, authClient } from "@/src/api";
+import { 
+  ICard, 
+  IAddCardImages, 
+  ICreateCard, 
+  ISearchCard, 
   IUpdateCard,
-} from "./card.types";
+  IReportCard, 
+} from "@/src/services";
 
 class CardService {
   private BASE_URL = "/cards";
@@ -22,19 +23,23 @@ class CardService {
     return authClient.post<never, ICard>(this.BASE_URL, data);
   }
 
-  updateCard({ cardId, data }: IUpdateCard) {
-    return authClient.put<never, ICard>(
-      `${this.BASE_URL}/update/${cardId}`,
-      data
-    );
-  }
+  updateCard({id, ...data}: IUpdateCard) {
+    return authClient.put<never, ICard>(`${this.BASE_URL}/update/${id}`, data);
+  };
 
-  reportCard({ cardId, text }: IReportCard): Promise<void> {
-    return authClient.put<IReportCard, void>(
+  reportCard({ cardId, text }: IReportCard) {
+    return authClient.put(
       `${this.BASE_URL}/report/${cardId}`,
       { cardId, text }
     );
   }
+
+  addImages (data: IAddCardImages) {
+    return formDataClient.put<never, ICard>(
+      `${this.BASE_URL}/add-images/${data.id}`,
+      data,
+    );
+  };
 
   //currently on the server the method is put
   addToSaved(cardId: number) {
@@ -42,26 +47,29 @@ class CardService {
   }
 
   //currently on the server the method is put
-  removeFromSaved(cardId: number): Promise<void> {
+  removeFromSaved(cardId: number) {
     return authClient.get(`${this.BASE_URL}/remove-from-saved/${cardId}`);
   }
 
   //currently on the server the method is put
-  likeCard(cardId: number): Promise<void> {
+  likeCard(cardId: number) {
     return authClient.get(`${this.BASE_URL}/post-like/${cardId}`);
   }
 
   //currently on the server the method is put
-  unlikeCard(cardId: number): Promise<void> {
+  unlikeCard(cardId: number) {
     return authClient.get(`${this.BASE_URL}/remove-like/${cardId}`);
   }
 
-  deleteCard(cardId: number) {
-    return authClient.delete(`${this.BASE_URL}/${cardId}`);
-  }
+  deleteCard(id: number) {
+    return authClient.delete(`${this.BASE_URL}/${id}`);
+  };
 
-  addImages({cardId, images}: IAddImages): Promise<ICard> {
-    return formDataClient.put<IAddImages, ICard>(`${this.BASE_URL}/add-images/${cardId}`, images);
+  searchCards(page: number, data: ISearchCard) {
+    return authClient.post<never, ICard[]>(
+      `${this.BASE_URL}/search?page=${page}&size=8&sort=asc`, 
+      data,
+    );
   }
 }
 

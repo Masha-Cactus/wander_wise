@@ -1,7 +1,14 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { 
+  keepPreviousData, 
+  useMutation, 
+  useQuery, 
+  useQueryClient 
+} from "@tanstack/react-query";
 import {
   ICreateCard,
   IUpdateCard,
+  IAddCardImages,
+  ISearchCard,
   cardService,
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
@@ -42,6 +49,19 @@ export function useUpdateCard() {
           queryKey: ["card-details", { cardId: id }],
         }),
       ]);
+    },
+  });
+}
+
+export function useAddCardImages() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: IAddCardImages) => cardService.addImages(data),
+    onSuccess: async ({id}) => {
+      await queryClient.invalidateQueries({
+        queryKey: ["card-details", { cardId: id }],
+      });
     },
   });
 }
@@ -123,5 +143,13 @@ export function useRemoveCardFromSaved() {
         queryKey: ["user-collections", { userId: user?.id }],
       });
     },
+  });
+}
+
+export function useSearchCards(page: number, filterParams: ISearchCard) {
+  return useQuery({
+    queryKey: ['cards', page, filterParams],
+    queryFn: () => cardService.searchCards(page, filterParams),
+    placeholderData: keepPreviousData,
   });
 }

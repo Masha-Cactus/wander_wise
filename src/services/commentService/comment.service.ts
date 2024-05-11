@@ -4,7 +4,7 @@ import {
   ICreateComment, 
   IReportComment, 
   IUpdateComment 
-} from "./comment.types";
+} from "@/src/services";
 
 class CommentService {
   private BASE_URL = '/comments';

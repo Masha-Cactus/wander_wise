@@ -1,10 +1,10 @@
-import {
-  ClimateType,
+import { 
   IComment,
-  SpecialRequirements,
-  SpecialRequirementsType,
-  TripTypes,
-  TripTypesType,
+  CardAuthorsType, 
+  ClimateType, 
+  SpecialRequirementsType, 
+  TravelDistanceType, 
+  TripTypesType 
 } from "@/src/services";
 
 export interface ICard {
@@ -25,19 +25,22 @@ export interface ICard {
   specialRequirements: SpecialRequirementsType[];
 }
 export interface ICreateCard {
-  fullName: string;
-  tripTypes: TripTypes[];
-  climate: ClimateType;
-  specialRequirements: SpecialRequirements[];
-  description: string;
-  whyThisPlace: string[];
-  imageLinks: string[];
-  mapLink: string;
+  name: string,
+  populatedLocality: string,
+  region: string,
+  country: string,
+  continent: string,
+  tripTypes: TripTypesType[],
+  climate: ClimateType,
+  specialRequirements: SpecialRequirementsType[],
+  description: string,
+  whyThisPlace: string[],
+  imageLinks: string[],
+  mapLink: string,
 }
 
-export interface IUpdateCard {
-  cardId: number;
-  data: ICreateCard;
+export interface IUpdateCard extends ICreateCard {
+  id: number,
 }
 
 export interface IReportCard {
@@ -45,8 +48,16 @@ export interface IReportCard {
   text: string;
 }
 
-export interface IAddImages {
-  cardId: number;
-  images: File[];
+export interface IAddCardImages {
+  id: number,
+  images: File[],
 }
 
+export interface ISearchCard {
+  author: CardAuthorsType[],
+  startLocation: string,
+  tripTypes: TripTypesType[],
+  climate: ClimateType[],
+  specialRequirements: SpecialRequirementsType[],
+  travelDistance: TravelDistanceType[],
+}

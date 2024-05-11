@@ -3,7 +3,7 @@ import {
   ICollection,
   ICreateCollection,
   IUpdateCollection,
-} from "./collection.types";
+} from "@/src/services";
 
 class CollectionService {
   private BASE_URL = "/collections";

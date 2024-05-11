@@ -30,3 +30,8 @@ export interface IUpdateInfo {
   location: string,
   bio: string,
 }
+
+export interface IUpdateImage {
+  id: number,
+  image: File,
+}

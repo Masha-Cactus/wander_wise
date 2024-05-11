@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { IUpdateInfo, userService } from "@/src/services";
+import { IUpdateInfo, IUpdateImage, userService } from "@/src/services";
 import { useUser } from "@/src/store/user";
 
 export function useGetUserProfile() {
@@ -55,6 +55,17 @@ export function useUpdateUserInfo() {
 
   return useMutation({
     mutationFn: (data: IUpdateInfo) => userService.updateUserInfo(data),
+    onSuccess: (user) => {
+      setUser(user);
+    }
+  });
+}
+
+export function useUpdateUserImage() {
+  const setUser = useUser((state) => state.setUser);
+
+  return useMutation({
+    mutationFn: (data: IUpdateImage) => userService.updateImage(data),
     onSuccess: (user) => {
       setUser(user);
     }

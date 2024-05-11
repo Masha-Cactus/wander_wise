@@ -1,5 +1,5 @@
 import { createClient } from "./client";
-import { onResponseError, onResponseSuccess } from "./interceptors";
+import { onRequest, onResponseError, onResponseSuccess } from "./interceptors";
 
 export const formDataClient = createClient({
   headers: {
@@ -7,6 +7,7 @@ export const formDataClient = createClient({
   },
 });
 
+formDataClient.interceptors.request.use(onRequest);
 formDataClient.interceptors.response.use(
   onResponseSuccess, 
   onResponseError(formDataClient),

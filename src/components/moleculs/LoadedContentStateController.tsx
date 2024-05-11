@@ -34,15 +34,15 @@ LoadedContentStateControllerProps
   children,
 }) => {
   if (isEmpty) {
-    return <>{emptyFallbackComponent}</>;
+    return emptyFallbackComponent;
   }
 
   if (isError) {
-    return <>{errorAlertFallbackComponent}</>;
+    return errorAlertFallbackComponent;
   }
 
   if (isLoading) {
-    return <>{loadingFallbackComponent}</>;
+    return loadingFallbackComponent;
   }
 
   if (isHidden) {

@@ -11,6 +11,7 @@ export const TEXT_INPUT_LENGTH = {
 };
 
 export const ONLY_SPACES_PATTERN = /^(?!\s+$).+$/;
+export const PASSWORD_PATTERN = /^(?!.*\s).{8,128}$/;
 export const EMAIL_PATTERN
   = /^[a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$/;
 

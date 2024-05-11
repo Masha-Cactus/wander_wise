@@ -1,11 +1,12 @@
-import { ISocial } from "@/src/types/Social";
-import { IUser } from "@/src/types/User";
-import { authClient, baseClient } from "@/src/api";
+import { authClient, baseClient, formDataClient } from "@/src/api";
 import { 
+  ISocial,
+  IUser,
   IUpdateEmail, 
+  IUpdateImage, 
   IUpdateInfo, 
   IUpdatePassword, 
-} from "./user.types";
+} from "@/src/services";
 import { ICollection, IToken } from "@/src/services";
 
 class UserService {
@@ -53,6 +54,13 @@ class UserService {
     return authClient.put<never, IUser>(
       `${this.BASE_URL}/update-user-info/${userId}`,
       data,
+    );
+  };
+
+  updateImage (data: IUpdateImage) {
+    return formDataClient.put<never, IUser>(
+      `${this.BASE_URL}/update-user-image/${data.id}`,
+      data, 
     );
   }
 

@@ -36,10 +36,10 @@ const TextInput: React.FC<TextInputProps> = ({
           text-black hover:bg-gray-50 flex h-10 w-full items-center
           justify-center space-x-3 text-sm shadow-sm rounded-md
           transition-all duration-75 focus:outline-none px-3`, {
-            'border-red-200 bg-red-50': errorText,
+            'border-error bg-red-50': errorText,
           })}
         />
-        {errorText && <p className="text-red-50">{errorText}</p>}
+        {errorText && <p className="text-error text-sm">{errorText}</p>}
       </label>
     </div>
   );

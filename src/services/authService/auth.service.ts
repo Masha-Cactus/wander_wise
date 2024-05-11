@@ -1,5 +1,5 @@
 import { baseClient, authClient } from "@/src/api";;
-import { IBannedUser, IEmail, ISignIn, ISignUp, IToken } from "./auth.types";
+import { IBannedUser, IEmail, ISignIn, ISignUp, IToken } from "@/src/services";
 
 class AuthService {
   private BASE_URL = '/auth';

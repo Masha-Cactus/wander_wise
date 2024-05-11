@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { IUser } from "../types/User";
+import { IUser } from "@/src/services";
 
 interface UserState {
   user: IUser | null;

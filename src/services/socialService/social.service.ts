@@ -1,5 +1,5 @@
 import { authClient } from "@/src/api";
-import { ICreateSocial, ISocial, IUpdateSocial } from "./social.types";
+import { ICreateSocial, ISocial, IUpdateSocial } from "@/src/services";
 
 class SocialService {
   private BASE_URL = '/social-links';

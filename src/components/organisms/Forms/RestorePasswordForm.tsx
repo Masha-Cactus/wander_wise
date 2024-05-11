@@ -1,24 +1,18 @@
 'use client';
 
+import { useNormalizedError } from '@/src/hooks/useNormalizedError';
 import { useRestorePassword } from '@/src/queries';
 import { IEmail } from '@/src/services';
+import { restorePasswordSchema } from '@/src/validation/restorePasswordSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import * as yup from 'yup';
 import { FormErrorText } from '../../atoms';
 import { PrimaryButton } from '../../moleculs';
 import TextInput from '../../moleculs/Inputs/TextInput';
 
-const validationSchema = yup
-  .object({
-    email: yup
-      .string().trim().email().required('You must enter an email'),
-  })
-  .required();
-
 const RestorePasswordForm = () => {
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useNormalizedError();
+  const validationSchema = restorePasswordSchema();
 
   const {
     reset,

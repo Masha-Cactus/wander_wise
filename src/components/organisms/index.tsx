@@ -23,8 +23,6 @@ export { default as CreateReviewModal } from "./Modals/CreateReviewModal";
 export { default as DeleteReviewModal } from "./Modals/DeleteReviewModal";
 export { default as AddCardToCollection } from "./Modals/AddCardToCollection";
 
-export { default as SignUp } from "./Modals/SignUp";
-
 export { default as SignInForm } from "./Forms/SignInForm";
 export { default as FilterForm } from "./Forms/FilterForm";
 export { default as ConfirmEmailForm } from "./Forms/ConfirmEmailForm";

@@ -1,14 +1,14 @@
 'use client';
 
+import { useNormalizedError } from "@/src/hooks/useNormalizedError";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { useAddSocial } from "@/src/queries";
 import { useUser } from "@/src/store/user";
 import { socialLinkSchema } from "@/src/validation/socialLinkSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FormErrorText } from "../../atoms";
-import TextInput from "../../moleculs/Inputs/TextInput";
+import { FormErrorText } from "@/src/components/atoms";
+import { TextInput } from "@/src/components/moleculs";
 
 type Props = {
   name: string,
@@ -20,7 +20,7 @@ type FormData = {
 
 const SocialLinkForm: React.FC<Props> = ({ name }) => {
   const { user } = useUser();
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useNormalizedError();
 
   const validationSchema = socialLinkSchema();
 
