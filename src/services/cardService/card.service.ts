@@ -1,7 +1,12 @@
 import { formDataClient } from "@/src/api/formDataClient";
-import { CardWithoutDistance } from "@/src/types/Card";
+import { CardWithoutDistance, ICard } from "@/src/types/Card";
 import { authClient } from "../../api/authClient";
-import { IAddCardImages, ICreateCard, IUpdateCard } from "./card.types";
+import { 
+  IAddCardImages, 
+  ICreateCard, 
+  ISearchCard, 
+  IUpdateCard 
+} from "./card.types";
 
 class CardService {
   private BASE_URL = '/cards';
@@ -48,6 +53,13 @@ class CardService {
   deleteCard(id: number) {
     return authClient.delete(`${this.BASE_URL}/${id}`);
   };
+
+  searchCards(page: number, data: ISearchCard) {
+    return authClient.post<never, ICard[]>(
+      `${this.BASE_URL}/search?page=${page}&size=8&sort=asc`, 
+      data,
+    );
+  }
 }
 
 export const cardService = new CardService();

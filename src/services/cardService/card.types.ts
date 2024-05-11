@@ -1,4 +1,10 @@
-import { Climate, SpecialRequirements, TripTypes } from "@/src/types/Filters";
+import { 
+  CardAuthorsType, 
+  ClimateType, 
+  SpecialRequirementsType, 
+  TravelDistanceType, 
+  TripTypesType 
+} from "@/src/types/Filters";
 
 export interface ICreateCard {
   name: string,
@@ -6,9 +12,9 @@ export interface ICreateCard {
   region: string,
   country: string,
   continent: string,
-  tripTypes: TripTypes[],
-  climate: Climate,
-  specialRequirements: SpecialRequirements[],
+  tripTypes: TripTypesType[],
+  climate: ClimateType,
+  specialRequirements: SpecialRequirementsType[],
   description: string,
   whyThisPlace: string[],
   imageLinks: string[],
@@ -22,4 +28,13 @@ export interface IUpdateCard extends ICreateCard {
 export interface IAddCardImages {
   id: number,
   images: File[],
+}
+
+export interface ISearchCard {
+  author: CardAuthorsType[],
+  startLocation: string,
+  tripTypes: TripTypesType[],
+  climate: ClimateType[],
+  specialRequirements: SpecialRequirementsType[],
+  travelDistance: TravelDistanceType[],
 }

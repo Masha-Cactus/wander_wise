@@ -76,7 +76,7 @@ const ProfileEditForm = () => {
           register={register}
           errorText={errors.firstName?.message}
           disabled={isPending}
-          placeholder={user?.firstName}
+          placeholder={user?.firstName || "Enter your first name"}
           label="First name"
         />
         <TextInput
@@ -85,7 +85,7 @@ const ProfileEditForm = () => {
           register={register}
           errorText={errors.lastName?.message}
           disabled={isPending}
-          placeholder={user?.lastName}
+          placeholder={user?.lastName || "Enter your last name"}
           label="Last name"
         />
       </div>
@@ -93,16 +93,6 @@ const ProfileEditForm = () => {
       <LocationInput 
         onChange={(value) => setValue('location', value)} 
       />
-
-      {/* <TextInput
-        type="text"
-        name="location"
-        register={register}
-        errorText={errors.location?.message}
-        disabled={isPending}
-        placeholder={user?.location}
-        label="Location"
-      /> */}
 
       <TextArea
         name="bio"
