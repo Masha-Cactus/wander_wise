@@ -10,6 +10,8 @@ type Props = {
   onChange: (value: string) => void;
 };
 
+// todo
+// fix styles
 const LocationInput: React.FC<Props> = ({ onChange }) => {
   const [autocompleteSuggestions, setAutocompleteSuggestions] 
   = useState<RadarAutocompleteAddress[]>([]);
