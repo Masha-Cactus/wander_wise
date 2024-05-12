@@ -2,7 +2,7 @@
 
 import { memo, useState } from "react";
 import ModalSkeleton from "./ModalSkeleton";
-import { ErrorText, Heading, Text } from "@/src/components/atoms";
+import { ErrorText, Heading, Heading4 } from "@/src/components/atoms";
 import { RoundedButton } from "@/src/components/moleculs";
 import { useDeleteComment } from "@/src/queries";
 import { normalizeError } from "@/src/lib/helpers";
@@ -33,8 +33,8 @@ const DeleteReviewModal: React.FC<DeleteReviewModalProps> = ({
 
   return (
     <ModalSkeleton onClose={onClose}>
-      <Heading text="Delete your review?" />
-      <Text text="This action cannot be undone 🫣"/>
+      <Heading text="Delete your review?" font="normal"/>
+      <Heading4 text="This action cannot be undone 🫣" font="medium"/>
 
       <div className="flex w-full justify-between">
         <RoundedButton

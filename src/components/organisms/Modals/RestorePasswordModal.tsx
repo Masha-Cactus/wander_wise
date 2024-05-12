@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { memo } from "react";
 import { ModalSkeleton, RestorePasswordForm } from "@/src/components/organisms";
-import { Heading, Text } from "@/src/components/atoms";
+import { Heading, Heading4 } from "@/src/components/atoms";
 import { UnstyledButton } from "@/src/components/moleculs";
 
 interface RestorePasswordModalProps {
@@ -28,8 +28,8 @@ const RestorePasswordModal: React.FC<RestorePasswordModalProps> = ({
 
   return (
     <ModalSkeleton onClose={onClose}>
-      <Heading text="Password assistance" />
-      <Text text="Enter the email address associated with your WanderWise account 🤔" />
+      <Heading text="Password assistance" font="normal"/>
+      <Heading4 text="Enter the email address associated with your WanderWise account 🤔" font="medium"/>
 
       <RestorePasswordForm />
 

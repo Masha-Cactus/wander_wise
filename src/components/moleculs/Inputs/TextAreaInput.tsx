@@ -1,40 +1,51 @@
 import classNames from "classnames";
-import { memo } from "react";
-import { UseFormRegister } from "react-hook-form";
+import { Control, FieldPath, FieldValues } from "react-hook-form";
+import InputControllerWrapper from "./InputControllerWrapper";
 
-interface TextareaProps {
-  name: string;
-  register: UseFormRegister<any>;
+interface TextareaProps<T extends FieldValues> {
+  name: FieldPath<T>;
+  control: Control<T>;
   errorText?: string;
   disabled: boolean;
-  placeholder?: string,
-  label?: string,
+  placeholder?: string;
+  label?: string;
 }
 
-const TextAreaInput: React.FC<TextareaProps> = ({
-  name, register, errorText, disabled, placeholder, label
-}) => {
+const TextAreaInput = <T extends FieldValues>({
+  name,
+  control,
+  errorText,
+  disabled,
+  placeholder,
+  label,
+}: TextareaProps<T>) => {
   return (
-    <div className="relative flex flex-col w-full">
-      <label className="text-black relative block uppercase 
-          flex flex-col w-full items-start">
-        {label ? label : name}
-
-        <textarea className={classNames(`w-full h-36 px-4 py-3 border border-gray50 bg-white
-          text-black hover:bg-gray-50 text-sm rounded-lg resize-none
-          transition-all duration-75 focus:outline-none`, {
-          'border-red-200 bg-red-50': errorText,
-        })}
-        id={name}
-        {...register(name)}
-        maxLength={5000}
-        disabled={disabled}
-        placeholder={placeholder}
+    <InputControllerWrapper
+      label={label}
+      control={control}
+      name={name}
+      isLabelVisible
+      isErrorLabelVisible
+    >
+      {(field) => (
+        <textarea
+          className={classNames(
+            `w-full h-36 px-4 py-3 border border-gray50 bg-white
+                text-black hover:bg-gray-50 text-sm rounded-lg resize-none
+                transition-all duration-75 focus:outline-none`,
+            {
+              "border-error": errorText,
+            }
+          )}
+          id={name}
+          {...field}
+          maxLength={5000}
+          disabled={disabled}
+          placeholder={placeholder}
         />
-        {errorText && <p className="text-red-50">{errorText}</p>}
-      </label>
-    </div>
+      )}
+    </InputControllerWrapper>
   );
 };
 
-export default memo(TextAreaInput);
+export default TextAreaInput;

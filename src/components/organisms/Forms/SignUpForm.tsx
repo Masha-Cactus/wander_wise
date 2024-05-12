@@ -11,7 +11,7 @@ import {
 } from "@/src/components/moleculs";
 import { useSignUp } from "@/src/queries";
 import { trimObjectFields } from "@/src/lib/helpers";
-import { FormErrorText } from "@/src/components/atoms";
+import { ErrorText } from "@/src/components/atoms";
 import { PasswordInput } from "@/src/components/moleculs";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
 
@@ -21,7 +21,7 @@ const SignUpForm = () => {
   const validationSchema = signUpSchema();
 
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<ISignUp>({
@@ -57,7 +57,7 @@ const SignUpForm = () => {
         type="email"
         name="email"
         label="Email"
-        register={register}
+        control={control}
         errorText={errors.email?.message}
         disabled={isPending}
       />
@@ -65,7 +65,7 @@ const SignUpForm = () => {
       <PasswordInput
         name="password"
         label="Password"
-        register={register}
+        control={control}
         errorText={errors.password?.message}
         disabled={isPending}
         isShown={isShowPassword}
@@ -76,7 +76,7 @@ const SignUpForm = () => {
       <PasswordInput
         name="repeatPassword"
         label="Confirm password"
-        register={register}
+        control={control}
         errorText={errors.repeatPassword?.message}
         disabled={isPending}
         isShown={isShowPassword}
@@ -84,7 +84,7 @@ const SignUpForm = () => {
         placeholder="Confirm password"
       />
 
-      {isError && <FormErrorText errorText={errorMessage} />}
+      {isError && <ErrorText errorText={errorMessage} />}
 
       <PrimaryButton
         text="Create Account"

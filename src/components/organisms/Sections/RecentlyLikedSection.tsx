@@ -3,6 +3,7 @@ import { TripShortCard } from "@/src/components/organisms";
 // import { useUser } from "@/src/store/user";
 import { useGetUserCollections } from "@/src/queries/user.queries";
 import { memo } from "react";
+import { Heading5 } from "@/src/components/atoms";
 
 const RecentlyLikedSection: React.FC = () => {
   //   const { user } = useUser();
@@ -25,9 +26,8 @@ const RecentlyLikedSection: React.FC = () => {
         </div>
       ) : (
         <div className="flex flex-col gap-4">
-          <p className="text-xl font-normal text-gray80">
-            You don&apos;t have any liked cards yet. Wanna find some?
-          </p>
+          <Heading5 font="normal" classes="text-gray80"
+            text="You don&apos;t have any liked cards yet. Wanna find some?" />
           <PrimaryButton text="Explore" classes="w-1/6" type="button" />
         </div>
       )}

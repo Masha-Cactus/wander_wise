@@ -21,7 +21,7 @@ export { default as ChangeUserPasswordModal } from "./Modals/ChangeUserPasswordM
 export { default as CreateReportModal } from "./Modals/CreateReportModal";
 export { default as CreateReviewModal } from "./Modals/CreateReviewModal";
 export { default as DeleteReviewModal } from "./Modals/DeleteReviewModal";
-export { default as AddCardToCollection } from "./Modals/AddCardToCollection";
+export { default as AddCardToCollectionModal } from "./Modals/AddCardToCollectionModal";
 
 export { default as SignInForm } from "./Forms/SignInForm";
 export { default as FilterForm } from "./Forms/FilterForm";

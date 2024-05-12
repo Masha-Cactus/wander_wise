@@ -13,7 +13,7 @@ const ChangeUserEmailModal: React.FC<ChangeUserEmailModalProps> = ({
 }) => {
   return (
     <ModalSkeleton onClose={onClose}>
-      <Heading text="Change Email" />
+      <Heading text="Change Email" font="normal"/>
 
       <p className="">Form</p>
     </ModalSkeleton>

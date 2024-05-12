@@ -8,7 +8,7 @@ import { signInSchema } from "@/src/validation";
 import { PrimaryButton, TextInput } from "@/src/components/moleculs";
 import { useSignIn } from "@/src/queries";
 import { trimObjectFields } from "@/src/lib/helpers";
-import { FormErrorText } from "@/src/components/atoms";
+import { ErrorText } from "@/src/components/atoms";
 import { PasswordInput } from "@/src/components/moleculs";
 import { useRouter } from "next/navigation";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
@@ -19,7 +19,7 @@ const SignInForm = () => {
   const validationSchema = signInSchema();
 
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<ISignIn>({
@@ -56,7 +56,7 @@ const SignInForm = () => {
         type="email"
         name="email"
         label="Email"
-        register={register}
+        control={control}
         errorText={errors.email?.message}
         disabled={isPending}
       />
@@ -64,14 +64,14 @@ const SignInForm = () => {
       <PasswordInput
         name="password"
         label="Password"
-        register={register}
+        control={control}
         errorText={errors.password?.message}
         disabled={isPending}
         isShown={isShowPassword}
         onClick={() => setIsShowPassword(!isShowPassword)}
       />
 
-      {isError && <FormErrorText errorText={errorMessage} />}
+      {isError && <ErrorText errorText={errorMessage} />}
 
       <PrimaryButton
         text="Sign In"

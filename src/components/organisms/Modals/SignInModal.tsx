@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { ModalSkeleton, SignInForm } from "@/src/components/organisms";
-import { Heading, Text } from "@/src/components/atoms";
+import { Heading, Heading4, TextBase } from "@/src/components/atoms";
 import { UnstyledButton } from "@/src/components/moleculs";
 
 interface SignInModalProps {
@@ -26,13 +26,17 @@ const SignInModal: React.FC<SignInModalProps> = ({
 
   return (
     <ModalSkeleton onClose={onClose}>
-      <Heading text="Welcome back to Wander Wise" />
-      <Text text="Let's continue our trip planning 🌍" />
+      <Heading text="Welcome back to Wander Wise" font="normal" />
+      <Heading4 text="Let's continue our trip planning 🌍" font="medium" />
 
       <SignInForm />
 
       <div className="flex gap-2">
-        <Text text="Don’t have an account yet?" classes="text-nowrap"/>
+        <TextBase
+          text="Don’t have an account yet?"
+          classes="text-nowrap"
+          font="normal"
+        />
         <UnstyledButton
           text="Create account"
           classes="text-nowrap font-bold"

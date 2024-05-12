@@ -24,9 +24,9 @@ const TripsPage: React.FC<Props> = ({}) => {
         className="flex items-center justify-center gap-6 
     col-start-4 col-span-9"
       >
-        {cards && (
+        {/* {cards && (
           <Gallery cards={cards} />
-        )}
+        )} */}
       </div>
     </main>
   );

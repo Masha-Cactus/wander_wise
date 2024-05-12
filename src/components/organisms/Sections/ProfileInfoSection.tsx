@@ -1,32 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Divider, Icons } from "@/src/components/atoms";
+import { Divider, Heading2, Icons, TextBase } from "@/src/components/atoms";
 import { memo } from "react";
-// import { useUser } from "@/app/store/user";
+import { useUser } from "@/src/store/user";
 
 const ProfileInfoSection: React.FC = () => {
-  // const { user } = useUser();
-  const user = {
-    id: 1,
-    name: "John Doe",
-    lastName: "Doe",
-    pseudonym: "johndoe",
-    description: "I'm a description",
-    email: "nU0wv@example.com",
-    location: "Seaside, USA",
-    image:
-      // eslint-disable-next-line max-len
-      "https://images.stockcake.com/public/7/5/2/752210ff-3ce6-447b-8529-7deec989d405_large/wriggling-earthworm-closeup-stockcake.jpg",
-    colections: [],
-    sotials: ["instagram", "twitter", "facebook"],
-    saved: [],
-    trips: [],
-    reviews: [],
-    liked: [],
-  };
-  const { name, description, location, image, pseudonym, email, sotials } 
-  = user!;
+  const { user } = useUser();
+  const { firstName, lastName, bio, location, profileImage, pseudonym, email } =
+    user!;
 
   return (
     <div
@@ -36,8 +18,8 @@ const ProfileInfoSection: React.FC = () => {
       <div className="relative top-0 flex justify-center">
         <Image
           src={
-            image
-              ? image
+            profileImage
+              ? profileImage
               : `https://images.stockcake.com/public/7/5/2/752210ff-3ce6-447b-8529-7deec989d405_large/wriggling-earthworm-closeup-stockcake.jpg`
           }
           alt="profile"
@@ -55,12 +37,14 @@ const ProfileInfoSection: React.FC = () => {
       </div>
 
       <div className="flex flex-col gap-2">
-        <p className="text-gray70 font-normal text-base">
-          {pseudonym ? pseudonym : "beautifultraveler"}
-        </p>
+        <TextBase
+          text={pseudonym ? pseudonym : "beautifultraveler"}
+          classes="text-gray70"
+          font="normal"
+        />
 
-        <p className="text-2xl font-medium">{name}</p>
-        {description && <p>{description}</p>}
+        <Heading2 text={`${firstName} ${lastName}`} font="semibold" />
+        {bio && <TextBase text={bio} font="normal" />}
       </div>
 
       <Divider classes="w-full h-px bg-gray20" />
@@ -69,30 +53,33 @@ const ProfileInfoSection: React.FC = () => {
         {location && (
           <div className="flex items-center gap-2">
             <Icons.location className="text-gray70 h-4 w-4" />
-            <p>{location}</p>
+            <TextBase text={location} font="normal" />
           </div>
         )}
         <div className="flex items-center gap-2">
           <Icons.mail className="text-gray70 h-4 w-4" />
-          <p>{email}</p>
+          <TextBase text={email} font="normal" />
         </div>
       </div>
 
       <Divider classes="w-full h-px bg-gray20" />
 
-      {sotials.length > 0 && (
+      {/* {socials.length > 0 && (
         <>
           <div className="flex flex-col gap-2">
-            {sotials.map((sotial) => (
-              <p key={sotial} className="text-gray70 text-start">
-                {sotial}
-              </p>
+            {socials.map((social) => (
+              <TextBase
+                key={social}
+                text={social}
+                font="normal"
+                classes="text-start"
+              />
             ))}
           </div>
 
           <Divider classes="w-full h-px bg-gray20" />
         </>
-      )}
+      )} */}
 
       <Link
         href="/profile/edit"

@@ -6,9 +6,8 @@ import { IEmail } from '@/src/services';
 import { restorePasswordSchema } from '@/src/validation/restorePasswordSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FormErrorText } from '../../atoms';
-import { PrimaryButton } from '../../moleculs';
-import TextInput from '../../moleculs/Inputs/TextInput';
+import { ErrorText } from '@/src/components/atoms';
+import { PrimaryButton, TextInput } from '@/src/components/moleculs';
 
 const RestorePasswordForm = () => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
@@ -16,7 +15,7 @@ const RestorePasswordForm = () => {
 
   const {
     reset,
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<IEmail>({
@@ -48,14 +47,14 @@ const RestorePasswordForm = () => {
         type="email"
         name="email"
         label="Email"
-        register={register}
+        control={control}
         errorText={errors.email?.message}
         disabled={isPending}
       />
 
       <PrimaryButton text="Continue" disabled={isPending} type='submit' />
 
-      {isError && <FormErrorText errorText={errorMessage} />}
+      {isError && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

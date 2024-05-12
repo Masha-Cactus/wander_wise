@@ -14,7 +14,7 @@ const CreateReviewModal: React.FC<CreateReviewModalProps> = ({
 }) => {
   return (
     <ModalSkeleton onClose={onClose}>
-      <Heading text="How was your experience?" />
+      <Heading text="How was your experience?" font="normal"/>
     </ModalSkeleton>
   );
 };

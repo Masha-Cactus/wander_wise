@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, memo } from "react";
+import React, { useState, useEffect } from "react";
 import Radar from "radar-sdk-js";
-import { FilterInput } from "@/src/components/moleculs";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
 
 const key = "prj_live_pk_6925600add7305492567163191c2abbb9977c348";
@@ -53,10 +52,9 @@ const LocationInput: React.FC<Props> = ({ onChange }) => {
 
   return (
     <div className="relative w-full text-black mt-4">
-      <FilterInput
-        onChange={handleLocationChange}
+      <input
         value={inputValue}
-        id="locationInput"
+        onChange={handleLocationChange}
       />
       {autocompleteSuggestions.length > 0 && (
         <div
@@ -78,4 +76,4 @@ const LocationInput: React.FC<Props> = ({ onChange }) => {
   );
 };
 
-export default memo(LocationInput);
+export default LocationInput;

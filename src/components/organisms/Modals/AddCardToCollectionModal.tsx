@@ -2,12 +2,12 @@
 
 import { memo, useEffect, useState } from "react";
 import { ModalSkeleton } from "@/src/components/organisms";
-import { ErrorText, Heading, Text } from "@/src/components/atoms";
+import { ErrorText, Heading, Heading4 } from "@/src/components/atoms";
 import { ICard, ICollection, IUpdateCollection } from "@/src/services";
 import { useGetUserCollections, useUpdateCollection } from "@/src/queries";
 import { normalizeError } from "@/src/lib/helpers";
 import {
-  CheckboxInput,
+  // CheckboxInput,
   PrimaryButton,
   RoundedButton,
 } from "@/src/components/moleculs";
@@ -20,7 +20,7 @@ interface AddCardToCollectionProps {
 // todo
 // need to test
 
-const AddCardToCollection: React.FC<AddCardToCollectionProps> = ({
+const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
   onClose,
   card,
 }) => {
@@ -78,7 +78,7 @@ const AddCardToCollection: React.FC<AddCardToCollectionProps> = ({
 
   return (
     <ModalSkeleton onClose={onClose}>
-      <Heading text={`Add “${card.name}” to a collection?`} />
+      <Heading text={`Add “${card.name}” to a collection?`} font="normal"/>
 
       <div className="flex flex-col gap-4 h-2/3 scrollbar">
         {collections?.map((collection) => (
@@ -86,12 +86,16 @@ const AddCardToCollection: React.FC<AddCardToCollectionProps> = ({
             key={collection.id}
             className="flex items-center justify-between"
           >
-            <Text text={collection.name} />
-            <CheckboxInput
+            <Heading4 text={collection.name} font="normal" />
+            <input type="checkbox"
+              checked={selectedCollections.some((c) => c.id === collection.id)}
+              onChange={() => handleClick(collection)}
+            />
+            {/* <CheckboxInput
               value={collection.id}
               onClick={() => handleClick(collection)}
               selected={collections.some((c) => c.id === collection.id)}
-            />
+            /> */}
           </div>
         ))}
       </div>
@@ -116,4 +120,4 @@ const AddCardToCollection: React.FC<AddCardToCollectionProps> = ({
   );
 };
 
-export default memo(AddCardToCollection);
+export default memo(AddCardToCollectionModal);

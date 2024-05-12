@@ -1,48 +1,60 @@
 import classNames from "classnames";
-import { memo } from "react";
-import { UseFormRegister } from "react-hook-form";
+import {
+  Control,
+  FieldPath,
+  FieldValues,
+} from "react-hook-form";
+import InputControllerWrapper from "./InputControllerWrapper";
 
-interface TextInputProps {
+interface TextInputProps<T extends FieldValues> {
   type: string;
-  name: string;
-  register: UseFormRegister<any>;
+  name: FieldPath<T>;
+  control: Control<T>;
   errorText?: string;
   disabled: boolean;
-  placeholder?: string,
-  label?: string,
+  placeholder?: string;
+  label?: string;
 }
 
-const TextInput: React.FC<TextInputProps> = ({
+const TextInput = <T extends FieldValues>({
   type,
-  register,
+  control,
   name,
   errorText,
   disabled,
   placeholder,
   label,
-}) => {
+}: TextInputProps<T>) => {
   return (
-    <div className="relative flex flex-col w-full">
-      <label className="text-black relative block
-          flex flex-col w-full items-start">
-        {label ? label : name}
-        <input
-          id={name}
-          type={type}
-          {...register(name)}
-          disabled={disabled}
-          placeholder={placeholder ? placeholder : `Enter your ${name}`}
-          className={classNames(`border border-black bg-white
-          text-black hover:bg-gray-50 flex h-10 w-full items-center
-          justify-center space-x-3 text-sm shadow-sm rounded-md
-          transition-all duration-75 focus:outline-none px-3`, {
-            'border-error bg-red-50': errorText,
-          })}
-        />
-        {errorText && <p className="text-error text-sm">{errorText}</p>}
-      </label>
-    </div>
+    <InputControllerWrapper
+      label={label}
+      control={control}
+      name={name}
+      isLabelVisible
+      isErrorLabelVisible
+    >
+      {(field) => (
+        <div className="relative flex flex-col w-full">
+          <input
+            {...field}
+            id={name}
+            type={type}
+            disabled={disabled}
+            placeholder={placeholder ? placeholder : `Enter your ${name}`}
+            className={classNames(
+              `border border-black bg-white
+                text-black hover:bg-gray-50 flex h-10 w-full items-center
+                justify-center space-x-3 text-sm shadow-sm rounded-md
+                transition-all duration-75 focus:outline-none px-3`,
+              {
+                "border-error": errorText,
+              }
+            )}
+          />
+        </div>
+      )}
+    </InputControllerWrapper>
   );
 };
 
-export default memo(TextInput);
+export default TextInput;

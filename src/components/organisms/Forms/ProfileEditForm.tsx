@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { memo } from "react";
 import { useForm } from "react-hook-form";
@@ -6,14 +6,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { IUpdateInfo } from "@/src/services";
 import { editProfileSchema } from "@/src/validation";
 import { trimObjectFields } from "@/src/lib/helpers";
-import FormErrorText from "../../atoms/FormErrorText";
+import { ErrorText } from "@/src/components/atoms";
 import { useUpdateUserInfo } from "@/src/queries";
-import TextInput from "../../moleculs/Inputs/TextInput";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/src/store/user";
-import TextArea from "../../moleculs/Inputs/TextAreaInput";
-import LocationInput from "../../moleculs/Inputs/LocationInput";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import {
+  TextAreaInput,
+  TextInput,
+  LocationInput,
+} from "@/src/components/moleculs";
 
 const ProfileEditForm = () => {
   const { user } = useUser();
@@ -21,11 +23,11 @@ const ProfileEditForm = () => {
   const validationSchema = editProfileSchema();
 
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm<Omit<IUpdateInfo, 'userId'>>({
+  } = useForm<Omit<IUpdateInfo, "userId">>({
     values: {
       pseudonym: "",
       firstName: "",
@@ -43,26 +45,29 @@ const ProfileEditForm = () => {
   const { isPending, mutate, isError } = useUpdateUserInfo();
   const { push } = useRouter();
 
-  const onSubmit = async (data: Omit<IUpdateInfo, 'userId'>) => {
+  const onSubmit = async (data: Omit<IUpdateInfo, "userId">) => {
     const trimmedUserData = trimObjectFields(data);
 
     if (user) {
-      mutate({...trimmedUserData, userId: user.id}, {
-        onError: handleError,
-        onSuccess: () => push('/profile'),
-      });
+      mutate(
+        { ...trimmedUserData, userId: user.id },
+        {
+          onError: handleError,
+          onSuccess: () => push("/profile"),
+        }
+      );
     }
   };
 
   return (
-    <form 
-      onSubmit={handleSubmit(onSubmit)} 
+    <form
+      onSubmit={handleSubmit(onSubmit)}
       className="w-full flex flex-col gap-6"
     >
       <TextInput
         type="text"
         name="pseudonym"
-        register={register}
+        control={control}
         errorText={errors.pseudonym?.message}
         disabled={isPending}
         placeholder={user?.pseudonym}
@@ -73,7 +78,7 @@ const ProfileEditForm = () => {
         <TextInput
           type="text"
           name="firstName"
-          register={register}
+          control={control}
           errorText={errors.firstName?.message}
           disabled={isPending}
           placeholder={user?.firstName || "Enter your first name"}
@@ -82,7 +87,7 @@ const ProfileEditForm = () => {
         <TextInput
           type="text"
           name="lastName"
-          register={register}
+          control={control}
           errorText={errors.lastName?.message}
           disabled={isPending}
           placeholder={user?.lastName || "Enter your last name"}
@@ -90,20 +95,18 @@ const ProfileEditForm = () => {
         />
       </div>
 
-      <LocationInput 
-        onChange={(value) => setValue('location', value)} 
-      />
+      <LocationInput onChange={(value) => setValue("location", value)} />
 
-      <TextArea
+      <TextAreaInput
         name="bio"
-        register={register}
+        control={control}
         errorText={errors.bio?.message}
         disabled={isPending}
         placeholder="Who are you?"
         label="Bio"
       />
 
-      {isError && <FormErrorText errorText={errorMessage} />}
+      {isError && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };
