@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { memo } from "react";
 import { useForm } from "react-hook-form";
@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { IUpdateInfo } from "@/src/services";
 import { editProfileSchema } from "@/src/validation";
 import { trimObjectFields } from "@/src/lib/helpers";
-import { FormErrorText } from "@/src/components/atoms";
+import { ErrorText } from "@/src/components/atoms";
 import { useUpdateUserInfo } from "@/src/queries";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/src/store/user";
@@ -24,11 +24,10 @@ const ProfileEditForm = () => {
   const validationSchema = editProfileSchema();
 
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
-    setValue,
-  } = useForm<Omit<IUpdateInfo, 'userId'>>({
+  } = useForm<Omit<IUpdateInfo, "userId">>({
     values: {
       pseudonym: "",
       firstName: "",
@@ -46,69 +45,76 @@ const ProfileEditForm = () => {
   const { isPending, mutate, isError } = useUpdateUserInfo();
   const { push } = useRouter();
 
-  const onSubmit = async (data: Omit<IUpdateInfo, 'userId'>) => {
+  const onSubmit = async (data: Omit<IUpdateInfo, "userId">) => {
     const trimmedUserData = trimObjectFields(data);
 
-    if (user) {
-      mutate({...trimmedUserData, userId: user.id}, {
+    mutate(trimmedUserData,
+      {
         onError: handleError,
-        onSuccess: () => push('/profile'),
-      });
-    }
+        onSuccess: () => push("/profile"),
+      }
+    );
   };
 
   return (
-    <form 
-      onSubmit={handleSubmit(onSubmit)} 
+    <form
+      onSubmit={handleSubmit(onSubmit)}
       className="w-full flex flex-col gap-6"
     >
       <TextInput
         type="text"
         name="pseudonym"
-        register={register}
+        control={control}
         errorText={errors.pseudonym?.message}
         disabled={isPending}
         placeholder={user?.pseudonym}
         label="Username"
       />
 
-      <div className="flex gap-4">
-        <TextInput
-          type="text"
-          name="firstName"
-          register={register}
-          errorText={errors.firstName?.message}
-          disabled={isPending}
-          placeholder={user?.firstName || "Enter your first name"}
-          label="First name"
-        />
-        <TextInput
-          type="text"
-          name="lastName"
-          register={register}
-          errorText={errors.lastName?.message}
-          disabled={isPending}
-          placeholder={user?.lastName || "Enter your last name"}
-          label="Last name"
-        />
+      <div className="w-full flex gap-4">
+        <div className="grow">
+          <TextInput
+            type="text"
+            name="firstName"
+            control={control}
+            errorText={errors.firstName?.message}
+            disabled={isPending}
+            placeholder={user?.firstName || "Enter your first name"}
+            label="First name"
+          />
+        </div>
+        <div className="grow">
+          <TextInput
+            type="text"
+            name="lastName"
+            control={control}
+            errorText={errors.lastName?.message}
+            disabled={isPending}
+            placeholder={user?.lastName || "Enter your last name"}
+            label="Last name"
+          />
+        </div>
       </div>
 
       <LocationInput 
-        onChange={(value) => setValue('location', value)} 
+        placeholder={user?.location || "City, country"}
+        label="Location"
+        name="location"
+        control={control}
+        disabled={isPending}
       />
 
       <TextAreaInput
         name="bio"
-        register={register}
+        control={control}
         errorText={errors.bio?.message}
         disabled={isPending}
         placeholder="Who are you?"
         label="Bio"
       />
 
-      {isError && <FormErrorText errorText={errorMessage} />}
-
-      <PrimaryButton text="Save changes" />
+      {isError && <ErrorText errorText={errorMessage} />}
+      <PrimaryButton type="submit" text="Save changes" />
     </form>
   );
 };

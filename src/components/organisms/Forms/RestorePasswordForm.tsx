@@ -5,19 +5,22 @@ import { useRestorePassword } from '@/src/queries';
 import { IEmail } from '@/src/services';
 import { restorePasswordSchema } from '@/src/validation/restorePasswordSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FormErrorText, Text } from '@/src/components/atoms';
+import { ErrorText } from '@/src/components/atoms';
 import { PrimaryButton, TextInput } from '@/src/components/moleculs';
 
-const RestorePasswordForm = () => {
-  const [isSubmitted, setIsSubmitted] = useState(false);
+type Props = {
+  setIsSubmitted: Dispatch<SetStateAction<boolean>>,
+};
+
+const RestorePasswordForm: React.FC<Props> = ({setIsSubmitted}) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = restorePasswordSchema();
 
   const {
     reset,
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<IEmail>({
@@ -43,10 +46,6 @@ const RestorePasswordForm = () => {
     });
   };
 
-  if (isSubmitted) {
-    return <Text text="Your new password will be sent to your email"/>;
-  }
-
   return (
     <form
       className="flex flex-col gap-4 h-full w-full"
@@ -56,14 +55,14 @@ const RestorePasswordForm = () => {
         type="email"
         name="email"
         label="Email"
-        register={register}
+        control={control}
         errorText={errors.email?.message}
         disabled={isPending}
       />
 
       <PrimaryButton text="Continue" disabled={isPending} type='submit' />
 
-      {isError && <FormErrorText errorText={errorMessage} />}
+      {isError && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

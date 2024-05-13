@@ -5,7 +5,7 @@ import { useRequestUpdateEmail } from '@/src/queries';
 import { IEmail } from '@/src/services';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FormErrorText } from '@/src/components/atoms';
+import { ErrorText } from '@/src/components/atoms';
 import { PrimaryButton, TextInput } from '@/src/components/moleculs';
 import { changeEmailSchema } from '@/src/validation';
 
@@ -15,7 +15,7 @@ const ChangeEmailForm = () => {
 
   const {
     reset,
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<IEmail>({
@@ -42,21 +42,21 @@ const ChangeEmailForm = () => {
 
   return (
     <form
-      className="flex flex-col gap-4 h-full w-full"
+      className="flex flex-col gap-8 h-full w-full"
       onSubmit={handleSubmit(onSubmit)}
     >
       <TextInput 
         type="email"
         name="email"
-        label="Email"
-        register={register}
+        label="New email"
+        control={control}
         errorText={errors.email?.message}
         disabled={isPending}
       />
 
       <PrimaryButton text="Save" disabled={isPending} type='submit' />
 
-      {isError && <FormErrorText errorText={errorMessage} />}
+      {isError && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

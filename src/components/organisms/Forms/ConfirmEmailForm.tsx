@@ -4,8 +4,8 @@ import { useConfirmEmail } from "@/src/queries/auth.queries";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { PrimaryButton } from "@/src/components/moleculs/";
-import { FormErrorText } from "../../atoms";
-import TextInput from "../../moleculs/Inputs/TextInput";
+import { ErrorText } from "@/src/components/atoms";
+import { TextInput }from "@/src/components/moleculs";
 import { confirmEmailSchema } from "@/src/validation/confirmEmailSchema";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
 
@@ -22,8 +22,8 @@ const ConfirmEmailForm: React.FC<Props> = ({ closeModal }) => {
   const validationSchema = confirmEmailSchema();
 
   const { 
-    register, 
     handleSubmit,
+    control,
     formState: { errors }, 
     reset,
   } = useForm<FormData>({
@@ -40,8 +40,8 @@ const ConfirmEmailForm: React.FC<Props> = ({ closeModal }) => {
 
   const { isPending, mutate, isError } = useConfirmEmail();
 
-  const onSubmit: SubmitHandler<FormData> = async(data) => {
-    mutate(data.confirmationCode, {
+  const onSubmit: SubmitHandler<FormData> = async({confirmationCode}) => {
+    mutate(confirmationCode, {
       onError: handleError,
       onSuccess: () => {
         reset();
@@ -60,12 +60,12 @@ const ConfirmEmailForm: React.FC<Props> = ({ closeModal }) => {
         name="confirmationCode"
         label="Confirmation Code"
         placeholder="Enter code from email"
-        register={register}
+        control={control}
         errorText={errors.confirmationCode?.message}
         disabled={isPending}
       />
       <PrimaryButton type="submit" text="Confirm" disabled={isPending}/>
-      {isError && <FormErrorText errorText={errorMessage} />}
+      {isError && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

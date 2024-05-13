@@ -4,11 +4,11 @@ import { ChangeEvent, memo, useRef } from "react";
 import {
   FieldPath,
   FieldValues,
-  // Path,
   UseFormRegister,
 } from "react-hook-form";
 
 import classNames from "classnames";
+import { ErrorText } from "@/src/components/atoms";
 
 interface FileInputProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -69,13 +69,13 @@ const ImageInput = <T extends FieldValues>({
           justify-center space-x-3 text-sm shadow-sm
           transition-all duration-75 focus:outline-none`,
             {
-              "border-red-200 bg-red-50": errorText,
+              "border-error": errorText,
             }
           )}
           ref={inputRef}
           onChange={(event) => handleUploadFile(event)}
         />
-        {errorText && <p className="text-red-50">{errorText}</p>}
+        {errorText && <ErrorText errorText={errorText} />}
       </label>
 
       {isFileUploaded && (

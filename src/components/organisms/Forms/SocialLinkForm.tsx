@@ -7,7 +7,7 @@ import { useUser } from "@/src/store/user";
 import { socialLinkSchema } from "@/src/validation/socialLinkSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { FormErrorText } from "@/src/components/atoms";
+import { ErrorText } from "@/src/components/atoms";
 import { TextInput, PrimaryButton } from "@/src/components/moleculs";
 
 type Props = {
@@ -25,7 +25,7 @@ const SocialLinkForm: React.FC<Props> = ({ name }) => {
   const validationSchema = socialLinkSchema();
 
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
@@ -57,18 +57,20 @@ const SocialLinkForm: React.FC<Props> = ({ name }) => {
       className="w-full flex flex-col gap-6"
     >
       <div className="flex items-end gap-3">
-        <TextInput
-          type="text"
-          name="link"
-          register={register}
-          errorText={errors.link?.message}
-          disabled={isPending}
-          label={name}
-        />
-        <PrimaryButton text="Add" classes="h-10 w-1/3" />
+        <div className="grow">
+          <TextInput
+            type="text"
+            name="link"
+            control={control}
+            errorText={errors.link?.message}
+            disabled={isPending}
+            label={name}
+          />
+        </div>
+        <PrimaryButton text="Add" classes="h-10 w-1/4" />
       </div>
 
-      {isError && <FormErrorText errorText={errorMessage} />}
+      {isError && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

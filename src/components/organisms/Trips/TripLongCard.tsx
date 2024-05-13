@@ -1,5 +1,5 @@
 import { Tab } from "@/src/components/organisms";
-import { Divider, Icons } from "@/src/components/atoms";
+import { Divider, Heading2, Heading4, Icons } from "@/src/components/atoms";
 import {
   ImagesBlock,
   IconButton,
@@ -24,13 +24,13 @@ const TripLongCard: React.FC<Props> = ({ card }) => {
       className="flex flex-col gap-2
       justify-between items-center"
     >
-      <h1 className="w-full text-3xl font-semibold">{card.name}</h1>
+      <Heading2 text={card.name} classes="text-3xl" font="semibold" />
 
       <div className="gap-2 w-full mt-1 grid grid-cols-12">
         <div className="w-full col-span-5">
           <div className="flex gap-2 items-center justify-start">
             <Icons.location />
-            <h1 className="text-2xl font-normal">{card.whereIs}</h1>
+            <Heading4 text={card.whereIs} font="normal"/>
           </div>
 
           <div className="mt-6 overflow-scroll max-h-[550px]">

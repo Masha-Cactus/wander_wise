@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { TextBase } from "@/src/components/atoms";
 
 type Props = {
   icon: React.ReactNode;
@@ -11,7 +12,7 @@ const IconButton: React.FC<Props> = ({ icon, onClick, text, classes }) => {
   return (
     <button className={`flex gap-2 items-center justify-center ${classes}`} onClick={onClick}>
       {icon}
-      {text && <p>{text}</p>}
+      {text && <TextBase text={text} font="normal"/>}
     </button>
   );
 };

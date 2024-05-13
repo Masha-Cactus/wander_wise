@@ -1,12 +1,12 @@
-import { UseFormRegister } from "react-hook-form";
+import { Control, FieldPath, FieldValues } from "react-hook-form";
 import classNames from "classnames";
 import { Icons } from "@/src/components/atoms";
-import { memo } from "react";
+import InputControllerWrapper from "./InputControllerWrapper";
 
-interface PasswordInputProps {
-  name: string;
-  label?: string,
-  register: UseFormRegister<any>;
+interface PasswordInputProps<T extends FieldValues> {
+  name: FieldPath<T>;
+  control: Control<T>;
+  label?: string;
   errorText?: string;
   placeholder?: string;
   disabled: boolean;
@@ -14,8 +14,7 @@ interface PasswordInputProps {
   onClick: () => void;
 }
 
-const PasswordInput: React.FC<PasswordInputProps> = ({
-  register,
+const PasswordInput = <T extends FieldValues>({
   name,
   label,
   errorText,
@@ -23,42 +22,46 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
   disabled,
   isShown,
   onClick,
-}) => {
+  control,
+}: PasswordInputProps<T>) => {
   return (
-    <div className="relative flex flex-col w-full">
-      <label
-        className="text-black relative block 
-          flex flex-col w-full items-start"
-      >
-        {label ? label : name}
-        <div
-          className={classNames(
-            `flex w-full items-center justify-between 
-            border border-black bg-white 
-            text-black hover:bg-gray-50 flex h-10 w-full items-center 
-            justify-center space-x-3 text-sm shadow-sm rounded-md 
-            transition-all duration-75 focus:outline-none px-3`,
-            {
-              "border-error bg-red-50": errorText,
-            }
-          )}
-        >
-          <input
-            id={name}
-            type={isShown ? "text" : "password"}
-            {...register(name)}
-            disabled={disabled}
-            placeholder={placeholder}
-            className="w-full bg-transparent outline-none"
-          />
-          <button onClick={onClick}>
-            {isShown ? <Icons.eyeClosed /> : <Icons.eye />}
-          </button>
+    <InputControllerWrapper
+      label={label}
+      control={control}
+      name={name}
+      isLabelVisible
+      isErrorLabelVisible
+    >
+      {(field) => (
+        <div className="relative flex flex-col w-full">
+          <div
+            className={classNames(
+              `flex w-full items-center justify-between 
+                  border border-gray50 bg-white 
+                  text-black hover:bg-gray-50 flex h-10 w-full items-center 
+                  justify-center space-x-3 text-sm shadow-sm rounded-md 
+                  transition-all duration-75 focus:outline-none px-3`,
+              {
+                "border-error": errorText,
+              }
+            )}
+          >
+            <input
+              id={name}
+              type={isShown ? "text" : "password"}
+              {...field}
+              disabled={disabled}
+              placeholder={placeholder}
+              className="w-full bg-transparent outline-none"
+            />
+            <button onClick={onClick}>
+              {isShown ? <Icons.eyeClosed /> : <Icons.eye />}
+            </button>
+          </div>
         </div>
-        {errorText && <p className="text-error text-sm">{errorText}</p>}
-      </label>
-    </div>
+      )}
+    </InputControllerWrapper>
   );
 };
 
-export default memo(PasswordInput);
+export default PasswordInput;

@@ -42,9 +42,12 @@ export function useConfirmEmail() {
 
 // user will come together with token
 export function useSignIn() {
+  const setUser = useUser((state) => state.setUser);
+
   return useMutation({
     mutationFn: (data: ISignIn) => authService.signIn(data),
-    onSuccess: async({ token }) => {
+    onSuccess: async({ userDto, token }) => {
+      setUser(userDto);
       localStorage.setItem('accessToken', token);
       setCookie('access-token', token, {
         httpOnly: true,

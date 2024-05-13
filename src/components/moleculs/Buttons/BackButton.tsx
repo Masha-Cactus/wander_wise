@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Icons } from "@/src/components/atoms";
+import { Heading4, Icons } from "@/src/components/atoms";
 
 type Props = {};
 
@@ -11,8 +11,8 @@ const BackButton: React.FC<Props> = ({}) => {
 
   return (
     <div className="flex gap-2 items-center" onClick={back}>
-      <Icons.left />
-      <p>Back</p>
+      <Icons.left className="w-6 h-6" />
+      <Heading4 text="Back" font="semibold"/>
     </div>
   );
 };

@@ -6,10 +6,13 @@ export interface ICollection {
   name: string,
   imageLink: string,
   isPublic: boolean,
-  cards: ICard[],
+  cardDtos: ICard[],
 }
+export type ShortCollection = Omit<ICollection, 'cardWithoutDistanceDtos'>;
+
 export interface ICreateCollection {
   userId: number,
+  name: string,
   cardIds: number[],
 }
 

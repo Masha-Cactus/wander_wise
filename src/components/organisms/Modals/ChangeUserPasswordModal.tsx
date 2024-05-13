@@ -1,6 +1,6 @@
 import { memo } from "react";
-import { Heading } from "@/src/components/atoms";
-import { ModalSkeleton } from "@/src/components/organisms";
+import { Heading2 } from "@/src/components/atoms";
+import { ModalSkeleton, ChangePasswordForm } from "@/src/components/organisms";
 import { UnstyledButton } from "@/src/components/moleculs";
 
 interface ChangeUserPasswordModalProps {
@@ -8,17 +8,15 @@ interface ChangeUserPasswordModalProps {
   onOpenRestorePasswordModal: () => void;
 }
 
-// todo
-// add form
 const ChangeUserPasswordModal: React.FC<ChangeUserPasswordModalProps> = ({
   onClose,
   onOpenRestorePasswordModal,
 }) => {
   return (
     <ModalSkeleton onClose={onClose}>
-      <Heading text="Change Password" />
+      <Heading2 text="Change password" font="semibold" classes="self-start"/>
 
-      <p className="">Form</p>
+      <ChangePasswordForm />
 
       <UnstyledButton
         text="Forgot Password?"

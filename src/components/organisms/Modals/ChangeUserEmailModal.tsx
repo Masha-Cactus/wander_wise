@@ -1,7 +1,6 @@
 import { memo } from "react";
-import { Heading } from "@/src/components/atoms";
-import { ModalSkeleton } from "@/src/components/organisms";
-import ChangeEmailForm from "../Forms/ChangeEmailForm";
+import { Heading2 } from "@/src/components/atoms";
+import { ModalSkeleton, ChangeEmailForm } from "@/src/components/organisms";
 
 interface ChangeUserEmailModalProps {
   onClose: () => void;
@@ -12,11 +11,10 @@ const ChangeUserEmailModal: React.FC<ChangeUserEmailModalProps> = ({
 }) => {
   return (
     <ModalSkeleton onClose={onClose}>
-      <Heading text="Change Email" />
+      <Heading2 text="Change email" font="semibold" classes="self-start" />
 
       <ChangeEmailForm />
 
-      <p className="">Form</p>
     </ModalSkeleton>
   );
 };

@@ -1,6 +1,6 @@
 import { memo, useState } from "react";
 import { ModalSkeleton } from "@/src/components/organisms";
-import { ErrorText, Heading, Text } from "@/src/components/atoms";
+import { ErrorText, Heading, Heading4 } from "@/src/components/atoms";
 import { RoundedButton } from "@/src/components/moleculs";
 import { ICard, ICollection, IUpdateCollection } from "@/src/services";
 import { useUpdateCollection } from "@/src/queries";
@@ -41,8 +41,8 @@ RemoveTripFromCollectionModalProps
 
   return (
     <ModalSkeleton onClose={onClose}>
-      <Heading text={`Remove ${trip.name} from ${collection.name}?`} />
-      <Text text="This action cannot be undone 🫣" />
+      <Heading text={`Remove ${trip.name} from ${collection.name}?`} font="normal"/>
+      <Heading4 text="This action cannot be undone 🫣" font="medium"/>
 
       <div className="flex w-full justify-between">
         <RoundedButton

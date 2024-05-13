@@ -1,12 +1,8 @@
-import { Gallery, FilterForm } from "@/src/components/organisms";
-import { ICard } from "@/src/services";
+import { FilterForm } from "@/src/components/organisms";
+import { SavedCardsSection } from "@/src/components/organisms";
 import { memo } from "react";
 
-type Props = {};
-
-const Page: React.FC<Props> = async ({}) => {
-  const cards: ICard[] = [];
-
+const Page = () => {
   return (
     <main className="grid grid-cols-12 grid-rows-3 text-black bg-gray10 gap-5">
       <div className="col-span-3 row-span-3">
@@ -17,7 +13,7 @@ const Page: React.FC<Props> = async ({}) => {
         className="flex items-center justify-center gap-6 
     col-start-4 col-span-9"
       >
-        <Gallery cards={cards} />
+        <SavedCardsSection />
       </div>
     </main>
   );

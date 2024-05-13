@@ -1,5 +1,6 @@
 import { baseClient, authClient } from "@/src/api";;
 import { IBannedUser, IEmail, ISignIn, ISignUp, IToken } from "@/src/services";
+import { ISignInResponse } from "./auth.types";
 
 class AuthService {
   private BASE_URL = '/auth';
@@ -11,9 +12,8 @@ class AuthService {
     );
   };
 
-  //must return a user and a token
   signIn (data: ISignIn) {
-    return baseClient.post<never, IToken>(
+    return baseClient.post<never, ISignInResponse>(
       this.BASE_URL + '/login', 
       data,
     );

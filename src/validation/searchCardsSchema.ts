@@ -1,15 +1,17 @@
 import { ObjectSchema } from "yup";
-import { ISearchCard } from "../services";
+import { ISearchCard } from "@/src/services";
 import * as Yup from "yup";
+
+import { genericValidationSchema } from "@/src/validation";
+
 
 export const searchCardsSchema 
 = (): ObjectSchema<ISearchCard> =>
   Yup.object().shape({
-    startLocation: 
-    Yup.string().trim().required('Please, enter your start location'),
-    tripTypes: Yup.array().required(),
-    author: Yup.array().required(),
-    climate: Yup.array().required(),
-    travelDistance: Yup.array().required(),
-    specialRequirements: Yup.array().required(),
+    startLocation: genericValidationSchema.startLocation,
+    tripTypes: genericValidationSchema.tripTypes,
+    author: genericValidationSchema.author,
+    climate: genericValidationSchema.climate,
+    travelDistance: genericValidationSchema.travelDistance,
+    specialRequirements: genericValidationSchema.specialRequirements,
   });

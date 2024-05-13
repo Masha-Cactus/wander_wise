@@ -1,30 +1,59 @@
-import { memo } from "react";
+import {
+  Control,
+  ControllerRenderProps,
+  FieldPath,
+  FieldValues,
+  Path,
+} from "react-hook-form";
+import InputControllerWrapper from "./InputControllerWrapper";
 
-type Props = {
-  selected: boolean;
+interface CheckboxInputProps<T extends FieldValues> {
+  text: string,
+  name: FieldPath<T>;
+  control: Control<T>;
   value: string | number;
-  onClick: (value: string | number) => void;
-};
+}
 
-const CheckboxInput: React.FC<Props> = ({
-  selected,
+const CheckboxInput = <T extends FieldValues>({
+  text,
   value,
-  onClick,
-}) => {
-  return (
-    <div
-      onClick={() => onClick(value)}
-      className='flex gap-2 min-w-5/12 justify-start items-center'>
-      <div className="flex justify-center h-4 w-4 cursor-pointer 
-      items-center border border-gray80 rounded-full">
-        {selected && (
-          <div className="h-2 w-2 rounded-full bg-gray80" />
-        )}
-      </div>
+  name,
+  control,
+}: CheckboxInputProps<T>) => {
+  const handleChange = (field: ControllerRenderProps<T, Path<T>>) => {
+    const isChecked = field.value.includes(value);
 
-      <p className="text-sm">{value}</p>
-    </div>
+    field.onChange(
+      isChecked
+        ? field.value.filter((v: string) => v !== value)
+        : [...field.value, value]
+    );
+  };
+
+  return (
+    <InputControllerWrapper
+      control={control}
+      name={name}
+      isLabelVisible={false}
+    >
+      {(field) => (
+        <div
+          {...field}
+          onClick={() => handleChange(field)}
+          className='flex gap-2 min-w-5/12 justify-start items-center'
+        >
+          <div className="flex justify-center h-4 w-4 cursor-pointer 
+          items-center border border-gray80 rounded-full">
+            {field.value.includes(value) && (
+              <div className="h-2 w-2 rounded-full bg-gray80" />
+            )}
+          </div>
+    
+          <p className="text-sm">{text}</p>
+        </div>
+      )}
+    </InputControllerWrapper>
   );
 };
 
-export default memo(CheckboxInput);
+export default CheckboxInput;

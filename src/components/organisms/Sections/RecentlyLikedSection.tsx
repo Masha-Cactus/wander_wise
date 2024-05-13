@@ -1,22 +1,22 @@
+'use client';
+
 import { PrimaryButton } from "@/src/components/moleculs";
 import { TripShortCard } from "@/src/components/organisms";
-// import { useUser } from "@/src/store/user";
-import { useGetUserCollections } from "@/src/queries/user.queries";
 import { memo } from "react";
+import { Heading5, Heading3 } from "@/src/components/atoms";
+import { useRouter } from "next/navigation";
+import { useGetLikedCards } from "@/src/hooks";
 
 const RecentlyLikedSection: React.FC = () => {
-  //   const { user } = useUser();
-  const { data: collections } = useGetUserCollections();
-  const likedCards = collections?.find(
-    (collection) => collection.name === "Liked cards"
-  )?.cards;
+  const { push } = useRouter();
+  const likedCards = useGetLikedCards();
 
   return (
     <div
       className="bg-white p-6 rounded-2xl flex flex-col gap-2 
  h-max"
     >
-      <p className="text-2xl font-semibold">Cards you&apos;ve recently liked</p>
+      <Heading3 text="Cards you&apos;ve recently liked" />
       {likedCards && likedCards.length > 0 ? (
         <div className="">
           {likedCards.map((trip) => (
@@ -25,10 +25,14 @@ const RecentlyLikedSection: React.FC = () => {
         </div>
       ) : (
         <div className="flex flex-col gap-4">
-          <p className="text-xl font-normal text-gray80">
-            You don&apos;t have any liked cards yet. Wanna find some?
-          </p>
-          <PrimaryButton text="Explore" classes="w-1/6" type="button" />
+          <Heading5 font="normal" classes="text-gray80"
+            text="You don&apos;t have any liked cards yet. Wanna find some?" />
+          <PrimaryButton 
+            text="Explore" 
+            classes="w-1/6" 
+            type="button" 
+            onClick={() => push('/trips')}
+          />
         </div>
       )}
     </div>

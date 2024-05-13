@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Heading, Text } from "@/src/components/atoms";
+import { Heading, Heading4 } from "@/src/components/atoms";
 import { ModalSkeleton } from "@/src/components/organisms";
 
 interface CreateReportModalProps {
@@ -14,12 +14,14 @@ const CreateReportModal: React.FC<CreateReportModalProps> = ({
 }) => {
   return (
     <ModalSkeleton onClose={onClose}>
-      <Heading text="Report issue" />
-      <Text text={`Describe your problem and 
-      our support will contact you ASAP🫡`} />
+      <Heading text="Report issue" font="normal" />
+      <Heading4
+        text={`Describe your problem and 
+      our support will contact you ASAP🫡`}
+        font="medium"
+      />
 
       {children}
-
     </ModalSkeleton>
   );
 };

@@ -2,15 +2,15 @@
 
 import { memo, useEffect, useState } from "react";
 import { ModalSkeleton } from "@/src/components/organisms";
-import { ErrorText, Heading, Text } from "@/src/components/atoms";
-import { ICard, ICollection, IUpdateCollection } from "@/src/services";
+import { ErrorText, Heading, Heading4 } from "@/src/components/atoms";
+import { ICard, IUpdateCollection, ShortCollection } from "@/src/services";
 import { useGetUserCollections, useUpdateCollection } from "@/src/queries";
-import { normalizeError } from "@/src/lib/helpers";
 import {
-  CheckboxInput,
+  // CheckboxInput,
   PrimaryButton,
   RoundedButton,
 } from "@/src/components/moleculs";
+import { useNormalizedError } from "@/src/hooks/useNormalizedError";
 
 interface AddCardToCollectionProps {
   onClose: () => void;
@@ -20,14 +20,13 @@ interface AddCardToCollectionProps {
 // todo
 // need to test
 
-const AddCardToCollection: React.FC<AddCardToCollectionProps> = ({
+const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
   onClose,
   card,
 }) => {
-  const [errorMessage, setErrorMessage] = useState("");
-  const [selectedCollections, setSelectedCollections] = useState<ICollection[]>(
-    []
-  );
+  const [errorMessage, setErrorMessage] = useNormalizedError();
+  const [selectedCollections, setSelectedCollections] 
+  = useState<ShortCollection[]>([]);
   const {
     isError: isErrorGetCollections,
     data: collections,
@@ -42,10 +41,10 @@ const AddCardToCollection: React.FC<AddCardToCollectionProps> = ({
   } = useUpdateCollection();
 
   const handleError = (error: any) => {
-    setErrorMessage(normalizeError(error.message));
+    setErrorMessage(error);
   };
 
-  const handleClick = (collection: ICollection) => {
+  const handleClick = (collection: ShortCollection) => {
     if (selectedCollections.some((c) => c.id === collection.id)) {
       setSelectedCollections(
         selectedCollections.filter((c) => c.id !== collection.id)
@@ -59,7 +58,7 @@ const AddCardToCollection: React.FC<AddCardToCollectionProps> = ({
     selectedCollections.forEach((collection) => {
       const data: IUpdateCollection = {
         ...collection,
-        cardIds: collection.cards.map((c) => c.id),
+        cardIds: collection.cardWithoutDistanceDtos.map((c) => c.id),
       };
 
       mutate(data, { onError: handleError });
@@ -78,7 +77,7 @@ const AddCardToCollection: React.FC<AddCardToCollectionProps> = ({
 
   return (
     <ModalSkeleton onClose={onClose}>
-      <Heading text={`Add “${card.name}” to a collection?`} />
+      <Heading text={`Add “${card.name}” to a collection?`} font="normal"/>
 
       <div className="flex flex-col gap-4 h-2/3 scrollbar">
         {collections?.map((collection) => (
@@ -86,12 +85,16 @@ const AddCardToCollection: React.FC<AddCardToCollectionProps> = ({
             key={collection.id}
             className="flex items-center justify-between"
           >
-            <Text text={collection.name} />
-            <CheckboxInput
+            <Heading4 text={collection.name} font="normal" />
+            <input type="checkbox"
+              checked={selectedCollections.some((c) => c.id === collection.id)}
+              onChange={() => handleClick(collection)}
+            />
+            {/* <CheckboxInput
               value={collection.id}
               onClick={() => handleClick(collection)}
               selected={collections.some((c) => c.id === collection.id)}
-            />
+            /> */}
           </div>
         ))}
       </div>
@@ -104,7 +107,7 @@ const AddCardToCollection: React.FC<AddCardToCollectionProps> = ({
           disabled={isPending}
         />
         <PrimaryButton
-          text="Ass"
+          text="Add"
           type="submit"
           onClick={handleSubmit}
           classes="bg-white text-black border border-black"
@@ -116,4 +119,4 @@ const AddCardToCollection: React.FC<AddCardToCollectionProps> = ({
   );
 };
 
-export default memo(AddCardToCollection);
+export default memo(AddCardToCollectionModal);
