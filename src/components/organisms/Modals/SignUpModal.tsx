@@ -7,12 +7,19 @@ import SignUpForm from "../Forms/SignUpForm";
 interface SignUpModalProps {
   onClose: () => void;
   onOpenSignIn: () => void;
+  onOpenConfirmEmail: () => void;
 }
 
-const SignInModal: React.FC<SignUpModalProps> = ({ onClose, onOpenSignIn }) => {
+const SignInModal: React.FC<SignUpModalProps> 
+= ({ onClose, onOpenSignIn, onOpenConfirmEmail }) => {
   const handleSignInClick = () => {
     onClose();
     onOpenSignIn();
+  };
+
+  const handleFormSubmit = () => {
+    onClose();
+    onOpenConfirmEmail();
   };
 
   return (
@@ -20,7 +27,7 @@ const SignInModal: React.FC<SignUpModalProps> = ({ onClose, onOpenSignIn }) => {
       <Heading text="Welcome to Wander Wise" classes="text-center"/>
       <Text text="Let’s begin the adventure ✨" />
 
-      <SignUpForm />
+      <SignUpForm openConfirmEmailModal={handleFormSubmit} />
 
       <div className="flex gap-2">
         <Text text="Already have an account?" classes=""/>

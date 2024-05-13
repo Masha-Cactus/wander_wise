@@ -23,7 +23,7 @@ const TextAreaInput: React.FC<TextareaProps> = ({
         <textarea className={classNames(`w-full h-36 px-4 py-3 border border-gray50 bg-white
           text-black hover:bg-gray-50 text-sm rounded-lg resize-none
           transition-all duration-75 focus:outline-none`, {
-          'border-red-200 bg-red-50': errorText,
+          'border-error bg-red-50': errorText,
         })}
         id={name}
         {...register(name)}
@@ -31,7 +31,7 @@ const TextAreaInput: React.FC<TextareaProps> = ({
         disabled={disabled}
         placeholder={placeholder}
         />
-        {errorText && <p className="text-red-50">{errorText}</p>}
+        {errorText && <p className="text-error">{errorText}</p>}
       </label>
     </div>
   );

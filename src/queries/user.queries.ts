@@ -89,3 +89,44 @@ export function useDeleteUser() {
     }
   });
 }
+
+export function useRequestUpdateEmail() {
+  const user = useUser((state) => state.user);
+  const setUser = useUser((state) => state.setUser);
+
+  return useMutation({
+    mutationFn: (newEmail: string) => {
+      if (user) {
+        return userService.requestUpdateEmail({userId: user.id, newEmail});
+      }
+    
+      return Promise.reject('No user authorized');
+    },
+    onSuccess: (user) => {
+      setUser(user);
+    }
+  });
+}
+
+export function useUpdateEmail() {
+  const [user, unbanUser] = useUser((state) => 
+    [state.user, state.unbanUser]);
+    
+  return useMutation({
+    mutationFn: (confirmationCode: string) => {
+      if (user) {
+        if (user.emailConfirmCode !== confirmationCode) {
+          return Promise.reject('Wrong confirmation code');
+        }
+        
+        return userService.updateEmail({userId: user.id, newEmail: user.email});
+      }
+        
+      return Promise.reject('No user authorized');
+    },
+    onSuccess: ({ token }) => {
+      localStorage.setItem('accessToken', token);
+      unbanUser();
+    }
+  });
+}

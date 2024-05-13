@@ -15,7 +15,11 @@ import { FormErrorText } from "@/src/components/atoms";
 import { PasswordInput } from "@/src/components/moleculs";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
 
-const SignUpForm = () => {
+type Props = {
+  openConfirmEmailModal: () => void;
+};
+
+const SignUpForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const [isShowPassword, setIsShowPassword] = useState(false);
   const validationSchema = signUpSchema();
@@ -45,6 +49,7 @@ const SignUpForm = () => {
 
     mutate(trimmedUserData, {
       onError: handleError,
+      onSuccess: () => openConfirmEmailModal(),
     });
   };
 

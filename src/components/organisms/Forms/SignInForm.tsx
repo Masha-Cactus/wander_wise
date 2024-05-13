@@ -13,7 +13,11 @@ import { PasswordInput } from "@/src/components/moleculs";
 import { useRouter } from "next/navigation";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
 
-const SignInForm = () => {
+type Props = {
+  closeModal: () => void;
+};
+
+const SignInForm: React.FC<Props> = ({ closeModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const [isShowPassword, setIsShowPassword] = useState(false);
   const validationSchema = signInSchema();
@@ -43,7 +47,10 @@ const SignInForm = () => {
 
     mutate(trimmedUserData, {
       onError: handleError,
-      onSuccess: () => push("/profile"),
+      onSuccess: () => {
+        closeModal();
+        push("/profile");
+      },
     });
   };
 

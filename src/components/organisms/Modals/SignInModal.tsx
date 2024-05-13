@@ -29,7 +29,7 @@ const SignInModal: React.FC<SignInModalProps> = ({
       <Heading text="Welcome back to Wander Wise" />
       <Text text="Let's continue our trip planning 🌍" />
 
-      <SignInForm />
+      <SignInForm closeModal={onClose} />
 
       <div className="flex gap-2">
         <Text text="Don’t have an account yet?" classes="text-nowrap"/>

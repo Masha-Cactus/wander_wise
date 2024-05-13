@@ -6,14 +6,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { IUpdateInfo } from "@/src/services";
 import { editProfileSchema } from "@/src/validation";
 import { trimObjectFields } from "@/src/lib/helpers";
-import FormErrorText from "../../atoms/FormErrorText";
+import { FormErrorText } from "@/src/components/atoms";
 import { useUpdateUserInfo } from "@/src/queries";
-import TextInput from "../../moleculs/Inputs/TextInput";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/src/store/user";
-import TextArea from "../../moleculs/Inputs/TextAreaInput";
-import LocationInput from "../../moleculs/Inputs/LocationInput";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import { 
+  PrimaryButton, 
+  TextAreaInput, 
+  LocationInput, 
+  TextInput 
+} from "@/src/components/moleculs";
 
 const ProfileEditForm = () => {
   const { user } = useUser();
@@ -94,7 +97,7 @@ const ProfileEditForm = () => {
         onChange={(value) => setValue('location', value)} 
       />
 
-      <TextArea
+      <TextAreaInput
         name="bio"
         register={register}
         errorText={errors.bio?.message}
@@ -104,6 +107,8 @@ const ProfileEditForm = () => {
       />
 
       {isError && <FormErrorText errorText={errorMessage} />}
+
+      <PrimaryButton text="Save changes" />
     </form>
   );
 };

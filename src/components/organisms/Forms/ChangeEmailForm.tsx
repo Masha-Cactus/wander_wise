@@ -1,19 +1,17 @@
 'use client';
 
 import { useNormalizedError } from '@/src/hooks/useNormalizedError';
-import { useRestorePassword } from '@/src/queries';
+import { useRequestUpdateEmail } from '@/src/queries';
 import { IEmail } from '@/src/services';
-import { restorePasswordSchema } from '@/src/validation/restorePasswordSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FormErrorText, Text } from '@/src/components/atoms';
+import { FormErrorText } from '@/src/components/atoms';
 import { PrimaryButton, TextInput } from '@/src/components/moleculs';
+import { changeEmailSchema } from '@/src/validation';
 
-const RestorePasswordForm = () => {
-  const [isSubmitted, setIsSubmitted] = useState(false);
+const ChangeEmailForm = () => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
-  const validationSchema = restorePasswordSchema();
+  const validationSchema = changeEmailSchema();
 
   const {
     reset,
@@ -27,25 +25,20 @@ const RestorePasswordForm = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useRestorePassword();
+  const { isPending, mutate, isError } = useRequestUpdateEmail();
 
   const handleError = (error: any) => {
     setErrorMessage(error.message);
   };
 
   const onSubmit: SubmitHandler<IEmail> = async(data) => {
-    mutate(data, {
+    mutate(data.email, {
       onError: handleError,
       onSuccess: () => {
         reset();
-        setIsSubmitted(true);
       },
     });
   };
-
-  if (isSubmitted) {
-    return <Text text="Your new password will be sent to your email"/>;
-  }
 
   return (
     <form
@@ -61,11 +54,11 @@ const RestorePasswordForm = () => {
         disabled={isPending}
       />
 
-      <PrimaryButton text="Continue" disabled={isPending} type='submit' />
+      <PrimaryButton text="Save" disabled={isPending} type='submit' />
 
       {isError && <FormErrorText errorText={errorMessage} />}
     </form>
   );
 };
 
-export default RestorePasswordForm;
+export default ChangeEmailForm;
