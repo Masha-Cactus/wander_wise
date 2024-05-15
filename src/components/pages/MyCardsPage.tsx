@@ -2,9 +2,9 @@
 
 import { ISearchCard } from "@/src/services";
 import { useState } from "react";
-import { FilterForm, SavedCardsSection } from "../organisms";
+import { FilterForm, CreatedCardsSection } from "../organisms";
 
-const SavedPage = () => {
+const MyCardsPage = () => {
   const [filterParams, setFilterParams] 
     = useState<ISearchCard>({} as ISearchCard);
 
@@ -18,10 +18,10 @@ const SavedPage = () => {
         className="flex items-center justify-center gap-6 
   col-start-4 col-span-9 row-span-3"
       >
-        <SavedCardsSection />
+        <CreatedCardsSection />
       </div>
     </main>
   );
 };
 
-export default SavedPage;
+export default MyCardsPage;

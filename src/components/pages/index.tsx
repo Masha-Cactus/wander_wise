@@ -5,3 +5,6 @@ export { default as TripsPage } from "./TripsPage";
 export { default as CollectionsPage } from "./CollectionsPage";
 export { default as CreateCollectionPage } from "./CreateCollectionPage";
 export { default as ProfileEditPage } from "./ProfileEditPage";
+export { default as SavedPage } from "./SavedPage";
+export { default as MyCardsPage } from "./MyCardsPage";
+export { default as CreateCardPage } from "./CreateCardPage";

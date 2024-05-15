@@ -2,7 +2,6 @@
 
 import {
   Divider,
-  ErrorText,
   TextBase,
   TextSmall,
 } from "@/src/components/atoms";
@@ -78,6 +77,7 @@ const FilterForm: React.FC<Props> = ({ setFilterParams }) => {
           placeholder="Enter your place"
           name="startLocation"
           control={control}
+          errorText={errors.startLocation?.message}
         />
       </div>
 
@@ -169,10 +169,6 @@ const FilterForm: React.FC<Props> = ({ setFilterParams }) => {
           ))}
         </div>
       </div>
-
-      {errors?.startLocation?.message && (
-        <ErrorText errorText={errors?.startLocation.message} classes="px-10" />
-      )}
 
       <div className="flex gap-4 mx-10 my-8">
         <RoundedButton

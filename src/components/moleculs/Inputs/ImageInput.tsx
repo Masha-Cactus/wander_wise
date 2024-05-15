@@ -1,91 +1,87 @@
 "use client";
 
-import { ChangeEvent, memo, useRef } from "react";
+import { memo, useRef } from "react";
 import {
+  Control,
   FieldPath,
   FieldValues,
-  UseFormRegister,
 } from "react-hook-form";
-
-import classNames from "classnames";
-import { ErrorText } from "@/src/components/atoms";
+import InputControllerWrapper from "./InputControllerWrapper";
+import Image from "next/image";
+import { Heading5, TextBase } from "../../atoms";
 
 interface FileInputProps<T extends FieldValues> {
   name: FieldPath<T>;
-  buttonTitles: string[];
-  isFileUploaded: boolean;
+  control: Control<T>;
   disabled: boolean;
-  onUploadFile: (file: File) => void;
-  onRemoveFile: () => void;
-  register: UseFormRegister<any>;
-  errorText?: string;
+  multiple: boolean;
 }
+// todo
+// add 'multiple' functionality
+// fix uploaded images styles
 
 const ImageInput = <T extends FieldValues>({
-  isFileUploaded,
-  buttonTitles,
-  onUploadFile,
-  onRemoveFile,
-  register,
-  errorText,
+  control,
   name,
   disabled,
+  multiple
 }: FileInputProps<T>) => {
-  const inputRef = useRef<HTMLInputElement | null>(null);
-
-  const handleUploadFile = (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
-    const originalFile = event.target.files?.[0];
-
-    if (originalFile) {
-      onUploadFile(originalFile);
-    }
-  };
-
-  const handleButtonClick = () => inputRef.current?.click();
-
-  const handleRemoveFile = () => {
-    onRemoveFile();
-  };
+  const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="">
-      <label
-        className="text-black relative block uppercase 
-          flex flex-col w-full items-start"
-      >
-        {name}
-        <input
-          id={name}
-          type="file"
-          accept="image/png, image/jpeg"
-          {...register(name)}
-          disabled={disabled}
-          placeholder={`Enter your ${name}`}
-          className={classNames(
-            `border-b border-black bg-white
-          text-black hover:bg-gray-50 flex h-10 w-full items-center
-          justify-center space-x-3 text-sm shadow-sm
-          transition-all duration-75 focus:outline-none`,
-            {
-              "border-error": errorText,
-            }
+    <InputControllerWrapper
+      control={control}
+      name={name}
+      isLabelVisible={false}
+      isErrorLabelVisible
+    >
+      {(field) => (
+        <div className="w-full flex gap-3 justify-between">
+          <input
+            { ...field }
+            id={name}
+            type="file"
+            accept="image/png, image/jpeg"
+            disabled={disabled}
+            multiple={multiple}
+            ref={inputRef}
+            className="hidden"
+          />
+
+          <label htmlFor={name} className="w-full flex">
+            <div className="border border-black border-dashed bg-white
+          text-black hover:bg-gray-50 h-64 w-full grow cursor-pointer
+          transition-all duration-75 focus:outline-none rounded-xl
+          flex items-center justify-center">
+              <div className="flex flex-col gap-3 justify-center text-center">
+                <Heading5 
+                  text="Upload a cover photo or video" 
+                  font="semibold" 
+                />
+                <TextBase text="JPG, JPEG, PNG" font="normal" />
+                <TextBase text="Choose file" font="normal" />
+              </div>
+            </div>
+          </label>
+
+          {inputRef?.current?.files?.length && (
+            <div className="relative flex flex-col w-16 h-full 
+              overflow-y-scroll gap-3">
+              {Array.from(inputRef?.current?.files).map((file, i) => (
+                <Image 
+                  key={i} 
+                  src={URL.createObjectURL(file)}
+                  width={0}
+                  height={0}
+                  style={{ width: '100%', height: 'auto' }}
+                  alt="Card image" 
+                />
+              ))}
+            </div>
           )}
-          ref={inputRef}
-          onChange={(event) => handleUploadFile(event)}
-        />
-        {errorText && <ErrorText errorText={errorText} />}
-      </label>
-
-      {isFileUploaded && (
-        <button onClick={handleRemoveFile}>Remove</button>
+        </div>
       )}
-
-      <button onClick={handleButtonClick}>
-        {isFileUploaded ? buttonTitles[0] : buttonTitles[1]}
-      </button>
-    </div>
+    </InputControllerWrapper>
   );
 };
 

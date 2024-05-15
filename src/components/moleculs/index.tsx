@@ -14,6 +14,9 @@ export { default as LocationInput } from "./Inputs/LocationInput";
 export { default as TextAreaInput } from "./Inputs/TextAreaInput";
 export { default as PasswordInput } from "./Inputs/PasswordInput";
 export { default as InputControllerWrapper } from "./Inputs/InputControllerWrapper";
+export { default as StarsInput } from "./Inputs/StarsInput";
+export { default as SelectInput } from "./Inputs/SelectInput";
+export { default as DropdownInput } from "./Inputs/DropdownInput";
 
 export { default as IconLink } from "./IconLink";
 export { default as ImagesBlock } from "./ImagesBlock";

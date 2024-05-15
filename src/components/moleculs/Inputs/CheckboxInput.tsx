@@ -12,6 +12,7 @@ interface CheckboxInputProps<T extends FieldValues> {
   name: FieldPath<T>;
   control: Control<T>;
   value: string | number;
+  radio?: boolean;
 }
 
 const CheckboxInput = <T extends FieldValues>({
@@ -19,15 +20,22 @@ const CheckboxInput = <T extends FieldValues>({
   value,
   name,
   control,
+  radio,
 }: CheckboxInputProps<T>) => {
   const handleChange = (field: ControllerRenderProps<T, Path<T>>) => {
-    const isChecked = field.value.includes(value);
+    const isChecked = radio 
+      ? field.value === value 
+      : field.value.includes(value);
 
-    field.onChange(
-      isChecked
-        ? field.value.filter((v: string) => v !== value)
-        : [...field.value, value]
-    );
+    if (radio) {
+      field.onChange(isChecked ? "" : value); 
+    } else {
+      field.onChange(
+        isChecked
+          ? field.value.filter((v: string) => v !== value)
+          : [...field.value, value]
+      );
+    } 
   };
 
   return (
@@ -44,7 +52,7 @@ const CheckboxInput = <T extends FieldValues>({
         >
           <div className="flex justify-center h-4 w-4 cursor-pointer 
           items-center border border-gray80 rounded-full">
-            {field.value.includes(value) && (
+            {(field.value === value || field.value.includes(value)) && (
               <div className="h-2 w-2 rounded-full bg-gray80" />
             )}
           </div>

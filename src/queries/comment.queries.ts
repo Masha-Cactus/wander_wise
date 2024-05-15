@@ -5,29 +5,42 @@ import {
   IUpdateComment,
   commentService,
 } from "@/src/services";
+import { useUser } from "@/src/store/user";
 
 export function useCreateComment() {
+  const user = useUser((state) => state.user);
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data: ICreateComment) => commentService.createComment(data),
     onSuccess: async(_, { cardId }) => {
-      await queryClient.invalidateQueries({
-        queryKey: ['card-details', {cardId} ],
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ['card-details', {cardId} ],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['user-comments', {userId: user?.id}],
+        }),
+      ]);
     },
   });
 }
 
 export function useUpdateComment() {
+  const user = useUser((state) => state.user);
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data: IUpdateComment) => commentService.updateComment(data),
     onSuccess: async(_, { cardId }) => {
-      await queryClient.invalidateQueries({
-        queryKey: ['card-details', {cardId} ],
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ['card-details', {cardId} ],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['user-comments', {userId: user?.id}],
+        }),
+      ]);
     },
   });
 }
@@ -39,15 +52,21 @@ export function useReportComment() {
 }
 
 export function useDeleteComment() {
+  const user = useUser((state) => state.user);
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({commentId}: {commentId: number, cardId: number}) => 
       commentService.deleteComment(commentId),
     onSuccess: async(_, { cardId }) => {
-      await queryClient.invalidateQueries({
-        queryKey: ['card-details', {cardId} ],
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ['card-details', {cardId} ],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['user-comments', {userId: user?.id}],
+        }),
+      ]);
     },
   });
 }

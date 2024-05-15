@@ -1,5 +1,9 @@
-import { Control, FieldPath, FieldValues } from "react-hook-form";
-import InputControllerWrapper from "../Inputs/InputControllerWrapper";
+import { 
+  Control, 
+  FieldPath, 
+  FieldValues, 
+} from "react-hook-form";
+import { InputControllerWrapper } from "@/src/components/moleculs";
 
 interface FilterButtonProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -32,7 +36,7 @@ const FilterButton = <T extends FieldValues>({
             );
           }}
           className={`text-sm rounded-full py-2 px-3 w-max text-regular 
-            ${ field.value.includes(value) ? "bg-gray80 text-white" : "bg-gray10"}`}
+            ${field.value.includes(value) ? "bg-gray80 text-white" : "bg-gray10"}`}
         >
           {value}
         </button>

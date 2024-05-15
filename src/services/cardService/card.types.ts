@@ -25,17 +25,13 @@ export interface ICard {
   specialRequirements: SpecialRequirementsType[];
 }
 export interface ICreateCard {
-  name: string,
-  populatedLocality: string,
-  region: string,
-  country: string,
-  continent: string,
+  fullName: string,
   tripTypes: TripTypesType[],
   climate: ClimateType,
   specialRequirements: SpecialRequirementsType[],
   description: string,
-  whyThisPlace: string[],
-  imageLinks: string[],
+  whyThisPlace: string,
+  imageLinks: string,
   mapLink: string,
 }
 

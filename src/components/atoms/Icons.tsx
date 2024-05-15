@@ -18,6 +18,9 @@ import { MdOutlineMail } from "react-icons/md";
 import { RiGlobalLine } from "react-icons/ri";
 import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
+import { FaStar } from "react-icons/fa";
+import { CiStar } from "react-icons/ci";
+import { FaPlus } from "react-icons/fa";
 
 
 
@@ -41,6 +44,9 @@ const Icons = {
   global: RiGlobalLine,
   eye: FaRegEye,
   eyeClosed: FaRegEyeSlash,
+  star: CiStar,
+  filledStar: FaStar,
+  plus: FaPlus,
 };
 
 export default Icons;

@@ -21,7 +21,7 @@ const CollectionsPage = () => {
           <Heading5
             text="+ Create new collection" 
             font="semibold" 
-            classes="underline underline-offset-8 text-gray80"
+            classes=" underline-offset-8 text-gray80"
           />
         </div>
 

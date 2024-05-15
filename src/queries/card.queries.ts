@@ -54,14 +54,20 @@ export function useUpdateCard() {
 }
 
 export function useAddCardImages() {
+  const user = useUser((state) => state.user);
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data: IAddCardImages) => cardService.addImages(data),
     onSuccess: async ({id}) => {
-      await queryClient.invalidateQueries({
-        queryKey: ["card-details", { cardId: id }],
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["user-collections", { userId: user?.id }],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["card-details", { cardId: id }],
+        }),
+      ]);
     },
   });
 }
