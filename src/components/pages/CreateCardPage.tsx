@@ -4,7 +4,6 @@ import { BackButton } from "@/src/components/moleculs";
 import { Heading2 } from "@/src/components/atoms";
 import { CreateCardForm, UploadCardImagesForm } from "../organisms";
 import { useEffect, useRef, useState } from "react";
-import CreateReviewForm from "../organisms/Forms/CreateReviewForm";
 
 
 const CreateCardPage = () => {
@@ -31,8 +30,6 @@ const CreateCardPage = () => {
 
         <CreateCardForm setNewCardId={setNewCardId} />
       </article>
-
-      <CreateReviewForm closeModal={() => {}} />
 
       {newCardId && (
         <article className="w-[670px] self-center flex flex-col gap-6 
