@@ -20,11 +20,11 @@ const ModalSkeleton: React.FC<Props> = ({ children, onClose }: Props) => {
         bg-gray50 fixed top-0 left-0 bg-opacity-50"
       />
       <div
-        className="w-full overflow-hidden shadow-xl md:max-w-md 
+        className="w-[670px] overflow-hidden shadow-xl 
     md:rounded-2xl md:border md:border-gray-200 bg-pink backdrop-blur-none
     absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
     flex flex-col items-center justify-center gap-3 space-y-3 
-    border-b border-gray-200 bg-white px-4 py-6 pt-8 text-center md:px-16"
+    border-b border-gray-200 bg-white px-10 py-12 text-center"
       >
         {children}
       </div>

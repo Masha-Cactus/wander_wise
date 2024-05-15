@@ -8,7 +8,7 @@ import { socialLinkSchema } from "@/src/validation/socialLinkSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
-import { TextInput } from "@/src/components/moleculs";
+import { TextInput, PrimaryButton } from "@/src/components/moleculs";
 
 type Props = {
   name: string,
@@ -56,14 +56,19 @@ const SocialLinkForm: React.FC<Props> = ({ name }) => {
       onSubmit={handleSubmit(onSubmit)} 
       className="w-full flex flex-col gap-6"
     >
-      <TextInput
-        type="text"
-        name="link"
-        control={control}
-        errorText={errors.link?.message}
-        disabled={isPending}
-        label={name}
-      />
+      <div className="flex items-end gap-3">
+        <div className="grow">
+          <TextInput
+            type="text"
+            name="link"
+            control={control}
+            errorText={errors.link?.message}
+            disabled={isPending}
+            label={name}
+          />
+        </div>
+        <PrimaryButton text="Add" classes="h-10 w-1/4" />
+      </div>
 
       {isError && <ErrorText errorText={errorMessage} />}
     </form>

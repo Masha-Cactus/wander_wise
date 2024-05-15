@@ -1,3 +1,5 @@
+import { IUser } from "../userService/user.types";
+
 export interface ISignIn {
   email: string;
   password: string;
@@ -29,4 +31,9 @@ export interface IEmail {
 
 export interface IToken {
   token: string;
+}
+
+export interface ISignInResponse {
+  userDto: IUser,
+  token: string,
 }

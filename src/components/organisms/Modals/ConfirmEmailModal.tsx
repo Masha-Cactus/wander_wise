@@ -12,11 +12,11 @@ const ConfirmEmailModal: React.FC<ConfirmEmailModalProps> = ({ onClose }) => {
     <ModalSkeleton onClose={onClose}>
       <Heading text="Password assistance" font="normal" />
       <Heading4
-        text="Enter the email address associated with your WanderWise account 🤔"
+        text="Enter the confirmation code sent to your email 🤔"
         font="medium"
       />
 
-      <ConfirmEmailForm />
+      <ConfirmEmailForm closeModal={onClose} />
     </ModalSkeleton>
   );
 };

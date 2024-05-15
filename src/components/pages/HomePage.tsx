@@ -30,7 +30,7 @@ const HomePage: React.FC<Props> = ({}) => {
         <TitleText text="Experience wonder with Wander Wise!" />
 
         <Heading3
-          classes="text-center max-w-5xl"
+          classes="text-center max-w-5xl text-white"
           text={`Your AI buddy for thrilling journeys, powered by cutting-edge artificial intelligence technology and personalized recommendations.`}
         />
       </div>

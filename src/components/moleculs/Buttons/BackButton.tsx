@@ -11,8 +11,8 @@ const BackButton: React.FC<Props> = ({}) => {
 
   return (
     <div className="flex gap-2 items-center" onClick={back}>
-      <Icons.left />
-      <Heading4 text="Back" font="medium"/>
+      <Icons.left className="w-6 h-6" />
+      <Heading4 text="Back" font="semibold"/>
     </div>
   );
 };

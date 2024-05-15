@@ -18,6 +18,7 @@ export interface IUpdateEmail {
 
 export interface IUpdatePassword {
   userId: number,
+  oldPassword: string,
   password: string,
   repeatPassword: string,
 }

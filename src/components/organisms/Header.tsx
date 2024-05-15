@@ -90,6 +90,7 @@ const Header: React.FC = () => {
         <SignUpModal
           onClose={() => setIsShowSignUpModal(false)}
           onOpenSignIn={() => setIsShowSignInModal(true)}
+          onOpenConfirmEmail={() => setIsShowConfirmEmailModal(true)}
         />
       )}
 

@@ -1,30 +1,40 @@
 import { memo } from "react";
-import { ModalSkeleton } from "@/src/components/organisms";
-import { Heading, Heading4, TextBase } from "@/src/components/atoms";
+import { ModalSkeleton, SignUpForm } from "@/src/components/organisms";
+import { Heading, Heading4, TextBase, Divider } from "@/src/components/atoms";
 import { UnstyledButton } from "@/src/components/moleculs";
-import SignUpForm from "../Forms/SignUpForm";
 
 interface SignUpModalProps {
   onClose: () => void;
   onOpenSignIn: () => void;
+  onOpenConfirmEmail: () => void;
 }
 
-const SignInModal: React.FC<SignUpModalProps> = ({ onClose, onOpenSignIn }) => {
+const SignInModal: React.FC<SignUpModalProps> 
+= ({ onClose, onOpenSignIn, onOpenConfirmEmail }) => {
   const handleSignInClick = () => {
     onClose();
     onOpenSignIn();
   };
 
+  const handleFormSubmit = () => {
+    onClose();
+    onOpenConfirmEmail();
+  };
+
   return (
     <ModalSkeleton onClose={onClose}>
-      <Heading
-        text="Welcome to Wander Wise"
-        classes="text-center"
-        font="normal"
-      />
-      <Heading4 text="Let’s begin the adventure ✨" font="medium" />
+      <div className="flex gap-2">
+        <Heading text="Welcome to" font="normal" />
+        <Heading text="Wander Wise" font="medium" classes="font-maven" />
+      </div>
 
-      <SignUpForm />
+      <Heading4 text="Let’s begin the adventure ✨" font="normal" />
+
+      <Divider classes="w-full h-px" />
+
+      <SignUpForm openConfirmEmailModal={handleFormSubmit} />
+
+      <Divider classes="w-full h-px" />
 
       <div className="flex gap-2">
         <TextBase text="Already have an account?" font="normal" />

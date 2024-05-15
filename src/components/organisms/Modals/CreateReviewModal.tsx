@@ -1,13 +1,11 @@
 import { memo } from "react";
 import { Heading } from "@/src/components/atoms";
 import { ModalSkeleton } from "@/src/components/organisms";
+import CreateReviewForm from "../Forms/CreateReviewForm";
 
 interface CreateReviewModalProps {
   onClose: () => void;
 }
-
-// todo
-// add form
 
 const CreateReviewModal: React.FC<CreateReviewModalProps> = ({
   onClose,
@@ -15,6 +13,8 @@ const CreateReviewModal: React.FC<CreateReviewModalProps> = ({
   return (
     <ModalSkeleton onClose={onClose}>
       <Heading text="How was your experience?" font="normal"/>
+
+      <CreateReviewForm closeModal={onClose} />
     </ModalSkeleton>
   );
 };

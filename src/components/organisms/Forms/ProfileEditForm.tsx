@@ -11,10 +11,11 @@ import { useUpdateUserInfo } from "@/src/queries";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/src/store/user";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
-import {
-  TextAreaInput,
-  TextInput,
-  LocationInput,
+import { 
+  PrimaryButton, 
+  TextAreaInput, 
+  LocationInput, 
+  TextInput 
 } from "@/src/components/moleculs";
 
 const ProfileEditForm = () => {
@@ -26,7 +27,6 @@ const ProfileEditForm = () => {
     control,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<Omit<IUpdateInfo, "userId">>({
     values: {
       pseudonym: "",
@@ -48,15 +48,12 @@ const ProfileEditForm = () => {
   const onSubmit = async (data: Omit<IUpdateInfo, "userId">) => {
     const trimmedUserData = trimObjectFields(data);
 
-    if (user) {
-      mutate(
-        { ...trimmedUserData, userId: user.id },
-        {
-          onError: handleError,
-          onSuccess: () => push("/profile"),
-        }
-      );
-    }
+    mutate(trimmedUserData,
+      {
+        onError: handleError,
+        onSuccess: () => push("/profile"),
+      }
+    );
   };
 
   return (
@@ -74,28 +71,38 @@ const ProfileEditForm = () => {
         label="Username"
       />
 
-      <div className="flex gap-4">
-        <TextInput
-          type="text"
-          name="firstName"
-          control={control}
-          errorText={errors.firstName?.message}
-          disabled={isPending}
-          placeholder={user?.firstName || "Enter your first name"}
-          label="First name"
-        />
-        <TextInput
-          type="text"
-          name="lastName"
-          control={control}
-          errorText={errors.lastName?.message}
-          disabled={isPending}
-          placeholder={user?.lastName || "Enter your last name"}
-          label="Last name"
-        />
+      <div className="w-full flex gap-4">
+        <div className="grow">
+          <TextInput
+            type="text"
+            name="firstName"
+            control={control}
+            errorText={errors.firstName?.message}
+            disabled={isPending}
+            placeholder={user?.firstName || "Enter your first name"}
+            label="First name"
+          />
+        </div>
+        <div className="grow">
+          <TextInput
+            type="text"
+            name="lastName"
+            control={control}
+            errorText={errors.lastName?.message}
+            disabled={isPending}
+            placeholder={user?.lastName || "Enter your last name"}
+            label="Last name"
+          />
+        </div>
       </div>
 
-      <LocationInput onChange={(value) => setValue("location", value)} />
+      <LocationInput 
+        placeholder={user?.location || "City, country"}
+        label="Location"
+        name="location"
+        control={control}
+        disabled={isPending}
+      />
 
       <TextAreaInput
         name="bio"
@@ -107,6 +114,7 @@ const ProfileEditForm = () => {
       />
 
       {isError && <ErrorText errorText={errorMessage} />}
+      <PrimaryButton type="submit" text="Save changes" />
     </form>
   );
 };

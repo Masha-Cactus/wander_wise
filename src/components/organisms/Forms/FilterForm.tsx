@@ -2,7 +2,6 @@
 
 import {
   Divider,
-  ErrorText,
   TextBase,
   TextSmall,
 } from "@/src/components/atoms";
@@ -41,7 +40,6 @@ const FilterForm: React.FC<Props> = ({ setFilterParams }) => {
   const {
     handleSubmit,
     formState: { errors },
-    setValue,
     control,
     reset,
   } = useForm<ISearchCard>({
@@ -75,7 +73,12 @@ const FilterForm: React.FC<Props> = ({ setFilterParams }) => {
           font="normal"
           classes="mt-2"
         />
-        <LocationInput onChange={(value) => setValue("startLocation", value)} />
+        <LocationInput 
+          placeholder="Enter your place"
+          name="startLocation"
+          control={control}
+          errorText={errors.startLocation?.message}
+        />
       </div>
 
       <Divider classes="h-px w-full" />
@@ -96,7 +99,8 @@ const FilterForm: React.FC<Props> = ({ setFilterParams }) => {
               key={distanceValue}
               name="travelDistance"
               control={control}
-              value={distanceText}
+              text={distanceText}
+              value={distanceValue}
             />
           ))}
         </div>
@@ -159,15 +163,12 @@ const FilterForm: React.FC<Props> = ({ setFilterParams }) => {
             <CheckboxInput key={authorValue}
               name="author"
               control={control}
-              value={authorText}
+              text={authorText}
+              value={authorValue}
             />
           ))}
         </div>
       </div>
-
-      {errors?.startLocation?.message && (
-        <ErrorText errorText={errors?.startLocation.message} classes="px-10" />
-      )}
 
       <div className="flex gap-4 mx-10 my-8">
         <RoundedButton

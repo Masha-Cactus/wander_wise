@@ -33,9 +33,9 @@ const InputControllerWrapper = <T extends FieldValues>({
       name={name}
       control={control}
       render={({ field, fieldState }) => (
-        <div>
-          {isLabelVisible && <label className="text-black relative block
-          flex flex-col w-full items-start">{label}</label>}
+        <div className="flex flex-col gap-3">
+          {isLabelVisible && <label className="text-black text-xl font-medium 
+          relative flex flex-col w-full items-start">{label}</label>}
 
           {children(field)}
 

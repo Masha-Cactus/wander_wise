@@ -1,4 +1,4 @@
-import ProfileEditPage from "@/src/components/pages/ProfileEditPage";
+import { ProfileEditPage } from "@/src/components/pages";
 
 const Page = () => {
   return <ProfileEditPage />;

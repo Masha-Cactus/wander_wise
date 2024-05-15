@@ -1,13 +1,15 @@
 /* eslint-disable max-len */
-import { memo } from "react";
+'use client';
+
+import { memo, useState } from "react";
 import { ModalSkeleton, RestorePasswordForm } from "@/src/components/organisms";
 import { Heading, Heading4 } from "@/src/components/atoms";
 import { UnstyledButton } from "@/src/components/moleculs";
 
 interface RestorePasswordModalProps {
   onClose: () => void;
-  onOpenSignIn: () => void;
-  onOpenSignUp: () => void;
+  onOpenSignIn?: () => void;
+  onOpenSignUp?: () => void;
 }
 
 const RestorePasswordModal: React.FC<RestorePasswordModalProps> = ({
@@ -15,36 +17,50 @@ const RestorePasswordModal: React.FC<RestorePasswordModalProps> = ({
   onOpenSignIn,
   onOpenSignUp,
 }) => {
-
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const handleSignUpClick = () => {
     onClose();
-    onOpenSignUp();
+    onOpenSignUp && onOpenSignUp();
   };
 
   const handleSignInClick = () => {
     onClose();
-    onOpenSignIn();
+    onOpenSignIn && onOpenSignIn();
   };
 
   return (
     <ModalSkeleton onClose={onClose}>
       <Heading text="Password assistance" font="normal"/>
-      <Heading4 text="Enter the email address associated with your WanderWise account 🤔" font="medium"/>
-
-      <RestorePasswordForm />
-
-      <div className="flex flex-col gap-2">
-        <UnstyledButton
-          text="Sign In"
-          classes="font-bold"
-          onClick={handleSignInClick}
+      {isSubmitted ? (
+        <Heading4 
+          text="Your new password will be sent to your email" 
+          font="medium"
         />
-        <UnstyledButton
-          text="Sign Up"
-          classes="font-bold"
-          onClick={handleSignUpClick}
-        />
-      </div>
+      ) : (
+        <>
+          <Heading4 
+            text="Enter the email address associated with your WanderWise account 🤔" 
+            font="medium"
+          />
+
+          <RestorePasswordForm setIsSubmitted={setIsSubmitted} />
+        </>
+      )}
+
+      {!!(onOpenSignIn && onOpenSignUp) && (
+        <div className="flex flex-col gap-2">
+          <UnstyledButton
+            text="Sign In To Your Account"
+            classes="font-bold"
+            onClick={handleSignInClick}
+          />
+          <UnstyledButton
+            text="Create new account"
+            classes="font-bold"
+            onClick={handleSignUpClick}
+          />
+        </div>
+      )}
 
     </ModalSkeleton>
   );

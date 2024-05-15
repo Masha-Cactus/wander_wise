@@ -74,7 +74,7 @@ export const genericValidationSchema = {
   climate: Yup.array().required(`Climate ${requiredText}`),
   travelDistance: Yup.array().required(`Travel distance ${requiredText}`),
   specialRequirements: Yup.array().required(`Special requirements ${requiredText}`),
-  link: Yup.string().url().required(`Social link ${requiredText}`),
+  link: Yup.string().url().required(`Link ${requiredText}`),
   confirmationCode: Yup.string()
     .trim()
     .required(`Confirmation code ${requiredText}`),

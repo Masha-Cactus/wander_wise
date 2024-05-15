@@ -7,7 +7,7 @@ interface TextProps {
 const TitleText: React.FC<TextProps> = ({
   text,
 }) => {
-  return <p className={`font-bold maven 
+  return <p className={`font-bold 
   text-8xl text-center font-maven`}>{text}</p>;
 };
 

@@ -13,7 +13,11 @@ interface FormData {
   confirmationCode: string,
 };
 
-const ConfirmEmailForm = () => {
+type Props = {
+  closeModal: () => void;
+};
+
+const ConfirmEmailForm: React.FC<Props> = ({ closeModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = confirmEmailSchema();
 
@@ -36,10 +40,13 @@ const ConfirmEmailForm = () => {
 
   const { isPending, mutate, isError } = useConfirmEmail();
 
-  const onSubmit: SubmitHandler<FormData> = async(data) => {
-    mutate(data.confirmationCode, {
+  const onSubmit: SubmitHandler<FormData> = async({confirmationCode}) => {
+    mutate(confirmationCode, {
       onError: handleError,
-      onSuccess: () => reset(),
+      onSuccess: () => {
+        reset();
+        closeModal();
+      },
     });
   };
 

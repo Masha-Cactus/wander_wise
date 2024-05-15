@@ -42,7 +42,7 @@ const TextInput = <T extends FieldValues>({
             disabled={disabled}
             placeholder={placeholder ? placeholder : `Enter your ${name}`}
             className={classNames(
-              `border border-black bg-white
+              `border border-gray50 bg-white
                 text-black hover:bg-gray-50 flex h-10 w-full items-center
                 justify-center space-x-3 text-sm shadow-sm rounded-md
                 transition-all duration-75 focus:outline-none px-3`,

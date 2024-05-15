@@ -3,7 +3,7 @@ import { memo } from "react";
 interface HeadingProps {
   text: string;
   classes?: string;
-  font: "medium" | "normal";
+  font: "medium" | "normal" | "semibold";
 }
 
 //this is for 20px

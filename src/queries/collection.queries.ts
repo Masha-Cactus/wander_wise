@@ -10,6 +10,7 @@ export function useGetCollection(collectionId: number) {
   return useQuery({
     queryKey: ['collection', {collectionId}],
     queryFn: () => collectionService.getCollection(collectionId),
+    enabled: !!collectionId,
   });
 }
 
@@ -18,8 +19,13 @@ export function useCreateCollection() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: ICreateCollection) => 
-      collectionService.createCollection(data),
+    mutationFn: (data: Omit<ICreateCollection, 'userId'>) => {
+      if (user) {
+        return collectionService.createCollection({...data, userId: user.id});
+      }
+
+      return Promise.reject('No user authorized');
+    },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ['user-collections', {userId: user?.id}],

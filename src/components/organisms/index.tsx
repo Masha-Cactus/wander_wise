@@ -28,7 +28,17 @@ export { default as SignInForm } from "./Forms/SignInForm";
 export { default as FilterForm } from "./Forms/FilterForm";
 export { default as ConfirmEmailForm } from "./Forms/ConfirmEmailForm";
 export { default as RestorePasswordForm } from "./Forms/RestorePasswordForm";
+export { default as SignUpForm } from "./Forms/SignUpForm";
+export { default as ChangeEmailForm } from "./Forms/ChangeEmailForm";
+export { default as ChangePasswordForm } from "./Forms/ChangePasswordForm";
+export { default as ProfileEditForm } from "./Forms/ProfileEditForm";
+export { default as SocialLinkForm } from "./Forms/SocialLinkForm";
+export { default as CreateCollectionForm } from "./Forms/CreateCollectionForm";
+export { default as CreateCardForm } from "./Forms/CreateCardForm";
+export { default as UploadCardImagesForm } from "./Forms/UploadCardImagesForm";
 
 export { default as RecentlyLikedSection } from "./Sections/RecentlyLikedSection";
 export { default as RecentlyReviewsSection } from "./Sections/RecentlyReviewsSection";
 export { default as ProfileInfoSection } from "./Sections/ProfileInfoSection";
+export { default as SavedCardsSection } from "./Sections/SavedCardsSection";
+export { default as CreatedCardsSection } from "./Sections/CreatedCardsSection";

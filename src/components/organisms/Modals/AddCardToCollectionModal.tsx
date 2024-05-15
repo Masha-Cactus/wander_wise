@@ -3,14 +3,14 @@
 import { memo, useEffect, useState } from "react";
 import { ModalSkeleton } from "@/src/components/organisms";
 import { ErrorText, Heading, Heading4 } from "@/src/components/atoms";
-import { ICard, ICollection, IUpdateCollection } from "@/src/services";
+import { ICard, IUpdateCollection, ShortCollection } from "@/src/services";
 import { useGetUserCollections, useUpdateCollection } from "@/src/queries";
-import { normalizeError } from "@/src/lib/helpers";
 import {
   // CheckboxInput,
   PrimaryButton,
   RoundedButton,
 } from "@/src/components/moleculs";
+import { useNormalizedError } from "@/src/hooks/useNormalizedError";
 
 interface AddCardToCollectionProps {
   onClose: () => void;
@@ -24,10 +24,9 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
   onClose,
   card,
 }) => {
-  const [errorMessage, setErrorMessage] = useState("");
-  const [selectedCollections, setSelectedCollections] = useState<ICollection[]>(
-    []
-  );
+  const [errorMessage, setErrorMessage] = useNormalizedError();
+  const [selectedCollections, setSelectedCollections] 
+  = useState<ShortCollection[]>([]);
   const {
     isError: isErrorGetCollections,
     data: collections,
@@ -42,10 +41,10 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
   } = useUpdateCollection();
 
   const handleError = (error: any) => {
-    setErrorMessage(normalizeError(error.message));
+    setErrorMessage(error);
   };
 
-  const handleClick = (collection: ICollection) => {
+  const handleClick = (collection: ShortCollection) => {
     if (selectedCollections.some((c) => c.id === collection.id)) {
       setSelectedCollections(
         selectedCollections.filter((c) => c.id !== collection.id)
@@ -59,7 +58,7 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
     selectedCollections.forEach((collection) => {
       const data: IUpdateCollection = {
         ...collection,
-        cardIds: collection.cards.map((c) => c.id),
+        cardIds: collection.cardWithoutDistanceDtos.map((c) => c.id),
       };
 
       mutate(data, { onError: handleError });
@@ -108,7 +107,7 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
           disabled={isPending}
         />
         <PrimaryButton
-          text="Ass"
+          text="Add"
           type="submit"
           onClick={handleSubmit}
           classes="bg-white text-black border border-black"

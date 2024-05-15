@@ -5,9 +5,11 @@ import {
   IUpdateEmail, 
   IUpdateImage, 
   IUpdateInfo, 
-  IUpdatePassword, 
+  IUpdatePassword,
+  ShortCollection, 
+  IToken, 
+  IComment,
 } from "@/src/services";
-import { ICollection, IToken } from "@/src/services";
 
 class UserService {
   private BASE_URL = '/users';
@@ -21,18 +23,17 @@ class UserService {
   };
 
   getCollections (userId: number) {
-    return authClient.get<never, ICollection[]>(`${this.BASE_URL}/${userId}/collections`);
+    return authClient.get<never, ShortCollection[]>(`${this.BASE_URL}/${userId}/collections`);
   };
 
-  //post on stagger, must be get
-  requestUpdatePassword (userId: number) {
-    return authClient.get<never, IUser>(`${this.BASE_URL}/request-update-user-password/${userId}`);
+  getComments(userId: number) {
+    return authClient.get<never, IComment[]>(`${this.BASE_URL}/${userId}/comments`);
   };
 
-  updatePassword ({userId, password, repeatPassword}: IUpdatePassword) {
-    return authClient.put<never, IUser>(
+  updatePassword ({userId, ...data}: IUpdatePassword) {
+    return authClient.put<never, IToken>(
       `${this.BASE_URL}/update-user-password/${userId}`,
-      { password, repeatPassword },
+      data,
     );
   }
 

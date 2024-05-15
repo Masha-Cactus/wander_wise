@@ -7,8 +7,8 @@ import { useUser } from "@/src/store/user";
 
 const ProfileInfoSection: React.FC = () => {
   const { user } = useUser();
-  const { firstName, lastName, bio, location, profileImage, pseudonym, email } =
-    user!;
+  const { firstName, lastName, bio, location, profileImage, pseudonym, email } 
+  = user!;
 
   return (
     <div
@@ -43,7 +43,7 @@ const ProfileInfoSection: React.FC = () => {
           font="normal"
         />
 
-        <Heading2 text={`${firstName} ${lastName}`} font="semibold" />
+        <Heading2 text={firstName || lastName ? `${firstName} ${lastName}` : ''} font="semibold" />
         {bio && <TextBase text={bio} font="normal" />}
       </div>
 
