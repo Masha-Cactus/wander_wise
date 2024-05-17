@@ -26,9 +26,9 @@ export interface ICard {
 }
 export interface ICreateCard {
   fullName: string,
-  tripTypes: TripTypesType[],
+  tripTypes: string,
   climate: ClimateType,
-  specialRequirements: SpecialRequirementsType[],
+  specialRequirements: string,
   description: string,
   whyThisPlace: string,
   imageLinks: string,

@@ -5,6 +5,7 @@ export { default as ReviewsList } from "./Lists/ReviewsList";
 export { default as Stars } from "./Stars";
 export { default as Header } from "./Header";
 export { default as Slider } from "./Slider";
+export { default as Collection } from "./Collection";
 
 export { default as TripShortCard } from "./Trips/TripShortCard";
 export { default as TripMediumCard } from "./Trips/TripMediumCard";
@@ -35,6 +36,7 @@ export { default as ProfileEditForm } from "./Forms/ProfileEditForm";
 export { default as SocialLinkForm } from "./Forms/SocialLinkForm";
 export { default as CreateCollectionForm } from "./Forms/CreateCollectionForm";
 export { default as CreateCardForm } from "./Forms/CreateCardForm";
+export { default as EditCardForm } from "./Forms/EditCardForm";
 export { default as UploadCardImagesForm } from "./Forms/UploadCardImagesForm";
 
 export { default as RecentlyLikedSection } from "./Sections/RecentlyLikedSection";

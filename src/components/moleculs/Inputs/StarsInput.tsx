@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Control, FieldPath, FieldValues } from "react-hook-form";
 import { Icons } from "@/src/components/atoms";
 import { InputControllerWrapper } from "@/src/components/moleculs";
@@ -37,4 +38,4 @@ const StarsInput = <T extends FieldValues>({
   );
 };
 
-export default StarsInput;
+export default memo(StarsInput) as typeof StarsInput;

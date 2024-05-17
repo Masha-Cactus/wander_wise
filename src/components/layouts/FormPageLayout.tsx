@@ -1,15 +1,13 @@
-import { memo } from "react";
+import { memo, PropsWithChildren } from "react";
 import { BackButton } from "../moleculs";
 
-const FormPageLayout = () => {
+const FormPageLayout:React.FC<PropsWithChildren> = ({ children }) => {
   return (
-    <div className="bg-p-10 flex flex-col gap-8">
+    <main className="h-full bg-gray10 p-10 flex flex-col 
+    gap-8 overflow-scroll">
       <BackButton />
-      <article className="flex flex-col items-center 
-      bg-white px-4 py-6 pt-8 text-center md:px-16">
-
-      </article>
-    </div>
+      {children}
+    </main>
   );
 };
 

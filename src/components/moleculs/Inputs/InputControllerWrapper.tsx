@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { memo, ReactNode } from "react";
 import {
   Control,
   Controller,
@@ -48,4 +48,4 @@ const InputControllerWrapper = <T extends FieldValues>({
   );
 };
 
-export default InputControllerWrapper;
+export default memo(InputControllerWrapper) as typeof InputControllerWrapper;

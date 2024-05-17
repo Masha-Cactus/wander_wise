@@ -10,7 +10,7 @@ import {
 } from "react-hook-form";
 import { Icons, TextMedium } from "@/src/components/atoms";
 import { InputControllerWrapper } from "@/src/components/moleculs";
-import { useState } from "react";
+import { useState, memo } from "react";
   
 interface SelectInputProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -103,4 +103,4 @@ const SelectInput = <T extends FieldValues>({
   );
 };
   
-export default SelectInput;
+export default memo(SelectInput) as typeof SelectInput;

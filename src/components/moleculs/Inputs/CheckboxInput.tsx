@@ -5,7 +5,8 @@ import {
   FieldValues,
   Path,
 } from "react-hook-form";
-import InputControllerWrapper from "./InputControllerWrapper";
+import { InputControllerWrapper } from "@/src/components/moleculs";
+import { memo } from "react";
 
 interface CheckboxInputProps<T extends FieldValues> {
   text: string,
@@ -64,4 +65,4 @@ const CheckboxInput = <T extends FieldValues>({
   );
 };
 
-export default CheckboxInput;
+export default memo(CheckboxInput) as typeof CheckboxInput;

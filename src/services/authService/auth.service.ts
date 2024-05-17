@@ -32,6 +32,10 @@ class AuthService {
 
   refresh () {
     return authClient.get<never, IToken>(this.BASE_URL + '/refresh-jwt');
+  };
+
+  logout (token: string) {
+    return authClient.get(`${this.BASE_URL}/logout/${token}`);
   }
 }
 

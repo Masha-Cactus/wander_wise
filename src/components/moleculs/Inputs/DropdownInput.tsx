@@ -1,15 +1,15 @@
 'use client';
 
 import classNames from "classnames";
-import { useState } from "react";
+import { memo, useState } from "react";
 import {
   Control,
   FieldPath,
   FieldValues,
   useWatch,
 } from "react-hook-form";
-import { Heading5, Icons, TextBase } from "../../atoms";
-import FilterButton from "../Buttons/FilterButton";
+import { Heading5, Icons, TextBase } from "@/src/components/atoms";
+import { FilterButton } from "@/src/components/moleculs";
 
 interface DropdownInputProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -113,4 +113,4 @@ const DropdownInput = <T extends FieldValues>({
   );
 };
   
-export default DropdownInput;
+export default memo(DropdownInput) as typeof DropdownInput;

@@ -10,4 +10,5 @@ export * from "./changePasswordSchema";
 export * from "./createCollectionSchema";
 export * from "./createReviewSchema";
 export * from "./createCardSchema";
+export * from "./updateCardSchema";
 export * from "./uploadCardImagesSchema";

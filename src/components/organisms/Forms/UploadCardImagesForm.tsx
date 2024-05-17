@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
 import { ImageInput, PrimaryButton } from "@/src/components/moleculs";
 
-type FormData = {
+type UploadCardImagesFormData = {
   images: File[],
 };
 
@@ -26,7 +26,7 @@ const UploadCardImagesForm: React.FC<Props> = ({ newCardId }) => {
   const {
     control,
     handleSubmit,
-  } = useForm<FormData>({
+  } = useForm<UploadCardImagesFormData>({
     defaultValues: {
       images: [],
     },
@@ -39,7 +39,7 @@ const UploadCardImagesForm: React.FC<Props> = ({ newCardId }) => {
     setErrorMessage(error.message);
   };
   
-  const onSubmit = async ({ images }: FormData) => {
+  const onSubmit = async ({images}: UploadCardImagesFormData) => {
     if (typeof newCardId === 'number') {
       mutate({
         images,

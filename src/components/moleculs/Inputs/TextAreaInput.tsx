@@ -1,6 +1,7 @@
+import { memo } from "react";
 import classNames from "classnames";
 import { Control, FieldPath, FieldValues } from "react-hook-form";
-import InputControllerWrapper from "./InputControllerWrapper";
+import { InputControllerWrapper } from "@/src/components/moleculs";
 
 interface TextareaProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -48,4 +49,4 @@ const TextAreaInput = <T extends FieldValues>({
   );
 };
 
-export default TextAreaInput;
+export default memo(TextAreaInput) as typeof TextAreaInput;

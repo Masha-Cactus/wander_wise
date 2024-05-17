@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import Radar from "radar-sdk-js";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
 import { Control, FieldPath, FieldValues } from "react-hook-form";
-import InputControllerWrapper from "./InputControllerWrapper";
+import { InputControllerWrapper } from "@/src/components/moleculs";
 import classNames from "classnames";
 
 const key = "prj_live_pk_6925600add7305492567163191c2abbb9977c348";
@@ -102,4 +102,4 @@ const LocationInput = <T extends FieldValues>({
   );
 };
 
-export default LocationInput;
+export default memo(LocationInput) as typeof LocationInput;
