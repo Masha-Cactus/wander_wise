@@ -1,14 +1,16 @@
 "use client";
 
-import { memo, useRef } from "react";
+import React, { memo, useState } from "react";
 import {
   Control,
+  ControllerRenderProps,
   FieldPath,
   FieldValues,
+  Path,
 } from "react-hook-form";
-import InputControllerWrapper from "./InputControllerWrapper";
+import { InputControllerWrapper } from "@/src/components/moleculs";
 import Image from "next/image";
-import { Heading5, TextBase } from "../../atoms";
+import { Heading5, Icons, TextBase } from "@/src/components/atoms";
 
 interface FileInputProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -16,9 +18,6 @@ interface FileInputProps<T extends FieldValues> {
   disabled: boolean;
   multiple: boolean;
 }
-// todo
-// add 'multiple' functionality
-// fix uploaded images styles
 
 const ImageInput = <T extends FieldValues>({
   control,
@@ -26,7 +25,29 @@ const ImageInput = <T extends FieldValues>({
   disabled,
   multiple
 }: FileInputProps<T>) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [value, setValue] = useState('');
+
+  const handleAdd = (
+    field: ControllerRenderProps<T, Path<T>>, 
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setValue(event.target.value);
+    field.onChange(
+      [ ...Array.from(event.target.files || []),
+        ...field.value,
+      ]
+    );
+  };
+
+  const handleDelete = (
+    field: ControllerRenderProps<T, Path<T>>,
+    index: number
+  ) => {
+    const updatedValue: File[] = [...field.value];
+
+    updatedValue.splice(index, 1);
+    field.onChange(updatedValue);
+  };
 
   return (
     <InputControllerWrapper
@@ -36,7 +57,7 @@ const ImageInput = <T extends FieldValues>({
       isErrorLabelVisible
     >
       {(field) => (
-        <div className="w-full flex gap-3 justify-between">
+        <div className="w-full flex flex-col gap-3">
           <input
             { ...field }
             id={name}
@@ -44,10 +65,12 @@ const ImageInput = <T extends FieldValues>({
             accept="image/png, image/jpeg"
             disabled={disabled}
             multiple={multiple}
-            ref={inputRef}
+            value={value}
+            onChange={(e) => handleAdd(field, e)}
             className="hidden"
           />
 
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label htmlFor={name} className="w-full flex">
             <div className="border border-black border-dashed bg-white
           text-black hover:bg-gray-50 h-64 w-full grow cursor-pointer
@@ -64,18 +87,30 @@ const ImageInput = <T extends FieldValues>({
             </div>
           </label>
 
-          {inputRef?.current?.files?.length && (
-            <div className="relative flex flex-col w-16 h-full 
-              overflow-y-scroll gap-3">
-              {Array.from(inputRef?.current?.files).map((file, i) => (
-                <Image 
-                  key={i} 
-                  src={URL.createObjectURL(file)}
-                  width={0}
-                  height={0}
-                  style={{ width: '100%', height: 'auto' }}
-                  alt="Card image" 
-                />
+          {!!field.value.length && (
+            <div className="relative flex w-full h-28 
+              overflow-x-scroll gap-3">
+              {(field.value as File[]).map((file, i) => (
+                <div key={i} className="relative group h-full w-40 shrink-0">
+                  <Image 
+                    src={URL.createObjectURL(file)}
+                    width={0}
+                    height={0}
+                    style={{ 
+                      width: '100%', 
+                      height: '100%', 
+                      objectFit: 'cover',
+                      borderRadius: '15px', 
+                    }}
+                    alt="Card image"
+                  />
+                  <Icons.delete
+                    className="absolute top-2 right-2 rounded-full w-6 h-6 p-1 
+                    border border-white bg-error hidden text-white 
+                    group-hover:block group-hover:cursor-pointer"
+                    onClick={() => handleDelete(field, i)}
+                  />
+                </div>
               ))}
             </div>
           )}
@@ -85,4 +120,4 @@ const ImageInput = <T extends FieldValues>({
   );
 };
 
-export default memo(ImageInput);
+export default memo(ImageInput) as typeof ImageInput;

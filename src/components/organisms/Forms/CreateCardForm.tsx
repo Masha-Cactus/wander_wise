@@ -80,7 +80,9 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
     const {
       name, 
       location, 
-      whyThisPlace, 
+      whyThisPlace,
+      specialRequirements,
+      tripTypes,
       ...trimmedData
     } = trimObjectFields(data);
   
@@ -88,6 +90,9 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
       ...trimmedData,
       fullName: `${name}|${location}`,
       whyThisPlace: whyThisPlace.reduce((acc, curr) => acc + '|' + curr, ''),
+      specialRequirements: specialRequirements
+        .reduce((acc, curr) => acc + '|' + curr, ''),
+      tripTypes: tripTypes.reduce((acc, curr) => acc + '|' + curr, ''),
     },
     {
       onError: handleError,
@@ -139,7 +144,6 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
 
       <DropdownInput
         options={atmospheres}
-        // selectedOptions={getValues('tripTypes')}
         name="tripTypes"
         errorText={errors.tripTypes?.message}
         control={control}

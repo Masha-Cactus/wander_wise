@@ -1,26 +1,26 @@
 'use client';
 
-import { BackButton } from "@/src/components/moleculs";
 import { Heading2 } from "@/src/components/atoms";
-import { CreateCardForm, UploadCardImagesForm } from "../organisms";
+import { 
+  CreateCardForm, 
+  UploadCardImagesForm 
+} from "@/src/components/organisms";
 import { useEffect, useRef, useState } from "react";
-import CreateReviewForm from "../organisms/Forms/CreateReviewForm";
+import { FormPageLayout } from "@/src/components/layouts";
 
 
 const CreateCardPage = () => {
-  const [newCardId, setNewCardId] = useState<number| null>(null);
+  const [newCardId, setNewCardId] = useState<number| null>(1);
   const scrollRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (newCardId && scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      scrollRef.current.scrollIntoView();
     }
   }, [newCardId]);
 
   return (
-    <main ref={scrollRef} className="h-full bg-gray10 p-10 flex flex-col 
-    gap-8 overflow-scroll">
-      <BackButton />
+    <FormPageLayout>
       <article className="w-[670px] self-center flex flex-col gap-6 
       items-center bg-white px-10 py-12 rounded-3xl">
         <Heading2 
@@ -31,11 +31,11 @@ const CreateCardPage = () => {
 
         <CreateCardForm setNewCardId={setNewCardId} />
       </article>
-
-      <CreateReviewForm closeModal={() => {}} />
-
+    
       {newCardId && (
-        <article className="w-[670px] self-center flex flex-col gap-6 
+        <article 
+          ref={scrollRef}
+          className="w-[670px] self-center flex flex-col gap-6 
           items-center bg-white px-10 py-12 rounded-3xl">
           <Heading2 
             text="Upload images for your new card" 
@@ -45,7 +45,7 @@ const CreateCardPage = () => {
           <UploadCardImagesForm newCardId={newCardId} />
         </article>
       )}
-    </main>
+    </FormPageLayout>
   );
 };
 

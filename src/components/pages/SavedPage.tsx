@@ -5,8 +5,7 @@ import { useState } from "react";
 import { FilterForm, SavedCardsSection } from "../organisms";
 
 const SavedPage = () => {
-  const [filterParams, setFilterParams] 
-    = useState<ISearchCard>({} as ISearchCard);
+  const [filterParams, setFilterParams] = useState<ISearchCard | null>(null);
 
   return (
     <main className="grid grid-cols-12 grid-rows-3 text-black bg-gray10 gap-5">

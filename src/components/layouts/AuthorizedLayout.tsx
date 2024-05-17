@@ -1,3 +1,5 @@
+'use client';
+
 import { PropsWithChildren, memo, useEffect } from "react";
 // import { useGetCurrentUser } from "@/app/query";
 import { useUser } from "@/src/store/user";

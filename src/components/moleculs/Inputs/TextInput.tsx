@@ -1,10 +1,11 @@
+import { memo } from "react";
 import classNames from "classnames";
 import {
   Control,
   FieldPath,
   FieldValues,
 } from "react-hook-form";
-import InputControllerWrapper from "./InputControllerWrapper";
+import { InputControllerWrapper } from "@/src/components/moleculs";
 
 interface TextInputProps<T extends FieldValues> {
   type: string;
@@ -57,4 +58,4 @@ const TextInput = <T extends FieldValues>({
   );
 };
 
-export default TextInput;
+export default memo(TextInput) as typeof TextInput;

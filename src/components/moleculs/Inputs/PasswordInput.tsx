@@ -1,7 +1,8 @@
+import { memo } from "react";
 import { Control, FieldPath, FieldValues } from "react-hook-form";
 import classNames from "classnames";
 import { Icons } from "@/src/components/atoms";
-import InputControllerWrapper from "./InputControllerWrapper";
+import { InputControllerWrapper } from "@/src/components/moleculs";
 
 interface PasswordInputProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -64,4 +65,4 @@ const PasswordInput = <T extends FieldValues>({
   );
 };
 
-export default PasswordInput;
+export default memo(PasswordInput) as typeof PasswordInput;

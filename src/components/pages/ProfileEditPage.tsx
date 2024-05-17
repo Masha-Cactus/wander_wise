@@ -2,8 +2,8 @@
 
 import { useUser } from "@/src/store/user";
 import { useState } from "react";
-import { Divider, Heading2, Heading5, TextBase } from "../atoms";
-import { BackButton, PrimaryButton } from "../moleculs";
+import { Divider, Heading2, Heading5, TextBase } from "@/src/components/atoms";
+import { PrimaryButton } from "@/src/components/moleculs";
 import { 
   ChangeUserEmailModal, 
   ChangeUserPasswordModal, 
@@ -11,6 +11,7 @@ import {
   ProfileEditForm,
   SocialLinkForm,
 } from "@/src/components/organisms";
+import { FormPageLayout } from "@/src/components/layouts";
 
 const ProfileEditPage = () => {
   const { user } = useUser();
@@ -21,9 +22,7 @@ const ProfileEditPage = () => {
   = useState(false);
 
   return (
-    <main className="h-full bg-gray10 p-10 flex flex-col 
-    gap-8 overflow-scroll">
-      <BackButton />
+    <FormPageLayout>
       <article className="w-[670px] self-center flex flex-col gap-6 
       items-center bg-white px-10 py-12 rounded-3xl">
         <Heading2 
@@ -84,6 +83,7 @@ const ProfileEditPage = () => {
         <SocialLinkForm name="Website" />
         <SocialLinkForm name="Instagram" />
         <SocialLinkForm name="Twitter" />
+
       </article>
 
       {isShowChangeEmailModal && (
@@ -104,7 +104,7 @@ const ProfileEditPage = () => {
           onClose={() => setIsShowRestorePasswordModal(false)}
         />
       )}
-    </main>
+    </FormPageLayout>
   );
 };
 

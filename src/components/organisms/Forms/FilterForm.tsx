@@ -32,7 +32,7 @@ const authors = Object.entries(CardAuthors);
 const distance = Object.entries(TravelDistance);
 
 type Props = {
-  setFilterParams: Dispatch<SetStateAction<ISearchCard>>;
+  setFilterParams: Dispatch<SetStateAction<ISearchCard | null>>;
 };
 
 const FilterForm: React.FC<Props> = ({ setFilterParams }) => {

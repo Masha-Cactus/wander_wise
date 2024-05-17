@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { authService, IEmail, ISignIn, ISignUp } from "@/src/services";
 import { useUser } from "@/src/store/user";
-import { setCookie } from 'cookies-next';
 
 export function useSignUp() {
   const setUser = useUser((state) => state.setUser);
@@ -33,9 +32,6 @@ export function useConfirmEmail() {
     onSuccess: ({ token }) => {
       localStorage.setItem('accessToken', token);
       unbanUser();
-      setCookie('access-token', token, {
-        httpOnly: true,
-      });
     }
   });
 }
@@ -49,9 +45,6 @@ export function useSignIn() {
     onSuccess: async({ userDto, token }) => {
       setUser(userDto);
       localStorage.setItem('accessToken', token);
-      setCookie('access-token', token, {
-        httpOnly: true,
-      });
     },
   });
 }
@@ -59,5 +52,19 @@ export function useSignIn() {
 export function useRestorePassword() {
   return useMutation({
     mutationFn: (data: IEmail) => authService.restorePassword(data),
+  });
+}
+
+export function useLogout() {
+  const token = localStorage.getItem('accessToken');
+
+  return useMutation({
+    mutationFn: () => {
+      if (token) {
+        return authService.logout(token);
+      }
+
+      return Promise.reject('User not authorized');
+    },
   });
 }

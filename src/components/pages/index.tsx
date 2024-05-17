@@ -8,3 +8,4 @@ export { default as ProfileEditPage } from "./ProfileEditPage";
 export { default as SavedPage } from "./SavedPage";
 export { default as MyCardsPage } from "./MyCardsPage";
 export { default as CreateCardPage } from "./CreateCardPage";
+export { default as EditCardPage } from "./EditCardPage";

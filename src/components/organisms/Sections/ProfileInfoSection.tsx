@@ -1,14 +1,33 @@
+'use client';
+
 import Image from "next/image";
 import Link from "next/link";
 
-import { Divider, Heading2, Icons, TextBase } from "@/src/components/atoms";
+import { 
+  Divider, 
+  Heading2, 
+  Icons, 
+  TextBase, 
+  ErrorText 
+} from "@/src/components/atoms";
 import { memo } from "react";
 import { useUser } from "@/src/store/user";
+import { useLogout } from "@/src/queries";
+import { useNormalizedError } from "@/src/hooks";
 
 const ProfileInfoSection: React.FC = () => {
   const { user } = useUser();
   const { firstName, lastName, bio, location, profileImage, pseudonym, email } 
   = user!;
+
+  const [errorMessage, setErrorMessage] = useNormalizedError();
+  const { isPending, mutate, isError } = useLogout();
+
+  const handleLogout = () => {
+    mutate(undefined, {
+      onError: (err) => setErrorMessage(err),
+    });
+  };
 
   return (
     <div
@@ -87,7 +106,14 @@ const ProfileInfoSection: React.FC = () => {
       >
         Edit profile
       </Link>
-      <button className="bg-error text-white rounded-full p-2">Logout</button>
+      <button 
+        className="bg-error text-white rounded-full p-2"
+        disabled={isPending}
+        onClick={handleLogout}
+      >
+        Logout
+      </button>
+      {isError && <ErrorText errorText={errorMessage} />}
     </div>
   );
 };

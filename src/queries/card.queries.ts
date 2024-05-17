@@ -17,6 +17,7 @@ export function useGetCardDetails(cardId: number) {
   return useQuery({
     queryKey: ["card-details", { cardId }],
     queryFn: () => cardService.getCardDetails(cardId),
+    enabled: typeof cardId === 'number',
   });
 }
 
@@ -152,10 +153,17 @@ export function useRemoveCardFromSaved() {
   });
 }
 
-export function useSearchCards(page: number, filterParams: ISearchCard) {
+export function useSearchCards(page: number, filterParams: ISearchCard | null) {
   return useQuery({
     queryKey: ['cards', page, filterParams],
-    queryFn: () => cardService.searchCards(page, filterParams),
+    queryFn: () => {
+      if (filterParams) {
+        return cardService.searchCards(page, filterParams);
+      }
+      
+      return null;
+    },
     placeholderData: keepPreviousData,
+    enabled: !!filterParams,
   });
 }
