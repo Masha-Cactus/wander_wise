@@ -10,24 +10,34 @@ import {
   TextBase, 
   ErrorText 
 } from "@/src/components/atoms";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { useUser } from "@/src/store/user";
 import { useLogout } from "@/src/queries";
 import { useNormalizedError } from "@/src/hooks";
+import { clearCookies } from "@/src/actions/manageCookies";
+import { useRouter } from "next/navigation";
 
 const ProfileInfoSection: React.FC = () => {
   const { user } = useUser();
+  const { push } = useRouter();
   const { firstName, lastName, bio, location, profileImage, pseudonym, email } 
   = user!;
 
   const [errorMessage, setErrorMessage] = useNormalizedError();
-  const { isPending, mutate, isError } = useLogout();
+  const { isPending, mutate, isError, isSuccess } = useLogout();
 
   const handleLogout = () => {
     mutate(undefined, {
       onError: (err) => setErrorMessage(err),
     });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      clearCookies()
+        .then(() => push("/"));
+    }
+  }, [isSuccess]);
 
   return (
     <div

@@ -37,28 +37,30 @@ const Header: React.FC = () => {
       {user ? (
         <div className="flex gap-8 h-10">
           <div className="flex gap-8 text-black justify-center items-center">
-            <Link href="/profile" className="">
-              Profile
+            <Link href="/trips" className="">
+              Trips
             </Link>
 
             <Link href="/saved" className="">
               Saved
             </Link>
 
-            <Link href="/trips" className="">
+            <Link href="/my-cards" className="">
               My cards
             </Link>
           </div>
 
           <Divider classes="h-full w-px bg-gray30" />
-
-          <Image
-            src={user?.profileImage || "/user.png"}
-            alt="user avatar"
-            width={100}
-            height={100}
-            className="rounded-full w-12 h-12 bg-gray30 "
-          />
+          
+          <Link href="/profile">
+            <Image
+              src={user?.profileImage || "/user.png"}
+              alt="user avatar"
+              width={100}
+              height={100}
+              className="rounded-full w-12 h-12 bg-gray30 "
+            />
+          </Link>
         </div>
       ) : (
         <div className="flex gap-8">

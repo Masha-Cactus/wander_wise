@@ -27,6 +27,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
+import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
 
 const atmospheres = Object.values(TripTypes);
 const climates = Object.values(Climate);
@@ -34,7 +35,7 @@ const specials = Object.values(SpecialRequirements);
 
 export interface UpdateCardFormData {
   name: string,
-  location: string,
+  location: RadarAutocompleteAddress,
   tripTypes: TripTypesType[],
   climate: ClimateType,
   specialRequirements: SpecialRequirementsType[],
@@ -62,7 +63,7 @@ const EditCardForm = () => {
   } = useForm<UpdateCardFormData>({
     defaultValues: {
       name: card?.name,
-      location: card?.whereIs,
+      location: {},
       tripTypes: card?.tripTypes,
       climate: card?.climate,
       specialRequirements: card?.specialRequirements,
@@ -82,12 +83,7 @@ const EditCardForm = () => {
   
   const onSubmit = async (data: UpdateCardFormData) => {
     const {
-      name, 
       location, 
-      whyThisPlace,
-      imageLinks,
-      specialRequirements,
-      tripTypes,
       ...trimmedData
     } = trimObjectFields(data);
     
@@ -95,12 +91,11 @@ const EditCardForm = () => {
       mutate({
         ...trimmedData,
         id: +id,
-        fullName: `${name}|${location}`,
-        whyThisPlace: whyThisPlace.reduce((acc, curr) => acc + '|' + curr, ''),
-        imageLinks: imageLinks.reduce((acc, curr) => acc + '|' + curr, ''),
-        specialRequirements: specialRequirements
-          .reduce((acc, curr) => acc + '|' + curr, ''),
-        tripTypes: tripTypes.reduce((acc, curr) => acc + '|' + curr, ''),
+        populatedLocality: location.city || '',
+        country: location.country || '',
+        region: '',
+        continent: '',
+        mapLink: `https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}`,
       },
       {
         onError: handleError,
@@ -195,6 +190,7 @@ const EditCardForm = () => {
         name="location"
         control={control}
         disabled={isPending}
+        defaultLocation={card?.whereIs}
       />
 
       <TextAreaInput

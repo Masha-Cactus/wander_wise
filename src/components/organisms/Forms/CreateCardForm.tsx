@@ -25,6 +25,7 @@ import {
 import { createCardSchema } from "@/src/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Dispatch, SetStateAction } from "react";
+import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
 
 const atmospheres = Object.values(TripTypes);
 const climates = Object.values(Climate);
@@ -32,13 +33,13 @@ const specials = Object.values(SpecialRequirements);
 
 export interface CreateCardFormData {
   name: string,
-  location: string,
+  location: RadarAutocompleteAddress,
   tripTypes: TripTypesType[],
   climate: ClimateType,
   specialRequirements: SpecialRequirementsType[],
   description: string,
   whyThisPlace: string[],
-  imageLinks: string,
+  imageLinks: string[],
   mapLink: string,
 }
 
@@ -58,13 +59,13 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
   } = useForm<CreateCardFormData>({
     defaultValues: {
       name: "",
-      location: "",
+      location: {},
       tripTypes: [],
       climate: climates[0],
       specialRequirements: [],
       description: "",
       whyThisPlace: [],
-      imageLinks: "",
+      imageLinks: [],
       mapLink: "",
     },
     resolver: yupResolver(validationSchema),
@@ -78,21 +79,17 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
   
   const onSubmit = async (data: CreateCardFormData) => {
     const {
-      name, 
-      location, 
-      whyThisPlace,
-      specialRequirements,
-      tripTypes,
+      location,
       ...trimmedData
     } = trimObjectFields(data);
   
     mutate({
       ...trimmedData,
-      fullName: `${name}|${location}`,
-      whyThisPlace: whyThisPlace.reduce((acc, curr) => acc + '|' + curr, ''),
-      specialRequirements: specialRequirements
-        .reduce((acc, curr) => acc + '|' + curr, ''),
-      tripTypes: tripTypes.reduce((acc, curr) => acc + '|' + curr, ''),
+      populatedLocality: location.city || '',
+      country: location.country || '',
+      region: '',
+      continent: '',
+      mapLink: `https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}`,
     },
     {
       onError: handleError,

@@ -1,30 +1,36 @@
 "use client";
 
 import { ReviewCard } from "@/src/components/organisms";
-import { Divider } from "@/src/components/atoms";
+import { Divider, Heading5, Heading3, Heading4 } from "@/src/components/atoms";
 import { IComment } from "@/src/services";
 import { memo } from "react";
 
 type Props = {
-  rewiews: IComment[];
+  reviews: IComment[];
 };
 
-const ReviewsList: React.FC<Props> = ({ rewiews }) => {
+const ReviewsList: React.FC<Props> = ({ reviews }) => {
   return (
     <div className="flex flex-col gap-6">
       <div className="w-full flex justify-between">
-        <div className="flex justify-between gap-2 items-end">
-          <h2 className="text-3xl font-bold">Reviews</h2>
-          <p className="text-gray70 text-2xl">{`(${rewiews.length})`}</p>
+        <div className="flex justify-between gap-2 items-center">
+          <div className="flex gap-2">
+            <Heading3 text="Reviews" />
+            <Heading4 text={`(${reviews?.length || 0})`} font="normal" classes="text-gray30" />
+          </div>
         </div>
 
-        <p className="text-xl underline">Post review</p>
+        <Heading5
+          text="Post review" 
+          font="semibold" 
+          classes="underline underline-offset-8"
+        />
       </div>
 
       <Divider classes="h-px w-full bg-gray30" />
 
-      <div className="grid grid-cols-3 gap-4">
-        {rewiews.map((review) => (
+      <div className="flex gap-4 overflow-x-scroll">
+        {reviews.map((review) => (
           <ReviewCard review={review} key={review.id} />
         ))}
       </div>

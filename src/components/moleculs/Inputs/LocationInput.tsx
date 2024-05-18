@@ -7,8 +7,6 @@ import { Control, FieldPath, FieldValues } from "react-hook-form";
 import { InputControllerWrapper } from "@/src/components/moleculs";
 import classNames from "classnames";
 
-const key = "prj_live_pk_6925600add7305492567163191c2abbb9977c348";
-
 interface LocationInputProps <T extends FieldValues> {
   placeholder: string,
   label?: string,
@@ -16,16 +14,17 @@ interface LocationInputProps <T extends FieldValues> {
   control: Control<T>;
   disabled?: boolean;
   errorText?: string;
+  defaultLocation?: string;
 };
 
 const LocationInput = <T extends FieldValues>({ 
-  placeholder, label, name, control, disabled, errorText
+  placeholder, label, name, control, disabled, errorText, defaultLocation
 }: LocationInputProps<T>) => {
   const [autocompleteSuggestions, setAutocompleteSuggestions] 
   = useState<RadarAutocompleteAddress[]>([]);
 
   useEffect(() => {
-    Radar.initialize(key);
+    Radar.initialize(process.env.NEXT_PUBLIC_RADAR_KEY as string);
   }, []);
 
   const handleLocationChange = async (
@@ -47,6 +46,8 @@ const LocationInput = <T extends FieldValues>({
     }
   };
 
+  const [value, setValue] = useState(defaultLocation || '');
+
   return (
     <InputControllerWrapper
       label={label}
@@ -63,9 +64,10 @@ const LocationInput = <T extends FieldValues>({
             type="text"
             disabled={disabled}
             placeholder={placeholder ? placeholder : `Enter your ${name}`}
+            value={value}
             onChange={(e) => {
               handleLocationChange(e);
-              field.onChange(e.target.value);
+              setValue(e.target.value);
             }}
             className={classNames(
               `border border-gray50 bg-white
@@ -82,12 +84,13 @@ const LocationInput = <T extends FieldValues>({
               className="absolute bg-white border border-gray-200 
                rounded-b-md shadow-lg mt-11 w-full z-10 text-zinc-950"
             >
-              {autocompleteSuggestions.map((address) => (
+              {autocompleteSuggestions.map((address, i) => (
                 <div
-                  key={address.addressLabel}
+                  key={i}
                   className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
                   onClick={() => {
-                    field.onChange(address.formattedAddress);
+                    field.onChange(address);
+                    setValue(address.formattedAddress || '');
                     setAutocompleteSuggestions([]);
                   }}
                 >

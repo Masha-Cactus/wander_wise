@@ -1,7 +1,6 @@
 import { memo } from "react";
 import { Heading } from "@/src/components/atoms";
-import { ModalSkeleton } from "@/src/components/organisms";
-import CreateReviewForm from "../Forms/CreateReviewForm";
+import { ModalSkeleton, CreateReviewForm } from "@/src/components/organisms";
 
 interface CreateReviewModalProps {
   onClose: () => void;

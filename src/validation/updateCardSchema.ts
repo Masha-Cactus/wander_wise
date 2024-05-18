@@ -11,7 +11,7 @@ export const updateCardSchema
 = (): ObjectSchema<UpdateCardFormData> =>
   Yup.object().shape({
     name: Yup.string().trim().required('Card name is required'),
-    location: genericValidationSchema.location,
+    location: genericValidationSchema.address,
     description: Yup.string().trim().required('Description is required'),
     tripTypes: genericValidationSchema.tripTypes,
     climate: Yup.string().trim()

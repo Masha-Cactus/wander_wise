@@ -1,31 +1,32 @@
 'use client';
 
 import classNames from "classnames";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, memo } from "react";
 import { Icons, TextSmall } from "@/src/components/atoms";
 
 type Props = {
   page: number,
   setPage: Dispatch<SetStateAction<number>>,
   isPlaceholderData: boolean,
+  isLastPage: boolean,
 };
 
 const Pagination: React.FC<Props> = ({
-  page, setPage, isPlaceholderData,
+  page, setPage, isPlaceholderData, isLastPage,
 }) => {
   const [pagesList, setPagesList] = useState([1, 2, 3, 4, 5]);
 
   const handleNext = (nextPage: number) => {
     setPage(nextPage);
-    if (nextPage >= 4) {
+    if (nextPage >= 3) {
       setPagesList(curr => 
-        [ ...curr.slice(1), nextPage + 2]);
+        [ ...curr.slice(1), nextPage + 3]);
     }
   };
 
   const handlePrev = (prevPage: number) => {
     setPage(prevPage);
-    if (prevPage >= 3) {
+    if (prevPage >= 2) {
       setPagesList(curr => 
         [curr[0] - 1, ...curr.slice(0, -1)]);
     }
@@ -92,7 +93,7 @@ const Pagination: React.FC<Props> = ({
             handleNext(page + 1);
           }
         }}
-        disabled={isPlaceholderData}
+        disabled={isPlaceholderData || isLastPage}
       >
         <Icons.right className="w-6 h-6"/>
       </button>
@@ -100,4 +101,4 @@ const Pagination: React.FC<Props> = ({
   );
 };
 
-export default Pagination;
+export default memo(Pagination);
