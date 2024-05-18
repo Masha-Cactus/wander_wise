@@ -16,7 +16,7 @@ const TripPage: React.FC<Props> = ({ card, reviews }) => {
       <div className="mx-10 my-10 flex flex-col gap-8">
         <BackButton />
         <TripLongCard card={card} />
-        <ReviewsList rewiews={reviews}/>
+        <ReviewsList reviews={reviews}/>
       </div>
     </main>
   );

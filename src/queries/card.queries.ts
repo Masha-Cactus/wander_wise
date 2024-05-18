@@ -9,6 +9,7 @@ import {
   IUpdateCard,
   IAddCardImages,
   ISearchCard,
+  IReportCard,
   cardService,
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
@@ -153,6 +154,12 @@ export function useRemoveCardFromSaved() {
   });
 }
 
+export function useReportCard() {
+  return useMutation({
+    mutationFn: (data: IReportCard) => cardService.reportCard(data),
+  });
+}
+
 export function useSearchCards(page: number, filterParams: ISearchCard | null) {
   return useQuery({
     queryKey: ['cards', page, filterParams],
@@ -160,7 +167,7 @@ export function useSearchCards(page: number, filterParams: ISearchCard | null) {
       if (filterParams) {
         return cardService.searchCards(page, filterParams);
       }
-      
+
       return null;
     },
     placeholderData: keepPreviousData,

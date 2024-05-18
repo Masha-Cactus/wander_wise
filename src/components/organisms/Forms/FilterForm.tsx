@@ -18,12 +18,18 @@ import {
   TravelDistance,
   TripTypes,
   ISearchCard,
+  CardAuthorsType,
+  TripTypesType,
+  ClimateType,
+  SpecialRequirementsType,
+  TravelDistanceType,
 } from "@/src/services";
 import { useForm } from "react-hook-form";
 import { searchCardsSchema } from "@/src/validation/searchCardsSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { Dispatch, SetStateAction } from "react";
+import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
 
 const atmospheres = Object.values(TripTypes);
 const climates = Object.values(Climate);
@@ -35,6 +41,15 @@ type Props = {
   setFilterParams: Dispatch<SetStateAction<ISearchCard | null>>;
 };
 
+export interface FilterFormData {
+  author: CardAuthorsType[],
+  startLocation: RadarAutocompleteAddress,
+  tripTypes: TripTypesType[],
+  climate: ClimateType[],
+  specialRequirements: SpecialRequirementsType[],
+  travelDistance: TravelDistanceType[],
+}
+
 const FilterForm: React.FC<Props> = ({ setFilterParams }) => {
   const validationSchema = searchCardsSchema();
   const {
@@ -42,10 +57,10 @@ const FilterForm: React.FC<Props> = ({ setFilterParams }) => {
     formState: { errors },
     control,
     reset,
-  } = useForm<ISearchCard>({
+  } = useForm<FilterFormData>({
     defaultValues: {
       author: [],
-      startLocation: "",
+      startLocation: {},
       tripTypes: [],
       climate: [],
       specialRequirements: [],
@@ -54,10 +69,13 @@ const FilterForm: React.FC<Props> = ({ setFilterParams }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = async (data: ISearchCard) => {
-    const trimmedData = trimObjectFields(data);
+  const onSubmit = async (data: FilterFormData) => {
+    const {startLocation, ...trimmedData} = trimObjectFields(data);
 
-    setFilterParams(trimmedData);
+    setFilterParams({
+      ...trimmedData, 
+      startLocation: `${startLocation.city}, ${startLocation.country}`,
+    });
   };
 
   return (

@@ -11,7 +11,7 @@ const ImagesBlock: React.FC<Props> = ({ images }) => {
   const [selectedImage, setSelectedImage] = useState(images[0]);
 
   return (
-    <div className="flex flex-col round gap-px overflow-hidden h-full">
+    <div className="flex flex-col rounded-2xl gap-px overflow-hidden h-full">
       <Image
         src={selectedImage}
         alt="Trip image"

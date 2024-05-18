@@ -1,16 +1,13 @@
 import { memo } from "react";
 import { Heading, Heading4 } from "@/src/components/atoms";
-import { ModalSkeleton } from "@/src/components/organisms";
+import { ModalSkeleton, ReportCardForm } from "@/src/components/organisms";
 
 interface CreateReportModalProps {
   onClose: () => void;
-  onOpenRestorePasswordModal: () => void;
-  children: React.ReactNode;
 }
 
 const CreateReportModal: React.FC<CreateReportModalProps> = ({
   onClose,
-  children,
 }) => {
   return (
     <ModalSkeleton onClose={onClose}>
@@ -21,7 +18,7 @@ const CreateReportModal: React.FC<CreateReportModalProps> = ({
         font="medium"
       />
 
-      {children}
+      <ReportCardForm closeModal={onClose} />
     </ModalSkeleton>
   );
 };

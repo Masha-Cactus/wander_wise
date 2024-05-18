@@ -1,10 +1,12 @@
-import { memo, useState } from "react";
+'use client';
+
+import { memo } from "react";
 import { ModalSkeleton } from "@/src/components/organisms";
 import { ErrorText, Heading, Heading4 } from "@/src/components/atoms";
 import { RoundedButton } from "@/src/components/moleculs";
 import { ICard, ICollection, IUpdateCollection } from "@/src/services";
 import { useUpdateCollection } from "@/src/queries";
-import { normalizeError } from "@/src/lib/helpers";
+import { useGetCollectionCardIds, useNormalizedError } from "@/src/hooks";
 
 interface RemoveTripFromCollectionModalProps {
   trip: ICard;
@@ -19,24 +21,26 @@ const RemoveTripFromCollectionModal: React.FC<
 RemoveTripFromCollectionModalProps
 > = ({ trip, collection, onClose }) => {
   const { isPending, mutate, isError } = useUpdateCollection();
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useNormalizedError();
 
-  const updatedCollection = collection.cards
-    .filter((card) => card.id !== trip.id)
-    .map((card) => card.id);
+  const collectionCardIds = useGetCollectionCardIds(collection.id);
 
   const handleError = (error: any) => {
-    setErrorMessage(normalizeError(error.message));
+    setErrorMessage(error);
   };
 
   const handleRemoveTrip = () => {
-    const data: IUpdateCollection = {
-      ...collection,
-      cardIds: updatedCollection,
-    };
-
-    mutate(data, { onError: handleError });
-    onClose();
+    if (collectionCardIds) {
+      const data: IUpdateCollection = {
+        ...collection,
+        cardIds: collectionCardIds.filter(cardId => cardId !== trip.id),
+      };
+      
+      mutate(data, { 
+        onError: handleError,
+        onSuccess: () => onClose(),
+      });
+    }
   };
 
   return (

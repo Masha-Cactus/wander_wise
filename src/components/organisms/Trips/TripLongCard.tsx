@@ -13,10 +13,10 @@ type Props = {
 };
 
 const TripLongCard: React.FC<Props> = ({ card }) => {
-  const descriptions = {
-    description: card.description,
-    "why this place?": card.whyThisPlace.join(' '),
-    map: card.mapLink,
+  const tabs = {
+    'Description': card.description,
+    "Why this place?": card.whyThisPlace,
+    'Map': card.mapLink,
   };
 
   return (
@@ -34,7 +34,7 @@ const TripLongCard: React.FC<Props> = ({ card }) => {
           </div>
 
           <div className="mt-6 overflow-scroll max-h-[550px]">
-            <Tab descriptions={descriptions} />
+            <Tab tabs={tabs} />
           </div>
 
           <PrimaryButton text="Save" onClick={() => {}} classes="mt-6" />

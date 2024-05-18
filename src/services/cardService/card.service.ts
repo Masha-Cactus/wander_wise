@@ -30,7 +30,7 @@ class CardService {
   reportCard({ cardId, text }: IReportCard) {
     return authClient.put(
       `${this.BASE_URL}/report/${cardId}`,
-      { cardId, text }
+      { text }
     );
   }
 
@@ -70,7 +70,7 @@ class CardService {
       `${this.BASE_URL}/search?page=${page}&size=8&sort=asc`, 
       data,
     );
-  }
+  };
 }
 
 export const cardService = new CardService();

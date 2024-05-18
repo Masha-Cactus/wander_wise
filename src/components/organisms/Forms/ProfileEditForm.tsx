@@ -3,7 +3,6 @@
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { IUpdateInfo } from "@/src/services";
 import { editProfileSchema } from "@/src/validation";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { ErrorText } from "@/src/components/atoms";
@@ -17,6 +16,15 @@ import {
   LocationInput, 
   TextInput 
 } from "@/src/components/moleculs";
+import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
+
+export interface ProfileEditFormData {
+  pseudonym: string,
+  firstName: string,
+  lastName: string,
+  location: RadarAutocompleteAddress,
+  bio: string,
+}
 
 const ProfileEditForm = () => {
   const { user } = useUser();
@@ -27,32 +35,35 @@ const ProfileEditForm = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<Omit<IUpdateInfo, "userId">>({
-    values: {
-      pseudonym: "",
-      firstName: "",
-      lastName: "",
-      location: "",
-      bio: "",
+  } = useForm<ProfileEditFormData>({
+    defaultValues: {
+      pseudonym: user?.pseudonym || '',
+      firstName: user?.firstName || '',
+      lastName: user?.lastName || '',
+      location: {},
+      bio: user?.bio || '',
     },
     resolver: yupResolver(validationSchema),
   });
 
   const handleError = (error: any) => {
-    setErrorMessage(error.message);
+    setErrorMessage(error);
   };
 
   const { isPending, mutate, isError } = useUpdateUserInfo();
   const { push } = useRouter();
 
-  const onSubmit = async (data: Omit<IUpdateInfo, "userId">) => {
-    const trimmedUserData = trimObjectFields(data);
+  const onSubmit = async (data: ProfileEditFormData) => {
+    const {location, ...trimmedUserData} = trimObjectFields(data);
 
-    mutate(trimmedUserData,
-      {
-        onError: handleError,
-        onSuccess: () => push("/profile"),
-      }
+    mutate({
+      location: `${location.city}, ${location.country}`,
+      ...trimmedUserData,
+    },
+    {
+      onError: handleError,
+      onSuccess: () => push("/profile"),
+    }
     );
   };
 
@@ -67,7 +78,7 @@ const ProfileEditForm = () => {
         control={control}
         errorText={errors.pseudonym?.message}
         disabled={isPending}
-        placeholder={user?.pseudonym}
+        placeholder={"Enter your username"}
         label="Username"
       />
 
@@ -79,7 +90,7 @@ const ProfileEditForm = () => {
             control={control}
             errorText={errors.firstName?.message}
             disabled={isPending}
-            placeholder={user?.firstName || "Enter your first name"}
+            placeholder={"Enter your first name"}
             label="First name"
           />
         </div>
@@ -90,18 +101,19 @@ const ProfileEditForm = () => {
             control={control}
             errorText={errors.lastName?.message}
             disabled={isPending}
-            placeholder={user?.lastName || "Enter your last name"}
+            placeholder={"Enter your last name"}
             label="Last name"
           />
         </div>
       </div>
 
       <LocationInput 
-        placeholder={user?.location || "City, country"}
+        placeholder={"City, country"}
         label="Location"
         name="location"
         control={control}
         disabled={isPending}
+        defaultLocation={user?.location}
       />
 
       <TextAreaInput

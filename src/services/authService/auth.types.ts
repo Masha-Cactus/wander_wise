@@ -34,6 +34,6 @@ export interface IToken {
 }
 
 export interface ISignInResponse {
-  userDto: IUser,
+  user: IUser,
   token: string,
 }
