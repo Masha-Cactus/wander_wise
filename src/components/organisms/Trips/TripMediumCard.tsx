@@ -2,10 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Divider, Icons } from "@/src/components/atoms";
-import { IconButton, PrimaryButton } from "@/src/components/moleculs/";
-import { useSaveCard } from "@/src/queries/card.queries";
+import { 
+  LikeButton, 
+  SaveButton, 
+  IconButton, 
+  PrimaryButton 
+} from "@/src/components/moleculs";
 import { ICard } from "@/src/services";
-import { memo } from "react";
+import { memo, useState } from "react";
+import {
+  AddCardToCollectionModal,
+  RemoveTripFromCollectionModal
+} from "@/src/components/organisms";
+import { useParams, usePathname } from "next/navigation";
 
 type Props = {
   card: ICard;
@@ -14,16 +23,20 @@ type Props = {
 const classes = "bg-gray80 text-white rounded-full px-4 py-2";
 
 const TripMediumCard: React.FC<Props> = ({ card }) => {
-  const { mutate } = useSaveCard();
+  const { id: collectionId } = useParams();
+  const [isAddToCollectionModal, setIsAddToCollectionModal] = useState(false);
+  const [isRemoveFromCollectionModal, setIsRemoveFromCollectionModal] 
+  = useState(false);
 
-  const saveCard = (id: number) => {
-    mutate(id);
-  };
+  const pathname = usePathname();
+  const isCardInCollectionPage = !!collectionId;
+  const isCardInSavedPage = pathname.startsWith('/saved') 
+    && !isCardInCollectionPage;
 
   return (
     <article
       className="flex flex-col gap-4 justify-between items-center 
-      round bg-white p-4"
+      round bg-white p-4 w-[325px]"
     >
       <Link href={`/trips/${card.id}`} className="w-full">
         <Image
@@ -36,9 +49,9 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
       </Link>
       <Link href={`/trips/${card.id}`} className="flex flex-col gap-4">
         <div className="flex gap-2">
-          <IconButton
-            icon={<Icons.heart />}
-            text={card.likes.toString()}
+          <LikeButton
+            cardId={card.id}
+            cardLikes={card.likes}
             classes={classes}
           />
 
@@ -57,11 +70,45 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
         <p className="text-base font-regular">{card.whereIs}</p>
       </Link>
 
-      <PrimaryButton
-        text="Save"
-        onClick={() => saveCard(card.id)}
-        type="button"
-      />
+      {isCardInSavedPage ? (
+        <>
+          <PrimaryButton 
+            text="Add to the collection" 
+            type="button"
+            onClick={() => setIsAddToCollectionModal(true)}
+          />
+
+          {isAddToCollectionModal && (
+            <AddCardToCollectionModal
+              card={card}
+              onClose={() => setIsAddToCollectionModal(false)}
+            />
+          )}
+        </>
+      ) : (
+        <>
+          {isCardInCollectionPage ? (
+            <>
+              <PrimaryButton 
+                text="Remove from the collection" 
+                type="button"
+                onClick={() => setIsRemoveFromCollectionModal(true)}
+                classes="bg-gray30 text-gray70"
+              />
+          
+              {isRemoveFromCollectionModal && (
+                <RemoveTripFromCollectionModal
+                  trip={card}
+                  collectionId={+collectionId}
+                  onClose={() => setIsRemoveFromCollectionModal(false)}
+                />
+              )}
+            </>
+          ) : (
+            <SaveButton cardId={card.id} />
+          )}
+        </>
+      )}
     </article>
   );
 };

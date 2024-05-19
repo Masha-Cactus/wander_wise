@@ -3,7 +3,8 @@ import { Inter } from "next/font/google";
 import { Maven_Pro } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/src/components/organisms";
-import { QueryProvider } from "./providers";
+import { QueryProvider } from "../providers/QueryProvider";
+import { AuthProvider } from "../providers/AuthProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,8 +32,10 @@ export default function RootLayout({
     <html lang="en" className={`${maven.variable} ${inter.variable}`}>
       <body className={`bg-white bg-no-repeat text-black flex flex-col font-inter h-screen`}>
         <QueryProvider>
-          <Header />
-          {children}
+          <AuthProvider>
+            <Header />
+            {children}
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>

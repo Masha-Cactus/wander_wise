@@ -1,10 +1,12 @@
 import {
   IoIosClose,
   IoMdHeartEmpty,
+  IoMdHeart,
   IoIosArrowBack,
   IoIosArrowForward,
   IoIosArrowDown,
   IoIosArrowUp,
+  IoMdExit,
 } from "react-icons/io";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { MdErrorOutline } from "react-icons/md";
@@ -27,6 +29,7 @@ import { FaPlus } from "react-icons/fa";
 const Icons = {
   close: IoIosClose,
   heart: IoMdHeartEmpty,
+  heartFilled: IoMdHeart,
   share: IoShareSocialOutline,
   report: MdErrorOutline,
   user: HiOutlineUserCircle,
@@ -47,6 +50,7 @@ const Icons = {
   star: CiStar,
   filledStar: FaStar,
   plus: FaPlus,
+  follow: IoMdExit,
 };
 
 export default Icons;

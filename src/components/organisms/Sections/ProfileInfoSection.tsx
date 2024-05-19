@@ -40,7 +40,7 @@ const ProfileInfoSection: React.FC = () => {
   }, [isSuccess]);
 
   return (
-    <div
+    <section
       className="flex flex-col gap-4 bg-white p-6 rounded-2xl
     text-black text-base font-normal text-center py-12"
     >
@@ -124,7 +124,7 @@ const ProfileInfoSection: React.FC = () => {
         Logout
       </button>
       {isError && <ErrorText errorText={errorMessage} />}
-    </div>
+    </section>
   );
 };
 

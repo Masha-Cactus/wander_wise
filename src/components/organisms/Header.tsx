@@ -105,7 +105,10 @@ const Header: React.FC = () => {
       )}
 
       {isShowConfirmEmailModal && (
-        <ConfirmEmailModal onClose={() => setIsShowConfirmEmailModal(false)}/>
+        <ConfirmEmailModal 
+          type="Confirm" 
+          onClose={() => setIsShowConfirmEmailModal(false)}
+        />
       )}
     </div>
   );

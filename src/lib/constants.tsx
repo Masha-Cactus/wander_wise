@@ -27,3 +27,5 @@ export const ApiRoutes = {
   COLLECTIONS: "/collections",
   CARDS: "/cards",
 };
+
+export const CARDS_PER_PAGE = 8;

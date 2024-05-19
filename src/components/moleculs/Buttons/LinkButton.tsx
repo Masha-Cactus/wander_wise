@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { memo } from "react";
+import { Heading5 } from "@/src/components/atoms";
 
 interface LinkBtnProps {
   path: string;
@@ -13,9 +14,13 @@ const LinkButton: React.FC<LinkBtnProps> = ({
   classes,
 }) => {
   return (
-    <button className={`w-full flex justify-center items-center ${classes}`}>
-      <Link href={path}>{text}</Link>
-    </button>
+    <Link href={path}>
+      <Heading5
+        text={text} 
+        font="semibold" 
+        classes={"underline underline-offset-8" + classes}
+      />
+    </Link>
   );
 };
 

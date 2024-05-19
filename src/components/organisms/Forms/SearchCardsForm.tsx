@@ -3,9 +3,11 @@
 import {
   Divider,
   TextBase,
+  TextSmall,
 } from "@/src/components/atoms";
 import {
   CheckboxInput,
+  LocationInput,
   RoundedButton,
   FilterButton,
 } from "@/src/components/moleculs";
@@ -13,60 +15,67 @@ import {
   CardAuthors,
   Climate,
   SpecialRequirements,
+  TravelDistance,
   TripTypes,
-  IFilterParams,
+  ISearchCard,
+  CardAuthorsType,
+  TripTypesType,
+  ClimateType,
+  SpecialRequirementsType,
+  TravelDistanceType,
 } from "@/src/services";
 import { useForm } from "react-hook-form";
-import { filterCardsSchema } from "@/src/validation";
+import { searchCardsSchema } from "@/src/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { getFilterOptions, trimObjectFields } from "@/src/lib/helpers";
-import { useGetCreatedCards, useGetSavedCards } from "@/src/hooks";
+import { trimObjectFields } from "@/src/lib/helpers";
 import { Dispatch, SetStateAction } from "react";
+import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
 
+const atmospheres = Object.values(TripTypes);
+const climates = Object.values(Climate);
+const specials = Object.values(SpecialRequirements);
+const authors = Object.entries(CardAuthors);
+const distance = Object.entries(TravelDistance);
 
 type Props = {
-  type: 'Saved' | 'Created',
-  setFilterParams: Dispatch<SetStateAction<IFilterParams | null>>
+  setFilterParams: Dispatch<SetStateAction<ISearchCard | null>>;
 };
 
-const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
-  const savedCards = useGetSavedCards() || [];
-  const createdCards = useGetCreatedCards() || [];
+export interface FilterFormData {
+  author: CardAuthorsType[],
+  startLocation: RadarAutocompleteAddress,
+  tripTypes: TripTypesType[],
+  climate: ClimateType[],
+  specialRequirements: SpecialRequirementsType[],
+  travelDistance: TravelDistanceType[],
+}
 
-  const filterOptions = getFilterOptions(
-    type === 'Saved' ? savedCards : createdCards,
-  );
-
-  const atmospheres = Object.values(TripTypes)
-    .filter(tripType => filterOptions.tripTypes.includes(tripType));
-  const climates = Object.values(Climate)
-    .filter(climate => filterOptions.climates.includes(climate));
-  const specials = Object.values(SpecialRequirements)
-    .filter(special => filterOptions.specialRequirements.includes(special));
-  const authors = Object.entries(CardAuthors)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    .filter(([_, authorValue]) => filterOptions.authors.includes(authorValue));
-
-  const validationSchema = filterCardsSchema();
+const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
+  const validationSchema = searchCardsSchema();
   const {
     handleSubmit,
+    formState: { errors },
     control,
     reset,
-  } = useForm<IFilterParams>({
+  } = useForm<FilterFormData>({
     defaultValues: {
-      countries: [],
+      author: [],
+      startLocation: {},
       tripTypes: [],
+      climate: [],
       specialRequirements: [],
-      climates: [],
-      authors: [],
+      travelDistance: [],
     },
     resolver: yupResolver(validationSchema),
   });
-  
-  const onSubmit = async (data: IFilterParams) => {
-    const trimmedData = trimObjectFields(data);
-  
-    setFilterParams(trimmedData);
+
+  const onSubmit = async (data: FilterFormData) => {
+    const {startLocation, ...trimmedData} = trimObjectFields(data);
+
+    setFilterParams({
+      ...trimmedData, 
+      startLocation: `${startLocation.city}, ${startLocation.country}`,
+    });
   };
 
   return (
@@ -75,19 +84,41 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
       className="flex flex-col 
       bg-white border-2 border-gray-30 gap-8"
     >
+      <div className="flex flex-col mt-8 mx-10">
+        <TextBase text="Where are you now?" font="semibold" />
+        <TextSmall
+          text="We need this info to build distance of your trip"
+          font="normal"
+          classes="mt-2"
+        />
+        <LocationInput 
+          placeholder="Enter your place"
+          name="startLocation"
+          control={control}
+          errorText={errors.startLocation?.message}
+        />
+      </div>
+
+      <Divider classes="h-px w-full" />
 
       <div className="flex flex-col mx-10">
         <TextBase
-          text="Country"
+          text="What is your preferred travel distance?"
           font="semibold"
         />
-        <div className="flex flex-wrap gap-2 mt-3">
-          {filterOptions.countries.map((country) => (
-            <FilterButton
-              key={country}
+        <TextSmall
+          text="We need this info to figure out the scale of your trip"
+          font="normal"
+          classes="mt-2"
+        />
+        <div className="flex flex-wrap gap-3 mt-3">
+          {distance.map(([distanceText, distanceValue]) => (
+            <CheckboxInput
+              key={distanceValue}
+              name="travelDistance"
               control={control}
-              name="countries"
-              value={country}
+              text={distanceText}
+              value={distanceValue}
             />
           ))}
         </div>
@@ -96,7 +127,7 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
       <Divider classes="h-px w-full" />
 
       <div className="flex flex-col mx-10">
-        <TextBase text="Type" font="semibold" />
+        <TextBase text="Type of your trip" font="semibold" />
         <div className="flex flex-wrap gap-2 mt-3">
           {atmospheres.map((atmosphere) => (
             <FilterButton
@@ -112,13 +143,13 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
       <Divider classes="h-px w-full" />
 
       <div className="flex flex-col mx-10">
-        <TextBase text="Climate" font="semibold" />
+        <TextBase text="Desired climate" font="semibold" />
         <div className="flex flex-wrap gap-2 mt-3">
           {climates.map((climate) => (
             <FilterButton
               key={climate}
               control={control}
-              name="climates"
+              name="climate"
               value={climate}
             />
           ))}
@@ -144,11 +175,11 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
       <Divider classes="h-px w-full" />
 
       <div className="flex flex-col mx-10">
-        <TextBase text="Cards are" font="semibold" />
+        <TextBase text="Cards author" font="semibold" />
         <div className="flex flex-wrap gap-2 mt-3">
           {authors.map(([authorText, authorValue]) => (
             <CheckboxInput key={authorValue}
-              name="authors"
+              name="author"
               control={control}
               text={authorText}
               value={authorValue}
@@ -167,14 +198,11 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
           text="Clear"
           type="reset"
           classes="border-2 border-black rounded-full p-4 px-8"
-          onClick={() => {
-            reset();
-            setFilterParams(null);
-          }}
+          onClick={() => reset()}
         />
       </div>
     </form>
   );
 };
 
-export default FilterForm;
+export default SearchCardsForm;

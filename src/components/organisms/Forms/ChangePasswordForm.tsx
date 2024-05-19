@@ -8,15 +8,18 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
 import { PasswordInput, PrimaryButton } from "@/src/components/moleculs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { saveTokenToCookies } from "@/src/actions/manageCookies";
 
+type Props = {
+  closeModal: () => void;
+};
 
-const ChangePasswordForm = () => {
+const ChangePasswordForm: React.FC<Props> = ({ closeModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const [isShowPassword, setIsShowPassword] = useState(false);
   const validationSchema = changePasswordSchema();
   const {
-    reset,
     control,
     handleSubmit,
     formState: { errors },
@@ -29,7 +32,7 @@ const ChangePasswordForm = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useUpdatePassword();
+  const { isPending, mutate, isError, isSuccess, data } = useUpdatePassword();
   const handleError = (error: any) => {
     setErrorMessage(error.message);
   };
@@ -38,11 +41,17 @@ const ChangePasswordForm = () => {
   = async(data) => {
     mutate(data, {
       onError: handleError,
-      onSuccess: () => {
-        reset();
-      },
     });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      saveTokenToCookies(data.token)
+        .then(() => {
+          closeModal();
+        });
+    }
+  }, [isSuccess]);
 
   return (
     <form

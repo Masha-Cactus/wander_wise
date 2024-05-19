@@ -42,7 +42,7 @@ const CreateCardPage = () => {
             font="semibold" 
             classes="self-start" 
           />
-          <UploadCardImagesForm newCardId={newCardId} />
+          <UploadCardImagesForm cardId={newCardId} />
         </article>
       )}
     </FormPageLayout>

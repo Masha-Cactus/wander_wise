@@ -1,6 +1,7 @@
 'use client';
 
-import { Heading3, Heading5, Divider } from "@/src/components/atoms";
+import { Heading3, Divider } from "@/src/components/atoms";
+import { LinkButton } from "@/src/components/moleculs";
 import { useGetUserCollections } from "@/src/queries";
 import { Collection } from "@/src/components/organisms";
 import { FormPageLayout } from "@/src/components/layouts";
@@ -16,17 +17,16 @@ const CollectionsPage = () => {
           <Heading3 
             text="My collections" 
           />
-          <Heading5
-            text="+ Create new collection" 
-            font="semibold" 
-            classes=" underline-offset-8 text-gray80"
+          <LinkButton 
+            path="/saved/collections/create"
+            text="+ Create new collection"
           />
         </div>
 
         <Divider classes="w-full h-px" />
 
-        <div className="w-full grid 
-          grid-cols-[repeat(auto-fit,minmax(282px,1fr))">
+        <div className="w-full grid gap-5
+          grid-cols-[repeat(2,282px)]">
           {collections?.map(collection => (
             <Collection key={collection.id} collectionId={collection.id} />
           ))}

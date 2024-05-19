@@ -2,12 +2,14 @@
 import { memo } from "react";
 import { ConfirmEmailForm, ModalSkeleton } from "@/src/components/organisms";
 import { Heading, Heading4 } from "@/src/components/atoms";
+import ConfirmNewEmailForm from "../Forms/ConfirmNewEmailForm";
 
 interface ConfirmEmailModalProps {
   onClose: () => void;
+  type: 'Confirm' | 'Update',
 }
 
-const ConfirmEmailModal: React.FC<ConfirmEmailModalProps> = ({ onClose }) => {
+const ConfirmEmailModal: React.FC<ConfirmEmailModalProps> = ({ onClose, type }) => {
   return (
     <ModalSkeleton onClose={onClose}>
       <Heading text="Password assistance" font="normal" />
@@ -16,7 +18,13 @@ const ConfirmEmailModal: React.FC<ConfirmEmailModalProps> = ({ onClose }) => {
         font="medium"
       />
 
-      <ConfirmEmailForm closeModal={onClose} />
+      {type === 'Confirm' ? (
+        <ConfirmEmailForm closeModal={onClose} />
+      ) : (
+        <ConfirmNewEmailForm closeModal={onClose} />
+      )}
+
+      
     </ModalSkeleton>
   );
 };

@@ -4,13 +4,17 @@ import { memo } from "react";
 import { ModalSkeleton } from "@/src/components/organisms";
 import { ErrorText, Heading, Heading4 } from "@/src/components/atoms";
 import { RoundedButton } from "@/src/components/moleculs";
-import { ICard, ICollection, IUpdateCollection } from "@/src/services";
-import { useUpdateCollection } from "@/src/queries";
-import { useGetCollectionCardIds, useNormalizedError } from "@/src/hooks";
+import { ICard, IUpdateCollection } from "@/src/services";
+import { 
+  useGetCollection, 
+  useRemoveCardFromSaved, 
+  useUpdateCollection 
+} from "@/src/queries";
+import { useNormalizedError } from "@/src/hooks";
 
 interface RemoveTripFromCollectionModalProps {
   trip: ICard;
-  collection: ICollection;
+  collectionId: number;
   onClose: () => void;
 }
 
@@ -19,21 +23,37 @@ interface RemoveTripFromCollectionModalProps {
 
 const RemoveTripFromCollectionModal: React.FC<
 RemoveTripFromCollectionModalProps
-> = ({ trip, collection, onClose }) => {
+> = ({ trip, collectionId, onClose }) => {
   const { isPending, mutate, isError } = useUpdateCollection();
+  const {
+    isPending: isRemovePending, 
+    mutate: remove, 
+    isError: isRemoveError 
+  } = useRemoveCardFromSaved();
   const [errorMessage, setErrorMessage] = useNormalizedError();
+  const { data: collection } = useGetCollection(collectionId);
 
-  const collectionCardIds = useGetCollectionCardIds(collection.id);
 
   const handleError = (error: any) => {
     setErrorMessage(error);
   };
 
   const handleRemoveTrip = () => {
-    if (collectionCardIds) {
+    if (collection?.name === 'Saved cards') {
+      remove(trip.id, {
+        onError: handleError,
+        onSuccess: () => onClose(),
+      });
+
+      return;
+    }
+
+    if (collection) {
       const data: IUpdateCollection = {
         ...collection,
-        cardIds: collectionCardIds.filter(cardId => cardId !== trip.id),
+        cardIds: collection.cardDtos
+          .filter(card => card.id !== trip.id)
+          .map(card => card.id),
       };
       
       mutate(data, { 
@@ -45,7 +65,7 @@ RemoveTripFromCollectionModalProps
 
   return (
     <ModalSkeleton onClose={onClose}>
-      <Heading text={`Remove ${trip.name} from ${collection.name}?`} font="normal"/>
+      <Heading text={`Remove ${trip.name} from ${collection?.name}?`} font="normal"/>
       <Heading4 text="This action cannot be undone 🫣" font="medium"/>
 
       <div className="flex w-full justify-between">
@@ -53,7 +73,7 @@ RemoveTripFromCollectionModalProps
           text="Delete"
           onClick={handleRemoveTrip}
           classes="bg-red text-white"
-          disabled={isPending}
+          disabled={isPending || isRemovePending}
         />
         <RoundedButton
           text="Cancel"
@@ -62,7 +82,7 @@ RemoveTripFromCollectionModalProps
         />
       </div>
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {(isError || isRemoveError) && <ErrorText errorText={errorMessage} />}
     </ModalSkeleton>
   );
 };

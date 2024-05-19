@@ -6,6 +6,8 @@ export { default as IconButton } from "./Buttons/IconButton";
 export { default as LinkButton } from "./Buttons/LinkButton";
 export { default as UnstyledButton } from "./Buttons/UnstyledButton";
 export { default as RoundedButton } from "./Buttons/RoundedButton";
+export { default as SaveButton } from "./Buttons/SaveButton";
+export { default as LikeButton } from "./Buttons/LikeButton";
 
 export { default as CheckboxInput } from "./Inputs/CheckboxInput";
 export { default as TextInput } from "./Inputs/TextInput";

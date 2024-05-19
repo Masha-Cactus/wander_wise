@@ -1,7 +1,7 @@
 'use client';
 
 import classNames from "classnames";
-import { Dispatch, SetStateAction, useState, memo } from "react";
+import { Dispatch, SetStateAction, useState, memo, useEffect } from "react";
 import { Icons, TextSmall } from "@/src/components/atoms";
 
 type Props = {
@@ -9,43 +9,36 @@ type Props = {
   setPage: Dispatch<SetStateAction<number>>,
   isPlaceholderData: boolean,
   isLastPage: boolean,
+  total?: number,
 };
 
 const Pagination: React.FC<Props> = ({
-  page, setPage, isPlaceholderData, isLastPage,
+  page, setPage, isPlaceholderData, isLastPage, total
 }) => {
   const [pagesList, setPagesList] = useState([1, 2, 3, 4, 5]);
 
-  const handleNext = (nextPage: number) => {
-    setPage(nextPage);
-    if (nextPage >= 3) {
-      setPagesList(curr => 
-        [ ...curr.slice(1), nextPage + 3]);
+  useEffect(() => {
+    if (page <= 2) {
+      setPagesList([1, 2, 3, 4, 5]);
+    } else if (page > 2) {
+      if (!total || (total && page + 3 <= total)) {
+        setPagesList([
+          page - 1,
+          page,
+          page + 1,
+          page + 2,
+          page + 3,
+        ]);
+      }
     }
-  };
-
-  const handlePrev = (prevPage: number) => {
-    setPage(prevPage);
-    if (prevPage >= 2) {
-      setPagesList(curr => 
-        [curr[0] - 1, ...curr.slice(0, -1)]);
-    }
-  };
-
-  const handlePageChange = (newPage: number) => {
-    if (newPage > page) {
-      handleNext(newPage);
-    } else if (newPage < page) {
-      handlePrev(newPage);
-    }
-  };
+  }, [page, total]);
 
   return (
     <div className="h-8 flex gap-2 items-center">
       <button
         className="text-black disabled:text-gray70 h-full w-8 
           flex items-center justify-center"
-        onClick={() => handlePrev(Math.max(page - 1, 0))}
+        onClick={() => setPage(Math.max(page - 1, 0))}
         disabled={page === 0}
       >
         <Icons.left className="w-6 h-6"/>
@@ -68,7 +61,7 @@ const Pagination: React.FC<Props> = ({
           className={classNames("h-full w-8", {
             "rounded-full bg-black": page + 1 === pageNumber,
           })}
-          onClick={() => handlePageChange(pageNumber)}
+          onClick={() => setPage(pageNumber)}
         >
           <TextSmall 
             text={pageNumber.toString()} 
@@ -77,22 +70,22 @@ const Pagination: React.FC<Props> = ({
           />
         </button> 
       ))}
-      <button
-        className="text-black h-full w-8"
-      >
-        <TextSmall 
-          text="..." 
-          font="semibold" 
-        />
-      </button> 
+
+      {((total && !pagesList.includes(total)) || !total) && (
+        <button
+          className="text-black h-full w-8"
+        >
+          <TextSmall 
+            text="..." 
+            font="semibold" 
+          />
+        </button>
+      )} 
+
       <button
         className="text-black disabled:text-gray70 h-full w-8
           flex items-center justify-center"
-        onClick={() => {
-          if (!isPlaceholderData) {
-            handleNext(page + 1);
-          }
-        }}
+        onClick={() => setPage(page + 1)}
         disabled={isPlaceholderData || isLastPage}
       >
         <Icons.right className="w-6 h-6"/>

@@ -12,7 +12,7 @@ const RecentlyLikedSection: React.FC = () => {
   const likedCards = useGetLikedCards();
 
   return (
-    <div
+    <section
       className="bg-white p-6 rounded-2xl flex flex-col gap-2 
  h-max"
     >
@@ -35,7 +35,7 @@ const RecentlyLikedSection: React.FC = () => {
           />
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

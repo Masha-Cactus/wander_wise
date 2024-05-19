@@ -14,10 +14,11 @@ type UploadCardImagesFormData = {
 };
 
 type Props = {
-  newCardId: number | null,
+  cardId: number | null,
+  closeModal?: () => void;
 };
 
-const UploadCardImagesForm: React.FC<Props> = ({ newCardId }) => {
+const UploadCardImagesForm: React.FC<Props> = ({ cardId, closeModal }) => {
   const { push } = useRouter();
   const [errorMessage, setErrorMessage] = useNormalizedError();
   
@@ -40,14 +41,20 @@ const UploadCardImagesForm: React.FC<Props> = ({ newCardId }) => {
   };
   
   const onSubmit = async ({images}: UploadCardImagesFormData) => {
-    if (typeof newCardId === 'number') {
+    if (typeof cardId === 'number') {
       mutate({
         images,
-        id: newCardId,
+        id: cardId,
       },
       {
         onError: handleError,
-        onSuccess: () => push('/my-cards'),
+        onSuccess: () => {
+          if (closeModal) {
+            closeModal();
+          }
+          
+          push('/my-cards');
+        },
       }
       );
     }

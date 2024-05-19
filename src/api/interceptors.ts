@@ -6,9 +6,11 @@ import {
   InternalAxiosRequestConfig, 
 } from "axios";
 import { authService } from "../services/authService/auth.service";
+import { getCookie } from "cookies-next";
 
 export function onRequest(req: InternalAxiosRequestConfig) {
-  const accessToken = localStorage.getItem('accessToken');
+//   const accessToken = localStorage.getItem('accessToken');
+  const accessToken = getCookie('token');
   
   if (accessToken) {
     // eslint-disable-next-line no-param-reassign

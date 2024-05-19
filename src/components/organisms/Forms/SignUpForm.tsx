@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ISignUp } from "@/src/services";
@@ -14,6 +14,7 @@ import { trimObjectFields } from "@/src/lib/helpers";
 import { ErrorText } from "@/src/components/atoms";
 import { PasswordInput } from "@/src/components/moleculs";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import { saveUserToCookies } from "@/src/actions/manageCookies";
 
 type Props = {
   openConfirmEmailModal: () => void;
@@ -42,16 +43,24 @@ const SignUpForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
     setErrorMessage(error);
   };
 
-  const { isPending, mutate, isError } = useSignUp();
+  const { isPending, mutate, isError, isSuccess, data } = useSignUp();
 
   const onSubmit = async (data: ISignUp) => {
     const trimmedUserData = trimObjectFields(data);
 
     mutate(trimmedUserData, {
       onError: handleError,
-      onSuccess: () => openConfirmEmailModal(),
     });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      saveUserToCookies(data.id)
+        .then(() => {
+          openConfirmEmailModal();
+        });
+    }
+  }, [isSuccess]);
 
   return (
     <form

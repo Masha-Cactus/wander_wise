@@ -1,7 +1,6 @@
 'use client';
 
 import { PropsWithChildren, memo, useEffect } from "react";
-// import { useGetCurrentUser } from "@/app/query";
 import { useUser } from "@/src/store/user";
 import { LoadedContentStateController } from "@/src/components/moleculs";
 import { useGetUserProfile } from "@/src/queries/user.queries";
@@ -12,13 +11,6 @@ const AuthorizedLayout = ({ children }: PropsWithChildren) => {
     setIsLoading: setIsLoadingCurrentUser,
     isLoading: isLoadingCurrentUser,
   } = useUser();
-
-  //   const {
-  //     currentUser,
-  //     isLoading: isLoadingCurrentUserData,
-  //     isSuccess: isSuccessCurrentUserData,
-  //     isError: isErrorWithCurrentUserData,
-  //   } = useGetCurrentUser();
 
   const {
     data: currentUser,

@@ -1,4 +1,5 @@
 import { formDataClient, authClient } from "@/src/api";
+import { CARDS_PER_PAGE } from "@/src/lib/constants";
 import { 
   ICard, 
   IAddCardImages, 
@@ -67,7 +68,7 @@ class CardService {
 
   searchCards(page: number, data: ISearchCard) {
     return authClient.post<never, ICard[]>(
-      `${this.BASE_URL}/search?page=${page}&size=8&sort=asc`, 
+      `${this.BASE_URL}/search?page=${page}&size=${CARDS_PER_PAGE}&sort=asc`, 
       data,
     );
   };

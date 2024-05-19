@@ -1,6 +1,5 @@
 'use client';
 
-import { useConfirmEmail } from "@/src/queries/auth.queries";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { PrimaryButton } from "@/src/components/moleculs/";
@@ -10,6 +9,7 @@ import { confirmEmailSchema } from "@/src/validation/confirmEmailSchema";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
 import { useEffect } from "react";
 import { saveTokenToCookies } from "@/src/actions/manageCookies";
+import { useUpdateEmail } from "@/src/queries";
 
 interface FormData {
   confirmationCode: string,
@@ -19,7 +19,7 @@ type Props = {
   closeModal: () => void;
 };
 
-const ConfirmEmailForm: React.FC<Props> = ({ closeModal }) => {
+const ConfirmNewEmailForm: React.FC<Props> = ({ closeModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = confirmEmailSchema();
 
@@ -39,7 +39,7 @@ const ConfirmEmailForm: React.FC<Props> = ({ closeModal }) => {
     setErrorMessage(error.message);
   };
 
-  const { isPending, mutate, isError, isSuccess, data } = useConfirmEmail();
+  const { isPending, mutate, isError, isSuccess, data } = useUpdateEmail();
 
   const onSubmit: SubmitHandler<FormData> = async({confirmationCode}) => {
     mutate(confirmationCode, {
@@ -76,4 +76,4 @@ const ConfirmEmailForm: React.FC<Props> = ({ closeModal }) => {
   );
 };
 
-export default ConfirmEmailForm;
+export default ConfirmNewEmailForm;

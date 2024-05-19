@@ -7,19 +7,19 @@ import {
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
 
-export function useGetUserProfile() {
-  const user = useUser((state) => state.user);
-
+export function useGetUserProfile(userId: number | null) {
   return useQuery({
-    queryKey: ['user-profile', {userId: user?.id}],
+    queryKey: ['user-profile', {userId}],
     queryFn: () => {
-      if (user) {
-        return userService.getProfile(user.id);
+      if (userId) {
+        return userService.getProfile(userId);
       }
 
       return Promise.reject('No user authorized');
     },
-    enabled: !!user,
+    enabled: typeof userId === 'number',
+    staleTime: Infinity,
+    gcTime: Infinity,
   });
 }
 
