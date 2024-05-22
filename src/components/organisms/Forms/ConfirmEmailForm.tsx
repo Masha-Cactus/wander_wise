@@ -8,6 +8,8 @@ import { ErrorText } from "@/src/components/atoms";
 import { TextInput }from "@/src/components/moleculs";
 import { confirmEmailSchema } from "@/src/validation/confirmEmailSchema";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import { useEffect } from "react";
+import { saveTokenToCookies } from "@/src/actions/manageCookies";
 
 interface FormData {
   confirmationCode: string,
@@ -25,7 +27,6 @@ const ConfirmEmailForm: React.FC<Props> = ({ closeModal }) => {
     handleSubmit,
     control,
     formState: { errors }, 
-    reset,
   } = useForm<FormData>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
@@ -38,17 +39,22 @@ const ConfirmEmailForm: React.FC<Props> = ({ closeModal }) => {
     setErrorMessage(error.message);
   };
 
-  const { isPending, mutate, isError } = useConfirmEmail();
+  const { isPending, mutate, isError, isSuccess, data } = useConfirmEmail();
 
   const onSubmit: SubmitHandler<FormData> = async({confirmationCode}) => {
     mutate(confirmationCode, {
       onError: handleError,
-      onSuccess: () => {
-        reset();
-        closeModal();
-      },
     });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      saveTokenToCookies(data.token)
+        .then(() => {
+          closeModal();
+        });
+    }
+  }, [isSuccess]);
 
   return (
     <form 

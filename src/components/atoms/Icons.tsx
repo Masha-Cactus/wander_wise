@@ -1,10 +1,12 @@
 import {
   IoIosClose,
   IoMdHeartEmpty,
+  IoMdHeart,
   IoIosArrowBack,
   IoIosArrowForward,
   IoIosArrowDown,
   IoIosArrowUp,
+  IoMdExit,
 } from "react-icons/io";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { MdErrorOutline } from "react-icons/md";
@@ -20,13 +22,13 @@ import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa";
 import { CiStar } from "react-icons/ci";
-import { FaPlus } from "react-icons/fa";
-
-
+import { FaPlus, FaTwitter, FaInstagram } from "react-icons/fa";
+import { FaCheck, FaGlobe } from "react-icons/fa6";
 
 const Icons = {
   close: IoIosClose,
   heart: IoMdHeartEmpty,
+  heartFilled: IoMdHeart,
   share: IoShareSocialOutline,
   report: MdErrorOutline,
   user: HiOutlineUserCircle,
@@ -47,6 +49,11 @@ const Icons = {
   star: CiStar,
   filledStar: FaStar,
   plus: FaPlus,
+  follow: IoMdExit,
+  checked: FaCheck,
+  twitter: FaTwitter,
+  insta: FaInstagram,
+  website: FaGlobe,
 };
 
 export default Icons;

@@ -1,9 +1,9 @@
 'use client';
 
 import { PrimaryButton } from "@/src/components/moleculs";
-import { ReviewCard } from "@/src/components/organisms";
+import { ReviewCardLong } from "@/src/components/organisms";
 import { memo } from "react";
-import { Heading3, Heading5 } from "@/src/components/atoms";
+import { Heading3, Heading5, Divider } from "@/src/components/atoms";
 import { useGetUserComments } from "@/src/queries";
 import { useRouter } from "next/navigation";
 
@@ -12,18 +12,21 @@ const RecentlyLikedSection: React.FC = () => {
   const { data: reviews } = useGetUserComments();
 
   return (
-    <div
-      className="bg-white p-6 rounded-2xl flex flex-col gap-2 
- h-max"
+    <section
+      className="bg-white py-12 px-10 rounded-2xl flex flex-col gap-6"
     >
       <Heading3 text="Reviews you've recently added" />
 
       {reviews && reviews?.length > 0 ? (
-        <div className="">
+        <>
+          <Divider classes="w-full h-px" />
           {reviews.map((review) => (
-            <ReviewCard key={review.id} review={review} />
+            <div key={review.id}>
+              <ReviewCardLong review={review} />
+              <Divider classes="w-full h-px" />
+            </div>
           ))}
-        </div>
+        </>
       ) : (
         <div className="flex flex-col gap-4">
           <Heading5
@@ -39,7 +42,7 @@ const RecentlyLikedSection: React.FC = () => {
           />
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

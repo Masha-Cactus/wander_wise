@@ -1,19 +1,18 @@
-import { useGetCollection } from "@/src/queries";
 import Image from "next/image";
-import { TextMedium } from "../atoms";
+import { TextMedium } from "@/src/components/atoms";
+import { ICollection } from "@/src/services";
 
 type Props = {
-  collectionId: number,
+  collection: ICollection,
 };
 
-const Collection: React.FC<Props> = ({ collectionId }) => {
-  const {data: collection} = useGetCollection(collectionId);
-  const collectionCards = collection?.cardDtos.slice(0, 4);
+const Collection: React.FC<Props> = ({ collection }) => {
+  const collectionCards = collection.cardDtos.slice(0, 4);
 
   return (
     <>
       <div 
-        className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] 
+        className="w-[282px] grid grid-cols-[repeat(2,140px)] 
           gap-0.5 relative"
       >
         {collectionCards?.length ? (
@@ -30,7 +29,7 @@ const Collection: React.FC<Props> = ({ collectionId }) => {
         ) : (
           <div className="bg-gray30 rounded-3xl w-[282px] h-[282px]"></div>
         )}
-        <div className="absolute inset-x-2 bottom-3 w-full 
+        <div className="absolute inset-x-2 bottom-3 
           py-2 px-6 bg-gray80 rounded-2xl">
           <TextMedium 
             text={collection?.name || ''} 

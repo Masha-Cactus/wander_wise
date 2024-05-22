@@ -1,13 +1,16 @@
 import { memo } from "react";
 import { Heading, Heading4 } from "@/src/components/atoms";
-import { ModalSkeleton, ReportCardForm } from "@/src/components/organisms";
+import { ModalSkeleton, ReportForm } from "@/src/components/organisms";
+import { IComment } from "@/src/services";
 
 interface CreateReportModalProps {
   onClose: () => void;
+  type: 'Card' | 'Comment',
+  comment?: IComment,
 }
 
 const CreateReportModal: React.FC<CreateReportModalProps> = ({
-  onClose,
+  onClose, type, comment
 }) => {
   return (
     <ModalSkeleton onClose={onClose}>
@@ -17,8 +20,12 @@ const CreateReportModal: React.FC<CreateReportModalProps> = ({
       our support will contact you ASAP🫡`}
         font="medium"
       />
-
-      <ReportCardForm closeModal={onClose} />
+    
+      {type === 'Comment' ? (
+        <ReportForm closeModal={onClose} type={type} comment={comment} />
+      ) : (
+        <ReportForm closeModal={onClose} type={type}/>
+      )}
     </ModalSkeleton>
   );
 };

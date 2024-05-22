@@ -2,23 +2,26 @@
 
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
 import { trimObjectFields } from "@/src/lib/helpers";
-import { useReportCard } from "@/src/queries";
+import { useReportCard, useReportComment } from "@/src/queries";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
 import { TextAreaInput, PrimaryButton } from "@/src/components/moleculs";
 import { useParams } from "next/navigation";
 import { reportCardSchema } from "@/src/validation";
+import { IComment } from "@/src/services";
 
 type Props = {
   closeModal: () => void;
+  type: 'Card' | 'Comment';
+  comment?: IComment;
 };
 
-type ReportCardFormData = {
+type ReportFormData = {
   text: string;
 };
 
-const ReportCardForm: React.FC<Props> = ({ closeModal }) => {
+const ReportForm: React.FC<Props> = ({ closeModal, type, comment }) => {
   const { id } = useParams();
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
@@ -28,7 +31,7 @@ const ReportCardForm: React.FC<Props> = ({ closeModal }) => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<ReportCardFormData>({
+  } = useForm<ReportFormData>({
     values: {
       text: '',
     },
@@ -39,13 +42,37 @@ const ReportCardForm: React.FC<Props> = ({ closeModal }) => {
     setErrorMessage(error.message);
   };
 
-  const { isPending, mutate, isError } = useReportCard();
+  const { 
+    isPending: isReportCardPending, 
+    mutate: reportCard, 
+    isError: isReportCardError, 
+  } = useReportCard();
 
-  const onSubmit = async (data: ReportCardFormData) => {
+  const { 
+    isPending: isReportCommentPending, 
+    mutate: reportComment,
+    isError: isReportCommentError,
+  } = useReportComment();
+
+  const onSubmit = async (data: ReportFormData) => {
     const { text } = trimObjectFields(data);
+
+    if (type === 'Comment' && comment) {
+      reportComment({ 
+        reportText: text, 
+        commentAuthor: comment.author, 
+        commentText: comment.text,
+        id: comment.id, 
+      }, {
+        onError: handleError,
+        onSuccess: () => closeModal(),
+      });
+
+      return;
+    }
     
-    if (id) {
-      mutate({text, cardId: +id}, {
+    if (type === 'Card' && id) {
+      reportCard({text, cardId: +id}, {
         onError: handleError,
         onSuccess: () => closeModal(),
       });
@@ -61,14 +88,16 @@ const ReportCardForm: React.FC<Props> = ({ closeModal }) => {
         name="text"
         control={control}
         errorText={errors.text?.message}
-        disabled={isPending}
+        disabled={isReportCardPending || isReportCommentPending}
         placeholder="Type your issue here..."
       />
       <PrimaryButton type="submit" text="Send" />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {(isReportCardError || isReportCommentError) && (
+        <ErrorText errorText={errorMessage} />
+      )}
     </form>
   );
 };
 
-export default ReportCardForm;
+export default ReportForm;

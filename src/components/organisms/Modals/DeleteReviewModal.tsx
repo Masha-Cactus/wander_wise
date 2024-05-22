@@ -6,18 +6,18 @@ import { ErrorText, Heading, Heading4 } from "@/src/components/atoms";
 import { RoundedButton } from "@/src/components/moleculs";
 import { useDeleteComment } from "@/src/queries";
 import { normalizeError } from "@/src/lib/helpers";
+import { useParams } from "next/navigation";
 
 interface DeleteReviewModalProps {
   onClose: () => void;
   commentId: number;
-  cardId: number;
 }
 
 const DeleteReviewModal: React.FC<DeleteReviewModalProps> = ({
   onClose,
   commentId,
-  cardId,
 }) => {
+  const { id: cardId } = useParams();
   const { isPending, mutate, isError } = useDeleteComment();
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -27,8 +27,12 @@ const DeleteReviewModal: React.FC<DeleteReviewModalProps> = ({
   };
 
   const handleDeleteReview = () => {
-    mutate({commentId, cardId}, { onError: handleError });
-    onClose();
+    if (cardId) {
+      mutate({commentId, cardId: +cardId}, { 
+        onError: handleError,
+        onSuccess: () => onClose(),
+      });
+    }
   };
 
   return (

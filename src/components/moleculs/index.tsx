@@ -6,6 +6,8 @@ export { default as IconButton } from "./Buttons/IconButton";
 export { default as LinkButton } from "./Buttons/LinkButton";
 export { default as UnstyledButton } from "./Buttons/UnstyledButton";
 export { default as RoundedButton } from "./Buttons/RoundedButton";
+export { default as SaveButton } from "./Buttons/SaveButton";
+export { default as LikeButton } from "./Buttons/LikeButton";
 
 export { default as CheckboxInput } from "./Inputs/CheckboxInput";
 export { default as TextInput } from "./Inputs/TextInput";
@@ -17,6 +19,7 @@ export { default as InputControllerWrapper } from "./Inputs/InputControllerWrapp
 export { default as StarsInput } from "./Inputs/StarsInput";
 export { default as SelectInput } from "./Inputs/SelectInput";
 export { default as DropdownInput } from "./Inputs/DropdownInput";
+export { default as SquareCheckboxInput } from "./Inputs/SquareCheckboxInput";
 
 export { default as IconLink } from "./IconLink";
 export { default as ImagesBlock } from "./ImagesBlock";

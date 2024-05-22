@@ -2,7 +2,7 @@ import { ObjectSchema } from "yup";
 import * as Yup from "yup";
 
 import { genericValidationSchema } from "@/src/validation";
-import { FilterFormData } from "../components/organisms/Forms/FilterForm";
+import { FilterFormData } from "../components/organisms/Forms/SearchCardsForm";
 
 export const searchCardsSchema 
 = (): ObjectSchema<FilterFormData> =>

@@ -6,5 +6,5 @@ export const authClient = createClient();
 authClient.interceptors.request.use(onRequest);
 authClient.interceptors.response.use(
   onResponseSuccess, 
-  onResponseError(authClient),
+  onResponseError,
 );

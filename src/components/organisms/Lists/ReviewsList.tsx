@@ -3,13 +3,16 @@
 import { ReviewCard } from "@/src/components/organisms";
 import { Divider, Heading5, Heading3, Heading4 } from "@/src/components/atoms";
 import { IComment } from "@/src/services";
-import { memo } from "react";
+import { memo, useState } from "react";
+import CreateReviewModal from "../Modals/CreateReviewModal";
 
 type Props = {
   reviews: IComment[];
 };
 
 const ReviewsList: React.FC<Props> = ({ reviews }) => {
+  const [isPostReviewModal, setIsReviewModal] = useState(false);
+
   return (
     <div className="flex flex-col gap-6">
       <div className="w-full flex justify-between">
@@ -20,11 +23,16 @@ const ReviewsList: React.FC<Props> = ({ reviews }) => {
           </div>
         </div>
 
-        <Heading5
-          text="Post review" 
-          font="semibold" 
-          classes="underline underline-offset-8"
-        />
+        <button
+          type="button"
+          onClick={() => setIsReviewModal(true)}
+        >
+          <Heading5
+            text="Post review" 
+            font="semibold" 
+            classes="underline underline-offset-8"
+          />
+        </button>
       </div>
 
       <Divider classes="h-px w-full bg-gray30" />
@@ -34,6 +42,12 @@ const ReviewsList: React.FC<Props> = ({ reviews }) => {
           <ReviewCard review={review} key={review.id} />
         ))}
       </div>
+
+      {isPostReviewModal && (
+        <CreateReviewModal
+          onClose={() => setIsReviewModal(false)}
+        />
+      )}
     </div>
   );
 };

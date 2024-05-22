@@ -6,10 +6,10 @@ import {
   IUpdateImage, 
   IUpdateInfo, 
   IUpdatePassword,
-  ShortCollection, 
   IToken, 
   IComment,
 } from "@/src/services";
+import { ICollection } from "../collectionService/collection.types";
 
 class UserService {
   private BASE_URL = '/users';
@@ -23,7 +23,7 @@ class UserService {
   };
 
   getCollections (userId: number) {
-    return authClient.get<never, ShortCollection[]>(`${this.BASE_URL}/${userId}/collections`);
+    return authClient.get<never, ICollection[]>(`${this.BASE_URL}/${userId}/collections`);
   };
 
   getComments(userId: number) {

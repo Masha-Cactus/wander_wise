@@ -60,3 +60,11 @@ export enum TravelDistance {
 }
 
 export type TravelDistanceType = `${TravelDistance}`;
+
+export interface IFilterParams {
+  countries: string[],
+  tripTypes: TripTypesType[],
+  specialRequirements: SpecialRequirementsType[],
+  climates: ClimateType[],
+  authors: CardAuthorsType[],
+};

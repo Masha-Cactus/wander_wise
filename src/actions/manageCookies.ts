@@ -1,27 +1,39 @@
 'use server';
 
-import { ISignInResponse, IUser } from "../services";
 import { cookies } from 'next/headers';
 
-export async function saveCookies({token, user}: ISignInResponse) {
+export async function saveCookies({token, userId}
+: {token: string, userId: number}) {
   cookies().set('token', token, { httpOnly: true });
-  cookies().set('user', JSON.stringify(user), { httpOnly: true });
+  cookies().set('userId', userId.toString(), { httpOnly: true });
+}
+
+export async function saveUserToCookies(userId: number) {
+  cookies().set('userId', userId.toString(), { httpOnly: true }); 
+}
+
+export async function saveTokenToCookies(token: string) {
+  cookies().set('token', token, { httpOnly: true }); 
+}
+
+export async function getUserIdFromCookies()
+: Promise<number | null> {
+  const userId = cookies().get('userId')?.value;
+
+  return userId ? +userId : null;
 }
 
 export async function getUserDataFromCookies()
-: Promise<{token: string, user: IUser} | null> {
-  const user = cookies().get('user')?.value;
+: Promise<{token: string, userId: number} | null> {
+  const userId = cookies().get('userId')?.value;
   const token = cookies().get('token')?.value;
 
-  return user && token 
-    ? {
-      user: JSON.parse(user),
-      token,
-    }
+  return (userId && token) 
+    ? {userId: +userId, token} 
     : null;
 }
 
 export async function clearCookies() {
-  cookies().delete('user');
+  cookies().delete('userId');
   cookies().delete('token');
 }

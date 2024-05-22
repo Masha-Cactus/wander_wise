@@ -10,6 +10,7 @@ import {
   RestorePasswordModal,
   ProfileEditForm,
   SocialLinkForm,
+  ConfirmEmailModal,
 } from "@/src/components/organisms";
 import { FormPageLayout } from "@/src/components/layouts";
 
@@ -20,6 +21,18 @@ const ProfileEditPage = () => {
   const [isShowChangePassModal, setIsShowChangePassModal] = useState(false);
   const [isShowRestorePasswordModal, setIsShowRestorePasswordModal] 
   = useState(false);
+  const [isShowConfirmEmailModal, setIsShowConfirmEmailModal] 
+  = useState(false);
+
+  const handleRestorePassOpen = () => {
+    setIsShowChangePassModal(false);
+    setIsShowRestorePasswordModal(true);
+  };
+
+  const handleConfirmEmailOpen = () => {
+    setIsShowChangeEmailModal(false);
+    setIsShowConfirmEmailModal(true);
+  };
 
   return (
     <FormPageLayout>
@@ -89,19 +102,27 @@ const ProfileEditPage = () => {
       {isShowChangeEmailModal && (
         <ChangeUserEmailModal
           onClose={() => setIsShowChangeEmailModal(false)}
+          onOpenConfirmEmail={handleConfirmEmailOpen}
         />
       )}
 
       {isShowChangePassModal && (
         <ChangeUserPasswordModal
           onClose={() => setIsShowChangePassModal(false)}
-          onOpenRestorePasswordModal={() => setIsShowRestorePasswordModal}
+          onOpenRestorePasswordModal={handleRestorePassOpen}
         />
       )}
 
       {isShowRestorePasswordModal && (
         <RestorePasswordModal 
           onClose={() => setIsShowRestorePasswordModal(false)}
+        />
+      )}
+
+      {isShowConfirmEmailModal && (
+        <ConfirmEmailModal
+          onClose={() => setIsShowConfirmEmailModal(false)}
+          type="Update"
         />
       )}
     </FormPageLayout>

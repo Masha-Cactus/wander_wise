@@ -26,7 +26,7 @@ const Slider: React.FC<Props> = ({ slides }) => {
   }, [swiperRef]);
 
   return (
-    <div className="h-full w-full slider rounded-3xl relative">
+    <div className="h-full w-full rounded-3xl relative">
       <Swiper
         onSwiper={setSwiperRef}
         className=""
@@ -42,13 +42,16 @@ const Slider: React.FC<Props> = ({ slides }) => {
         loop
       >
         {slides.map((slide) => (
-          <SwiperSlide key={slide} className="h-full w-full">
+          <SwiperSlide key={slide} className="h-full w-full relative pb-[60%]">
             <Image
               src={slide}
               alt="slide"
-              width={1000}
-              height={1000}
-              className="h-full w-full object-contain rounded-3xl"
+              fill
+              style={{ 
+                objectFit: 'cover',
+                borderRadius: '40px',
+                cursor: 'pointer', 
+              }}
             />
           </SwiperSlide>
         ))}
@@ -60,12 +63,12 @@ const Slider: React.FC<Props> = ({ slides }) => {
         >
           <IconButton
             onClick={handlePrevious}
-            classes="h-11 w-11 rounded-full bg-white border-2"
+            classes="h-11 w-11 rounded-full border-white border-2 text-white"
             icon={<Icons.arrowLeft color="black"/>}
           />
           <IconButton
             onClick={handleNext}
-            classes="h-11 w-11 rounded-full border-white border-2"
+            classes="h-11 w-11 rounded-full border-white border-2 text-white"
             icon={<Icons.arrowRight />}
           />
         </div>

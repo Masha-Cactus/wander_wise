@@ -53,7 +53,7 @@ const SignInForm: React.FC<Props> = ({ closeModal }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      saveCookies(data)
+      saveCookies({token: data.token, userId: data.user.id})
         .then(() => {
           closeModal();
           push("/profile");

@@ -61,3 +61,8 @@ export interface ISearchCard {
   specialRequirements: SpecialRequirementsType[],
   travelDistance: TravelDistanceType[],
 }
+
+export interface ISearchCardResponse {
+  currentPage: number,
+  cards: ICard[],
+}

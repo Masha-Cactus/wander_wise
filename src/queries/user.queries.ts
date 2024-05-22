@@ -7,19 +7,20 @@ import {
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
 
-export function useGetUserProfile() {
-  const user = useUser((state) => state.user);
-
+// this query is currently used only for auto-authorization on first load
+export function useGetUserProfile(userId: number | null) {
   return useQuery({
-    queryKey: ['user-profile', {userId: user?.id}],
+    queryKey: ['user-profile', {userId}],
     queryFn: () => {
-      if (user) {
-        return userService.getProfile(user.id);
+      if (userId) {
+        return userService.getProfile(userId);
       }
 
       return Promise.reject('No user authorized');
     },
-    enabled: !!user,
+    enabled: typeof userId === 'number',
+    staleTime: Infinity,
+    gcTime: Infinity,
   });
 }
 
@@ -152,10 +153,7 @@ export function useUpdateEmail() {
         
       return Promise.reject('No user authorized');
     },
-    onSuccess: ({ token }) => {
-      localStorage.setItem('accessToken', token);
-      unbanUser();
-    }
+    onSuccess: () => unbanUser(),
   });
 }
 
@@ -170,8 +168,5 @@ export function useUpdatePassword() {
 
       return Promise.reject('No user authorized');
     },
-    onSuccess: ({ token }) => {
-      localStorage.setItem('accessToken', token);
-    }
   });
 }
