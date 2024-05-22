@@ -1,15 +1,11 @@
 import { 
   AxiosError, 
-  AxiosInstance, 
-  AxiosRequestConfig, 
   AxiosResponse, 
   InternalAxiosRequestConfig, 
 } from "axios";
-import { authService } from "../services/authService/auth.service";
 import { getCookie } from "cookies-next";
 
 export function onRequest(req: InternalAxiosRequestConfig) {
-//   const accessToken = localStorage.getItem('accessToken');
   const accessToken = getCookie('token');
   
   if (accessToken) {
@@ -24,26 +20,16 @@ export function onResponseSuccess(res: AxiosResponse) {
   return res.data;
 }
 
-export function onResponseError(client: AxiosInstance) {
-  return async function onAuthError(error: AxiosError) {
-    const originalRequest = error.config as AxiosRequestConfig;
-    const { status } = error.response as AxiosResponse ?? {};
+export function onResponseError(error: AxiosError) {
+  throw error;
+  // const { status } = error.response as AxiosResponse ?? {};
   
-    if (status !== 401) {
-      throw error;
-    }
-  
-    try {
-      const { token } = await authService.refresh();
-  
-      localStorage.setItem('accessToken', token);
-  
-      return client.request(originalRequest);
-    } catch (error) {
-      localStorage.removeItem('accessToken');
-      
-      throw error;
-    }
-  };
+  // if (status !== 401) {
+  //   throw error;
+  // } else {
+  //   deleteCookie('userId');
+  //   deleteCookie('token');
+  //   window.location.href = '/';
+  // }
 }
 

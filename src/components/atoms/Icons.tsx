@@ -22,9 +22,8 @@ import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa";
 import { CiStar } from "react-icons/ci";
-import { FaPlus } from "react-icons/fa";
-
-
+import { FaPlus, FaTwitter, FaInstagram } from "react-icons/fa";
+import { FaCheck, FaGlobe } from "react-icons/fa6";
 
 const Icons = {
   close: IoIosClose,
@@ -51,6 +50,10 @@ const Icons = {
   filledStar: FaStar,
   plus: FaPlus,
   follow: IoMdExit,
+  checked: FaCheck,
+  twitter: FaTwitter,
+  insta: FaInstagram,
+  website: FaGlobe,
 };
 
 export default Icons;

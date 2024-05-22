@@ -43,7 +43,11 @@ const Review: React.FC<Props> = ({ review }) => {
             classes="hidden group-hover:block"
             onClick={() => setIsDeleteReviewModal(true)}
           />
-          <IconButton icon={<Icons.report />} classes="" />
+          <IconButton 
+            icon={<Icons.report />} 
+            classes=""
+            onClick={() => setIsReportReviewModal(true)}
+          />
         </div>
       </div>
       

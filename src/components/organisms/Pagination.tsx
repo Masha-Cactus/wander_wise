@@ -61,7 +61,7 @@ const Pagination: React.FC<Props> = ({
           className={classNames("h-full w-8", {
             "rounded-full bg-black": page + 1 === pageNumber,
           })}
-          onClick={() => setPage(pageNumber)}
+          onClick={() => setPage(pageNumber - 1)}
         >
           <TextSmall 
             text={pageNumber.toString()} 

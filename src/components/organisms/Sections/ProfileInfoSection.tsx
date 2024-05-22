@@ -12,7 +12,7 @@ import {
 } from "@/src/components/atoms";
 import { memo, useEffect } from "react";
 import { useUser } from "@/src/store/user";
-import { useLogout } from "@/src/queries";
+import { useGetUserSocials, useLogout } from "@/src/queries";
 import { useNormalizedError } from "@/src/hooks";
 import { clearCookies } from "@/src/actions/manageCookies";
 import { useRouter } from "next/navigation";
@@ -24,6 +24,9 @@ const ProfileInfoSection: React.FC = () => {
   = user!;
 
   const [errorMessage, setErrorMessage] = useNormalizedError();
+
+  const { data: userSocials } = useGetUserSocials();
+
   const { isPending, mutate, isError, isSuccess } = useLogout();
 
   const handleLogout = () => {
@@ -93,22 +96,40 @@ const ProfileInfoSection: React.FC = () => {
 
       <Divider classes="w-full h-px bg-gray20" />
 
-      {/* {socials.length > 0 && (
+      {(userSocials && userSocials.length > 0) && (
         <>
           <div className="flex flex-col gap-2">
-            {socials.map((social) => (
-              <TextBase
-                key={social}
-                text={social}
-                font="normal"
-                classes="text-start"
-              />
+            {userSocials.map((social) => (
+              <a 
+                key={social.id} 
+                href={social.link} 
+                target="_blank" 
+                className="flex gap-2 items-center"
+              >
+                {social.name === 'Website' && (
+                  <Icons.website className="w-6 h-6" />
+                )}
+
+                {social.name === 'Instagram' && (
+                  <Icons.insta className="w-6 h-6" />
+                )}
+
+                {social.name === 'Twitter' && (
+                  <Icons.twitter className="w-6 h-6" />
+                )}
+
+                <TextBase
+                  text={social.name}
+                  font="normal"
+                  classes="text-start"
+                />
+              </a>
             ))}
           </div>
 
           <Divider classes="w-full h-px bg-gray20" />
         </>
-      )} */}
+      )}
 
       <Link
         href="/profile/edit"

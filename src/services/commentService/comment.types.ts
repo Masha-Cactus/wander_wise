@@ -4,7 +4,9 @@ export interface IComment {
   author: string,
   timeStamp: string,
   text: string,
+  cardId: number,
 }
+
 export interface ICreateComment {
   cardId: number,
   stars: number,

@@ -10,5 +10,5 @@ export const formDataClient = createClient({
 formDataClient.interceptors.request.use(onRequest);
 formDataClient.interceptors.response.use(
   onResponseSuccess, 
-  onResponseError(formDataClient),
+  onResponseError,
 );

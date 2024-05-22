@@ -83,8 +83,8 @@ export const genericValidationSchema = {
     latitude: Yup.number().required('Latitude is required'),
     longitude: Yup.number().required('Longitude is required'),
     city: Yup.string().required('City is required'),
-    state: Yup.string().required('State is required'),
-    postalCode: Yup.string().required('Postal code is required'),
+    state: Yup.string(),
+    postalCode: Yup.string(),
     country: Yup.string().required('Country is required'),
     geometry: Yup.object().shape({
       type: Yup.mixed<"Point">().oneOf(['Point'])

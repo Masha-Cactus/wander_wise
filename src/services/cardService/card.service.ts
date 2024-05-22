@@ -1,4 +1,4 @@
-import { formDataClient, authClient } from "@/src/api";
+import { formDataClient, authClient, baseClient } from "@/src/api";
 import { CARDS_PER_PAGE } from "@/src/lib/constants";
 import { 
   ICard, 
@@ -8,6 +8,7 @@ import {
   IUpdateCard,
   IReportCard, 
 } from "@/src/services";
+import { ISearchCardResponse } from "./card.types";
 
 class CardService {
   private BASE_URL = "/cards";
@@ -67,7 +68,7 @@ class CardService {
   };
 
   searchCards(page: number, data: ISearchCard) {
-    return authClient.post<never, ICard[]>(
+    return baseClient.post<never, ISearchCardResponse>(
       `${this.BASE_URL}/search?page=${page}&size=${CARDS_PER_PAGE}&sort=asc`, 
       data,
     );

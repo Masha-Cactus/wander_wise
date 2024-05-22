@@ -11,8 +11,8 @@ type Props = {
 const Gallery: React.FC<Props> = ({ cards }) => {
   return (
     <section
-      className="flex flex-wrap gap-y-6 gap-x-5 
-      items-center justify-center gap-6 
+      className="w-full grid grid-cols-[repeat(auto-fill,325px)] 
+      auto-rows-fr justify-center gap-y-6 gap-x-5  
       col-start-2 col-span-3 row-start-2"
     >
       {cards.map((card) => (

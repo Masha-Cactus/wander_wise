@@ -1,14 +1,13 @@
-import { useGetCollection } from "@/src/queries";
 import Image from "next/image";
 import { TextMedium } from "@/src/components/atoms";
+import { ICollection } from "@/src/services";
 
 type Props = {
-  collectionId: number,
+  collection: ICollection,
 };
 
-const Collection: React.FC<Props> = ({ collectionId }) => {
-  const {data: collection} = useGetCollection(collectionId);
-  const collectionCards = collection?.cardDtos.slice(0, 4);
+const Collection: React.FC<Props> = ({ collection }) => {
+  const collectionCards = collection.cardDtos.slice(0, 4);
 
   return (
     <>
@@ -18,7 +17,7 @@ const Collection: React.FC<Props> = ({ collectionId }) => {
       >
         {collectionCards?.length ? (
           <>
-            {collectionCards.slice(0, 4).map(card => (
+            {collectionCards.map(card => (
               <Image 
                 key={card.id} 
                 src={card.imageLinks[0]} 

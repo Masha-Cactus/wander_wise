@@ -16,19 +16,8 @@
   }
 }
 
-body {}
-
 * {
   box-sizing: border-box;
-}
-
-.slider {
-  position: absolute;
-  z-index: -1;
-}
-
-.round {
-  border-radius: 26px;
 }
 
 @layer utilities {

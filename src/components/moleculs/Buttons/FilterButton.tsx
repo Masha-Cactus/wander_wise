@@ -9,12 +9,14 @@ interface FilterButtonProps<T extends FieldValues> {
   name: FieldPath<T>;
   control: Control<T>;
   value: string;
+  text?: string,
 }
 
 const FilterButton = <T extends FieldValues>({
   value,
   name,
   control,
+  text,
 }: FilterButtonProps<T>) => {
 
   return (
@@ -38,7 +40,7 @@ const FilterButton = <T extends FieldValues>({
           className={`text-sm rounded-full py-2 px-3 w-max text-regular 
             ${field.value.includes(value) ? "bg-gray80 text-white" : "bg-gray10"}`}
         >
-          {value}
+          {text? text : value}
         </button>
       )}
     </InputControllerWrapper>

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Maven_Pro } from "next/font/google";
@@ -5,6 +6,7 @@ import "./globals.css";
 import { Header } from "@/src/components/organisms";
 import { QueryProvider } from "../providers/QueryProvider";
 import { AuthProvider } from "../providers/AuthProvider";
+import { SITE_NAME } from "../lib/constants";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,7 +21,8 @@ const maven = Maven_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "Wander Wise",
+  title: SITE_NAME,
+  description: 'Your AI-powered travel buddy, adept at meticulously designing personalized journeys perfectly aligned with your unique preferences and desires.'
 };
 
 export default function RootLayout({

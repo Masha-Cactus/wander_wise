@@ -21,7 +21,7 @@ const Header: React.FC = () => {
   const [isShowRestorePasswordModal, setIsShowRestorePasswordModal] = useState(false);
 
   return (
-    <div
+    <header
       className="flex items-center justify-between 
     mx-10 my-7"
     >
@@ -35,7 +35,7 @@ const Header: React.FC = () => {
         />
       </Link>
       {user ? (
-        <div className="flex gap-8 h-10">
+        <nav className="flex gap-8 h-10">
           <div className="flex gap-8 text-black justify-center items-center">
             <Link href="/trips" className="">
               Trips
@@ -61,7 +61,7 @@ const Header: React.FC = () => {
               className="rounded-full w-12 h-12 bg-gray30 "
             />
           </Link>
-        </div>
+        </nav>
       ) : (
         <div className="flex gap-8">
           <button
@@ -110,7 +110,7 @@ const Header: React.FC = () => {
           onClose={() => setIsShowConfirmEmailModal(false)}
         />
       )}
-    </div>
+    </header>
   );
 };
 

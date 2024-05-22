@@ -19,6 +19,7 @@ export { default as InputControllerWrapper } from "./Inputs/InputControllerWrapp
 export { default as StarsInput } from "./Inputs/StarsInput";
 export { default as SelectInput } from "./Inputs/SelectInput";
 export { default as DropdownInput } from "./Inputs/DropdownInput";
+export { default as SquareCheckboxInput } from "./Inputs/SquareCheckboxInput";
 
 export { default as IconLink } from "./IconLink";
 export { default as ImagesBlock } from "./ImagesBlock";

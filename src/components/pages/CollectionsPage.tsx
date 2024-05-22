@@ -28,7 +28,7 @@ const CollectionsPage = () => {
         <div className="w-full grid gap-5
           grid-cols-[repeat(2,282px)]">
           {collections?.map(collection => (
-            <Collection key={collection.id} collectionId={collection.id} />
+            <Collection key={collection.id} collection={collection} />
           ))}
         </div>
       </article>

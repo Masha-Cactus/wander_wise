@@ -49,7 +49,7 @@ LoadedContentStateControllerProps
     return null;
   }
 
-  return children;
+  return <>{children}</>;
 };
 
 export default memo(LoadedContentStateController);

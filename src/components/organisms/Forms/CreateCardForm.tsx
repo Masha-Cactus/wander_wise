@@ -20,7 +20,8 @@ import {
   TextAreaInput, 
   TextInput,
   CheckboxInput,
-  PrimaryButton
+  PrimaryButton,
+  SquareCheckboxInput
 } from "@/src/components/moleculs";
 import { createCardSchema } from "@/src/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -154,7 +155,7 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
           <Divider classes="w-full h-px" />
           <div className="flex flex-col gap-2">
             {specials.map((special) => (
-              <CheckboxInput
+              <SquareCheckboxInput
                 key={special}
                 control={control}
                 name="specialRequirements"

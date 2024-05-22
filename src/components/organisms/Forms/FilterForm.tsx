@@ -5,7 +5,6 @@ import {
   TextBase,
 } from "@/src/components/atoms";
 import {
-  CheckboxInput,
   RoundedButton,
   FilterButton,
 } from "@/src/components/moleculs";
@@ -147,7 +146,8 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
         <TextBase text="Cards are" font="semibold" />
         <div className="flex flex-wrap gap-2 mt-3">
           {authors.map(([authorText, authorValue]) => (
-            <CheckboxInput key={authorValue}
+            <FilterButton 
+              key={authorValue}
               name="authors"
               control={control}
               text={authorText}

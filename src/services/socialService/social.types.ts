@@ -1,10 +1,15 @@
+export type SocialLinkName = 'Website' | 'Instagram' | 'Twitter';
+
 export interface ISocial {
-  name: string,
+  id: number,
+  name: SocialLinkName,
   link: string,
 }
 
-export interface ICreateSocial extends ISocial {
+export interface ICreateSocial {
   userId: number,
+  name: SocialLinkName,
+  link: string,
 }
 
 export interface IUpdateSocial extends ICreateSocial {

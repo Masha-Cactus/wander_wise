@@ -7,6 +7,7 @@ import {
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
 
+// this query is currently used only for auto-authorization on first load
 export function useGetUserProfile(userId: number | null) {
   return useQuery({
     queryKey: ['user-profile', {userId}],
@@ -152,10 +153,7 @@ export function useUpdateEmail() {
         
       return Promise.reject('No user authorized');
     },
-    onSuccess: ({ token }) => {
-      localStorage.setItem('accessToken', token);
-      unbanUser();
-    }
+    onSuccess: () => unbanUser(),
   });
 }
 
@@ -170,8 +168,5 @@ export function useUpdatePassword() {
 
       return Promise.reject('No user authorized');
     },
-    onSuccess: ({ token }) => {
-      localStorage.setItem('accessToken', token);
-    }
   });
 }

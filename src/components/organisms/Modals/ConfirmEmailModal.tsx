@@ -1,15 +1,18 @@
-/* eslint-disable max-len */
 import { memo } from "react";
-import { ConfirmEmailForm, ModalSkeleton } from "@/src/components/organisms";
-import { Heading, Heading4 } from "@/src/components/atoms";
-import ConfirmNewEmailForm from "../Forms/ConfirmNewEmailForm";
+import { 
+  ConfirmEmailForm, 
+  ModalSkeleton, 
+  ConfirmNewEmailForm 
+} from "@/src/components/organisms";
+import { Heading, Heading4, Heading2 } from "@/src/components/atoms";
 
 interface ConfirmEmailModalProps {
   onClose: () => void;
   type: 'Confirm' | 'Update',
 }
 
-const ConfirmEmailModal: React.FC<ConfirmEmailModalProps> = ({ onClose, type }) => {
+const ConfirmEmailModal: React.FC<ConfirmEmailModalProps> 
+= ({ onClose, type }) => {
   return (
     <ModalSkeleton onClose={onClose}>
       <Heading text="Password assistance" font="normal" />
@@ -17,13 +20,16 @@ const ConfirmEmailModal: React.FC<ConfirmEmailModalProps> = ({ onClose, type }) 
         text="Enter the confirmation code sent to your email 🤔"
         font="medium"
       />
+      <Heading2 
+        text="Please, don't close or reload the page until you enter the code"
+        font="semibold"
+      />
 
       {type === 'Confirm' ? (
         <ConfirmEmailForm closeModal={onClose} />
       ) : (
         <ConfirmNewEmailForm closeModal={onClose} />
       )}
-
       
     </ModalSkeleton>
   );

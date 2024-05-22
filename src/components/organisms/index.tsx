@@ -25,7 +25,6 @@ export { default as CreateReportModal } from "./Modals/CreateReportModal";
 export { default as CreateReviewModal } from "./Modals/CreateReviewModal";
 export { default as DeleteReviewModal } from "./Modals/DeleteReviewModal";
 export { default as AddCardToCollectionModal } from "./Modals/AddCardToCollectionModal";
-export { default as ConfirmCodeModal } from "./Modals/ConfirmCodeModal";
 export { default as RemoveTripFromCollectionModal} from "./Modals/RemoveTripFromCollectionModal";
 export { default as AddCardImagesModal} from "./Modals/AddCardImagesModal";
 

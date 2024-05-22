@@ -9,9 +9,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
 import { TextInput, PrimaryButton } from "@/src/components/moleculs";
+import { SocialLinkName } from "@/src/services";
 
 type Props = {
-  name: string,
+  name: SocialLinkName,
 };
 
 type FormData = {

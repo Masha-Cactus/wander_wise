@@ -23,6 +23,16 @@ export async function getUserIdFromCookies()
   return userId ? +userId : null;
 }
 
+export async function getUserDataFromCookies()
+: Promise<{token: string, userId: number} | null> {
+  const userId = cookies().get('userId')?.value;
+  const token = cookies().get('token')?.value;
+
+  return (userId && token) 
+    ? {userId: +userId, token} 
+    : null;
+}
+
 export async function clearCookies() {
   cookies().delete('userId');
   cookies().delete('token');

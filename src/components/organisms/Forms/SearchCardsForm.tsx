@@ -10,6 +10,7 @@ import {
   LocationInput,
   RoundedButton,
   FilterButton,
+  SquareCheckboxInput
 } from "@/src/components/moleculs";
 import {
   CardAuthors,
@@ -24,7 +25,7 @@ import {
   SpecialRequirementsType,
   TravelDistanceType,
 } from "@/src/services";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { searchCardsSchema } from "@/src/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { trimObjectFields } from "@/src/lib/helpers";
@@ -54,7 +55,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
   const validationSchema = searchCardsSchema();
   const {
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
     control,
     reset,
   } = useForm<FilterFormData>({
@@ -69,6 +70,11 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
     resolver: yupResolver(validationSchema),
   });
 
+  const location = useWatch({
+    control,
+    name: 'startLocation',
+  });
+
   const onSubmit = async (data: FilterFormData) => {
     const {startLocation, ...trimmedData} = trimObjectFields(data);
 
@@ -81,7 +87,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col 
+      className="flex flex-col
       bg-white border-2 border-gray-30 gap-8"
     >
       <div className="flex flex-col mt-8 mx-10">
@@ -178,7 +184,8 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
         <TextBase text="Cards author" font="semibold" />
         <div className="flex flex-wrap gap-2 mt-3">
           {authors.map(([authorText, authorValue]) => (
-            <CheckboxInput key={authorValue}
+            <SquareCheckboxInput
+              key={authorValue}
               name="author"
               control={control}
               text={authorText}
@@ -188,17 +195,24 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
         </div>
       </div>
 
-      <div className="flex gap-4 mx-10 my-8">
+      <div 
+        className="px-10 py-6
+        flex gap-4 items-center justify-center"
+      >
         <RoundedButton
           text="Apply"
           type="submit"
-          classes="bg-black text-white p-4 px-8"
+          classes="bg-black border-2 border-black text-white p-4 px-8
+            disabled:bg-gray30 disabled:text-gray70 disabled:border-gray30"
+          disabled={!location.formattedAddress}
         />
         <RoundedButton
           text="Clear"
           type="reset"
-          classes="border-2 border-black rounded-full p-4 px-8"
+          classes="border-2 border-black rounded-full p-4 px-8
+            disabled:text-gray30 disabled:border-gray30"
           onClick={() => reset()}
+          disabled={!isDirty}
         />
       </div>
     </form>

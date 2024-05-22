@@ -1,7 +1,9 @@
+'use client';
+
 import Image from "next/image";
 import Link from "next/link";
 
-import { Divider, Icons } from "@/src/components/atoms";
+import { Divider, Icons, Heading5, TextBase } from "@/src/components/atoms";
 import { 
   LikeButton, 
   SaveButton, 
@@ -20,7 +22,7 @@ type Props = {
   card: ICard;
 };
 
-const classes = "bg-gray80 text-white rounded-full px-4 py-2";
+const classes = "bg-gray80 text-white rounded-full";
 
 const TripMediumCard: React.FC<Props> = ({ card }) => {
   const { id: collectionId } = useParams();
@@ -36,38 +38,53 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
   return (
     <article
       className="flex flex-col gap-4 justify-between items-center 
-      round bg-white p-4 w-[325px]"
+      rounded-3xl bg-white p-4 w-[325px]"
     >
-      <Link href={`/trips/${card.id}`} className="w-full">
+      <Link href={`/trips/${card.id}`} className="w-full pb-[68%] relative">
         <Image
           src={card.imageLinks[0]}
           alt={card.name}
-          width={200}
-          height={200}
-          className="w-full h-full object-cover round"
+          fill
+          style={{ 
+            objectFit: 'cover',
+            borderRadius: '28px',
+            cursor: 'pointer', 
+          }}
         />
       </Link>
-      <Link href={`/trips/${card.id}`} className="flex flex-col gap-4">
-        <div className="flex gap-2">
+      <Link href={`/trips/${card.id}`} className="w-full flex flex-col gap-4">
+        <div className="w-full flex gap-2 justify-between">
           <LikeButton
             cardId={card.id}
             cardLikes={card.likes}
             classes={classes}
           />
 
-          <IconButton icon={<Icons.share />} text="Share" classes={classes} />
+          <IconButton 
+            icon={<Icons.share />} 
+            text="Share" 
+            classes={classes} 
+            size="small" 
+          />
 
-          <IconButton icon={<Icons.report />} text="Report" classes={classes} />
+          <IconButton 
+            icon={<Icons.report />} 
+            text="Report" 
+            classes={classes}
+            size="small"
+          />
 
           <IconButton
             icon={<Icons.user />}
             text={card.author === "AI" ? "AI" : "User"}
             classes={classes}
+            size="small"
           />
         </div>
         <Divider classes="w-full h-px" />
-        <h2 className="text-xl font-medium">{card.name}</h2>
-        <p className="text-base font-regular">{card.whereIs}</p>
+
+        <Heading5 text={card.name} font="medium" />
+        <TextBase text={card.whereIs} font="normal" />
       </Link>
 
       {isCardInSavedPage ? (

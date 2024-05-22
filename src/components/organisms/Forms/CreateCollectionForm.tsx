@@ -10,9 +10,9 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Divider, ErrorText, Heading5 } from "@/src/components/atoms";
 import { 
-  CheckboxInput, 
   PrimaryButton, 
-  TextInput 
+  TextInput,
+  SquareCheckboxInput
 } from "@/src/components/moleculs";
 
 
@@ -74,12 +74,12 @@ const CreateCollectionForm = () => {
 
           <div className="flex flex-col">
             {savedCards?.map(card => (
-              <div key={card.id} className="flex justify-between">
+              <div key={card.id} className="flex justify-between items-center">
                 <Heading5 
                   text={`${card.name}, ${card.whereIs}`} 
                   font="normal" 
                 />
-                <CheckboxInput 
+                <SquareCheckboxInput
                   text="" 
                   name="cardIds" 
                   control={control} 

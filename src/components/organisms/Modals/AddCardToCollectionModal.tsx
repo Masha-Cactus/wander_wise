@@ -3,7 +3,7 @@
 import { memo, useEffect, useState } from "react";
 import { ModalSkeleton } from "@/src/components/organisms";
 import { ErrorText, Heading, Heading4 } from "@/src/components/atoms";
-import { ICard, IUpdateCollection, ShortCollection } from "@/src/services";
+import { ICard, ICollection, IUpdateCollection } from "@/src/services";
 import { useGetUserCollections, useUpdateCollection } from "@/src/queries";
 import {
   // CheckboxInput,
@@ -26,7 +26,7 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
 }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const [selectedCollections, setSelectedCollections] 
-  = useState<ShortCollection[]>([]);
+  = useState<ICollection[]>([]);
   const {
     isError: isErrorGetCollections,
     data: collections,
@@ -44,7 +44,7 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
     setErrorMessage(error);
   };
 
-  const handleClick = (collection: ShortCollection) => {
+  const handleClick = (collection: ICollection) => {
     if (selectedCollections.some((c) => c.id === collection.id)) {
       setSelectedCollections(
         selectedCollections.filter((c) => c.id !== collection.id)
@@ -58,11 +58,13 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
     selectedCollections.forEach((collection) => {
       const data: IUpdateCollection = {
         ...collection,
-        cardIds: collection.cardWithoutDistanceDtos.map((c) => c.id),
+        cardIds: collection.cardDtos.map((c) => c.id),
       };
 
-      mutate(data, { onError: handleError });
-      onClose();
+      mutate(data, { 
+        onError: handleError,
+        onSuccess: () => onClose(),
+      });
     });
   };
 
