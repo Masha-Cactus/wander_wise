@@ -32,9 +32,6 @@ const config: Config = {
         warning: "FFDD2A",
         success: "#1DD000",
       },
-      backgroundImage: {
-        start_1: "url('/imges/start_1.svg')",
-      },
     },
   },
   plugins: [],

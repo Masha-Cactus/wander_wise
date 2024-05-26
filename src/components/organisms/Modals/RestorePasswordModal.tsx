@@ -50,7 +50,7 @@ const RestorePasswordModal: React.FC<RestorePasswordModalProps> = ({
       {!!(onOpenSignIn && onOpenSignUp) && (
         <div className="flex flex-col gap-2">
           <UnstyledButton
-            text="Sign In To Your Account"
+            text="Sign in to your account"
             classes="font-bold"
             onClick={handleSignInClick}
           />

@@ -17,6 +17,8 @@ import {
   RemoveTripFromCollectionModal
 } from "@/src/components/organisms";
 import { useParams, usePathname } from "next/navigation";
+import CreateReportModal from "../Modals/CreateReportModal";
+import { useUser } from "@/src/store/user";
 
 type Props = {
   card: ICard;
@@ -25,31 +27,42 @@ type Props = {
 const classes = "bg-gray80 text-white rounded-full";
 
 const TripMediumCard: React.FC<Props> = ({ card }) => {
+  const { user } = useUser();
   const { id: collectionId } = useParams();
   const [isAddToCollectionModal, setIsAddToCollectionModal] = useState(false);
   const [isRemoveFromCollectionModal, setIsRemoveFromCollectionModal] 
   = useState(false);
+  const [isReportCardModal, setIsReportCardModal] = useState(false);
 
   const pathname = usePathname();
   const isCardInCollectionPage = !!collectionId;
   const isCardInSavedPage = pathname.startsWith('/saved') 
     && !isCardInCollectionPage;
 
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const handleImageError = () => {
+    if (currentImageIndex + 1 < card.imageLinks.length) {
+      setCurrentImageIndex(currentImageIndex + 1);
+    }
+  };
+
   return (
     <article
-      className="flex flex-col gap-4 justify-between items-center 
+      className="flex flex-col gap-4 items-center 
       rounded-3xl bg-white p-4 w-[325px]"
     >
       <Link href={`/trips/${card.id}`} className="w-full pb-[68%] relative">
         <Image
-          src={card.imageLinks[0]}
+          src={card.imageLinks[currentImageIndex]}
           alt={card.name}
           fill
+          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
           style={{ 
             objectFit: 'cover',
             borderRadius: '28px',
             cursor: 'pointer', 
           }}
+          onError={handleImageError}
         />
       </Link>
       <Link href={`/trips/${card.id}`} className="w-full flex flex-col gap-4">
@@ -72,10 +85,12 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
             text="Report" 
             classes={classes}
             size="small"
+            onClick={() => setIsReportCardModal(true)}
+            disabled={!user}
           />
 
           <IconButton
-            icon={<Icons.user />}
+            icon={card.author === "AI" ? <Icons.user /> : <Icons.jpt />}
             text={card.author === "AI" ? "AI" : "User"}
             classes={classes}
             size="small"
@@ -83,7 +98,7 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
         </div>
         <Divider classes="w-full h-px" />
 
-        <Heading5 text={card.name} font="medium" />
+        <Heading5 text={card.name} font="medium" classes="grow" />
         <TextBase text={card.whereIs} font="normal" />
       </Link>
 
@@ -125,6 +140,13 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
             <SaveButton cardId={card.id} />
           )}
         </>
+      )}
+
+      {isReportCardModal && (
+        <CreateReportModal 
+          type="Card" 
+          onClose={() => setIsReportCardModal(false)} 
+        />
       )}
     </article>
   );

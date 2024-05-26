@@ -7,7 +7,7 @@ interface LoadedContentStateControllerProps {
   emptyFallbackComponent?: JSX.Element;
   emptyText?: string;
   isError: boolean;
-  errorText: string;
+  errorText?: string;
   errorAlertFallbackComponent?: JSX.Element;
   isLoading?: boolean;
   loadingFallbackComponent?: JSX.Element;

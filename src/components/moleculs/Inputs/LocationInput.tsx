@@ -3,7 +3,7 @@
 import React, { useState, useEffect, memo } from "react";
 import Radar from "radar-sdk-js";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
-import { Control, FieldPath, FieldValues } from "react-hook-form";
+import { Control, FieldPath, FieldValues, useWatch } from "react-hook-form";
 import { InputControllerWrapper } from "@/src/components/moleculs";
 import classNames from "classnames";
 
@@ -47,6 +47,13 @@ const LocationInput = <T extends FieldValues>({
   };
 
   const [value, setValue] = useState(defaultLocation || '');
+  const locationFieldValue = useWatch({control, name});
+
+  useEffect(() => {
+    if (!locationFieldValue.formattedAddress) {
+      setValue('');
+    }
+  }, [locationFieldValue]);
 
   return (
     <InputControllerWrapper

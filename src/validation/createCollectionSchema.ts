@@ -8,3 +8,9 @@ export const createCollectionSchema
     name: Yup.string().trim().required('Collection name is required'),
     cardIds: Yup.array().required(),
   });
+
+export const createCollectionShortSchema
+= (): ObjectSchema<{name: string}> => 
+  Yup.object().shape({
+    name: Yup.string().trim().required('Collection name is required'),
+  });

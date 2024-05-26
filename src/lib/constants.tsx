@@ -1,10 +1,10 @@
-export const IMAGES_SLIDES = [
-  "/images/start_1.png",
-  "/images/start_2.png",
-  "/images/start_3.png",
-  "/images/start_4.png",
-  "/images/start_5.png",
-  "/images/start_6.png",
+export const SLIDER_IMAGES = [
+  "/slider-images/1.png",
+  "/slider-images/2.png",
+  "/slider-images/3.png",
+  "/slider-images/4.png",
+  "/slider-images/5.png",
+  "/slider-images/6.png",
 ];
 
 export const ApiRoutes = {
@@ -15,5 +15,5 @@ export const ApiRoutes = {
   CARDS: "/cards",
 };
 
-export const CARDS_PER_PAGE = 8;
+export const CARDS_PER_PAGE = 9;
 export const SITE_NAME = 'Wander Wise';

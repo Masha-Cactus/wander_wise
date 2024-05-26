@@ -4,7 +4,6 @@
 import { useUser } from "@/src/store/user";
 import Image from "next/image";
 import Link from "next/link";
-import { Divider } from "@/src/components/atoms";
 import { memo, useState } from "react";
 import {
   ConfirmEmailModal,
@@ -12,6 +11,7 @@ import {
   SignInModal,
   SignUpModal,
 } from "@/src/components/organisms";
+import { Navbar } from "@/src/components/moleculs";
 
 const Header: React.FC = () => {
   const { user } = useUser();
@@ -29,39 +29,13 @@ const Header: React.FC = () => {
         <Image
           src="/logo.svg"
           alt="logo"
-          width={200}
-          height={200}
-          className=""
+          width={192}
+          height={40}
+          priority={true}
         />
       </Link>
       {user ? (
-        <nav className="flex gap-8 h-10">
-          <div className="flex gap-8 text-black justify-center items-center">
-            <Link href="/trips" className="">
-              Trips
-            </Link>
-
-            <Link href="/saved" className="">
-              Saved
-            </Link>
-
-            <Link href="/my-cards" className="">
-              My cards
-            </Link>
-          </div>
-
-          <Divider classes="h-full w-px bg-gray30" />
-          
-          <Link href="/profile">
-            <Image
-              src={user?.profileImage || "/user.png"}
-              alt="user avatar"
-              width={100}
-              height={100}
-              className="rounded-full w-12 h-12 bg-gray30 "
-            />
-          </Link>
-        </nav>
+        <Navbar />
       ) : (
         <div className="flex gap-8">
           <button

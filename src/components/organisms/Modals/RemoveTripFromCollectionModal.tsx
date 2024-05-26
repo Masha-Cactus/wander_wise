@@ -68,17 +68,19 @@ RemoveTripFromCollectionModalProps
       <Heading text={`Remove ${trip.name} from ${collection?.name}?`} font="normal"/>
       <Heading4 text="This action cannot be undone 🫣" font="medium"/>
 
-      <div className="flex w-full justify-between">
+      <div className="flex w-full gap-5 justify-between">
         <RoundedButton
           text="Delete"
           onClick={handleRemoveTrip}
-          classes="bg-red text-white"
+          classes="grow"
+          style="red"
           disabled={isPending || isRemovePending}
         />
         <RoundedButton
           text="Cancel"
           onClick={onClose}
-          classes="bg-white text-black border border-black"
+          classes="grow"
+          style="light"
         />
       </div>
 

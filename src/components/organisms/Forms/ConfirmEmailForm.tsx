@@ -32,7 +32,6 @@ const ConfirmEmailForm: React.FC<Props> = ({ closeModal }) => {
     defaultValues: {
       confirmationCode: '',
     },
-    mode: 'onBlur',
   });
 
   const handleError = (error: any) => {

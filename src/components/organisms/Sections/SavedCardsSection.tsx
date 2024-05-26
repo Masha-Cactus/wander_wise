@@ -1,10 +1,9 @@
 'use client';
 
 import { useGetSavedCards } from "@/src/hooks";
-import { Heading3, Heading, Heading4 } from "@/src/components/atoms";
+import { Heading3, Heading4 } from "@/src/components/atoms";
 import { Gallery, Pagination } from "@/src/components/organisms";
-import { PrimaryButton, LinkButton } from "@/src/components/moleculs";
-import { useRouter } from "next/navigation";
+import { LinkButton } from "@/src/components/moleculs";
 import { useEffect, useState } from "react";
 import { ICard, IFilterParams } from "@/src/services";
 import { getFilteredCards } from "@/src/lib/helpers";
@@ -17,10 +16,11 @@ type Props = {
 const SavedCardsSection: React.FC<Props> = ({ filterParams }) => {
   const [page, setPage] = useState(0);
   const savedCards = useGetSavedCards();
-  const { push } = useRouter();
 
   const [filteredCards, setFilteredCards] = useState<ICard[]>([]);
   const [displayedCards, setDisplayedCards] = useState<ICard[]>([]);
+
+  const totalPages = Math.ceil(filteredCards.length / CARDS_PER_PAGE);
 
   useEffect(() => {
     setDisplayedCards(filteredCards
@@ -36,7 +36,9 @@ const SavedCardsSection: React.FC<Props> = ({ filterParams }) => {
   }, [savedCards, filterParams]);
 
   return (
-    <section className="w-full self-start pt-8 px-10 pb-10">
+    <section className="w-full px-10 py-8 flex flex-col 
+      justify-between items-center gap-8"
+    >
       <div className="w-full flex justify-between align-center">
         <div className="flex gap-2 items-center">
           <Heading3 text="My saved cards" />
@@ -48,25 +50,15 @@ const SavedCardsSection: React.FC<Props> = ({ filterParams }) => {
         />
       </div>
 
-      {savedCards ? (
-        <>
-          <Gallery cards={displayedCards} />
-          <Pagination 
-            page={page} 
-            total={Math.ceil(savedCards.length / CARDS_PER_PAGE)}
-            setPage={setPage}
-            isLastPage={page === Math.ceil(
-              savedCards.length / CARDS_PER_PAGE)}
-            isPlaceholderData={false}
-          />
-        </>
-      ) : (
-        <div className="flex flex-col gap-4 justify-center text-center">
-          <Heading text="You don’t have any saved cards yet." font="normal" />
-          <Heading4 text="Explore our community 🌏" font="medium" />
-          <PrimaryButton text="Continue" onClick={() => push('/trips')} />
-        </div>
-      )}
+      <Gallery cards={displayedCards} />
+
+      <Pagination 
+        page={page} 
+        total={totalPages}
+        setPage={setPage}
+        isLastPage={page === totalPages - 1}
+        isPlaceholderData={false}
+      />
 
     </section>
   );

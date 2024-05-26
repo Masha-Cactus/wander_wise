@@ -18,7 +18,7 @@ class CardService {
   }
 
   getCardDetails(cardId: number): Promise<ICard> {
-    return authClient.get<never, ICard>(`${this.BASE_URL}/details/${cardId}`);
+    return baseClient.get<never, ICard>(`${this.BASE_URL}/details/${cardId}`);
   }
 
   createCard(data: ICreateCard): Promise<ICard> {

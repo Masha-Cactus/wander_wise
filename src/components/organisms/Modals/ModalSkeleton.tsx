@@ -18,6 +18,7 @@ const ModalSkeleton: React.FC<Props> = ({ children, onClose }: Props) => {
         onClick={() => onClose(true)}
         className="h-full w-full backdrop-blur-sm
         bg-gray50 fixed top-0 left-0 bg-opacity-50"
+        type="button"
       />
       <div
         className="w-[670px] overflow-hidden shadow-xl 

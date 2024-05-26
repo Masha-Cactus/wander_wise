@@ -72,7 +72,7 @@ const CreateCollectionForm = () => {
           <Heading5 text="Choose cards to add" font="semibold" />
           <Divider classes="w-full h-px" />
 
-          <div className="flex flex-col">
+          <div className="flex flex-col max-h-64 overflow-y-scroll">
             {savedCards?.map(card => (
               <div key={card.id} className="flex justify-between items-center">
                 <Heading5 

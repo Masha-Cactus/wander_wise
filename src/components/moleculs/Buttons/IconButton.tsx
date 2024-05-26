@@ -7,14 +7,16 @@ type Props = {
   text?: string;
   classes: string;
   size?: 'small',
+  disabled?: boolean,
 };
 
 const IconButton: React.FC<Props> 
-= ({ icon, onClick, text, classes, size }) => {
+= ({ icon, onClick, text, classes, size, disabled }) => {
   return (
     <button 
       className={`flex items-center justify-center gap-1 px-2 py-1 ${classes}`} 
       onClick={onClick}
+      disabled={disabled}
     >
       {icon}
       {text && (

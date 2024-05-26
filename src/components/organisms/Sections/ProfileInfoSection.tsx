@@ -10,24 +10,24 @@ import {
   TextBase, 
   ErrorText 
 } from "@/src/components/atoms";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import { useUser } from "@/src/store/user";
 import { useGetUserSocials, useLogout } from "@/src/queries";
 import { useNormalizedError } from "@/src/hooks";
 import { clearCookies } from "@/src/actions/manageCookies";
 import { useRouter } from "next/navigation";
+import AddProfileImageModal from "../Modals/AddProfileImageModal";
 
 const ProfileInfoSection: React.FC = () => {
   const { user } = useUser();
   const { push } = useRouter();
-  const { firstName, lastName, bio, location, profileImage, pseudonym, email } 
-  = user!;
 
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
   const { data: userSocials } = useGetUserSocials();
-
   const { isPending, mutate, isError, isSuccess } = useLogout();
+
+  const [isAddImageModal, setIsAddImageModal] = useState(false);
 
   const handleLogout = () => {
     mutate(undefined, {
@@ -50,8 +50,8 @@ const ProfileInfoSection: React.FC = () => {
       <div className="relative top-0 flex justify-center">
         <Image
           src={
-            profileImage
-              ? profileImage
+            user?.profileImage
+              ? user.profileImage
               : `https://images.stockcake.com/public/7/5/2/752210ff-3ce6-447b-8529-7deec989d405_large/wriggling-earthworm-closeup-stockcake.jpg`
           }
           alt="profile"
@@ -64,19 +64,26 @@ const ProfileInfoSection: React.FC = () => {
           className="absolute bg-gray80 h-8 w-8 bottom-0 right-1/3 
           flex items-center justify-center rounded-full"
         >
-          <Icons.edit className="text-white h-4 w-4" />
+          <Icons.edit 
+            className="text-white h-4 w-4" 
+            onClick={() => setIsAddImageModal(true)} 
+          />
         </div>
       </div>
 
       <div className="flex flex-col gap-2">
         <TextBase
-          text={pseudonym ? pseudonym : "beautifultraveler"}
+          text={user?.pseudonym || "traveller"}
           classes="text-gray70"
           font="normal"
         />
 
-        <Heading2 text={firstName || lastName ? `${firstName} ${lastName}` : ''} font="semibold" />
-        {bio && <TextBase text={bio} font="normal" />}
+        <Heading2 
+          text={user?.firstName || user?.lastName 
+            ? `${user?.firstName} ${user?.lastName}` : ''} 
+          font="semibold" 
+        />
+        {user?.bio && <TextBase text={user.bio} font="normal" />}
       </div>
 
       <Divider classes="w-full h-px bg-gray20" />
@@ -85,12 +92,12 @@ const ProfileInfoSection: React.FC = () => {
         {location && (
           <div className="flex items-center gap-2">
             <Icons.location className="text-gray70 h-4 w-4" />
-            <TextBase text={location} font="normal" />
+            <TextBase text={user?.location || ''} font="normal" />
           </div>
         )}
         <div className="flex items-center gap-2">
           <Icons.mail className="text-gray70 h-4 w-4" />
-          <TextBase text={email} font="normal" />
+          <TextBase text={user?.email || ''} font="normal" />
         </div>
       </div>
 
@@ -145,6 +152,12 @@ const ProfileInfoSection: React.FC = () => {
         Logout
       </button>
       {isError && <ErrorText errorText={errorMessage} />}
+
+      {isAddImageModal && (
+        <AddProfileImageModal 
+          onClose={() => setIsAddImageModal(false)}
+        />
+      )}
     </section>
   );
 };

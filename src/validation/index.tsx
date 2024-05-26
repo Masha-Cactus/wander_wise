@@ -15,3 +15,5 @@ export * from "./uploadCardImagesSchema";
 export * from "./reportCardSchema";
 export * from "./changeCollectionNameSchema";
 export * from "./filterCardsSchema";
+export * from "./uploadProfileImageSchema";
+export * from "./addCardToCollectionSchema";

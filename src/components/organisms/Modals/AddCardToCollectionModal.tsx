@@ -1,122 +1,67 @@
 "use client";
 
 import { memo, useEffect, useState } from "react";
-import { ModalSkeleton } from "@/src/components/organisms";
-import { ErrorText, Heading, Heading4 } from "@/src/components/atoms";
-import { ICard, ICollection, IUpdateCollection } from "@/src/services";
-import { useGetUserCollections, useUpdateCollection } from "@/src/queries";
-import {
-  // CheckboxInput,
-  PrimaryButton,
-  RoundedButton,
-} from "@/src/components/moleculs";
-import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import { 
+  ModalSkeleton, 
+  AddCardToCollectionForm,
+  CreateCollectionShortForm,
+} from "@/src/components/organisms";
+import { ErrorText, Heading, Heading4, Divider } from "@/src/components/atoms";
+import { ICard } from "@/src/services";
+import { useGetUserCollections } from "@/src/queries";
+import { useNormalizedError } from "@/src/hooks";
 
 interface AddCardToCollectionProps {
   onClose: () => void;
   card: ICard;
 }
 
-// todo
-// need to test
-
 const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
   onClose,
   card,
 }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
-  const [selectedCollections, setSelectedCollections] 
-  = useState<ICollection[]>([]);
+  const [isCreateCollection, setIsCreateCollection] = useState(false);
+
   const {
-    isError: isErrorGetCollections,
+    isError,
     data: collections,
-    isPending: isPendingGetCollections,
-    error: errorGetCollections,
+    error,
   } = useGetUserCollections();
 
-  const {
-    isPending: isPendingUpdateCollection,
-    mutate,
-    isError: isErrorUpdateCollection,
-  } = useUpdateCollection();
-
-  const handleError = (error: any) => {
-    setErrorMessage(error);
-  };
-
-  const handleClick = (collection: ICollection) => {
-    if (selectedCollections.some((c) => c.id === collection.id)) {
-      setSelectedCollections(
-        selectedCollections.filter((c) => c.id !== collection.id)
-      );
-    } else {
-      setSelectedCollections([...selectedCollections, collection]);
-    }
-  };
-
-  const handleSubmit = () => {
-    selectedCollections.forEach((collection) => {
-      const data: IUpdateCollection = {
-        ...collection,
-        cardIds: collection.cardDtos.map((c) => c.id),
-      };
-
-      mutate(data, { 
-        onError: handleError,
-        onSuccess: () => onClose(),
-      });
-    });
-  };
 
   useEffect(() => {
-    if (errorGetCollections) {
-      handleError(errorGetCollections);
+    if (error) {
+      setErrorMessage(error);
     }
-  }, [errorGetCollections]);
-
-  const isError = isErrorGetCollections || isErrorUpdateCollection;
-  const isPending = isPendingGetCollections || isPendingUpdateCollection;
+  }, [error]);
 
   return (
     <ModalSkeleton onClose={onClose}>
-      <Heading text={`Add “${card.name}” to a collection?`} font="normal"/>
+      <div className="flex flex-col gap-6">
+        <Heading text={`Add “${card.name}” to a collection?`} font="normal"/>
+        <Divider classes="h-px w-full" />
 
-      <div className="flex flex-col gap-4 h-2/3 scrollbar">
-        {collections?.map((collection) => (
-          <div
-            key={collection.id}
-            className="flex items-center justify-between"
-          >
-            <Heading4 text={collection.name} font="normal" />
-            <input type="checkbox"
-              checked={selectedCollections.some((c) => c.id === collection.id)}
-              onChange={() => handleClick(collection)}
-            />
-            {/* <CheckboxInput
-              value={collection.id}
-              onClick={() => handleClick(collection)}
-              selected={collections.some((c) => c.id === collection.id)}
-            /> */}
-          </div>
-        ))}
+        {isCreateCollection ? (
+          <CreateCollectionShortForm
+            closeModal={onClose}
+          />
+        ) : (
+          <button onClick={() => setIsCreateCollection(true)}>
+            <Heading4 text="+ Create new collection" font="medium" />
+          </button>
+        )}
+
+        {!!(collections && collections.length) && (
+          <AddCardToCollectionForm
+            closeModal={onClose}
+            cardId={card.id}
+            collections={collections}
+          />
+        )}
+
+        {isError && <ErrorText errorText={errorMessage} />}
       </div>
-
-      <div className="flex w-full justify-between">
-        <RoundedButton
-          text="Cancel"
-          onClick={onClose}
-          classes="bg-red text-white"
-          disabled={isPending}
-        />
-        <PrimaryButton
-          text="Add"
-          type="submit"
-          onClick={handleSubmit}
-          classes="bg-white text-black border border-black"
-        />
-      </div>
-
-      {isError && <ErrorText errorText={errorMessage} />}
     </ModalSkeleton>
   );
 };

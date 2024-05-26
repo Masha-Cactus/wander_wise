@@ -2,7 +2,11 @@
 
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
 import { trimObjectFields } from "@/src/lib/helpers";
-import { useAddSocial } from "@/src/queries";
+import { 
+  useAddSocial, 
+  useGetUserSocials, 
+  useUpdateSocial 
+} from "@/src/queries";
 import { useUser } from "@/src/store/user";
 import { socialLinkSchema } from "@/src/validation/socialLinkSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -22,6 +26,8 @@ type FormData = {
 const SocialLinkForm: React.FC<Props> = ({ name }) => {
   const { user } = useUser();
   const [errorMessage, setErrorMessage] = useNormalizedError();
+  const { data: userSocials } = useGetUserSocials();
+  const currentSocial = userSocials?.find(social => social.name === name);
 
   const validationSchema = socialLinkSchema();
 
@@ -31,7 +37,7 @@ const SocialLinkForm: React.FC<Props> = ({ name }) => {
     formState: { errors },
   } = useForm<FormData>({
     values: {
-      link: '',
+      link: currentSocial?.link || '',
     },
     resolver: yupResolver(validationSchema),
   });
@@ -40,17 +46,36 @@ const SocialLinkForm: React.FC<Props> = ({ name }) => {
     setErrorMessage(error.message);
   };
 
-  const { isPending, mutate, isError } = useAddSocial();
+  const { 
+    isPending: isPendingAdd, 
+    mutate: add, 
+    isError: isAddError 
+  } = useAddSocial();
+
+  const { 
+    isPending: isPendingUpdate, 
+    mutate: update, 
+    isError: isUpdateError 
+  } = useUpdateSocial();
 
   const onSubmit = async (data: FormData) => {
-    const trimmedUserData = trimObjectFields(data);
+    const { link } = trimObjectFields(data);
     
     if (user) {
-      mutate({...trimmedUserData, name, userId: user.id}, {
-        onError: handleError,
-      });
+      if (currentSocial) {
+        update({ link, name, id: currentSocial.id, userId: user.id}, {
+          onError: handleError,
+        });
+      } else {
+        add({ link, name, userId: user.id}, {
+          onError: handleError,
+        });
+      }
     }
   };
+
+  const isPending = isPendingAdd || isPendingUpdate;
+  const isError = isAddError || isUpdateError;
 
   return (
     <form 
@@ -68,7 +93,10 @@ const SocialLinkForm: React.FC<Props> = ({ name }) => {
             label={name}
           />
         </div>
-        <PrimaryButton text="Add" classes="h-10 w-1/4" />
+        <PrimaryButton 
+          text={currentSocial ? "Update" : "Add"} 
+          classes="h-10 w-1/4" 
+        />
       </div>
 
       {isError && <ErrorText errorText={errorMessage} />}
