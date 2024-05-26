@@ -27,6 +27,7 @@ const UploadCardImagesForm: React.FC<Props> = ({ cardId, closeModal }) => {
   const {
     control,
     handleSubmit,
+    formState: { errors }
   } = useForm<UploadCardImagesFormData>({
     defaultValues: {
       images: [],
@@ -52,7 +53,7 @@ const UploadCardImagesForm: React.FC<Props> = ({ cardId, closeModal }) => {
           if (closeModal) {
             closeModal();
           }
-          
+
           push('/my-cards');
         },
       }
@@ -71,8 +72,12 @@ const UploadCardImagesForm: React.FC<Props> = ({ cardId, closeModal }) => {
         disabled={isPending}
         control={control}
       />
+
+      {errors.images?.message && (
+        <ErrorText errorText={errors.images.message} />
+      )}
         
-      <PrimaryButton text="Add" type="submit" />
+      <PrimaryButton text="Add" type="submit" disabled={isPending} />
 
       {isError && <ErrorText errorText={errorMessage} />}
     </form>

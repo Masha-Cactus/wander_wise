@@ -61,7 +61,7 @@ const SocialLinkForm: React.FC<Props> = ({ name }) => {
   const onSubmit = async (data: FormData) => {
     const { link } = trimObjectFields(data);
     
-    if (user) {
+    if (user && currentSocial?.link !== link) {
       if (currentSocial) {
         update({ link, name, id: currentSocial.id, userId: user.id}, {
           onError: handleError,
@@ -95,7 +95,9 @@ const SocialLinkForm: React.FC<Props> = ({ name }) => {
         </div>
         <PrimaryButton 
           text={currentSocial ? "Update" : "Add"} 
-          classes="h-10 w-1/4" 
+          classes="h-10 w-1/4"
+          disabled={isPending}
+          type="submit"
         />
       </div>
 

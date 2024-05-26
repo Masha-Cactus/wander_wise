@@ -46,8 +46,7 @@ const TextInput = <T extends FieldValues>({
               `border border-gray50 bg-white placeholder:text-gray50
                 text-black flex h-10 w-full items-center
                 justify-center text-sm shadow-sm rounded-md
-                transition-colors duration-75 focus:outline-none px-3 
-                disabled:bg-gray30 disabled:border-gray30 disabled:text-gray70`,
+                transition-colors duration-75 focus:outline-none px-3`,
               {
                 "border-error": errorText,
               }

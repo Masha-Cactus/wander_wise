@@ -9,19 +9,16 @@ import {
   FilterButton,
 } from "@/src/components/moleculs";
 import {
-  CardAuthors,
-  Climate,
-  SpecialRequirements,
-  TripTypes,
   IFilterParams,
+  ICard
 } from "@/src/services";
 import { useForm } from "react-hook-form";
 import { filterCardsSchema } from "@/src/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { getFilterOptions, trimObjectFields } from "@/src/lib/helpers";
 import { useGetCreatedCards, useGetSavedCards } from "@/src/hooks";
-import { Dispatch, SetStateAction } from "react";
-
+import { Dispatch, memo, SetStateAction, useMemo } from "react";
+import { ATMOSPHERES, AUTHORS, CLIMATES, SPECIALS } from "@/src/lib/constants";
 
 type Props = {
   type: 'Saved' | 'Created',
@@ -29,22 +26,45 @@ type Props = {
 };
 
 const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
-  const savedCards = useGetSavedCards() || [];
-  const createdCards = useGetCreatedCards() || [];
+  const savedCards = useGetSavedCards();
+  const createdCards = useGetCreatedCards();
 
-  const filterOptions = getFilterOptions(
-    type === 'Saved' ? savedCards : createdCards,
-  );
+  const { 
+    atmospheres, 
+    climates, 
+    specials, 
+    authors, 
+    countries 
+  } = useMemo(() => {
+    let cardsToFilter: ICard[] = [];
 
-  const atmospheres = Object.values(TripTypes)
-    .filter(tripType => filterOptions.tripTypes.includes(tripType));
-  const climates = Object.values(Climate)
-    .filter(climate => filterOptions.climates.includes(climate));
-  const specials = Object.values(SpecialRequirements)
-    .filter(special => filterOptions.specialRequirements.includes(special));
-  const authors = Object.entries(CardAuthors)
+    if (type === 'Saved' && savedCards) {
+      cardsToFilter = savedCards;
+    } else if (type === 'Created' && createdCards) {
+      cardsToFilter = createdCards;
+    }
+
+    const filterOptions = getFilterOptions(cardsToFilter);
+
+    const atmospheres = ATMOSPHERES
+      .filter(tripType => filterOptions.tripTypes.includes(tripType));
+    const climates = CLIMATES
+      .filter(climate => filterOptions.climates.includes(climate));
+    const specials = SPECIALS
+      .filter(special => filterOptions.specialRequirements.includes(special));
+    const authors = AUTHORS
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    .filter(([_, authorValue]) => filterOptions.authors.includes(authorValue));
+      .filter(([_, authorValue]) => filterOptions.authors
+        .includes(authorValue));
+    
+    return { 
+      atmospheres, 
+      climates, 
+      specials, 
+      authors, 
+      countries: filterOptions.countries 
+    };
+  }, [savedCards, createdCards, type]);
 
   const validationSchema = filterCardsSchema();
   const {
@@ -82,7 +102,7 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
           font="semibold"
         />
         <div className="flex flex-wrap gap-2 mt-3">
-          {filterOptions.countries.map((country) => (
+          {countries.map((country) => (
             <FilterButton
               key={country}
               control={control}
@@ -181,4 +201,4 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
   );
 };
 
-export default FilterForm;
+export default memo(FilterForm);

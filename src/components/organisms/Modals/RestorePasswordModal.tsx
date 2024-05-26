@@ -40,7 +40,7 @@ const RestorePasswordModal: React.FC<RestorePasswordModalProps> = ({
         <>
           <Heading4 
             text="Enter the email address associated with your WanderWise account 🤔" 
-            font="medium"
+            font="normal"
           />
 
           <RestorePasswordForm setIsSubmitted={setIsSubmitted} />

@@ -91,7 +91,7 @@ const CreateCollectionForm = () => {
         </>
       )}
 
-      <PrimaryButton type="submit" text="Create" />
+      <PrimaryButton type="submit" text="Create" disabled={isPending} />
 
       {isError && <ErrorText errorText={errorMessage} />}
     </form>

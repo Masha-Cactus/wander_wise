@@ -1,8 +1,9 @@
 import { ObjectSchema } from "yup";
 import * as Yup from "yup";
+import { genericValidationSchema } from "./genericSchema";
 
 export const changeCollectionNameSchema 
 = (): ObjectSchema<{newName: string}> => 
   Yup.object().shape({
-    newName: Yup.string().trim().required('Collection name is required'),
+    newName: genericValidationSchema.name,
   });

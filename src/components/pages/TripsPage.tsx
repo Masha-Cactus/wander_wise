@@ -7,10 +7,9 @@ import {
 } from "@/src/components/organisms";
 import { useNormalizedError } from "@/src/hooks";
 import { useSearchCards } from "@/src/queries";
-import { cardService, ICard, ISearchCard } from "@/src/services";
+import { ICard, ISearchCard } from "@/src/services";
 import { memo, useEffect, useState } from "react";
 import { ErrorText, Heading2 } from "@/src/components/atoms";
-import { AxiosError } from "axios";
 import defaultCards from "@/public/defaultCards.json";
 import { useQueryClient } from "@tanstack/react-query";
 import { LoadedContentStateController } from "@/src/components/moleculs";
@@ -22,68 +21,46 @@ const TripsPage = () => {
   const [filterParams, setFilterParams] = useState<ISearchCard | null>(null);
   const [page, setPage] = useState(0);
 
-  // const queryClient = useQueryClient();
-  // const [isQueryEnabled, setIsQueryEnabled] = useState(false);
-  // const [isLastPage, setIsLastPage] = useState(false);
-  // const [isGlobalError, setIsGlobalError] = useState(false);
+  const queryClient = useQueryClient();
+  const [isQueryEnabled, setIsQueryEnabled] = useState(false);
 
-  // const { 
-  //   data, 
-  //   isPlaceholderData, 
-  //   error, 
-  //   isLoading, 
-  // } = useSearchCards(page, filterParams);
+  const { 
+    data, 
+    isPlaceholderData, 
+    error, 
+    isLoading, 
+  } = useSearchCards(page, filterParams);
 
-  // const handleQueryError = (error: any) => {
-  //   if (error instanceof AxiosError && error.response?.status === 404) {
-  //     setIsGlobalError(true);
-  //   } else {
-  //     setErrorMessage(error);
-  //   }
-  // };
+  const getCachedPageData = (page) => {
+    const cachedData = queryClient.getQueryData(['cards']);
 
-  // const fetchNextPage = async() => {
-  //   try {
-  //     await queryClient.fetchQuery({
-  //       queryKey: ['cards', page + 1, filterParams],
-  //       queryFn: () => {
-  //         if (filterParams) {
-  //           return cardService.searchCards(page + 1, filterParams);
-  //         }
-    
-  //         return null;
-  //       },
-  //     });
+    if (cachedData) {
+      const pageData = cachedData.pages.find(
+        (_, index) => index === page
+      );
+      return pageData;
+    }
+    return null;
+  };
 
-  //   } catch (error) {
-  //     setIsLastPage(true);
-  //   }
-  // };
+  useEffect(() => {
+    if (error) {
+      setErrorMessage(error);
+    }
+  }, [error]);
 
-  // useEffect(() => {
-  //   if (error) {
-  //     handleQueryError(error);
-  //   }
-  // }, [error]);
-
-  // useEffect(() => {
-  //   if (isQueryEnabled) {
-  //     fetchNextPage(); 
-  //   }
-  // }, [isQueryEnabled, page]);
-
-  // useEffect(() => {
-  //   if (!filterParams) {
-  //     queryClient.removeQueries({
-  //       queryKey: ['cards'],
-  //     });
-  //     setIsQueryEnabled(false);
-  //   } else {
-  //     if (!isQueryEnabled) {
-  //       setIsQueryEnabled(true);
-  //     }
-  //   }
-  // }, [filterParams]);
+  useEffect(() => {
+    if (!filterParams) {
+      queryClient.removeQueries({
+        queryKey: ['cards'],
+      });
+      setIsQueryEnabled(false);
+    } else {
+      if (!isQueryEnabled) {
+        setIsQueryEnabled(true);
+      }
+    }
+  }, [filterParams]);
 
   return (
     <main className="grow overflow-hidden grid grid-cols-12 

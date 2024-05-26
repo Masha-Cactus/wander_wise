@@ -37,7 +37,7 @@ const RecentlyLikedSection: React.FC = () => {
           <PrimaryButton 
             text="Explore" 
             type="button" 
-            classes="w-1/6" 
+            classes="w-44" 
             onClick={() => push('/trips')} 
           />
         </div>

@@ -1,13 +1,13 @@
+/* eslint-disable no-param-reassign */
 "use client";
 
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { editProfileSchema } from "@/src/validation";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { ErrorText } from "@/src/components/atoms";
 import { useUpdateUserInfo } from "@/src/queries";
-import { useRouter } from "next/navigation";
 import { useUser } from "@/src/store/user";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
 import { 
@@ -20,10 +20,10 @@ import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
 
 export interface ProfileEditFormData {
   pseudonym: string,
-  firstName: string,
-  lastName: string,
-  location: RadarAutocompleteAddress,
-  bio: string,
+  firstName?: string,
+  lastName?: string,
+  location?: RadarAutocompleteAddress | null,
+  bio?: string,
 }
 
 const ProfileEditForm = () => {
@@ -31,18 +31,21 @@ const ProfileEditForm = () => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = editProfileSchema();
 
+  const defaultValues = {
+    pseudonym: user?.pseudonym || '',
+    firstName: user?.firstName || '',
+    lastName: user?.lastName || '',
+    location: null,
+    bio: user?.bio || '',
+  };
+
   const {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<ProfileEditFormData>({
-    defaultValues: {
-      pseudonym: user?.pseudonym || '',
-      firstName: user?.firstName || '',
-      lastName: user?.lastName || '',
-      location: {},
-      bio: user?.bio || '',
-    },
+    defaultValues,
     resolver: yupResolver(validationSchema),
   });
 
@@ -51,21 +54,22 @@ const ProfileEditForm = () => {
   };
 
   const { isPending, mutate, isError } = useUpdateUserInfo();
-  const { push } = useRouter();
 
   const onSubmit = async (data: ProfileEditFormData) => {
-    const {location, ...trimmedUserData} = trimObjectFields(data);
+    const { location, ...trimmedData } = trimObjectFields(data);
 
     mutate({
-      location: `${location.city}, ${location.country}`,
-      ...trimmedUserData,
-    },
-    {
+      ...trimmedData, 
+      location: location ? `${location.city}, ${location.country}` : ''
+    }, {
       onError: handleError,
-      onSuccess: () => push("/profile"),
     }
     );
   };
+
+  useEffect(() => {
+    reset(defaultValues);
+  }, [user]);
 
   return (
     <form
@@ -126,7 +130,11 @@ const ProfileEditForm = () => {
       />
 
       {isError && <ErrorText errorText={errorMessage} />}
-      <PrimaryButton type="submit" text="Save changes" />
+      <PrimaryButton 
+        type="submit" 
+        text="Save changes" 
+        disabled={isPending} 
+      />
     </form>
   );
 };

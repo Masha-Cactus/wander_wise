@@ -4,6 +4,7 @@ import {
   Divider,
   TextBase,
   TextSmall,
+  ErrorText
 } from "@/src/components/atoms";
 import {
   CheckboxInput,
@@ -13,11 +14,6 @@ import {
   SquareCheckboxInput
 } from "@/src/components/moleculs";
 import {
-  CardAuthors,
-  Climate,
-  SpecialRequirements,
-  TravelDistance,
-  TripTypes,
   ISearchCard,
   CardAuthorsType,
   TripTypesType,
@@ -25,18 +21,19 @@ import {
   SpecialRequirementsType,
   TravelDistanceType,
 } from "@/src/services";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { searchCardsSchema } from "@/src/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { Dispatch, SetStateAction } from "react";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
-
-const atmospheres = Object.values(TripTypes);
-const climates = Object.values(Climate);
-const specials = Object.values(SpecialRequirements);
-const authors = Object.entries(CardAuthors);
-const distance = Object.entries(TravelDistance);
+import { 
+  ATMOSPHERES, 
+  AUTHORS, 
+  CLIMATES, 
+  DISTANCE, 
+  SPECIALS 
+} from "@/src/lib/constants";
 
 type Props = {
   setFilterParams: Dispatch<SetStateAction<ISearchCard | null>>;
@@ -44,7 +41,7 @@ type Props = {
 
 export interface FilterFormData {
   author: CardAuthorsType[],
-  startLocation: RadarAutocompleteAddress,
+  startLocation: RadarAutocompleteAddress | null,
   tripTypes: TripTypesType[],
   climate: ClimateType[],
   specialRequirements: SpecialRequirementsType[],
@@ -61,7 +58,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
   } = useForm<FilterFormData>({
     defaultValues: {
       author: [],
-      startLocation: {},
+      startLocation: null,
       tripTypes: [],
       climate: [],
       specialRequirements: [],
@@ -70,22 +67,12 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const location = useWatch({
-    control,
-    name: 'startLocation',
-  });
-
-  const travelDistance = useWatch({
-    control,
-    name: 'travelDistance',
-  });
-
   const onSubmit = async (data: FilterFormData) => {
     const {startLocation, ...trimmedData} = trimObjectFields(data);
 
     setFilterParams({
       ...trimmedData,
-      startLocation: `${startLocation.city}, ${startLocation.country}`,
+      startLocation: `${startLocation?.city}, ${startLocation?.country}`,
     });
   };
 
@@ -123,7 +110,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
           classes="mt-2"
         />
         <div className="flex flex-wrap gap-3 mt-3">
-          {distance.map(([distanceText, distanceValue]) => (
+          {DISTANCE.map(([distanceText, distanceValue]) => (
             <CheckboxInput
               key={distanceValue}
               name="travelDistance"
@@ -132,6 +119,10 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
               value={distanceValue}
             />
           ))}
+
+          {errors.travelDistance?.message && (
+            <ErrorText errorText={errors.travelDistance.message} />
+          )}
         </div>
       </div>
 
@@ -140,7 +131,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
       <div className="flex flex-col mx-10">
         <TextBase text="Type of your trip" font="semibold" />
         <div className="flex flex-wrap gap-2 mt-3">
-          {atmospheres.map((atmosphere) => (
+          {ATMOSPHERES.map((atmosphere) => (
             <FilterButton
               key={atmosphere}
               control={control}
@@ -156,7 +147,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
       <div className="flex flex-col mx-10">
         <TextBase text="Desired climate" font="semibold" />
         <div className="flex flex-wrap gap-2 mt-3">
-          {climates.map((climate) => (
+          {CLIMATES.map((climate) => (
             <FilterButton
               key={climate}
               control={control}
@@ -172,7 +163,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
       <div className="flex flex-col mx-10">
         <TextBase text="Special requirements" font="semibold" />
         <div className="flex flex-wrap gap-2 mt-3">
-          {specials.map((special) => (
+          {SPECIALS.map((special) => (
             <FilterButton
               key={special}
               control={control}
@@ -188,7 +179,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
       <div className="flex flex-col mx-10">
         <TextBase text="Cards author" font="semibold" />
         <div className="flex flex-wrap gap-2 mt-3">
-          {authors.map(([authorText, authorValue]) => (
+          {AUTHORS.map(([authorText, authorValue]) => (
             <SquareCheckboxInput
               key={authorValue}
               name="author"
@@ -209,14 +200,13 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
           type="submit"
           style="dark"
           classes="py-4 px-8"
-          disabled={!location.formattedAddress || !travelDistance.length}
         />
         <RoundedButton
           text="Clear"
           type="reset"
           style="light"
           classes="py-4 px-8"
-          onClick={() => reset()}
+          onClick={reset}
           disabled={!isDirty}
         />
       </div>

@@ -10,7 +10,7 @@ import { FormPageLayout } from "@/src/components/layouts";
 
 
 const CreateCardPage = () => {
-  const [newCardId, setNewCardId] = useState<number| null>(1);
+  const [newCardId, setNewCardId] = useState<number| null>(null);
   const scrollRef = useRef<HTMLElement>(null);
 
   useEffect(() => {

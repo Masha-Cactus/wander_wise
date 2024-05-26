@@ -4,11 +4,8 @@ import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { useGetCardDetails, useUpdateCard } from "@/src/queries";
 import { 
-  Climate, 
   ClimateType, 
-  SpecialRequirements, 
   SpecialRequirementsType, 
-  TripTypes, 
   TripTypesType 
 } from "@/src/services";
 import { useForm } from "react-hook-form";
@@ -29,21 +26,17 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
-
-const atmospheres = Object.values(TripTypes);
-const climates = Object.values(Climate);
-const specials = Object.values(SpecialRequirements);
+import { ATMOSPHERES, CLIMATES, SPECIALS } from "@/src/lib/constants";
 
 export interface UpdateCardFormData {
   name: string,
-  location: RadarAutocompleteAddress,
+  location: RadarAutocompleteAddress | null,
   tripTypes: TripTypesType[],
   climate: ClimateType,
   specialRequirements: SpecialRequirementsType[],
   description: string,
   whyThisPlace: string[],
   imageLinks: string[],
-  mapLink: string,
 }
 
 const EditCardForm = () => {
@@ -64,14 +57,13 @@ const EditCardForm = () => {
   } = useForm<UpdateCardFormData>({
     defaultValues: {
       name: card?.name,
-      location: {},
+      location: null,
       tripTypes: card?.tripTypes,
       climate: card?.climate,
       specialRequirements: card?.specialRequirements,
       description: card?.description,
       whyThisPlace: card?.whyThisPlace,
       imageLinks: card?.imageLinks,
-      mapLink: card?.mapLink,
     },
     resolver: yupResolver(validationSchema),
   });
@@ -92,11 +84,9 @@ const EditCardForm = () => {
       mutate({
         ...trimmedData,
         id: +id,
-        populatedLocality: location.city || '',
-        country: location.country || '',
-        region: '',
-        continent: '',
-        mapLink: `https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}`,
+        populatedLocality: location?.city || '',
+        country: location?.country || '',
+        mapLink: `https://www.google.com/maps/search/?api=1&query=${location?.latitude},${location?.longitude}`,
       },
       {
         onError: handleError,
@@ -192,6 +182,7 @@ const EditCardForm = () => {
         control={control}
         disabled={isPending}
         defaultLocation={card?.whereIs}
+        errorText={errors.location?.message}
       />
 
       <TextAreaInput
@@ -213,7 +204,7 @@ const EditCardForm = () => {
       />
 
       <DropdownInput
-        options={atmospheres}
+        options={ATMOSPHERES}
         name="tripTypes"
         errorText={errors.tripTypes?.message}
         control={control}
@@ -226,7 +217,7 @@ const EditCardForm = () => {
           <Heading5 text="Special" font="medium" />
           <Divider classes="w-full h-px" />
           <div className="flex flex-col gap-2">
-            {specials.map((special) => (
+            {SPECIALS.map((special) => (
               <SquareCheckboxInput
                 key={special}
                 control={control}
@@ -235,13 +226,17 @@ const EditCardForm = () => {
                 text={special}
               />
             ))}
+
+            {errors.specialRequirements?.message && (
+              <ErrorText errorText={errors.specialRequirements.message} />
+            )}
           </div>
         </div>
         <div className="flex flex-col gap-4 grow">
           <Heading5 text="Climate" font="medium" />
           <Divider classes="w-full h-px" />
           <div className="flex flex-col gap-2">
-            {climates.map((climate) => (
+            {CLIMATES.map((climate) => (
               <CheckboxInput
                 key={climate}
                 control={control}
@@ -251,11 +246,15 @@ const EditCardForm = () => {
                 radio={true}
               />
             ))}
+
+            {errors.climate?.message && (
+              <ErrorText errorText={errors.climate.message} />
+            )}
           </div>
         </div>
       </div>
 
-      <PrimaryButton text="Save changes" type="submit" />
+      <PrimaryButton text="Save changes" type="submit" disabled={isPending} />
 
       {isError && <ErrorText errorText={errorMessage} />}
     </form>

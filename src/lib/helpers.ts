@@ -44,6 +44,10 @@ export const normalizeError = (error: AxiosError): string => {
   const errorResponse = error?.response?.data;
 
   if (typeof errorResponse === "object" && errorResponse !== null) {
+    if (errorResponse.exception) {
+      return errorResponse?.exception?.message;
+    }
+
     // get array of errors
     const errorMessages = Object.values(errorResponse) as string[];
 
@@ -100,7 +104,7 @@ export const getFilterOptions = (cards: ICard[]) => {
   );
   
   const cardsCountries = cards.reduce(
-    (acc, curr) => [...acc, curr.whereIs.split(',')[1].trim()], 
+    (acc, curr) => [...acc, curr.whereIs.split(', ')[2].trim()], 
     [] as string[]
   );
   
