@@ -5,12 +5,12 @@ import {
   UploadCardImagesForm 
 } from "@/src/components/organisms";
 
-interface CreateReviewModalProps {
+interface AddCardImagesModalProps {
   onClose: () => void;
   cardId: number,
 }
 
-const AddCardImagesModal: React.FC<CreateReviewModalProps> = ({
+const AddCardImagesModal: React.FC<AddCardImagesModalProps> = ({
   onClose,
   cardId,
 }) => {

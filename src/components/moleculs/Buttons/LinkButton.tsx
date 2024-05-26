@@ -18,7 +18,7 @@ const LinkButton: React.FC<LinkBtnProps> = ({
       <Heading5
         text={text} 
         font="semibold" 
-        classes={"underline underline-offset-8" + classes}
+        classes={"underline underline-offset-8 " + classes}
       />
     </Link>
   );

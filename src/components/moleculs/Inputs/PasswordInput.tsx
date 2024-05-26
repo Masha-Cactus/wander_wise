@@ -37,10 +37,11 @@ const PasswordInput = <T extends FieldValues>({
         <div className="relative flex flex-col w-full">
           <div
             className={classNames( 
-              `border border-gray50 bg-white 
-            text-black hover:bg-gray-50 flex h-10 w-full items-center 
-              justify-center space-x-3 text-sm shadow-sm rounded-md 
-              transition-all duration-75 focus:outline-none px-3`,
+              `border border-gray50 bg-white placeholder:text-gray50
+            text-black flex h-10 w-full items-center 
+              justify-center text-sm shadow-sm rounded-md 
+              transition-colors duration-75 focus:outline-none px-3
+              disabled:bg-gray30 disabled:border-gray30 disabled:text-gray70`,
               {
                 "border-error": errorText,
               }
@@ -54,9 +55,10 @@ const PasswordInput = <T extends FieldValues>({
               placeholder={placeholder}
               className="w-full bg-transparent outline-none"
             />
-            <button onClick={onClick}>
+
+            <span onClick={onClick} className="cursor-pointer">
               {isShown ? <Icons.eyeClosed /> : <Icons.eye />}
-            </button>
+            </span>
           </div>
         </div>
       )}

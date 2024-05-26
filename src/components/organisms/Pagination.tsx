@@ -15,23 +15,26 @@ type Props = {
 const Pagination: React.FC<Props> = ({
   page, setPage, isPlaceholderData, isLastPage, total
 }) => {
-  const [pagesList, setPagesList] = useState([1, 2, 3, 4, 5]);
+  const [pagesList, setPagesList] = useState<number[]>([]);
 
   useEffect(() => {
-    if (page <= 2) {
-      setPagesList([1, 2, 3, 4, 5]);
-    } else if (page > 2) {
-      if (!total || (total && page + 3 <= total)) {
-        setPagesList([
-          page - 1,
-          page,
-          page + 1,
-          page + 2,
-          page + 3,
-        ]);
-      }
+    const maxPages = 5;
+    let length = maxPages;
+
+    if (total) {
+      length = Math.min(maxPages, total);
+    } else if (isLastPage) {
+      length = Math.min(maxPages, page + 1);
     }
-  }, [page, total]);
+
+    const startPage = Math.max(page - length + 1, 0);
+
+    const newPagesList = Array.from(
+      { length }, 
+      (_, index) => startPage + index);
+
+    setPagesList(newPagesList);
+  }, [page, isLastPage, total]);
 
   return (
     <div className="h-8 flex gap-2 items-center">
@@ -44,9 +47,9 @@ const Pagination: React.FC<Props> = ({
         <Icons.left className="w-6 h-6"/>
       </button>
 
-      {pagesList[0] !== 1 && (
+      {pagesList[0] !== 0 && (
         <button
-          className="text-black h-full w-8"
+          className="text-black h-8 w-8"
         >
           <TextSmall 
             text="..." 
@@ -58,20 +61,21 @@ const Pagination: React.FC<Props> = ({
       {pagesList.map(pageNumber => (
         <button
           key={pageNumber}
-          className={classNames("h-full w-8", {
-            "rounded-full bg-black": page + 1 === pageNumber,
+          className={classNames("h-8 w-8", {
+            "rounded-full bg-black text-white": page === pageNumber,
           })}
-          onClick={() => setPage(pageNumber - 1)}
+          onClick={() => setPage(pageNumber)}
+          disabled={page === pageNumber}
         >
           <TextSmall 
-            text={pageNumber.toString()} 
+            text={(pageNumber + 1).toString()} 
             font="semibold"
-            classes={page + 1 === pageNumber ? "text-white" : ""}
+            classes="text-inherit"
           />
         </button> 
       ))}
 
-      {((total && !pagesList.includes(total)) || !total) && (
+      {!isLastPage && (
         <button
           className="text-black h-full w-8"
         >

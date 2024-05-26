@@ -75,11 +75,16 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
     name: 'startLocation',
   });
 
+  const travelDistance = useWatch({
+    control,
+    name: 'travelDistance',
+  });
+
   const onSubmit = async (data: FilterFormData) => {
     const {startLocation, ...trimmedData} = trimObjectFields(data);
 
     setFilterParams({
-      ...trimmedData, 
+      ...trimmedData,
       startLocation: `${startLocation.city}, ${startLocation.country}`,
     });
   };
@@ -91,7 +96,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
       bg-white border-2 border-gray-30 gap-8"
     >
       <div className="flex flex-col mt-8 mx-10">
-        <TextBase text="Where are you now?" font="semibold" />
+        <TextBase text="Where are you now?*" font="semibold" />
         <TextSmall
           text="We need this info to build distance of your trip"
           font="normal"
@@ -109,7 +114,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
 
       <div className="flex flex-col mx-10">
         <TextBase
-          text="What is your preferred travel distance?"
+          text="What is your preferred travel distance?*"
           font="semibold"
         />
         <TextSmall
@@ -202,15 +207,15 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
         <RoundedButton
           text="Apply"
           type="submit"
-          classes="bg-black border-2 border-black text-white p-4 px-8
-            disabled:bg-gray30 disabled:text-gray70 disabled:border-gray30"
-          disabled={!location.formattedAddress}
+          style="dark"
+          classes="py-4 px-8"
+          disabled={!location.formattedAddress || !travelDistance.length}
         />
         <RoundedButton
           text="Clear"
           type="reset"
-          classes="border-2 border-black rounded-full p-4 px-8
-            disabled:text-gray30 disabled:border-gray30"
+          style="light"
+          classes="py-4 px-8"
           onClick={() => reset()}
           disabled={!isDirty}
         />

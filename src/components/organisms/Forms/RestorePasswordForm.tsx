@@ -60,7 +60,12 @@ const RestorePasswordForm: React.FC<Props> = ({setIsSubmitted}) => {
         disabled={isPending}
       />
 
-      <PrimaryButton text="Continue" disabled={isPending} type='submit' />
+      <PrimaryButton 
+        text="Continue" 
+        disabled={isPending} 
+        type='submit' 
+        classes='mt-8' 
+      />
 
       {isError && <ErrorText errorText={errorMessage} />}
     </form>

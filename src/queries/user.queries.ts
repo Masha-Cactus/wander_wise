@@ -91,10 +91,17 @@ export function useUpdateUserInfo() {
 }
 
 export function useUpdateUserImage() {
+  const user = useUser((state) => state.user);
   const setUser = useUser((state) => state.setUser);
 
   return useMutation({
-    mutationFn: (data: IUpdateImage) => userService.updateImage(data),
+    mutationFn: (data: Omit<IUpdateImage, 'id'>) => {
+      if (user) {
+        return userService.updateImage({...data, id: user.id});
+      }
+
+      return Promise.reject('No user authorized'); 
+    },
     onSuccess: (user) => {
       setUser(user);
     }

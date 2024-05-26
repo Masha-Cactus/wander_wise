@@ -51,6 +51,7 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
     handleSubmit,
     control,
     reset,
+    formState: { isDirty },
   } = useForm<IFilterParams>({
     defaultValues: {
       countries: [],
@@ -161,16 +162,19 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
         <RoundedButton
           text="Apply"
           type="submit"
-          classes="bg-black text-white p-4 px-8"
+          style="dark"
+          classes="py-4 px-8"
         />
         <RoundedButton
           text="Clear"
           type="reset"
-          classes="border-2 border-black rounded-full p-4 px-8"
+          style="light"
+          classes="py-4 px-8"
           onClick={() => {
             reset();
             setFilterParams(null);
           }}
+          disabled={!isDirty}
         />
       </div>
     </form>

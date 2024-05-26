@@ -5,6 +5,7 @@ import { useLikeCard, useRemoveLikeFromCard } from "@/src/queries";
 import { memo } from "react";
 import { Icons } from "@/src/components/atoms";
 import { IconButton } from "@/src/components/moleculs";
+import { useUser } from "@/src/store/user";
 
 type Props = {
   cardLikes: number,
@@ -13,6 +14,7 @@ type Props = {
 };
 
 const LikeButton: React.FC<Props> = ({ cardId, cardLikes, classes}) => {
+  const { user } = useUser();
   const { mutate: like } = useLikeCard();
   const { mutate: removeLike } = useRemoveLikeFromCard();
 
@@ -32,6 +34,7 @@ const LikeButton: React.FC<Props> = ({ cardId, cardLikes, classes}) => {
       text={cardLikes.toString()}
       classes={classes}
       onClick={() => handleLikeClick(cardId)}
+      disabled={!user}
     />
   );
 };

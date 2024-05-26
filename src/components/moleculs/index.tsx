@@ -25,3 +25,4 @@ export { default as IconLink } from "./IconLink";
 export { default as ImagesBlock } from "./ImagesBlock";
 export { default as LoadedContentStateController } from "./LoadedContentStateController";
 export { default as Map } from "./Map";
+export { default as Navbar } from "./Navbar";

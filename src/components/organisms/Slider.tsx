@@ -64,7 +64,7 @@ const Slider: React.FC<Props> = ({ slides }) => {
           <IconButton
             onClick={handlePrevious}
             classes="h-11 w-11 rounded-full border-white border-2 text-white"
-            icon={<Icons.arrowLeft color="black"/>}
+            icon={<Icons.arrowLeft />}
           />
           <IconButton
             onClick={handleNext}

@@ -26,8 +26,8 @@ const PrimaryButton: React.FC<Props> = ({
         "w-full h-14 bg-yellow rounded-full flex",
         "justify-center items-center font-bold",
         "transition-all duration-75 text-black",
-        "hover:bg-primary_btn-hover active:bg-primary_btn-active",
-        "disabled:bg-primary_btn-disabled",
+        "hover:bg-[#E79200] active:bg-[#E47A00]",
+        "disabled:bg-gray30 disabled:text-gray70",
         classes && classes
       )}
     >

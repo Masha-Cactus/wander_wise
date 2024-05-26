@@ -32,21 +32,29 @@ const ImageInput = <T extends FieldValues>({
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setValue(event.target.value);
-    field.onChange(
-      [ ...Array.from(event.target.files || []),
-        ...field.value,
-      ]
-    );
+
+    if (multiple) {
+      field.onChange(
+        [ ...Array.from(event.target.files || []),
+          ...field.value]
+      );
+    } else if (event.target.files) {
+      field.onChange(event.target.files[0]);
+    }
   };
 
   const handleDelete = (
     field: ControllerRenderProps<T, Path<T>>,
     index: number
   ) => {
-    const updatedValue: File[] = [...field.value];
+    if (multiple) {
+      const updatedValue: File[] = [...field.value];
 
-    updatedValue.splice(index, 1);
-    field.onChange(updatedValue);
+      updatedValue.splice(index, 1);
+      field.onChange(updatedValue);
+    } else {
+      field.onChange(undefined);
+    }
   };
 
   return (
@@ -87,7 +95,7 @@ const ImageInput = <T extends FieldValues>({
             </div>
           </label>
 
-          {!!field.value.length && (
+          {!!(multiple && field.value.length) && (
             <div className="relative flex w-full h-28 
               overflow-x-scroll gap-3">
               {(field.value as File[]).map((file, i) => (

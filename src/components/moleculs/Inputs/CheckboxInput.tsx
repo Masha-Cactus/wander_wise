@@ -7,6 +7,7 @@ import {
 } from "react-hook-form";
 import { InputControllerWrapper } from "@/src/components/moleculs";
 import { memo } from "react";
+import { TextMedium } from "@/src/components/atoms";
 
 interface CheckboxInputProps<T extends FieldValues> {
   text: string,
@@ -57,8 +58,8 @@ const CheckboxInput = <T extends FieldValues>({
               <div className="h-2 w-2 rounded-full bg-gray80" />
             )}
           </div>
-    
-          <p className="text-sm">{text}</p>
+
+          <TextMedium text={text} font="normal" />
         </div>
       )}
     </InputControllerWrapper>

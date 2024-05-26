@@ -46,7 +46,7 @@ const SquareCheckboxInput = <T extends FieldValues>({
         >
           <div className="flex justify-center h-6 w-6 cursor-pointer 
           items-center border border-gray80 rounded">
-            {(field.value === value || field.value.includes(value)) && (
+            {field.value.includes(value) && (
               <Icons.checked className="h-3 w-3 text-gray-80" />
             )}
           </div>

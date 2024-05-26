@@ -4,16 +4,16 @@ import { cookies } from 'next/headers';
 
 export async function saveCookies({token, userId}
 : {token: string, userId: number}) {
-  cookies().set('token', token, { httpOnly: true });
-  cookies().set('userId', userId.toString(), { httpOnly: true });
+  cookies().set('token', token);
+  cookies().set('userId', userId.toString());
 }
 
 export async function saveUserToCookies(userId: number) {
-  cookies().set('userId', userId.toString(), { httpOnly: true }); 
+  cookies().set('userId', userId.toString()); 
 }
 
 export async function saveTokenToCookies(token: string) {
-  cookies().set('token', token, { httpOnly: true }); 
+  cookies().set('token', token); 
 }
 
 export async function getUserIdFromCookies()

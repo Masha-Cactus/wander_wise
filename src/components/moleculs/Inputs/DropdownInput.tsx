@@ -43,8 +43,8 @@ const DropdownInput = <T extends FieldValues>({
         className={classNames(
           `border border-gray50 bg-white grow relative
             text-black hover:bg-gray-50 flex h-16 w-full items-center
-            text-sm shadow-sm rounded-md gap-4
-            transition-all duration-75 focus:outline-none px-4 py-3`,
+            text-sm shadow-sm rounded-md gap-4 placeholder:text-gray50
+            transition-colors duration-75 focus:outline-none px-4 py-3`,
           {
             "border-error": errorText,
           }

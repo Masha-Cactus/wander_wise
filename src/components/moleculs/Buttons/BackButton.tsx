@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Heading4, Icons } from "@/src/components/atoms";
+import { Heading5, Icons } from "@/src/components/atoms";
 
 const getPrevPageName = (currPathname: string) => {
   if (currPathname.startsWith('/trips') 
@@ -27,7 +27,7 @@ const BackButton = () => {
   return (
     <div className="flex gap-2 items-center" onClick={back}>
       <Icons.left className="w-6 h-6" />
-      <Heading4 text={prevPageName} font="semibold"/>
+      <Heading5 text={prevPageName} font="semibold"/>
     </div>
   );
 };

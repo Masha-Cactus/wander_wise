@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 "use client";
 
-import { IMAGES_SLIDES } from "@/src/lib/constants";
+import { SLIDER_IMAGES } from "@/src/lib/constants";
 import { PrimaryButton } from "@/src/components/moleculs";
 import { Slider } from "@/src/components/organisms";
 import { memo } from "react";
@@ -18,7 +18,7 @@ const HomePage: React.FC<Props> = ({}) => {
       className="px-10 pb-16 text-white grow flex flex-col 
     justify-center items-center relative"
     >
-      <Slider slides={IMAGES_SLIDES} />
+      <Slider slides={SLIDER_IMAGES} />
 
       <div
         className="flex flex-col justify-center items-center
