@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import * as Yup from "yup";
+import { CardAuthors, Climate, SpecialRequirements, TravelDistance, TripTypes } from "../services";
 
 export const TEXT_INPUT_LENGTH = {
   userName: {
@@ -10,6 +11,10 @@ export const TEXT_INPUT_LENGTH = {
     min: 8,
     max: 2147483647,
   },
+  cardAndCollectionName: {
+    min: 3,
+    max: 50,
+  }
 };
 
 export const ONLY_SPACES_PATTERN = /^(?!\s+$).+$/;
@@ -53,46 +58,71 @@ export const genericValidationSchema = {
     .required(`Username ${requiredText}`)
     .min(
       TEXT_INPUT_LENGTH.userName.min,
-      `Username must be at lest ${TEXT_INPUT_LENGTH.userName.min} characters`
+      `Username must be at least ${TEXT_INPUT_LENGTH.userName.min} characters`
     )
     .max(
-      TEXT_INPUT_LENGTH.userName.min,
+      TEXT_INPUT_LENGTH.userName.max,
       `Username must be maximum ${TEXT_INPUT_LENGTH.userName.max} characters`
     )
     .matches(ONLY_SPACES_PATTERN, "Username cannot be empty"),
-  firstName: Yup.string().trim().required(`First name ${requiredText}`),
-  lastName: Yup.string().trim().required(`Last name ${requiredText}`),
+  
+  firstName: Yup.string().trim(),
+  lastName: Yup.string().trim(),
 
   // mix
-  bio: Yup.string().trim().required(`Bio ${requiredText}`),
-  location: Yup.string().trim().required(`Location ${requiredText}`),
-  startLocation: Yup.string()
-    .trim()
-    .required(`Start location ${requiredText}`),
-  tripTypes: Yup.array().required(`Trip type ${requiredText}`),
-  author: Yup.array().required(`Author ${requiredText}`),
-  climate: Yup.array().required(`Climate ${requiredText}`),
-  travelDistance: Yup.array().required(`Travel distance ${requiredText}`),
-  specialRequirements: Yup.array().required(`Special requirements ${requiredText}`),
+  description: Yup.string().trim().max(5000, 'Description may be maximum 5000 characters'),
+  name: Yup.string().trim()
+    .required(`Name ${requiredText}`)
+    .min(
+      TEXT_INPUT_LENGTH.cardAndCollectionName.min,
+      `Name must be at least ${TEXT_INPUT_LENGTH.cardAndCollectionName.min} characters`
+    )
+    .max(
+      TEXT_INPUT_LENGTH.cardAndCollectionName.max,
+      `Name must be maximum ${TEXT_INPUT_LENGTH.cardAndCollectionName.max} characters`
+    ),
+
+  tripTypes: Yup.array().required(`Trip type ${requiredText}`)
+    .of(Yup.string().trim()
+      .oneOf(Object.values(TripTypes)).required()),
+  author: Yup.array().required(`Author ${requiredText}`)
+    .of(Yup.string().trim()
+      .oneOf(Object.values(CardAuthors)).required()),
+  climateString: Yup.string().trim()
+    .oneOf(Object.values(Climate)).required('Climate is required'),
+  climateArray: Yup.array().required(`Climate ${requiredText}`)
+    .of(Yup.string().trim()
+      .oneOf(Object.values(Climate)).required()),
+  whyThisPlace: Yup.array().required(`This field ${requiredText}`)
+    .min(1, 'You must provide at least one reason')
+    .of(Yup.string().trim().required()),
+  travelDistance: Yup.array().required(`Travel distance ${requiredText}`)
+    .min(1, 'Choose at least one option')
+    .of(Yup.string().trim()
+      .oneOf(Object.values(TravelDistance)).required()),
+  specialRequirements: Yup.array().required(`Special requirements ${requiredText}`)
+    .of(Yup.string().trim()
+      .oneOf(Object.values(SpecialRequirements)).required()),
   link: Yup.string().url().required(`Link ${requiredText}`),
   confirmationCode: Yup.string()
     .trim()
     .required(`Confirmation code ${requiredText}`),
   address: Yup.object().shape({
-    formattedAddress: Yup.string().required('Address is required'),
-    latitude: Yup.number().required('Latitude is required'),
-    longitude: Yup.number().required('Longitude is required'),
-    city: Yup.string().required('City is required'),
+    formattedAddress: Yup.string(),
+    latitude: Yup.number().required(),
+    longitude: Yup.number().required(),
+    city: Yup.string(),
     state: Yup.string(),
     postalCode: Yup.string(),
-    country: Yup.string().required('Country is required'),
+    country: Yup.string(),
     geometry: Yup.object().shape({
       type: Yup.mixed<"Point">().oneOf(['Point'])
-        .required('Geometry type is required'),
+        .required(),
       coordinates: Yup.array()
-        .of(Yup.number().required('Coordinate is required'))
+        .of(Yup.number().required())
         .length(2)
-        .required('Coordinates are required'),
+        .required(),
     }),
-  })
+  }),
+  arrayPossiblyEmpty: Yup.array().required('This field is required'),
 };

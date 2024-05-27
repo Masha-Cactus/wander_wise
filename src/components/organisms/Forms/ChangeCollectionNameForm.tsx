@@ -75,7 +75,12 @@ const ChangeCollectionNameForm: React.FC<Props>
             disabled={isPending}
           />
         </div>
-        <PrimaryButton text="Change" classes="h-10 w-1/4" />
+        <PrimaryButton 
+          text="Change" 
+          type="submit" 
+          classes="h-10 w-1/4" 
+          disabled={isPending} 
+        />
       </div>
 
       {isError && <ErrorText errorText={errorMessage} />}

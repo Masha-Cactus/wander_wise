@@ -29,7 +29,7 @@ const RecentlyLikedSection: React.FC = () => {
             text="You don&apos;t have any liked cards yet. Wanna find some?" />
           <PrimaryButton 
             text="Explore" 
-            classes="w-1/6" 
+            classes="w-44" 
             type="button" 
             onClick={() => push('/trips')}
           />

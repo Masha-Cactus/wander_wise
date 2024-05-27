@@ -24,6 +24,7 @@ const UploadProfileImageForm: React.FC<Props> = ({ closeModal }) => {
   const {
     control,
     handleSubmit,
+    formState: { errors }
   } = useForm<UploadProfileImageFormData>({
     defaultValues: {
       image: undefined,
@@ -57,6 +58,10 @@ const UploadProfileImageForm: React.FC<Props> = ({ closeModal }) => {
         disabled={isPending}
         control={control}
       />
+
+      {errors.image?.message && (
+        <ErrorText errorText={errors.image.message} />
+      )}
         
       <PrimaryButton 
         text="Add" 

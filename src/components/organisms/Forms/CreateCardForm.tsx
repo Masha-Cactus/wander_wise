@@ -4,11 +4,8 @@ import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { useCreateCard } from "@/src/queries";
 import { 
-  Climate, 
   ClimateType, 
-  SpecialRequirements, 
   SpecialRequirementsType, 
-  TripTypes, 
   TripTypesType 
 } from "@/src/services";
 import { useForm } from "react-hook-form";
@@ -27,21 +24,16 @@ import { createCardSchema } from "@/src/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Dispatch, SetStateAction } from "react";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
-
-const atmospheres = Object.values(TripTypes);
-const climates = Object.values(Climate);
-const specials = Object.values(SpecialRequirements);
+import { ATMOSPHERES, CLIMATES, SPECIALS } from "@/src/lib/constants";
 
 export interface CreateCardFormData {
   name: string,
-  location: RadarAutocompleteAddress,
+  location: RadarAutocompleteAddress | null,
   tripTypes: TripTypesType[],
   climate: ClimateType,
   specialRequirements: SpecialRequirementsType[],
   description: string,
   whyThisPlace: string[],
-  imageLinks: string[],
-  mapLink: string,
 }
 
 type Props = {
@@ -60,14 +52,12 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
   } = useForm<CreateCardFormData>({
     defaultValues: {
       name: "",
-      location: {},
+      location: null,
       tripTypes: [],
-      climate: climates[0],
+      climate: CLIMATES[0],
       specialRequirements: [],
       description: "",
       whyThisPlace: [],
-      imageLinks: [],
-      mapLink: "",
     },
     resolver: yupResolver(validationSchema),
   });
@@ -83,14 +73,12 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
       location,
       ...trimmedData
     } = trimObjectFields(data);
-  
+
     mutate({
       ...trimmedData,
-      populatedLocality: location.city || '',
-      country: location.country || '',
-      region: '',
-      continent: '',
-      mapLink: `https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}`,
+      populatedLocality: location?.city || '',
+      country: location?.country || '',
+      mapLink: `https://www.google.com/maps/search/?api=1&query=${location?.latitude},${location?.longitude}`,
     },
     {
       onError: handleError,
@@ -120,6 +108,7 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
         name="location"
         control={control}
         disabled={isPending}
+        errorText={errors.location?.message}
       />
 
       <TextAreaInput
@@ -141,7 +130,7 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
       />
 
       <DropdownInput
-        options={atmospheres}
+        options={ATMOSPHERES}
         name="tripTypes"
         errorText={errors.tripTypes?.message}
         control={control}
@@ -154,7 +143,7 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
           <Heading5 text="Special" font="medium" />
           <Divider classes="w-full h-px" />
           <div className="flex flex-col gap-2">
-            {specials.map((special) => (
+            {SPECIALS.map((special) => (
               <SquareCheckboxInput
                 key={special}
                 control={control}
@@ -163,13 +152,17 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
                 text={special}
               />
             ))}
+
+            {errors.specialRequirements?.message && (
+              <ErrorText errorText={errors.specialRequirements.message} />
+            )}
           </div>
         </div>
         <div className="flex flex-col gap-4 grow">
           <Heading5 text="Climate" font="medium" />
           <Divider classes="w-full h-px" />
           <div className="flex flex-col gap-2">
-            {climates.map((climate) => (
+            {CLIMATES.map((climate) => (
               <CheckboxInput
                 key={climate}
                 control={control}
@@ -179,11 +172,15 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
                 radio={true}
               />
             ))}
+
+            {errors.climate?.message && (
+              <ErrorText errorText={errors.climate.message} />
+            )}
           </div>
         </div>
       </div>
 
-      <PrimaryButton text="Create" type="submit" />
+      <PrimaryButton text="Create" type="submit" disabled={isPending} />
 
       {isError && <ErrorText errorText={errorMessage} />}
     </form>

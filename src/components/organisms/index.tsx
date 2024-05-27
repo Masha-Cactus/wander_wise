@@ -4,7 +4,6 @@ export { default as Gallery } from "./Lists/Gallery";
 export { default as ReviewsList } from "./Lists/ReviewsList";
 export { default as Stars } from "./Stars";
 export { default as Header } from "./Header";
-export { default as Slider } from "./Slider";
 export { default as Collection } from "./Collection";
 export { default as Pagination } from "./Pagination";
 
@@ -28,6 +27,7 @@ export { default as AddCardToCollectionModal } from "./Modals/AddCardToCollectio
 export { default as RemoveTripFromCollectionModal} from "./Modals/RemoveTripFromCollectionModal";
 export { default as AddCardImagesModal} from "./Modals/AddCardImagesModal";
 export { default as AddProfileImageModal} from "./Modals/AddProfileImageModal";
+export { default as DeleteProfileModal } from "./Modals/DeleteProfileModal";
 
 export { default as SignInForm } from "./Forms/SignInForm";
 export { default as SearchCardsForm } from "./Forms/SearchCardsForm";
@@ -56,3 +56,4 @@ export { default as RecentlyReviewsSection } from "./Sections/RecentlyReviewsSec
 export { default as ProfileInfoSection } from "./Sections/ProfileInfoSection";
 export { default as SavedCardsSection } from "./Sections/SavedCardsSection";
 export { default as CreatedCardsSection } from "./Sections/CreatedCardsSection";
+export { default as CardImagesSection } from "./Sections/CardImagesSection";

@@ -31,10 +31,10 @@ const MyCardsPage = () => {
         <div className="col-span-12 flex items-center
           flex-col gap-8 justify-center text-center">
           <Heading text="You don’t have any created cards yet." font="normal" />
-          <Heading4 text="Explore our community 🌏" font="medium" />
+          <Heading4 text="Create your first card now! 🌏" font="medium" />
           <PrimaryButton 
-            text="Continue" 
-            onClick={() => push('/trips')}
+            text="Create" 
+            onClick={() => push('/my-cards/create')}
             classes="w-1/3"
           />
         </div>

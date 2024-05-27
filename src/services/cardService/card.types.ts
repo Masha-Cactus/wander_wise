@@ -27,15 +27,15 @@ export interface ICard {
 export interface ICreateCard {
   name: string,
   populatedLocality: string,
-  region: string,
+  region?: string,
   country: string,
-  continent: string,
+  continent?: string,
   tripTypes: TripTypesType[],
   climate: ClimateType,
   specialRequirements: SpecialRequirementsType[],
   description: string,
   whyThisPlace: string[],
-  imageLinks: string[],
+  imageLinks?: string[],
   mapLink: string,
 }
 

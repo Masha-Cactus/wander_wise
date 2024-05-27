@@ -2,8 +2,7 @@
 "use client";
 
 import { SLIDER_IMAGES } from "@/src/lib/constants";
-import { PrimaryButton } from "@/src/components/moleculs";
-import { Slider } from "@/src/components/organisms";
+import { PrimaryButton, HomeSlider } from "@/src/components/moleculs";
 import { memo } from "react";
 import { useRouter } from "next/navigation";
 import { Heading2, TitleText } from "@/src/components/atoms";
@@ -18,7 +17,7 @@ const HomePage: React.FC<Props> = ({}) => {
       className="px-10 pb-16 text-white grow flex flex-col 
     justify-center items-center relative"
     >
-      <Slider slides={SLIDER_IMAGES} />
+      <HomeSlider slides={SLIDER_IMAGES} />
 
       <div
         className="flex flex-col justify-center items-center

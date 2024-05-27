@@ -7,10 +7,11 @@ import { FilterFormData } from "../components/organisms/Forms/SearchCardsForm";
 export const searchCardsSchema 
 = (): ObjectSchema<FilterFormData> =>
   Yup.object().shape({
-    startLocation: genericValidationSchema.address,
+    startLocation: genericValidationSchema.address
+      .nonNullable('Start location is required'),
     tripTypes: genericValidationSchema.tripTypes,
     author: genericValidationSchema.author,
-    climate: genericValidationSchema.climate,
+    climate: genericValidationSchema.climateArray,
     travelDistance: genericValidationSchema.travelDistance,
     specialRequirements: genericValidationSchema.specialRequirements,
   });

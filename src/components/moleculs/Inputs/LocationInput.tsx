@@ -50,7 +50,7 @@ const LocationInput = <T extends FieldValues>({
   const locationFieldValue = useWatch({control, name});
 
   useEffect(() => {
-    if (!locationFieldValue.formattedAddress) {
+    if (!locationFieldValue) {
       setValue('');
     }
   }, [locationFieldValue]);

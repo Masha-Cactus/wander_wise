@@ -18,7 +18,7 @@ const StarsInput = <T extends FieldValues>({
       isLabelVisible={false}
     >
       {(field) => (
-        <div className="flex gap-0.5 justify-center h-12">
+        <div className="flex gap-0.5 justify-center h-8">
           {[1, 2, 3, 4, 5].map(item => (
             <button 
               key={item} 

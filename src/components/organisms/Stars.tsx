@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { Icons } from "@/src/components/atoms";
 
 type Props = {
   stars: number[];
@@ -6,11 +7,11 @@ type Props = {
 
 const Stars: React.FC<Props> = ({ stars }) => {
   return (
-    <div className='flex gap-1'>
+    <div className='flex gap-0.5 h-6'>
       {stars.map((star) => (
         star === 1
-          ? <p key={star}>&#9733;</p> 
-          : <p key={star}>&#9734;</p>
+          ? <Icons.filledStar key={star} className="w-12 h-full text-yellow"/> 
+          : <Icons.star key={star} className="w-12 h-full text-yellow"/>
       )) }
     </div>
   );

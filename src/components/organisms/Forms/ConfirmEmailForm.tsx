@@ -9,7 +9,7 @@ import { TextInput }from "@/src/components/moleculs";
 import { confirmEmailSchema } from "@/src/validation/confirmEmailSchema";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
 import { useEffect } from "react";
-import { saveTokenToCookies } from "@/src/actions/manageCookies";
+import { saveCookies } from "@/src/actions/manageCookies";
 
 interface FormData {
   confirmationCode: string,
@@ -48,7 +48,7 @@ const ConfirmEmailForm: React.FC<Props> = ({ closeModal }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      saveTokenToCookies(data.token)
+      saveCookies({token: data.token})
         .then(() => {
           closeModal();
         });

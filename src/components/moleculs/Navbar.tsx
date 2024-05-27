@@ -10,7 +10,7 @@ const Navbar = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex gap-8 h-10">
+    <nav className="flex gap-8 items-center h-12">
       <div className="flex gap-8 text-black justify-center items-center">
         <Link href="/trips">
           <Heading5 
@@ -38,11 +38,11 @@ const Navbar = () => {
           
       <Link href="/profile">
         <Image
-          src={user?.profileImage || "/user.png"}
+          src={user?.profileImage || "/user-default.png"}
           alt="user avatar"
           width={100}
           height={100}
-          className="rounded-full w-12 h-12 bg-gray30"
+          className="rounded-full w-12 h-12 bg-gray30 object-cover"
         />
       </Link>
     </nav>

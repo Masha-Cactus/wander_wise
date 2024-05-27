@@ -3,7 +3,7 @@
 import { useUser } from "@/src/store/user";
 import { useState } from "react";
 import { Divider, Heading2, Heading5, TextBase } from "@/src/components/atoms";
-import { PrimaryButton } from "@/src/components/moleculs";
+import { PrimaryButton, RoundedButton } from "@/src/components/moleculs";
 import { 
   ChangeUserEmailModal, 
   ChangeUserPasswordModal, 
@@ -11,6 +11,7 @@ import {
   ProfileEditForm,
   SocialLinkForm,
   ConfirmEmailModal,
+  DeleteProfileModal
 } from "@/src/components/organisms";
 import { FormPageLayout } from "@/src/components/layouts";
 
@@ -22,6 +23,8 @@ const ProfileEditPage = () => {
   const [isShowRestorePasswordModal, setIsShowRestorePasswordModal] 
   = useState(false);
   const [isShowConfirmEmailModal, setIsShowConfirmEmailModal] 
+  = useState(false);
+  const [isShowDeleteProfileModal, setIsShowDeleteProfileModal] 
   = useState(false);
 
   const handleRestorePassOpen = () => {
@@ -99,6 +102,14 @@ const ProfileEditPage = () => {
 
       </article>
 
+      <div className="w-[670px]">
+        <RoundedButton 
+          text="Delete profile" 
+          style="red"
+          onClick={() => setIsShowDeleteProfileModal(true)}
+        />
+      </div>
+
       {isShowChangeEmailModal && (
         <ChangeUserEmailModal
           onClose={() => setIsShowChangeEmailModal(false)}
@@ -123,6 +134,12 @@ const ProfileEditPage = () => {
         <ConfirmEmailModal
           onClose={() => setIsShowConfirmEmailModal(false)}
           type="Update"
+        />
+      )}
+
+      {isShowDeleteProfileModal && (
+        <DeleteProfileModal 
+          onClose={() => setIsShowDeleteProfileModal(false)}
         />
       )}
     </FormPageLayout>

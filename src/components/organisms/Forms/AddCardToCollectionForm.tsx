@@ -90,7 +90,7 @@ const AddCardToCollectionForm: React.FC<Props>
           text="Cancel"
           style="light"
           classes="grow"
-          onClick={() => closeModal()}
+          onClick={closeModal}
           disabled={isPending}
         />
 

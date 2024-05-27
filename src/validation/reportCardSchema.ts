@@ -1,7 +1,9 @@
 import { ObjectSchema } from "yup";
 import * as Yup from "yup";
+import { genericValidationSchema } from "./genericSchema";
 
 export const reportCardSchema = (): ObjectSchema<{ text: string }> => 
   Yup.object().shape({
-    text: Yup.string().trim().required('This field is required'),
+    text: genericValidationSchema.description
+      .required('This field is required'),
   });

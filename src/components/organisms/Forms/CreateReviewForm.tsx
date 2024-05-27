@@ -65,10 +65,10 @@ const CreateReviewForm: React.FC<Props> = ({ closeModal }) => {
         name="text" 
         placeholder="Write your review..."
         disabled={isPending}
-        errorText={errors?.text?.message}
+        errorText={errors.text?.message}
       />
 
-      <PrimaryButton text="Send" type="submit" />
+      <PrimaryButton text="Send" type="submit" disabled={isPending} />
 
       {isError && <ErrorText errorText={errorMessage} />}
     </form>

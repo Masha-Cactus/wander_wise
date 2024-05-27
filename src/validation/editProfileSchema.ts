@@ -12,6 +12,6 @@ export const editProfileSchema
     pseudonym: genericValidationSchema.pseudonym,
     firstName: genericValidationSchema.firstName,
     lastName: genericValidationSchema.lastName,
-    bio: genericValidationSchema.bio,
-    location: genericValidationSchema.address,
+    bio: genericValidationSchema.description,
+    location: genericValidationSchema.address.nullable(),
   });

@@ -1,3 +1,5 @@
+export * from "./types";
+
 export * from "./authService/auth.service";
 export * from "./cardService/card.service";
 export * from "./collectionService/collection.service";
@@ -13,5 +15,3 @@ export * from "./cardService/card.types";
 export * from "./commentService/comment.types";
 export * from "./socialService/social.types";
 export * from "./userService/user.types";
-
-export * from "./types";

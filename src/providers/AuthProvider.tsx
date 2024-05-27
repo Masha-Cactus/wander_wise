@@ -10,8 +10,9 @@ import { useUser } from "@/src/store/user";
 import { PropsWithChildren, useEffect, useState } from "react";
 
 export const AuthProvider = ({children}: PropsWithChildren) => {
+  const [isInitialAuthorizing, setIsInitialAuthorizing] = useState(true);
   const [userId, setUserId] = useState<number | null>(null);
-  const { isLoading, fetchStatus, data: user } = useGetUserProfile(userId);
+  const { data: user, isFetched } = useGetUserProfile(userId);
   const { setUser } = useUser();
   
   useEffect(() => {
@@ -21,17 +22,22 @@ export const AuthProvider = ({children}: PropsWithChildren) => {
           setUserId(data.userId);
         } else {
           clearCookies();
+          setIsInitialAuthorizing(false);
         }
       });
   }, []);
   
   useEffect(() => {
-    if (user) {
-      setUser(user);
-    }
-  }, [user]);
+    if (isFetched) {
+      if (user) {
+        setUser(user);
+      }
 
-  if (isLoading && fetchStatus !== 'idle') {
+      setIsInitialAuthorizing(false);
+    }
+  }, [user, isFetched]);
+
+  if (isInitialAuthorizing) {
     return <Loader />;
   }
     

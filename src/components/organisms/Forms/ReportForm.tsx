@@ -79,6 +79,8 @@ const ReportForm: React.FC<Props> = ({ closeModal, type, comment }) => {
     }
   };
 
+  const isPending = isReportCardPending || isReportCommentPending;
+
   return (
     <form 
       onSubmit={handleSubmit(onSubmit)} 
@@ -88,10 +90,10 @@ const ReportForm: React.FC<Props> = ({ closeModal, type, comment }) => {
         name="text"
         control={control}
         errorText={errors.text?.message}
-        disabled={isReportCardPending || isReportCommentPending}
+        disabled={isPending}
         placeholder="Type your issue here..."
       />
-      <PrimaryButton type="submit" text="Send" />
+      <PrimaryButton type="submit" text="Send" disabled={isPending} />
 
       {(isReportCardError || isReportCommentError) && (
         <ErrorText errorText={errorMessage} />

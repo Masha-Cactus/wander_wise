@@ -9,7 +9,8 @@ export const filterCardsSchema
   Yup.object().shape({
     tripTypes: genericValidationSchema.tripTypes,
     authors: genericValidationSchema.author,
-    climates: genericValidationSchema.climate,
-    countries: Yup.array().required(),
+    climates: genericValidationSchema.climateArray,
+    countries: genericValidationSchema.arrayPossiblyEmpty
+      .of(Yup.string().trim().required()),
     specialRequirements: genericValidationSchema.specialRequirements,
   });

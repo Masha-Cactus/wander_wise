@@ -17,6 +17,7 @@ import { useNormalizedError } from "@/src/hooks";
 import { clearCookies } from "@/src/actions/manageCookies";
 import { useRouter } from "next/navigation";
 import AddProfileImageModal from "../Modals/AddProfileImageModal";
+import ConfirmEmailModal from "../Modals/ConfirmEmailModal";
 
 const ProfileInfoSection: React.FC = () => {
   const { user } = useUser();
@@ -28,6 +29,7 @@ const ProfileInfoSection: React.FC = () => {
   const { isPending, mutate, isError, isSuccess } = useLogout();
 
   const [isAddImageModal, setIsAddImageModal] = useState(false);
+  const [isConfirmEmailModal, setIsConfirmEmailModal] = useState(false);
 
   const handleLogout = () => {
     mutate(undefined, {
@@ -49,15 +51,11 @@ const ProfileInfoSection: React.FC = () => {
     >
       <div className="relative top-0 flex justify-center">
         <Image
-          src={
-            user?.profileImage
-              ? user.profileImage
-              : `https://images.stockcake.com/public/7/5/2/752210ff-3ce6-447b-8529-7deec989d405_large/wriggling-earthworm-closeup-stockcake.jpg`
-          }
+          src={user?.profileImage || "./user-default.png"}
           alt="profile"
           width={200}
           height={200}
-          className="rounded-full w-1/3"
+          className="w-36 h-36 rounded-full object-cover"
         />
 
         <div
@@ -89,16 +87,23 @@ const ProfileInfoSection: React.FC = () => {
       <Divider classes="w-full h-px bg-gray20" />
 
       <div className="flex flex-col gap-2 text-start">
-        {location && (
+        {user?.location && (
           <div className="flex items-center gap-2">
             <Icons.location className="text-gray70 h-4 w-4" />
-            <TextBase text={user?.location || ''} font="normal" />
+            <TextBase text={user.location} font="normal" />
           </div>
         )}
         <div className="flex items-center gap-2">
           <Icons.mail className="text-gray70 h-4 w-4" />
           <TextBase text={user?.email || ''} font="normal" />
         </div>
+        {user?.banned && (
+          <button type="button" onClick={() => setIsConfirmEmailModal(true)}>
+            <ErrorText 
+              errorText="Confirm your email to open full functionality" 
+            />
+          </button>
+        )}
       </div>
 
       <Divider classes="w-full h-px bg-gray20" />
@@ -156,6 +161,12 @@ const ProfileInfoSection: React.FC = () => {
       {isAddImageModal && (
         <AddProfileImageModal 
           onClose={() => setIsAddImageModal(false)}
+        />
+      )}
+      {isConfirmEmailModal && (
+        <ConfirmEmailModal
+          type="Confirm"
+          onClose={() => setIsConfirmEmailModal(false)}
         />
       )}
     </section>

@@ -14,7 +14,7 @@ import { trimObjectFields } from "@/src/lib/helpers";
 import { ErrorText } from "@/src/components/atoms";
 import { PasswordInput } from "@/src/components/moleculs";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
-import { saveUserToCookies } from "@/src/actions/manageCookies";
+import { saveCookies } from "@/src/actions/manageCookies";
 
 type Props = {
   openConfirmEmailModal: () => void;
@@ -55,7 +55,7 @@ const SignUpForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      saveUserToCookies(data.id)
+      saveCookies({userId: data.id, confirmationCode: data.emailConfirmCode})
         .then(() => {
           openConfirmEmailModal();
         });

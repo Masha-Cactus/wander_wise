@@ -8,6 +8,6 @@ export const signUpSchema = (
 ): ObjectSchema<ISignUp> =>
   Yup.object().shape({
     email: genericValidationSchema.email,
-    password: genericValidationSchema.passwordWithoutTips,
+    password: genericValidationSchema.password,
     repeatPassword: genericValidationSchema.repeatPassword,
   });
