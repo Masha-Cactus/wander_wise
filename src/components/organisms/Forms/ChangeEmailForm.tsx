@@ -8,6 +8,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { ErrorText } from '@/src/components/atoms';
 import { PrimaryButton, TextInput } from '@/src/components/moleculs';
 import { changeEmailSchema } from '@/src/validation';
+import { useEffect } from 'react';
+import { saveCookies } from '@/src/actions/manageCookies';
 
 type Props = {
   openConfirmEmailModal: () => void;
@@ -28,7 +30,13 @@ const ChangeEmailForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useRequestUpdateEmail();
+  const { 
+    isPending, 
+    mutate, 
+    isError, 
+    data, 
+    isSuccess 
+  } = useRequestUpdateEmail();
 
   const handleError = (error: any) => {
     setErrorMessage(error.message);
@@ -37,9 +45,17 @@ const ChangeEmailForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
   const onSubmit: SubmitHandler<IEmail> = async(data) => {
     mutate(data.email, {
       onError: handleError,
-      onSuccess: () => openConfirmEmailModal(),
     });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      saveCookies({confirmationCode: data.emailConfirmCode})
+        .then(() => {
+          openConfirmEmailModal();
+        });
+    }
+  }, [isSuccess]);
 
   return (
     <form

@@ -2,25 +2,19 @@
 
 import { cookies } from 'next/headers';
 
-export async function saveCookies({token, userId}
-: {token: string, userId: number}) {
-  cookies().set('token', token);
-  cookies().set('userId', userId.toString());
-}
+export async function saveCookies({token, userId, confirmationCode}
+: {token?: string, userId?: number, confirmationCode?: string}) {
+  if (token) {
+    cookies().set('token', token);
+  }
 
-export async function saveUserToCookies(userId: number) {
-  cookies().set('userId', userId.toString()); 
-}
+  if (userId) {
+    cookies().set('userId', userId.toString());
+  }
 
-export async function saveTokenToCookies(token: string) {
-  cookies().set('token', token); 
-}
-
-export async function getUserIdFromCookies()
-: Promise<number | null> {
-  const userId = cookies().get('userId')?.value;
-
-  return userId ? +userId : null;
+  if (confirmationCode) {
+    cookies().set('confirmationCode', confirmationCode);
+  }
 }
 
 export async function getUserDataFromCookies()

@@ -9,7 +9,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
 import { PasswordInput, PrimaryButton } from "@/src/components/moleculs";
 import { useEffect, useState } from "react";
-import { saveTokenToCookies } from "@/src/actions/manageCookies";
+import { saveCookies } from "@/src/actions/manageCookies";
 
 type Props = {
   closeModal: () => void;
@@ -46,7 +46,7 @@ const ChangePasswordForm: React.FC<Props> = ({ closeModal }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      saveTokenToCookies(data.token)
+      saveCookies({token: data.token})
         .then(() => {
           closeModal();
         });

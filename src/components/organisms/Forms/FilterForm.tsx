@@ -183,13 +183,11 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
           text="Apply"
           type="submit"
           style="dark"
-          classes="py-4 px-8"
         />
         <RoundedButton
           text="Clear"
           type="reset"
           style="light"
-          classes="py-4 px-8"
           onClick={() => {
             reset();
             setFilterParams(null);

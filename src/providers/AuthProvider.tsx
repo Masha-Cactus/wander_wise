@@ -22,6 +22,7 @@ export const AuthProvider = ({children}: PropsWithChildren) => {
           setUserId(data.userId);
         } else {
           clearCookies();
+          setIsInitialAuthorizing(false);
         }
       });
   }, []);

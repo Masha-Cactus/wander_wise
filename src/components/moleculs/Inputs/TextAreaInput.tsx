@@ -31,7 +31,7 @@ const TextAreaInput = <T extends FieldValues>({
       {(field) => (
         <textarea
           className={classNames(
-            `w-full h-36 px-4 py-3 border border-gray50 bg-white
+            `w-full h-64 px-4 py-3 border border-gray50 bg-white
                 text-black hover:bg-gray-50 text-sm rounded-lg resize-none
                 transition-all duration-75 focus:outline-none`,
             {

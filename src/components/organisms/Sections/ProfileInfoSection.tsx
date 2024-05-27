@@ -17,6 +17,7 @@ import { useNormalizedError } from "@/src/hooks";
 import { clearCookies } from "@/src/actions/manageCookies";
 import { useRouter } from "next/navigation";
 import AddProfileImageModal from "../Modals/AddProfileImageModal";
+import ConfirmEmailModal from "../Modals/ConfirmEmailModal";
 
 const ProfileInfoSection: React.FC = () => {
   const { user } = useUser();
@@ -28,6 +29,7 @@ const ProfileInfoSection: React.FC = () => {
   const { isPending, mutate, isError, isSuccess } = useLogout();
 
   const [isAddImageModal, setIsAddImageModal] = useState(false);
+  const [isConfirmEmailModal, setIsConfirmEmailModal] = useState(false);
 
   const handleLogout = () => {
     mutate(undefined, {
@@ -95,6 +97,13 @@ const ProfileInfoSection: React.FC = () => {
           <Icons.mail className="text-gray70 h-4 w-4" />
           <TextBase text={user?.email || ''} font="normal" />
         </div>
+        {user?.banned && (
+          <button type="button" onClick={() => setIsConfirmEmailModal(true)}>
+            <ErrorText 
+              errorText="Confirm your email to open full functionality" 
+            />
+          </button>
+        )}
       </div>
 
       <Divider classes="w-full h-px bg-gray20" />
@@ -152,6 +161,12 @@ const ProfileInfoSection: React.FC = () => {
       {isAddImageModal && (
         <AddProfileImageModal 
           onClose={() => setIsAddImageModal(false)}
+        />
+      )}
+      {isConfirmEmailModal && (
+        <ConfirmEmailModal
+          type="Confirm"
+          onClose={() => setIsConfirmEmailModal(false)}
         />
       )}
     </section>

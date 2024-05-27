@@ -66,7 +66,7 @@ RemoveTripFromCollectionModalProps
   return (
     <ModalSkeleton onClose={onClose}>
       <Heading text={`Remove ${trip.name} from ${collection?.name}?`} font="normal"/>
-      <Heading4 text="This action cannot be undone 🫣" font="medium"/>
+      <Heading4 text="This action cannot be undone 🫣" font="normal"/>
 
       <div className="flex w-full gap-5 justify-between">
         <RoundedButton

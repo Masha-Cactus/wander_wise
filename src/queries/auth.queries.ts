@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { authService, IEmail, ISignIn, ISignUp } from "@/src/services";
 import { useUser } from "@/src/store/user";
-import { getCookie } from "cookies-next";
+import { getCookie, deleteCookie } from "cookies-next";
 
 export function useSignUp() {
   const setUser = useUser((state) => state.setUser);
@@ -17,11 +17,12 @@ export function useSignUp() {
 export function useConfirmEmail() {
   const [user, unbanUser] = useUser((state) => 
     [state.user, state.unbanUser]);
+  const confirmationCode = getCookie('confirmationCode');
 
   return useMutation({
-    mutationFn: (confirmationCode: string) => {
-      if (user) {
-        if (user.emailConfirmCode !== confirmationCode) {
+    mutationFn: (codeFromUser: string) => {
+      if (user && confirmationCode) {
+        if (codeFromUser !== confirmationCode) {
           return Promise.reject('Wrong confirmation code');
         }
 
@@ -32,6 +33,7 @@ export function useConfirmEmail() {
     },
     onSuccess: () => {
       unbanUser();
+      deleteCookie('confirmationCode');
     }
   });
 }

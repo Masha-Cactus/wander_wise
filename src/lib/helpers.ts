@@ -44,7 +44,7 @@ export const normalizeError = (error: AxiosError): string => {
   const errorResponse = error?.response?.data;
 
   if (typeof errorResponse === "object" && errorResponse !== null) {
-    if (errorResponse.exception) {
+    if (errorResponse?.exception?.message) {
       return errorResponse?.exception?.message;
     }
 

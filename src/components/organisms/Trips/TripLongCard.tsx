@@ -1,11 +1,11 @@
 import { Tab } from "@/src/components/organisms";
 import { Divider, Heading2, Heading4, Icons } from "@/src/components/atoms";
 import {
-  ImagesBlock,
   IconButton,
   SaveButton,
   LikeButton,
 } from "@/src/components/moleculs/";
+import { CardImagesSection } from "@/src/components/organisms";
 import { ICard } from "@/src/services";
 import { memo } from "react";
 
@@ -25,23 +25,23 @@ const TripLongCard: React.FC<Props> = ({ card }) => {
       className="flex flex-col gap-2
       justify-between items-center"
     >
-      <Heading2 text={card.name} classes="text-3xl" font="semibold" />
+      <Heading2 text={card.name} classes="self-start mb-1" font="semibold" />
 
-      <div className="gap-2 w-full mt-1 grid grid-cols-12">
-        <div className="w-full col-span-5">
-          <div className="flex gap-2 items-center justify-start">
-            <Icons.location />
+      <div className="gap-5 w-full grid grid-cols-12">
+        <div className="col-span-5 flex flex-col gap-6">
+          <div className="w-full flex gap-2">
+            <Icons.location className="w-8 h-8" />
             <Heading4 text={card.whereIs} font="normal"/>
           </div>
 
-          <div className="mt-6 overflow-scroll max-h-[550px]">
+          <div className="w-full overflow-scroll max-h-[550px]">
             <Tab tabs={tabs} />
           </div>
 
           <SaveButton cardId={card.id} />
         </div>
 
-        <div className="w-full h-full col-span-7">
+        <div className="col-span-7 flex flex-col gap-4">
           <div className="flex gap-4 w-full justify-end h-8">
             <LikeButton
               cardId={card.id}
@@ -74,8 +74,8 @@ const TripLongCard: React.FC<Props> = ({ card }) => {
 
             <IconButton icon={<Icons.share />} classes="" />
           </div>
-          <div className="w-full mt-6">
-            <ImagesBlock images={card.imageLinks} />
+          <div className="w-full">
+            <CardImagesSection images={card.imageLinks} />
           </div>
         </div>
       </div>

@@ -6,6 +6,8 @@ import {
   userService 
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
+import { deleteCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 
 // this query is currently used only for auto-authorization on first load
 export function useGetUserProfile(userId: number | null) {
@@ -111,6 +113,7 @@ export function useUpdateUserImage() {
 export function useDeleteUser() {
   const user = useUser((state) => state.user);
   const setUser = useUser((state) => state.setUser);
+  const { push } = useRouter();
 
   return useMutation({
     mutationFn: () => {
@@ -122,6 +125,10 @@ export function useDeleteUser() {
     },
     onSuccess: () => {
       setUser(null);
+      deleteCookie('userId');
+      deleteCookie('token');
+      deleteCookie('confirmationCode');
+      push ('/');
     }
   });
 }
@@ -160,7 +167,10 @@ export function useUpdateEmail() {
         
       return Promise.reject('No user authorized');
     },
-    onSuccess: () => unbanUser(),
+    onSuccess: () => {
+      unbanUser();
+      deleteCookie('confirmationCode');
+    },
   });
 }
 

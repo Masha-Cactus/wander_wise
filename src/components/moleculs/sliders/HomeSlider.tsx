@@ -14,7 +14,7 @@ type Props = {
   slides: string[];
 };
 
-const Slider: React.FC<Props> = ({ slides }) => {
+const HomeSlider: React.FC<Props> = ({ slides }) => {
   const [swiperRef, setSwiperRef] = useState<SwiperClass>();
 
   const handlePrevious = useCallback(() => {
@@ -77,4 +77,4 @@ const Slider: React.FC<Props> = ({ slides }) => {
   );
 };
 
-export default memo(Slider);
+export default memo(HomeSlider);

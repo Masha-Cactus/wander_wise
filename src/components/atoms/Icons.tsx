@@ -20,8 +20,7 @@ import { MdOutlineMail } from "react-icons/md";
 import { RiGlobalLine } from "react-icons/ri";
 import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
-import { FaStar } from "react-icons/fa";
-import { CiStar } from "react-icons/ci";
+import { FaStar, FaRegStar } from "react-icons/fa";
 import { FaPlus, FaTwitter, FaInstagram } from "react-icons/fa";
 import { FaCheck, FaGlobe } from "react-icons/fa6";
 
@@ -46,7 +45,7 @@ const Icons = {
   global: RiGlobalLine,
   eye: FaRegEye,
   eyeClosed: FaRegEyeSlash,
-  star: CiStar,
+  star: FaRegStar,
   filledStar: FaStar,
   plus: FaPlus,
   follow: IoMdExit,
