@@ -7,6 +7,7 @@ import { Divider, Icons, TextBase, Heading5 } from "@/src/components/atoms";
 import { LinkButton } from "@/src/components/moleculs";
 import { useGetCardDetails } from "@/src/queries";
 import { Stars } from "@/src/components/organisms";
+import { Routes } from "@/src/lib/constants";
 
 type Props = {
   review: IComment,
@@ -32,7 +33,7 @@ const ReviewCardLong: React.FC<Props> = ({ review }) => {
           <Divider classes="w-px h-full" />
           <div className="flex items-center gap-2">
             <Icons.follow className="w-6 h-6" />
-            <LinkButton path={`/trips/${review.cardId}`} text="Go to card" />
+            <LinkButton path={Routes.TRIP(review.cardId)} text="Go to card" />
           </div>
           
         </div>

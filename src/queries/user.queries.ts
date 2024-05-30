@@ -6,10 +6,10 @@ import {
   userService 
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
-import { deleteCookie } from "cookies-next";
+import { getCookie, deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
+import { Routes } from "../lib/constants";
 
-// this query is currently used only for auto-authorization on first load
 export function useGetUserProfile(userId: number | null) {
   return useQuery({
     queryKey: ['user-profile', {userId}],
@@ -18,11 +18,8 @@ export function useGetUserProfile(userId: number | null) {
         return userService.getProfile(userId);
       }
 
-      return Promise.reject('No user authorized');
+      return null;
     },
-    enabled: typeof userId === 'number',
-    staleTime: Infinity,
-    gcTime: Infinity,
   });
 }
 
@@ -128,7 +125,7 @@ export function useDeleteUser() {
       deleteCookie('userId');
       deleteCookie('token');
       deleteCookie('confirmationCode');
-      push ('/');
+      push (Routes.HOME);
     }
   });
 }
@@ -154,11 +151,12 @@ export function useRequestUpdateEmail() {
 export function useUpdateEmail() {
   const [user, unbanUser] = useUser((state) => 
     [state.user, state.unbanUser]);
+  const confirmationCode = getCookie('confirmationCode');
     
   return useMutation({
-    mutationFn: (confirmationCode: string) => {
+    mutationFn: (codeFromUser: string) => {
       if (user) {
-        if (user.emailConfirmCode !== confirmationCode) {
+        if (codeFromUser !== confirmationCode) {
           return Promise.reject('Wrong confirmation code');
         }
 

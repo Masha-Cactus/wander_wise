@@ -8,6 +8,14 @@ type Props = {
 };
 
 const ModalSkeleton: React.FC<Props> = ({ children, onClose }: Props) => {
+  // useEffect(() => {
+  //   document.body.classList.add('overflow-hidden');
+
+  //   return () => {
+  //     document.body.classList.remove('overflow-hidden');
+  //   };
+  // }, []);
+
   return (
     <div
       className="absolute inset-0 z-50 

@@ -28,6 +28,7 @@ export { default as RemoveTripFromCollectionModal} from "./Modals/RemoveTripFrom
 export { default as AddCardImagesModal} from "./Modals/AddCardImagesModal";
 export { default as AddProfileImageModal} from "./Modals/AddProfileImageModal";
 export { default as DeleteProfileModal } from "./Modals/DeleteProfileModal";
+export { default as DeleteCardModal } from "./Modals/DeleteCardModal";
 
 export { default as SignInForm } from "./Forms/SignInForm";
 export { default as SearchCardsForm } from "./Forms/SearchCardsForm";

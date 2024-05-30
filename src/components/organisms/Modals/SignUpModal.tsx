@@ -9,7 +9,7 @@ interface SignUpModalProps {
   onOpenConfirmEmail: () => void;
 }
 
-const SignInModal: React.FC<SignUpModalProps> 
+const SignUpModal: React.FC<SignUpModalProps> 
 = ({ onClose, onOpenSignIn, onOpenConfirmEmail }) => {
   const handleSignInClick = () => {
     onClose();
@@ -48,4 +48,4 @@ const SignInModal: React.FC<SignUpModalProps>
   );
 };
 
-export default memo(SignInModal);
+export default memo(SignUpModal);

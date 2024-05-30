@@ -13,6 +13,7 @@ import { PasswordInput } from "@/src/components/moleculs";
 import { useRouter } from "next/navigation";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
 import { saveCookies } from "@/src/actions/manageCookies";
+import { Routes } from "@/src/lib/constants";
 
 type Props = {
   closeModal: () => void;
@@ -56,7 +57,7 @@ const SignInForm: React.FC<Props> = ({ closeModal }) => {
       saveCookies({token: data.token, userId: data.user.id})
         .then(() => {
           closeModal();
-          push("/profile");
+          push(Routes.PROFILE.MAIN);
         });
     }
   }, [isSuccess]);

@@ -8,23 +8,25 @@ import {
   FieldValues,
   Path,
 } from "react-hook-form";
-import { InputControllerWrapper } from "@/src/components/moleculs";
+import { 
+  InputControllerWrapper,
+  ImageInputPlaceholder 
+} from "@/src/components/moleculs";
 import Image from "next/image";
-import { Heading5, Icons, TextBase } from "@/src/components/atoms";
+import { Icons } from "@/src/components/atoms";
+import { CARD_IMAGES_LIMIT } from "@/src/lib/constants";
 
-interface FileInputProps<T extends FieldValues> {
+interface MultipleFileInputProps<T extends FieldValues> {
   name: FieldPath<T>;
   control: Control<T>;
   disabled: boolean;
-  multiple: boolean;
 }
 
-const ImageInput = <T extends FieldValues>({
+const MultipleImageInput = <T extends FieldValues>({
   control,
   name,
   disabled,
-  multiple
-}: FileInputProps<T>) => {
+}: MultipleFileInputProps<T>) => {
   const [value, setValue] = useState('');
 
   const handleAdd = (
@@ -33,28 +35,20 @@ const ImageInput = <T extends FieldValues>({
   ) => {
     setValue(event.target.value);
 
-    if (multiple) {
-      field.onChange(
-        [ ...Array.from(event.target.files || []),
-          ...field.value]
-      );
-    } else if (event.target.files) {
-      field.onChange(event.target.files[0]);
-    }
+    field.onChange(
+      [ ...Array.from(event.target.files || []),
+        ...field.value]
+    );
   };
 
   const handleDelete = (
     field: ControllerRenderProps<T, Path<T>>,
     index: number
   ) => {
-    if (multiple) {
-      const updatedValue: File[] = [...field.value];
+    const updatedValue: File[] = [...field.value];
 
-      updatedValue.splice(index, 1);
-      field.onChange(updatedValue);
-    } else {
-      field.onChange(undefined);
-    }
+    updatedValue.splice(index, 1);
+    field.onChange(updatedValue);
   };
 
   return (
@@ -71,31 +65,27 @@ const ImageInput = <T extends FieldValues>({
             id={name}
             type="file"
             accept="image/png, image/jpeg"
-            disabled={disabled}
-            multiple={multiple}
+            disabled={
+              disabled 
+              || field.value.length >= CARD_IMAGES_LIMIT
+            }
+            multiple={true}
             value={value}
             onChange={(e) => handleAdd(field, e)}
             className="hidden"
           />
 
           {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <label htmlFor={name} className="w-full flex">
-            <div className="border border-black border-dashed bg-white
-          text-black hover:bg-gray-50 h-64 w-full grow cursor-pointer
-          transition-all duration-75 focus:outline-none rounded-xl
-          flex items-center justify-center">
-              <div className="flex flex-col gap-3 justify-center text-center">
-                <Heading5 
-                  text="Upload a cover photo or video" 
-                  font="semibold" 
-                />
-                <TextBase text="JPG, JPEG, PNG" font="normal" />
-                <TextBase text="Choose file" font="normal" />
-              </div>
-            </div>
+          <label 
+            htmlFor={name} 
+            className="w-full h-64 flex rounded-xl overflow-hidden relative"
+          >
+            <ImageInputPlaceholder 
+              image={field.value[field.value.length - 1]} 
+            />
           </label>
 
-          {!!(multiple && field.value.length) && (
+          {!!field.value.length && (
             <div className="relative flex w-full h-28 
               overflow-x-scroll gap-3">
               {(field.value as File[]).map((file, i) => (
@@ -128,4 +118,4 @@ const ImageInput = <T extends FieldValues>({
   );
 };
 
-export default memo(ImageInput) as typeof ImageInput;
+export default memo(MultipleImageInput) as typeof MultipleImageInput;

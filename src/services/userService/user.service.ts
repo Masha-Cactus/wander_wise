@@ -8,8 +8,8 @@ import {
   IUpdatePassword,
   IToken, 
   IComment,
+  ICollection
 } from "@/src/services";
-import { ICollection } from "../collectionService/collection.types";
 
 class UserService {
   private BASE_URL = '/users';

@@ -7,6 +7,7 @@ import { FilterForm, CreatedCardsSection } from "@/src/components/organisms";
 import { Heading, Heading4 } from "@/src/components/atoms";
 import { PrimaryButton } from "@/src/components/moleculs";
 import { useRouter } from "next/navigation";
+import { Routes } from "@/src/lib/constants";
 
 const MyCardsPage = () => {
   const [filterParams, setFilterParams] = useState<IFilterParams | null>(null);
@@ -34,7 +35,7 @@ const MyCardsPage = () => {
           <Heading4 text="Create your first card now! 🌏" font="medium" />
           <PrimaryButton 
             text="Create" 
-            onClick={() => push('/my-cards/create')}
+            onClick={() => push(Routes.MY_CARDS.CREATE)}
             classes="w-1/3"
           />
         </div>

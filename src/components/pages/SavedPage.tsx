@@ -7,6 +7,7 @@ import { PrimaryButton } from "@/src/components/moleculs";
 import { IFilterParams } from "@/src/services";
 import { useGetSavedCards } from "@/src/hooks";
 import { useRouter } from "next/navigation";
+import { Routes } from "@/src/lib/constants";
 
 const SavedPage = () => {
   const [filterParams, setFilterParams] = useState<IFilterParams | null>(null);
@@ -33,7 +34,7 @@ const SavedPage = () => {
           <Heading4 text="Explore our community 🌏" font="medium" />
           <PrimaryButton 
             text="Continue" 
-            onClick={() => push('/trips')} 
+            onClick={() => push(Routes.TRIPS)} 
             classes="w-1/3" 
           />
         </div>

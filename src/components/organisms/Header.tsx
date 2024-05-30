@@ -12,6 +12,7 @@ import {
   SignUpModal,
 } from "@/src/components/organisms";
 import { Navbar } from "@/src/components/moleculs";
+import { Routes } from "@/src/lib/constants";
 
 const Header: React.FC = () => {
   const { user } = useUser();
@@ -25,7 +26,7 @@ const Header: React.FC = () => {
       className="flex items-center justify-between 
     mx-10 my-7"
     >
-      <Link href="/" className="text-3xl font-bold text-red-800">
+      <Link href={Routes.HOME} className="text-3xl font-bold text-red-800">
         <Image
           src="/logo.svg"
           alt="logo"
@@ -66,7 +67,10 @@ const Header: React.FC = () => {
         <SignUpModal
           onClose={() => setIsShowSignUpModal(false)}
           onOpenSignIn={() => setIsShowSignInModal(true)}
-          onOpenConfirmEmail={() => setIsShowConfirmEmailModal(true)}
+          onOpenConfirmEmail={() => {
+            console.log('I open confirm email');
+            setIsShowConfirmEmailModal(true);
+          }}
         />
       )}
 

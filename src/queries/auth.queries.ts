@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { authService, IEmail, ISignIn, ISignUp } from "@/src/services";
 import { useUser } from "@/src/store/user";
 import { getCookie, deleteCookie } from "cookies-next";
@@ -71,5 +71,16 @@ export function useLogout() {
     onSuccess: () => {
       setUser(null);
     }
+  });
+}
+
+// this query is currently used only for auto-authorization on first load
+export function useRefreshToken() {
+  return useQuery({
+    queryKey: ['refresh'],
+    queryFn: () => authService.refresh(),
+    staleTime: Infinity,
+    gcTime: Infinity,
+    retry: false,
   });
 }

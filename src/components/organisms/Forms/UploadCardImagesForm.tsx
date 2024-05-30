@@ -7,7 +7,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
-import { ImageInput, PrimaryButton } from "@/src/components/moleculs";
+import { MultipleImageInput, PrimaryButton } from "@/src/components/moleculs";
+import { Routes } from "@/src/lib/constants";
 
 type UploadCardImagesFormData = {
   images: File[],
@@ -27,7 +28,6 @@ const UploadCardImagesForm: React.FC<Props> = ({ cardId, closeModal }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors }
   } = useForm<UploadCardImagesFormData>({
     defaultValues: {
       images: [],
@@ -54,7 +54,7 @@ const UploadCardImagesForm: React.FC<Props> = ({ cardId, closeModal }) => {
             closeModal();
           }
 
-          push('/my-cards');
+          push(Routes.MY_CARDS.MAIN);
         },
       }
       );
@@ -66,16 +66,11 @@ const UploadCardImagesForm: React.FC<Props> = ({ cardId, closeModal }) => {
       onSubmit={handleSubmit(onSubmit)} 
       className="w-full flex flex-col gap-6"
     >
-      <ImageInput
+      <MultipleImageInput
         name="images"
-        multiple={true}
         disabled={isPending}
         control={control}
       />
-
-      {errors.images?.message && (
-        <ErrorText errorText={errors.images.message} />
-      )}
         
       <PrimaryButton text="Add" type="submit" disabled={isPending} />
 

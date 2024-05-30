@@ -4,6 +4,7 @@ import { memo } from 'react';
 import { Divider, Heading5 } from '@/src/components/atoms';
 import { usePathname } from 'next/navigation';
 import { useUser } from '@/src/store/user';
+import { Routes } from '@/src/lib/constants';
 
 const Navbar = () => {
   const { user } = useUser();
@@ -12,21 +13,21 @@ const Navbar = () => {
   return (
     <nav className="flex gap-8 items-center h-12">
       <div className="flex gap-8 text-black justify-center items-center">
-        <Link href="/trips">
+        <Link href={Routes.TRIPS}>
           <Heading5 
             text="Trips" 
             font={pathname.startsWith('/trips') ? 'semibold' : 'normal'} 
           />
         </Link>
 
-        <Link href="/saved">
+        <Link href={Routes.SAVED}>
           <Heading5 
             text="Saved" 
             font={pathname.startsWith('/saved') ? 'semibold' : 'normal'} 
           />
         </Link>
 
-        <Link href="/my-cards">
+        <Link href={Routes.MY_CARDS.MAIN}>
           <Heading5 
             text="My cards" 
             font={pathname.startsWith('/my-cards') ? 'semibold' : 'normal'} 
@@ -36,7 +37,7 @@ const Navbar = () => {
 
       <Divider classes="h-full w-px bg-gray30" />
           
-      <Link href="/profile">
+      <Link href={Routes.PROFILE.MAIN}>
         <Image
           src={user?.profileImage || "/user-default.png"}
           alt="user avatar"

@@ -11,6 +11,7 @@ import {
 import { Icons, TextMedium } from "@/src/components/atoms";
 import { InputControllerWrapper } from "@/src/components/moleculs";
 import { useState, memo } from "react";
+import IconButton from "../Buttons/IconButton";
   
 interface SelectInputProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -86,12 +87,13 @@ const SelectInput = <T extends FieldValues>({
                     <div className="w-2 h-2 bg-gray80 rounded-full" />
                     <TextMedium text={value} font="normal" />
                   </div>
-                  <Icons.close
-                    className="cursor-pointer h-6 w-6"
+                  <IconButton
+                    icon={<Icons.delete />}
+                    classes="h-6 w-6 text-gray80"
                     onClick={() => 
                       field.onChange(
                         field.value.filter((v: string) => v !== value))
-                    } 
+                    }
                   />
                 </li>
               ))}

@@ -20,7 +20,7 @@ const TripPage = () => {
   }, [error]);
 
   return (
-    <main className="w-full h-full bg-gray10">
+    <main className="grow bg-gray10">
       <div className="mx-10 my-10 flex flex-col gap-8">
         <BackButton />
 

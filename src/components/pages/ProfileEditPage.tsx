@@ -102,7 +102,7 @@ const ProfileEditPage = () => {
 
       </article>
 
-      <div className="w-[670px]">
+      <div className="w-[670px] self-center">
         <RoundedButton 
           text="Delete profile" 
           style="red"

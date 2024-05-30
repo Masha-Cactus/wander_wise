@@ -7,11 +7,11 @@ import {
   ISearchCard, 
   IUpdateCard,
   IReportCard, 
+  ISearchCardResponse
 } from "@/src/services";
-import { ISearchCardResponse } from "./card.types";
 
 class CardService {
-  private BASE_URL = "/cards";
+  private BASE_URL = '/cards';
 
   getCards(): Promise<ICard[]> {
     return authClient.get<never, ICard[]>(this.BASE_URL);

@@ -6,6 +6,7 @@ import { memo } from "react";
 import { Heading3, Heading5, Divider } from "@/src/components/atoms";
 import { useGetUserComments } from "@/src/queries";
 import { useRouter } from "next/navigation";
+import { Routes } from "@/src/lib/constants";
 
 const RecentlyLikedSection: React.FC = () => {
   const { push } = useRouter();
@@ -38,7 +39,7 @@ const RecentlyLikedSection: React.FC = () => {
             text="Explore" 
             type="button" 
             classes="w-44" 
-            onClick={() => push('/trips')} 
+            onClick={() => push(Routes.TRIPS)} 
           />
         </div>
       )}

@@ -6,7 +6,7 @@ import {
 } from "@/src/services";
 
 class CollectionService {
-  private BASE_URL = "/collections";
+  private BASE_URL = '/collections';
 
   getCollection(collectionId: number) {
     return authClient.get<never, ICollection>(

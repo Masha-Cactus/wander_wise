@@ -4,7 +4,7 @@ import {
   ModalSkeleton, 
   ConfirmNewEmailForm 
 } from "@/src/components/organisms";
-import { Heading, Heading4, Heading2 } from "@/src/components/atoms";
+import { Heading, Heading4 } from "@/src/components/atoms";
 
 interface ConfirmEmailModalProps {
   onClose: () => void;
@@ -15,14 +15,10 @@ const ConfirmEmailModal: React.FC<ConfirmEmailModalProps>
 = ({ onClose, type }) => {
   return (
     <ModalSkeleton onClose={onClose}>
-      <Heading text="Password assistance" font="normal" />
+      <Heading text="Confirm your email" font="normal" />
       <Heading4
         text="Enter the confirmation code sent to your email 🤔"
-        font="medium"
-      />
-      <Heading2 
-        text="Please, don't close or reload the page until you enter the code"
-        font="semibold"
+        font="normal"
       />
 
       {type === 'Confirm' ? (

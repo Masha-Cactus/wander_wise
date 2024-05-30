@@ -51,6 +51,7 @@ const CardSlider: React.FC<Props> = ({ slides, activeSlide }) => {
               src={slide}
               alt="slide"
               fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover cursor-pointer"
             />
           </SwiperSlide>

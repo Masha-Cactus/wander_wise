@@ -18,7 +18,8 @@ import {
   TextInput,
   CheckboxInput,
   PrimaryButton,
-  SquareCheckboxInput
+  SquareCheckboxInput,
+  IconButton
 } from "@/src/components/moleculs";
 import { updateCardSchema } from "@/src/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -26,7 +27,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
-import { ATMOSPHERES, CLIMATES, SPECIALS } from "@/src/lib/constants";
+import { ATMOSPHERES, CLIMATES, Routes, SPECIALS } from "@/src/lib/constants";
 
 export interface UpdateCardFormData {
   name: string,
@@ -90,7 +91,7 @@ const EditCardForm = () => {
       },
       {
         onError: handleError,
-        onSuccess: () => push('/my-cards'),
+        onSuccess: () => push(Routes.MY_CARDS.MAIN),
       }
       );
     }
@@ -134,10 +135,11 @@ const EditCardForm = () => {
                 }}
                 alt="Card image"
               />
-              <Icons.delete
-                className="absolute top-3 right-3 rounded-full w-8 h-8 p-1 
-                    border border-white bg-error hidden text-white 
-                    group-hover:block group-hover:cursor-pointer"
+              <IconButton 
+                icon={<Icons.delete />} 
+                classes="absolute top-3 right-3 rounded-full w-8 h-8 
+                border border-white bg-error hidden text-white 
+                group-hover:block group-hover:cursor-pointer"
                 onClick={() => handleDelete(selectedImage)}
               />
             </div>

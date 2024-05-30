@@ -7,7 +7,7 @@ import { LinkButton } from "@/src/components/moleculs";
 import { useEffect, useState } from "react";
 import { ICard, IFilterParams } from "@/src/services";
 import { getFilteredCards } from "@/src/lib/helpers";
-import { CARDS_PER_PAGE } from "@/src/lib/constants";
+import { CARDS_PER_PAGE, Routes } from "@/src/lib/constants";
 
 type Props = {
   filterParams: IFilterParams | null;
@@ -44,7 +44,7 @@ const CreatedCardsSection: React.FC<Props> = ({ filterParams }) => {
           <Heading4 text={`(${createdCards?.length || 0})`} font="normal" classes="text-gray30" />
         </div>
         <LinkButton 
-          path="/my-cards/create"
+          path={Routes.MY_CARDS.CREATE}
           text="+ New card"
         />
       </div>

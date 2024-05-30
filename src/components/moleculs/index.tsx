@@ -11,7 +11,6 @@ export { default as LikeButton } from "./Buttons/LikeButton";
 
 export { default as CheckboxInput } from "./Inputs/CheckboxInput";
 export { default as TextInput } from "./Inputs/TextInput";
-export { default as ImageInput } from "./Inputs/ImageInput";
 export { default as LocationInput } from "./Inputs/LocationInput";
 export { default as TextAreaInput } from "./Inputs/TextAreaInput";
 export { default as PasswordInput } from "./Inputs/PasswordInput";
@@ -20,9 +19,12 @@ export { default as StarsInput } from "./Inputs/StarsInput";
 export { default as SelectInput } from "./Inputs/SelectInput";
 export { default as DropdownInput } from "./Inputs/DropdownInput";
 export { default as SquareCheckboxInput } from "./Inputs/SquareCheckboxInput";
+export { default as SingleImageInput } from "./Inputs/SingleImageInput";
+export { default as MultipleImageInput } from "./Inputs/MultipleImageInput";
 
 export { default as IconLink } from "./IconLink";
 export { default as LoadedContentStateController } from "./LoadedContentStateController";
+export { default as ImageInputPlaceholder} from "./ImageInputPlaceholder";
 export { default as Map } from "./Map";
 export { default as Navbar } from "./Navbar";
 export { default as CardSlider } from "./sliders/CardSlider";

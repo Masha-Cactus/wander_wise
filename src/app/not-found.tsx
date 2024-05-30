@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { TextBase } from '@/src/components/atoms';
 import { PrimaryButton } from '@/src/components/moleculs';
+import { Routes } from '../lib/constants';
  
 export default function NotFound() {
   return (
@@ -16,7 +17,7 @@ export default function NotFound() {
         classes="mb-2"
       />
 
-      <Link href="/trips">
+      <Link href={Routes.TRIPS}>
         <PrimaryButton text="Go to main page" />
       </Link>
     </div>

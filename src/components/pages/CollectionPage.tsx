@@ -1,5 +1,6 @@
 'use client';
 
+import { Routes } from '@/src/lib/constants';
 import { useDeleteCollection, useGetCollection } from '@/src/queries';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/router';
@@ -57,7 +58,7 @@ const CollectionPage = () => {
               font="normal" 
             />
             <Heading4 text="Explore our community 🌏" font="medium" />
-            <PrimaryButton text="Continue" onClick={() => push('/trips')} />
+            <PrimaryButton text="Continue" onClick={() => push(Routes.TRIPS)} />
           </div>
         )}
       </div>

@@ -40,28 +40,20 @@ export const trimObjectFields = <T>(object: T): T => {
   return JSON.parse(jsonString);
 };
 
+interface PartialServerErrorResponse {
+  exception?: {
+    message: string,
+  }
+}
+
 export const normalizeError = (error: AxiosError): string => {
-  const errorResponse = error?.response?.data;
+  const errorResponse = error?.response?.data as PartialServerErrorResponse;
 
-  if (typeof errorResponse === "object" && errorResponse !== null) {
-    if (errorResponse?.exception?.message) {
-      return errorResponse?.exception?.message;
-    }
-
-    // get array of errors
-    const errorMessages = Object.values(errorResponse) as string[];
-
-    // normalize that array and join to string
-    const normalizedErrorMessage = errorMessages
-      .map((errorMessage) =>
-        Array.isArray(errorMessage) ? errorMessage.join(" ") : errorMessage
-      )
-      .join(" ");
-
-    return normalizedErrorMessage;
+  if (errorResponse && errorResponse.exception?.message) {
+    return errorResponse?.exception?.message;
   }
 
-  return "Unexpected error";
+  return "Unexpected server error";
 };
 
 export const getFilteredCards 

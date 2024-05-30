@@ -6,7 +6,7 @@ import { uploadProfileImageSchema } from "@/src/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
-import { ImageInput, PrimaryButton } from "@/src/components/moleculs";
+import { SingleImageInput, PrimaryButton } from "@/src/components/moleculs";
 
 type UploadProfileImageFormData = {
   image: File,
@@ -24,7 +24,6 @@ const UploadProfileImageForm: React.FC<Props> = ({ closeModal }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors }
   } = useForm<UploadProfileImageFormData>({
     defaultValues: {
       image: undefined,
@@ -52,16 +51,11 @@ const UploadProfileImageForm: React.FC<Props> = ({ closeModal }) => {
       onSubmit={handleSubmit(onSubmit)} 
       className="w-full flex flex-col gap-6"
     >
-      <ImageInput
+      <SingleImageInput
         name="image"
-        multiple={false}
         disabled={isPending}
         control={control}
       />
-
-      {errors.image?.message && (
-        <ErrorText errorText={errors.image.message} />
-      )}
         
       <PrimaryButton 
         text="Add" 

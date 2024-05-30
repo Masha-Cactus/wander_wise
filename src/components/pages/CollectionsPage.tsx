@@ -5,6 +5,7 @@ import { LinkButton } from "@/src/components/moleculs";
 import { useGetUserCollections } from "@/src/queries";
 import { Collection } from "@/src/components/organisms";
 import { FormPageLayout } from "@/src/components/layouts";
+import { Routes } from "@/src/lib/constants";
 
 const CollectionsPage = () => {
   const { data: collections } = useGetUserCollections();
@@ -18,7 +19,7 @@ const CollectionsPage = () => {
             text="My collections" 
           />
           <LinkButton 
-            path="/saved/collections/create"
+            path={Routes.COLLECTIONS.CREATE}
             text="+ Create new collection"
           />
         </div>

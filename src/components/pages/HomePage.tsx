@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 "use client";
 
-import { SLIDER_IMAGES } from "@/src/lib/constants";
+import { Routes, SLIDER_IMAGES } from "@/src/lib/constants";
 import { PrimaryButton, HomeSlider } from "@/src/components/moleculs";
 import { memo } from "react";
 import { useRouter } from "next/navigation";
@@ -35,7 +35,7 @@ const HomePage: React.FC<Props> = ({}) => {
           text="Let's start"
           type="button"
           classes="h-24 w-1/3 text-2xl"
-          onClick={() => push("/trips")}
+          onClick={() => push(Routes.TRIPS)}
         />
       </div>
     </main>

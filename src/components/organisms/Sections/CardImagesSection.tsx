@@ -16,7 +16,7 @@ const CardImagesSection: React.FC<Props> = ({ images }) => {
       <CardSlider activeSlide={selectedImage} slides={images} />
 
       {images.length > 1 && (
-        <div className="w-full flex gap-px overflow-x-scroll">
+        <div className="w-full flex gap-px justify-between overflow-x-scroll">
           {images.map((image, index) => (
             <Image
               key={image}
@@ -24,7 +24,7 @@ const CardImagesSection: React.FC<Props> = ({ images }) => {
               alt="Trip image"
               width={154}
               height={84}
-              className="object-cover"
+              className="object-cover cursor-pointer"
               onClick={() => setSelectedImage(index)}
             />
           ))}

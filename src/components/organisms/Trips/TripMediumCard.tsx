@@ -16,9 +16,11 @@ import {
   AddCardToCollectionModal,
   RemoveTripFromCollectionModal
 } from "@/src/components/organisms";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import CreateReportModal from "../Modals/CreateReportModal";
 import { useUser } from "@/src/store/user";
+import { Routes } from "@/src/lib/constants";
+import DeleteCardModal from "../Modals/DeleteCardModal";
 
 type Props = {
   card: ICard;
@@ -33,11 +35,14 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
   const [isRemoveFromCollectionModal, setIsRemoveFromCollectionModal] 
   = useState(false);
   const [isReportCardModal, setIsReportCardModal] = useState(false);
+  const [isDeleteCardModal, setIsDeleteCardModal] = useState(false);
 
   const pathname = usePathname();
+  const isCardInMyCardsPage = pathname === (Routes.MY_CARDS.MAIN);
   const isCardInCollectionPage = !!collectionId;
-  const isCardInSavedPage = pathname.startsWith('/saved') 
-    && !isCardInCollectionPage;
+  const isCardInSavedPage = pathname === (Routes.SAVED);
+
+  const { push } = useRouter();
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const handleImageError = () => {
@@ -51,7 +56,10 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
       className="flex flex-col gap-4 items-center 
       rounded-3xl bg-white p-4 w-[325px]"
     >
-      <Link href={`/trips/${card.id}`} className="w-full pb-[68%] relative">
+      <Link 
+        href={Routes.TRIP(card.id)} 
+        className="w-full pb-[68%] relative group"
+      >
         <Image
           src={card.imageLinks[currentImageIndex]}
           alt={card.name}
@@ -64,8 +72,24 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
           }}
           onError={handleImageError}
         />
+
+        {isCardInMyCardsPage && (
+          <div className="hidden absolute top-4 right-4 gap-2 group-hover:flex">
+            <IconButton 
+              icon={<Icons.edit />} 
+              classes={`${classes} w-8 h-8 border-1 border-white`}
+              onClick={() => push(Routes.MY_CARDS.EDIT(card.id))}
+            />
+
+            <IconButton 
+              icon={<Icons.delete />} 
+              classes={`${classes} w-8 h-8 border-1 border-white bg-error`}
+              onClick={() => setIsDeleteCardModal(true)}
+            />
+          </div>
+        )}
       </Link>
-      <Link href={`/trips/${card.id}`} className="w-full flex flex-col gap-4">
+      <Link href={Routes.TRIP(card.id)} className="w-full flex flex-col gap-4">
         <div className="w-full flex gap-2 justify-between">
           <LikeButton
             cardId={card.id}
@@ -146,6 +170,13 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
         <CreateReportModal 
           type="Card" 
           onClose={() => setIsReportCardModal(false)} 
+        />
+      )}
+
+      {isDeleteCardModal && (
+        <DeleteCardModal 
+          onClose={() => setIsDeleteCardModal(false)} 
+          cardId={card.id}
         />
       )}
     </article>

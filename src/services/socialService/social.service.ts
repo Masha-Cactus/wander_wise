@@ -8,7 +8,6 @@ class SocialService {
     return authClient.post<never, ISocial>(this.BASE_URL, data);
   };
 
-  //id comes from where?
   updateSocial ({id, ...data}: IUpdateSocial) {
     return authClient.put<never, ISocial>(`${this.BASE_URL}/${id}`, data);
   };

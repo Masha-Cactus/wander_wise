@@ -1,17 +1,17 @@
+import { Routes } from "@/src/lib/constants";
 import { ICard } from "@/src/services";
 import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
-import { TextMedium } from "../../atoms";
+import { TextMedium } from "@/src/components//atoms";
 
 type Props = {
   card: ICard;
-  // onClick: () => void;
 };
 
 const TripShortCard: React.FC<Props> = ({ card }) => {
   return (
-    <Link href={`/trips/${card.id}`} className="relative h-40 w-60">
+    <Link href={Routes.TRIP(card.id)} className="relative h-40 w-60">
       <Image
         src={card.imageLinks[0]}
         alt={card.name}

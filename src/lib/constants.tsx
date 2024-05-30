@@ -15,15 +15,38 @@ export const SLIDER_IMAGES = [
   "/slider-images/6.png",
 ];
 
-export const ApiRoutes = {
-  USER: "/users",
-  SOCIAL_LINKS: "/social-links",
-  COMMENTS: "/comments",
+export const Routes = {
+  HOME: "/",
+  PROFILE: {
+    MAIN: "/profile",
+    EDIT: "/profile/edit",
+  },
+  TRIPS: "/trips",
+  TRIP: (id: number) => `/trips/${id}`,
+  MY_CARDS: {
+    MAIN: "/my-cards",
+    CREATE: "/my-cards/create",
+    EDIT: (id: number) => `/my-cards/edit/${id}`,
+  },
+  SAVED: "/saved",
+  COLLECTIONS: {
+    MAIN: "/saved/collections",
+    CREATE: "/saved/collections/create",
+  },
+  COLLECTION: (id: number) => `/saved/collections/${id}`,
+};
+
+export const ApiEndpoints = {
+  USERS: "/users",
   COLLECTIONS: "/collections",
   CARDS: "/cards",
+  COMMENTS: "/comments",
+  SOCIAL_LINKS: "/social-links",
+  AUTH: "/auth",
 };
 
 export const CARDS_PER_PAGE = 9;
+export const CARD_IMAGES_LIMIT = 10;
 export const SITE_NAME = 'Wander Wise';
 
 export const ATMOSPHERES = Object.values(TripTypes);

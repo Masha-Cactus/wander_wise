@@ -18,6 +18,7 @@ import { clearCookies } from "@/src/actions/manageCookies";
 import { useRouter } from "next/navigation";
 import AddProfileImageModal from "../Modals/AddProfileImageModal";
 import ConfirmEmailModal from "../Modals/ConfirmEmailModal";
+import { Routes } from "@/src/lib/constants";
 
 const ProfileInfoSection: React.FC = () => {
   const { user } = useUser();
@@ -40,7 +41,7 @@ const ProfileInfoSection: React.FC = () => {
   useEffect(() => {
     if (isSuccess) {
       clearCookies()
-        .then(() => push("/"));
+        .then(() => push(Routes.HOME));
     }
   }, [isSuccess]);
 
@@ -51,7 +52,7 @@ const ProfileInfoSection: React.FC = () => {
     >
       <div className="relative top-0 flex justify-center">
         <Image
-          src={user?.profileImage || "./user-default.png"}
+          src={user?.profileImage || "/user-default.png"}
           alt="profile"
           width={200}
           height={200}
@@ -98,9 +99,13 @@ const ProfileInfoSection: React.FC = () => {
           <TextBase text={user?.email || ''} font="normal" />
         </div>
         {user?.banned && (
-          <button type="button" onClick={() => setIsConfirmEmailModal(true)}>
+          <button 
+            type="button" 
+            onClick={() => setIsConfirmEmailModal(true)}
+            className="self-start"
+          >
             <ErrorText 
-              errorText="Confirm your email to open full functionality" 
+              errorText="Confirm your email to open full functionality"
             />
           </button>
         )}
@@ -144,7 +149,7 @@ const ProfileInfoSection: React.FC = () => {
       )}
 
       <Link
-        href="/profile/edit"
+        href={Routes.PROFILE.EDIT}
         className="border border-black rounded-full p-2"
       >
         Edit profile

@@ -14,6 +14,7 @@ import {
   TextInput,
   SquareCheckboxInput
 } from "@/src/components/moleculs";
+import { Routes } from "@/src/lib/constants";
 
 
 const CreateCollectionForm = () => {
@@ -47,7 +48,7 @@ const CreateCollectionForm = () => {
     mutate(trimmedData,
       {
         onError: handleError,
-        onSuccess: () => push("/saved/collections"),
+        onSuccess: () => push(Routes.COLLECTIONS.MAIN),
       }
     );
   };

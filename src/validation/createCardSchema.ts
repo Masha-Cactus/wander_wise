@@ -18,8 +18,6 @@ export const createCardSchema
       .min(1, 'Choose at least one trip type'),
     climate: genericValidationSchema.climateString,
     whyThisPlace: genericValidationSchema.whyThisPlace,
-    imageLinks: genericValidationSchema.arrayPossiblyEmpty
-      .of(Yup.string().url().required()),
     specialRequirements: genericValidationSchema.specialRequirements
       .min(1, 'Choose at least one special feature'),
   });
