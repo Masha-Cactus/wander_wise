@@ -23,11 +23,12 @@ const PrimaryButton: React.FC<Props> = ({
       disabled={disabled}
       onClick={onClick}
       className={twMerge(
-        "w-full h-14 bg-yellow rounded-full flex",
+        "w-full h-14 bg-yellow border border-yellow rounded-full flex",
         "justify-center items-center font-bold",
         "transition-all duration-75 text-black",
-        "hover:bg-[#E79200] active:bg-[#E47A00]",
-        "disabled:bg-gray30 disabled:text-gray70",
+        "hover:bg-[#E79200] hover:border-[#E79200]", 
+        "active:bg-[#E47A00] active:border-[#E47A00]",
+        "disabled:bg-gray30 disabled:text-gray70 disabled:border-gray30",
         classes && classes
       )}
     >

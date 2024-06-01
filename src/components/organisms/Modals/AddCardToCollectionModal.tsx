@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { 
   ModalSkeleton, 
   AddCardToCollectionForm,
@@ -21,7 +21,7 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
   card,
 }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
-  const [isCreateCollection, setIsCreateCollection] = useState(false);
+  const isCreateCollection = useRef(false);
 
   const {
     isError,
@@ -29,6 +29,17 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
     error,
   } = useGetUserCollections();
 
+  const openCreateCollectionForm = () => {
+    if (isCreateCollection) {
+      isCreateCollection.current = true;
+    }
+  };
+
+  const closeCreateCollectionForm = () => {
+    if (isCreateCollection) {
+      isCreateCollection.current = false;
+    }
+  };
 
   useEffect(() => {
     if (error) {
@@ -40,14 +51,12 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
     <ModalSkeleton onClose={onClose}>
       <div className="flex flex-col gap-6">
         <Heading text={`Add “${card.name}” to a collection?`} font="normal"/>
-        <Divider classes="h-px w-full" />
+        <Divider />
 
-        {isCreateCollection ? (
-          <CreateCollectionShortForm
-            closeModal={onClose}
-          />
+        {isCreateCollection.current ? (
+          <CreateCollectionShortForm closeForm={closeCreateCollectionForm}  />
         ) : (
-          <button onClick={() => setIsCreateCollection(true)}>
+          <button onClick={openCreateCollectionForm} className="w-fit">
             <Heading4 text="+ Create new collection" font="medium" />
           </button>
         )}

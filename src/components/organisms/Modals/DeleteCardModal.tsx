@@ -1,27 +1,28 @@
 "use client";
 
 import { memo, useState } from "react";
-import ModalSkeleton from "./ModalSkeleton";
+import { ModalSkeleton } from "@/src/components/organisms";
 import { ErrorText, Heading, Heading4 } from "@/src/components/atoms";
 import { RoundedButton } from "@/src/components/moleculs";
 import { useDeleteCard } from "@/src/queries";
 import { normalizeError } from "@/src/lib/helpers";
+import { useNormalizedError } from "@/src/hooks";
 
-interface DeleteReviewModalProps {
+interface DeleteCardModalProps {
   onClose: () => void;
   cardId: number;
 }
 
-const DeleteCardModal: React.FC<DeleteReviewModalProps> = ({
+const DeleteCardModal: React.FC<DeleteCardModalProps> = ({
   onClose,
   cardId,
 }) => {
   const { isPending, mutate, isError } = useDeleteCard();
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useNormalizedError();
 
   const handleError = (error: any) => {
-    setErrorMessage(normalizeError(error.message));
+    setErrorMessage(error);
   };
 
   const handleDeleteCard = () => {

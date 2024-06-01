@@ -1,11 +1,3 @@
-import { 
-  CardAuthors, 
-  Climate, 
-  SpecialRequirements, 
-  TravelDistance, 
-  TripTypes 
-} from "@/src/services";
-
 export const SLIDER_IMAGES = [
   "/slider-images/1.png",
   "/slider-images/2.png",
@@ -34,6 +26,7 @@ export const Routes = {
     CREATE: "/saved/collections/create",
   },
   COLLECTION: (id: number) => `/saved/collections/${id}`,
+  NOT_FOUND: "/404",
 };
 
 export const ApiEndpoints = {
@@ -48,9 +41,3 @@ export const ApiEndpoints = {
 export const CARDS_PER_PAGE = 9;
 export const CARD_IMAGES_LIMIT = 10;
 export const SITE_NAME = 'Wander Wise';
-
-export const ATMOSPHERES = Object.values(TripTypes);
-export const CLIMATES = Object.values(Climate);
-export const SPECIALS = Object.values(SpecialRequirements);
-export const AUTHORS = Object.entries(CardAuthors);
-export const DISTANCE = Object.entries(TravelDistance);

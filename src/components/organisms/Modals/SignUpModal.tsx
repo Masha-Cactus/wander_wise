@@ -30,11 +30,11 @@ const SignUpModal: React.FC<SignUpModalProps>
 
       <Heading4 text="Let’s begin the adventure ✨" font="normal" />
 
-      <Divider classes="w-full h-px" />
+      <Divider />
 
       <SignUpForm openConfirmEmailModal={handleFormSubmit} />
 
-      <Divider classes="w-full h-px" />
+      <Divider />
 
       <div className="flex gap-2">
         <TextBase text="Already have an account?" font="normal" />

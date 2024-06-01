@@ -32,7 +32,7 @@ const SignInModal: React.FC<SignInModalProps> = ({
       </div>
       <Heading4 text="Let's continue our trip planning 🌍" font="normal" />
 
-      <Divider classes="w-full h-px" />
+      <Divider />
 
       <SignInForm closeModal={onClose} />
 
@@ -42,7 +42,7 @@ const SignInModal: React.FC<SignInModalProps> = ({
         onClick={handleRestorePasswordClick}
       />
 
-      <Divider classes="w-full h-px" />
+      <Divider />
 
       <div className="flex gap-2">
         <TextBase

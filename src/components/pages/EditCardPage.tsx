@@ -1,14 +1,24 @@
 'use client';
 
-import { Heading2, Heading5 } from "@/src/components/atoms";
+import { Heading2, TextBase } from "@/src/components/atoms";
 import { EditCardForm, AddCardImagesModal } from "@/src/components/organisms";
 import { FormPageLayout } from "@/src/components/layouts";
-import { useState } from "react";
-import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useGetCardDetails } from "@/src/queries";
+import { Routes } from "@/src/lib/constants";
 
 const EditCardPage = () => {
   const { id } = useParams();
+  const { push } = useRouter();
+  const { data: card, error } = useGetCardDetails(+id);
   const [isAddCardImagesModal, setIsAddCardImagesModal] = useState(false);
+
+  useEffect(() => {
+    if (isNaN(+id) || error) {
+      push(Routes.NOT_FOUND);
+    }
+  }, [id, error]);
 
   return (
     <FormPageLayout>
@@ -17,9 +27,9 @@ const EditCardPage = () => {
         <button
           type="button"
           onClick={() => setIsAddCardImagesModal(true)}
-          className="absolute top-2.5 right-2.5"
+          className="absolute top-5 right-5"
         >
-          <Heading5
+          <TextBase
             text="+ Add photo" 
             font="semibold" 
             classes="underline underline-offset-8"
@@ -31,15 +41,17 @@ const EditCardPage = () => {
           classes="self-start" 
         />
 
-        <EditCardForm />
-
-        {(isAddCardImagesModal && id) && (
-          <AddCardImagesModal 
-            cardId={+id} 
-            onClose={() => setIsAddCardImagesModal(false)} 
-          />
+        {!!card && (
+          <EditCardForm card={card} />
         )}
       </article>
+
+      {(isAddCardImagesModal && id) && (
+        <AddCardImagesModal 
+          cardId={+id} 
+          onClose={() => setIsAddCardImagesModal(false)} 
+        />
+      )}
     </FormPageLayout>
   );
 };

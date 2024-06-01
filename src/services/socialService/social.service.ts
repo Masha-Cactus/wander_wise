@@ -1,8 +1,9 @@
 import { authClient } from "@/src/api";
+import { ApiEndpoints } from "@/src/lib/constants";
 import { ICreateSocial, ISocial, IUpdateSocial } from "@/src/services";
 
 class SocialService {
-  private BASE_URL = '/social-links';
+  private BASE_URL = ApiEndpoints.SOCIAL_LINKS;
 
   addSocial (data: ICreateSocial) {
     return authClient.post<never, ISocial>(this.BASE_URL, data);

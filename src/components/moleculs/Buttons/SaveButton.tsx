@@ -1,7 +1,6 @@
 'use client';
 
-import { useGetSavedCards } from "@/src/hooks";
-import { useSaveCard } from "@/src/queries";
+import { useGetUserSavedCards, useSaveCard } from "@/src/queries";
 import { PrimaryButton } from "@/src/components/moleculs";
 import { memo } from "react";
 import { useUser } from "@/src/store/user";
@@ -14,9 +13,9 @@ const SaveButton: React.FC<Props> = ({ cardId }) => {
   const { user } = useUser();
   const { mutate: save } = useSaveCard();
 
-  const savedCards = useGetSavedCards();
-  const isCardSavedByUser = savedCards?.some(likedCard => 
-    likedCard.id === cardId);
+  const { data: savedCards } = useGetUserSavedCards();
+  const isCardSavedByUser = savedCards?.some(savedCard => 
+    savedCard.id === cardId);
 
   return (
     <PrimaryButton

@@ -24,7 +24,7 @@ import { createCardSchema } from "@/src/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Dispatch, SetStateAction } from "react";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
-import { ATMOSPHERES, CLIMATES, SPECIALS } from "@/src/lib/constants";
+import { ATMOSPHERES, CLIMATES, SPECIALS } from "@/src/lib/cardParameters";
 
 export interface CreateCardFormData {
   name: string,
@@ -141,7 +141,7 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
       <div className="flex justify-between gap-5">
         <div className="flex flex-col gap-4 grow">
           <Heading5 text="Special" font="medium" />
-          <Divider classes="w-full h-px" />
+          <Divider />
           <div className="flex flex-col gap-2">
             {SPECIALS.map((special) => (
               <SquareCheckboxInput
@@ -160,7 +160,7 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
         </div>
         <div className="flex flex-col gap-4 grow">
           <Heading5 text="Climate" font="medium" />
-          <Divider classes="w-full h-px" />
+          <Divider />
           <div className="flex flex-col gap-2">
             {CLIMATES.map((climate) => (
               <CheckboxInput

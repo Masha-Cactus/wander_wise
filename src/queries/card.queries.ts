@@ -1,5 +1,6 @@
 import { 
   keepPreviousData, 
+  useInfiniteQuery, 
   useMutation, 
   useQuery, 
   useQueryClient 
@@ -11,13 +12,20 @@ import {
   ISearchCard,
   IReportCard,
   cardService,
+  ISearchCardResponse
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
 
-export function useGetCardDetails(cardId: number) {
+export function useGetCardDetails(cardId: number | null) {
   return useQuery({
     queryKey: ["card-details", { cardId }],
-    queryFn: () => cardService.getCardDetails(cardId),
+    queryFn: () => {
+      if (cardId) {
+        return cardService.getCardDetails(cardId);
+      }
+
+      return null;
+    },
     enabled: typeof cardId === 'number',
   });
 }
@@ -30,7 +38,7 @@ export function useCreateCard() {
     mutationFn: (data: ICreateCard) => cardService.createCard(data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["user-collections", { userId: user?.id }],
+        queryKey: ['user-collections', {userId: user?.id, type: 'Created'}],
       });
     },
   });
@@ -97,7 +105,7 @@ export function useLikeCard() {
     onSuccess: async (_, cardId) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: ["user-collections", { userId: user?.id }],
+          queryKey: ['user-collections', {userId: user?.id, type: 'Liked'}],
         }),
         queryClient.invalidateQueries({
           queryKey: ["card-details", { cardId }],
@@ -116,7 +124,7 @@ export function useRemoveLikeFromCard() {
     onSuccess: async (_, cardId) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: ["user-collections", { userId: user?.id }],
+          queryKey: ['user-collections', {userId: user?.id, type: 'Liked'}],
         }),
         queryClient.invalidateQueries({
           queryKey: ["card-details", { cardId }],
@@ -134,7 +142,7 @@ export function useSaveCard() {
     mutationFn: (cardId: number) => cardService.addToSaved(cardId),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["user-collections", { userId: user?.id }],
+        queryKey: ['user-collections', {userId: user?.id, type: 'Saved'}],
       });
     },
   });
@@ -148,7 +156,7 @@ export function useRemoveCardFromSaved() {
     mutationFn: (cardId: number) => cardService.removeFromSaved(cardId),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["user-collections", { userId: user?.id }],
+        queryKey: ['user-collections', {userId: user?.id, type: 'Saved'}],
       });
     },
   });
@@ -157,6 +165,13 @@ export function useRemoveCardFromSaved() {
 export function useReportCard() {
   return useMutation({
     mutationFn: (data: IReportCard) => cardService.reportCard(data),
+  });
+}
+
+export function usePopularCards() {
+  return useQuery({
+    queryKey: ['popular-cards'],
+    queryFn: () => cardService.getPopular(),
   });
 }
 
@@ -170,7 +185,21 @@ export function useSearchCards(page: number, filterParams: ISearchCard | null) {
 
       return null;
     },
+    enabled: !!filterParams,
+  });
+}
+
+export function useInfiniteSearchCards(filterParams: ISearchCard | null) {
+  return useInfiniteQuery({
+    queryKey: ['cards', filterParams],
+    queryFn: ({ pageParam }) => cardService.searchCards(
+      pageParam, filterParams as ISearchCard),
+    initialPageParam: 0,
     placeholderData: keepPreviousData,
     enabled: !!filterParams,
+    getNextPageParam: 
+      (lastPage: ISearchCardResponse ) => lastPage.currentPage + 1,
+    getPreviousPageParam: 
+      (firstPage: ISearchCardResponse) => firstPage.currentPage - 1,
   });
 }

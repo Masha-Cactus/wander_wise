@@ -5,12 +5,12 @@ import { TripShortCard } from "@/src/components/organisms";
 import { memo } from "react";
 import { Heading5, Heading3 } from "@/src/components/atoms";
 import { useRouter } from "next/navigation";
-import { useGetLikedCards } from "@/src/hooks";
 import { Routes } from "@/src/lib/constants";
+import { useGetUserLikedCards } from "@/src/queries";
 
 const RecentlyLikedSection: React.FC = () => {
   const { push } = useRouter();
-  const likedCards = useGetLikedCards();
+  const { data: likedCards } = useGetUserLikedCards();
 
   return (
     <section

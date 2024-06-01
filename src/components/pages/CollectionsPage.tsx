@@ -24,7 +24,7 @@ const CollectionsPage = () => {
           />
         </div>
 
-        <Divider classes="w-full h-px" />
+        <Divider />
 
         <div className="w-full grid gap-5
           grid-cols-[repeat(2,282px)]">

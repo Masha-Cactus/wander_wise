@@ -18,7 +18,8 @@ import {
 import { 
   MdErrorOutline, 
   MdOutlineMail, 
-  MdOutlineFileDownload 
+  MdOutlineFileDownload,
+  MdOutlineFolder
 } from "react-icons/md";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { HiOutlineUserCircle } from "react-icons/hi2";
@@ -59,6 +60,7 @@ const Icons = {
   insta: FaInstagram,
   website: FaGlobe,
   download: MdOutlineFileDownload,
+  folder: MdOutlineFolder,
 };
 
 export default Icons;

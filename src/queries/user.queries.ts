@@ -55,6 +55,60 @@ export function useGetUserCollections() {
   });
 }
 
+export function useGetUserSavedCards() {
+  const user = useUser((state) => state.user);
+
+  return useQuery({
+    queryKey: ['user-collections', {userId: user?.id, type: 'Saved'}],
+    queryFn: () => {
+      if (user) {
+        return userService.getCollections(user.id);
+      }
+
+      return Promise.reject('No user authorized');
+    },
+    enabled: !!user,
+    select: (collections) => collections.find(
+      (collection) => collection.name === "Saved cards")?.cardDtos,
+  });
+}
+
+export function useGetUserCreatedCards() {
+  const user = useUser((state) => state.user);
+
+  return useQuery({
+    queryKey: ['user-collections', {userId: user?.id, type: 'Created'}],
+    queryFn: () => {
+      if (user) {
+        return userService.getCollections(user.id);
+      }
+
+      return Promise.reject('No user authorized');
+    },
+    enabled: !!user,
+    select: (collections) => collections.find(
+      (collection) => collection.name === "Created cards")?.cardDtos,
+  });
+}
+
+export function useGetUserLikedCards() {
+  const user = useUser((state) => state.user);
+
+  return useQuery({
+    queryKey: ['user-collections', {userId: user?.id, type: 'Liked'}],
+    queryFn: () => {
+      if (user) {
+        return userService.getCollections(user.id);
+      }
+
+      return Promise.reject('No user authorized');
+    },
+    enabled: !!user,
+    select: (collections) => collections.find(
+      (collection) => collection.name === "Liked cards")?.cardDtos,
+  });
+}
+
 export function useGetUserComments() {
   const user = useUser((state) => state.user);
 

@@ -1,7 +1,10 @@
 'use client';
 
-import { useGetLikedCards } from "@/src/hooks";
-import { useLikeCard, useRemoveLikeFromCard } from "@/src/queries";
+import { 
+  useGetUserLikedCards, 
+  useLikeCard, 
+  useRemoveLikeFromCard 
+} from "@/src/queries";
 import { memo } from "react";
 import { Icons } from "@/src/components/atoms";
 import { IconButton } from "@/src/components/moleculs";
@@ -18,7 +21,7 @@ const LikeButton: React.FC<Props> = ({ cardId, cardLikes, classes}) => {
   const { mutate: like } = useLikeCard();
   const { mutate: removeLike } = useRemoveLikeFromCard();
 
-  const likedCards = useGetLikedCards();
+  const { data: likedCards } = useGetUserLikedCards();
   const isCardLikedByUser = likedCards?.some(likedCard => 
     likedCard.id === cardId);
 

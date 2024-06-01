@@ -4,10 +4,10 @@ import {
   clearCookies, 
   saveCookies
 } from "@/src/actions/manageCookies";
-import { Loader } from "@/src/components/atoms";
 import { useRefreshToken } from "@/src/queries";
 import { useUser } from "@/src/store/user";
 import { PropsWithChildren, useEffect, useState } from "react";
+import { LoadedContentStateController } from "@/src/components/moleculs";
 
 export const AuthProvider = ({children}: PropsWithChildren) => {
   const [isInitialAuthorizing, setIsInitialAuthorizing] = useState(true);
@@ -28,10 +28,12 @@ export const AuthProvider = ({children}: PropsWithChildren) => {
       setIsInitialAuthorizing(false);
     }
   }, [isFetched]);
-
-  if (isInitialAuthorizing) {
-    return <Loader />;
-  }
     
-  return <>{children}</>;
+  return (
+    <LoadedContentStateController 
+      isLoading={isInitialAuthorizing}
+    >
+      {children}
+    </LoadedContentStateController>
+  );
 };

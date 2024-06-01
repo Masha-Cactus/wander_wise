@@ -17,10 +17,10 @@ type CreateCollectionShortData = {
 };
 
 type Props = {
-  closeModal: () => void;
+  closeForm: () => void;
 };
 
-const CreateCollectionShortForm: React.FC<Props> = ({ closeModal }) => {
+const CreateCollectionShortForm: React.FC<Props> = ({ closeForm }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
   const validationSchema = createCollectionShortSchema();
@@ -51,7 +51,7 @@ const CreateCollectionShortForm: React.FC<Props> = ({ closeModal }) => {
     },
     {
       onError: handleError,
-      onSuccess: () => closeModal(),
+      onSuccess: closeForm,
     }
     );
   };
@@ -61,23 +61,23 @@ const CreateCollectionShortForm: React.FC<Props> = ({ closeModal }) => {
       onSubmit={handleSubmit(onSubmit)}
       className="w-full flex flex-col gap-2"
     >
-      <div className="flex gap-2">
-        <TextInput
-          type="text"
-          name="name"
-          control={control}
-          errorText={errors.name?.message}
-          disabled={isPending}
-          placeholder="My wished place to visit"
-          label="Name of your collection"
-        />
+        <div className="w-full">
+          <TextInput
+            type="text"
+            name="name"
+            control={control}
+            errorText={errors.name?.message}
+            disabled={isPending}
+            placeholder="My wished place to visit"
+          />
+        </div>     
 
         <PrimaryButton 
           type="submit" 
           text="Create" 
           disabled={isPending} 
+          classes="w-full"
         />
-      </div>
 
       {isError && <ErrorText errorText={errorMessage} />}
     </form>

@@ -85,7 +85,7 @@ const ProfileInfoSection: React.FC = () => {
         {user?.bio && <TextBase text={user.bio} font="normal" />}
       </div>
 
-      <Divider classes="w-full h-px bg-gray20" />
+      <Divider />
 
       <div className="flex flex-col gap-2 text-start">
         {user?.location && (
@@ -111,7 +111,7 @@ const ProfileInfoSection: React.FC = () => {
         )}
       </div>
 
-      <Divider classes="w-full h-px bg-gray20" />
+      <Divider />
 
       {(userSocials && userSocials.length > 0) && (
         <>
@@ -144,7 +144,7 @@ const ProfileInfoSection: React.FC = () => {
             ))}
           </div>
 
-          <Divider classes="w-full h-px bg-gray20" />
+          <Divider />
         </>
       )}
 

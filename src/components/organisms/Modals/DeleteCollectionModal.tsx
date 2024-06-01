@@ -4,18 +4,23 @@ import { memo, useState } from "react";
 import { ModalSkeleton } from "@/src/components/organisms";
 import { ErrorText, Heading, Heading4 } from "@/src/components/atoms";
 import { RoundedButton } from "@/src/components/moleculs";
-import { useDeleteUser } from "@/src/queries";
+import { useDeleteCard, useDeleteCollection } from "@/src/queries";
 import { normalizeError } from "@/src/lib/helpers";
+import { useRouter } from "next/navigation";
+import { Routes } from "@/src/lib/constants";
 import { useNormalizedError } from "@/src/hooks";
 
-interface DeleteProfileModalProps {
+interface DeleteCollectionModalProps {
   onClose: () => void;
+  collectionId: number;
 }
 
-const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
+const DeleteCollectionModal: React.FC<DeleteCollectionModalProps> = ({
   onClose,
+  collectionId,
 }) => {
-  const { isPending, mutate, isError } = useDeleteUser();
+  const { push } = useRouter();
+  const { isPending, mutate, isError } = useDeleteCollection();
 
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
@@ -23,22 +28,22 @@ const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
     setErrorMessage(error);
   };
 
-  const handleDeleteProfile = () => {
-    mutate(undefined, { 
+  const handleDeleteCollection = () => {
+    mutate(collectionId, { 
       onError: handleError,
-      onSuccess: () => onClose(),
+      onSuccess: () => push(Routes.COLLECTIONS.MAIN),
     });
   };
 
   return (
     <ModalSkeleton onClose={onClose}>
-      <Heading text="Delete your profile?" font="normal"/>
+      <Heading text="Delete your collection?" font="normal"/>
       <Heading4 text="This action cannot be undone 🫣" font="normal"/>
 
       <div className="flex w-full gap-5 justify-between">
         <RoundedButton
           text="Delete"
-          onClick={handleDeleteProfile}
+          onClick={handleDeleteCollection}
           classes="grow"
           style='red'
           disabled={isPending}
@@ -56,4 +61,4 @@ const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
   );
 };
 
-export default memo(DeleteProfileModal);
+export default memo(DeleteCollectionModal);

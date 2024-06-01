@@ -10,7 +10,7 @@ import { memo } from "react";
 import { Icons, TextMedium } from "@/src/components/atoms";
 
 interface SquareCheckboxInputProps<T extends FieldValues> {
-  text: string,
+  text?: string,
   name: FieldPath<T>;
   control: Control<T>;
   value: string | number;
@@ -51,10 +51,10 @@ const SquareCheckboxInput = <T extends FieldValues>({
             )}
           </div>
 
-          <TextMedium 
-            text={text} 
-            font="normal" 
-          />
+          {text && (
+            <TextMedium text={text} font="normal" />
+          )}
+
         </div>
       )}
     </InputControllerWrapper>

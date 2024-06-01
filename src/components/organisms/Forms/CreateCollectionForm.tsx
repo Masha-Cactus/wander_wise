@@ -1,8 +1,8 @@
 'use client';
 
-import { useNormalizedError, useGetSavedCards } from "@/src/hooks";
+import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
-import { useCreateCollection } from "@/src/queries";
+import { useCreateCollection, useGetUserSavedCards } from "@/src/queries";
 import { ICreateCollection } from "@/src/services";
 import { createCollectionSchema } from "@/src/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -20,7 +20,7 @@ import { Routes } from "@/src/lib/constants";
 const CreateCollectionForm = () => {
   const { push } = useRouter();
   const [errorMessage, setErrorMessage] = useNormalizedError();
-  const savedCards = useGetSavedCards();
+  const { data: savedCards } = useGetUserSavedCards();
 
   const validationSchema = createCollectionSchema();
 
@@ -71,7 +71,7 @@ const CreateCollectionForm = () => {
       {!!savedCards?.length && (
         <>
           <Heading5 text="Choose cards to add" font="semibold" />
-          <Divider classes="w-full h-px" />
+          <Divider />
 
           <div className="flex flex-col max-h-64 overflow-y-scroll">
             {savedCards?.map(card => (
@@ -81,7 +81,6 @@ const CreateCollectionForm = () => {
                   font="normal" 
                 />
                 <SquareCheckboxInput
-                  text="" 
                   name="cardIds" 
                   control={control} 
                   value={card.id} 

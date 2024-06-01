@@ -45,7 +45,7 @@ const Tab: React.FC<Props> = ({ tabs }) => {
         ))}
       </div>
 
-      <Divider classes="h-px w-full mb-4" />
+      <Divider classes="mb-4" />
 
       <div className="max-h-[420px] overflow-scroll">
         {active === 'Description' && (

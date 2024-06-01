@@ -58,17 +58,18 @@ const HomeSlider: React.FC<Props> = ({ slides }) => {
 
         <div
           className="product-slider__icons absolute z-20 
-        bottom-20 left-16
-        flex gap-7"
+        bottom-20 left-16 flex gap-7"
         >
           <IconButton
             onClick={handlePrevious}
-            classes="h-11 w-11 rounded-full border-white border-2 text-white"
+            classes="h-11 w-11 rounded-full border-white border-2 
+              text-white hover:bg-white hover:text-gray80"
             icon={<Icons.arrowLeft />}
           />
           <IconButton
             onClick={handleNext}
-            classes="h-11 w-11 rounded-full border-white border-2 text-white"
+            classes="h-11 w-11 rounded-full border-white border-2 
+              text-white hover:bg-white hover:text-gray80"
             icon={<Icons.arrowRight />}
           />
         </div>

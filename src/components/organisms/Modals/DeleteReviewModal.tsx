@@ -1,12 +1,13 @@
 "use client";
 
 import { memo, useState } from "react";
-import ModalSkeleton from "./ModalSkeleton";
+import { ModalSkeleton } from "@/src/components/organisms";
 import { ErrorText, Heading, Heading4 } from "@/src/components/atoms";
 import { RoundedButton } from "@/src/components/moleculs";
 import { useDeleteComment } from "@/src/queries";
 import { normalizeError } from "@/src/lib/helpers";
 import { useParams } from "next/navigation";
+import { useNormalizedError } from "@/src/hooks";
 
 interface DeleteReviewModalProps {
   onClose: () => void;
@@ -20,10 +21,10 @@ const DeleteReviewModal: React.FC<DeleteReviewModalProps> = ({
   const { id: cardId } = useParams();
   const { isPending, mutate, isError } = useDeleteComment();
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useNormalizedError();
 
   const handleError = (error: any) => {
-    setErrorMessage(normalizeError(error.message));
+    setErrorMessage(error);
   };
 
   const handleDeleteReview = () => {

@@ -18,7 +18,7 @@ const ReviewCardLong: React.FC<Props> = ({ review }) => {
   const stars = new Array(5).fill(0).fill(1, 0, review.stars);
 
   return (
-    <article className="py-6 flex flex-col gap-9 w-full">
+    <article className="py-6 flex flex-col gap-3 w-full">
       <div className="flex justify-between items-center w-full">
         <div>
           <Heading5 text={card?.name || ''} font="semibold" />
@@ -30,10 +30,14 @@ const ReviewCardLong: React.FC<Props> = ({ review }) => {
             font="normal" 
             classes="text-gray50" 
           />
-          <Divider classes="w-px h-full" />
+          <Divider classes="h-full w-px" />
           <div className="flex items-center gap-2">
             <Icons.follow className="w-6 h-6" />
-            <LinkButton path={Routes.TRIP(review.cardId)} text="Go to card" />
+            <LinkButton 
+              path={Routes.TRIP(review.cardId)} 
+              text="Go to card" 
+              textSize="small" 
+            />
           </div>
           
         </div>

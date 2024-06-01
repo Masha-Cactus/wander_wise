@@ -1,9 +1,13 @@
 import { memo } from "react";
 import { twMerge } from "tailwind-merge";
 
-const Divider = ({ classes }: { classes: string }) => {
+type Props = {
+  classes?: string,
+};
+
+const Divider: React.FC<Props> = ({ classes }) => {
   return (
-    <div className={twMerge('bg-gray-300', classes)}></div>
+    <div className={twMerge('bg-gray30 w-full h-px', classes)}></div>
   );
 };
 

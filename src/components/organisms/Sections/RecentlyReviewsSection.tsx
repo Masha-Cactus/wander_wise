@@ -14,17 +14,17 @@ const RecentlyLikedSection: React.FC = () => {
 
   return (
     <section
-      className="bg-white py-12 px-10 rounded-2xl flex flex-col gap-6"
+      className="bg-white py-12 px-10 rounded-2xl flex flex-col"
     >
-      <Heading3 text="Reviews you've recently added" />
+      <Heading3 text="Reviews you've recently added" classes="mb-6" />
 
       {reviews && reviews?.length > 0 ? (
         <>
-          <Divider classes="w-full h-px" />
+          <Divider />
           {reviews.map((review) => (
             <div key={review.id}>
               <ReviewCardLong review={review} />
-              <Divider classes="w-full h-px" />
+              <Divider />
             </div>
           ))}
         </>

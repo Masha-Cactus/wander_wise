@@ -67,7 +67,7 @@ const ProfileEditPage = () => {
               />
             </div>
           </div>
-          <Divider classes="w-full h-px" />
+          <Divider />
           <div className="flex justify-between items-center">
             <div className="flex flex-col">
               <Heading5 text="Password" font="medium" />

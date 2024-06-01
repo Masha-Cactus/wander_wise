@@ -31,7 +31,7 @@ const TextInput = <T extends FieldValues>({
       label={label}
       control={control}
       name={name}
-      isLabelVisible
+      isLabelVisible={!!label}
       isErrorLabelVisible
     >
       {(field) => (

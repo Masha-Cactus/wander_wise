@@ -1,3 +1,5 @@
+'use client';
+
 import { memo, ReactNode } from "react";
 import {
   Control,
@@ -7,7 +9,8 @@ import {
   FieldValues,
   Path,
 } from "react-hook-form";
-import { ErrorText } from "../../atoms";
+import { ErrorText } from "@/src/components/atoms";
+import classNames from "classnames";
 
 interface InputControllerWrapperProps<T extends FieldValues> {
   control: Control<T>;
@@ -34,8 +37,17 @@ const InputControllerWrapper = <T extends FieldValues>({
       control={control}
       render={({ field, fieldState }) => (
         <div className="flex flex-col gap-3">
-          {isLabelVisible && <label className="text-black text-xl font-medium 
-          relative flex flex-col w-full items-start">{label}</label>}
+          <label 
+            className={classNames('text-black text-xl font-medium',
+            'relative flex flex-col w-full items-start',{
+              'sr-only': !isLabelVisible,
+            }
+            )}
+          >
+            {label}
+          </label>
+          {/* {isLabelVisible && <label className="text-black text-xl font-medium 
+          relative flex flex-col w-full items-start">{label}</label>} */}
 
           {children(field)}
 

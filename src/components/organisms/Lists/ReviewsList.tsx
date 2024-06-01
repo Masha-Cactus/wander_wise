@@ -41,7 +41,7 @@ const ReviewsList: React.FC<Props> = ({ reviews }) => {
         </button>
       </div>
 
-      <Divider classes="h-px w-full bg-gray30" />
+      <Divider />
 
       <div className="flex gap-4 overflow-x-scroll">
         {reviews.map((review) => (

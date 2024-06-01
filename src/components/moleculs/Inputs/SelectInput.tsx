@@ -89,7 +89,7 @@ const SelectInput = <T extends FieldValues>({
                   </div>
                   <IconButton
                     icon={<Icons.delete />}
-                    classes="h-6 w-6 text-gray80"
+                    classes="p-0 h-6 w-6 text-gray80"
                     onClick={() => 
                       field.onChange(
                         field.value.filter((v: string) => v !== value))

@@ -1,4 +1,5 @@
 import { authClient, baseClient, formDataClient } from "@/src/api";
+import { ApiEndpoints } from "@/src/lib/constants";
 import { 
   ISocial,
   IUser,
@@ -12,7 +13,7 @@ import {
 } from "@/src/services";
 
 class UserService {
-  private BASE_URL = '/users';
+  private BASE_URL = ApiEndpoints.USERS;
 
   getSocials (userId: number) {
     return baseClient.get<never, ISocial[]>(`${this.BASE_URL}/${userId}/social-links`);

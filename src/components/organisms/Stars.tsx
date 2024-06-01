@@ -7,11 +7,11 @@ type Props = {
 
 const Stars: React.FC<Props> = ({ stars }) => {
   return (
-    <div className='flex gap-0.5 h-6'>
-      {stars.map((star) => (
+    <div className='flex gap-1 h-6'>
+      {stars.map((star, i) => (
         star === 1
-          ? <Icons.filledStar key={star} className="w-12 h-full text-yellow"/> 
-          : <Icons.star key={star} className="w-12 h-full text-yellow"/>
+          ? <Icons.filledStar key={i} className="w-6 h-6 text-yellow"/> 
+          : <Icons.star key={i} className="w-6 h-6 text-yellow"/>
       )) }
     </div>
   );

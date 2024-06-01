@@ -35,7 +35,7 @@ const Navbar = () => {
         </Link>
       </div>
 
-      <Divider classes="h-full w-px bg-gray30" />
+      <Divider classes="h-full w-px" />
           
       <Link href={Routes.PROFILE.MAIN}>
         <Image

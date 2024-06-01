@@ -5,7 +5,7 @@ import { trimObjectFields } from "@/src/lib/helpers";
 import { useUpdateCollection } from "@/src/queries";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { ErrorText } from "@/src/components/atoms";
+import { ErrorText, Heading4, Icons } from "@/src/components/atoms";
 import { 
   SquareCheckboxInput, 
   PrimaryButton, 
@@ -73,23 +73,31 @@ const AddCardToCollectionForm: React.FC<Props>
       onSubmit={handleSubmit(onSubmit)} 
       className="w-full flex flex-col gap-6"
     >
-      <div className="flex flex-col gap-4 max-h-52 overflow-y-scroll">
+      <div className="flex flex-col gap-5 max-h-52 overflow-y-scroll">
         {collections.map(collection => (
-          <SquareCheckboxInput
+          <div
             key={collection.id}
-            text={collection.name}
-            value={collection.id}
-            control={control}
-            name="selectedCollectionIds"
-          />
+            className="flex w-full justify-between items-center"
+          >
+            <div className="flex gap-2 items-center">
+              <Icons.folder className="w-6 h-6" />
+              <Heading4 text={collection.name} font="normal" />
+            </div>
+
+            <SquareCheckboxInput
+              value={collection.id}
+              control={control}
+              name="selectedCollectionIds"
+            />
+          </div>
         ))}  
       </div>
       
-      <div className="flex w-full gap-5 items-center">
+      <div className="flex w-full h-14 gap-5 items-center">
         <RoundedButton
           text="Cancel"
           style="light"
-          classes="grow"
+          classes="grow h-full"
           onClick={closeModal}
           disabled={isPending}
         />
@@ -98,7 +106,7 @@ const AddCardToCollectionForm: React.FC<Props>
           type="submit"
           text="Add" 
           disabled={isPending} 
-          classes="grow" 
+          classes="grow h-full px-8" 
         />
       </div>
       {isError && <ErrorText errorText={errorMessage} />}

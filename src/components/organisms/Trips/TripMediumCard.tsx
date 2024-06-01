@@ -21,6 +21,7 @@ import CreateReportModal from "../Modals/CreateReportModal";
 import { useUser } from "@/src/store/user";
 import { Routes } from "@/src/lib/constants";
 import DeleteCardModal from "../Modals/DeleteCardModal";
+import { useCopyUrlToClipboard } from "@/src/hooks";
 
 type Props = {
   card: ICard;
@@ -51,25 +52,32 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
     }
   };
 
+  const [isCopied, copy] = useCopyUrlToClipboard(Routes.TRIP(card.id));
+
   return (
     <article
-      className="flex flex-col gap-4 items-center 
-      rounded-3xl bg-white p-4 w-[325px]"
+      className="flex flex-col gap-4 items-center justify-between 
+      rounded-3xl bg-white p-4"
     >
       <Link 
         href={Routes.TRIP(card.id)} 
         className="w-full pb-[68%] relative group"
       >
+        {isCopied && (
+          <span 
+            className="z-10 absolute flex justify-center items-center 
+         bg-gray10 rounded-3xl inset-x-2 top-2 py-2"
+          >
+            <TextBase text="Copied to clipboard!" font="medium" />
+          </span>
+        )}
+
         <Image
-          src={card.imageLinks[currentImageIndex]}
+          src={card.imageLinks[currentImageIndex] || '/trip-default.png'}
           alt={card.name}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
-          style={{ 
-            objectFit: 'cover',
-            borderRadius: '28px',
-            cursor: 'pointer', 
-          }}
+          className="object-cover cursor-pointer rounded-3xl"
           onError={handleImageError}
         />
 
@@ -89,8 +97,8 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
           </div>
         )}
       </Link>
-      <Link href={Routes.TRIP(card.id)} className="w-full flex flex-col gap-4">
-        <div className="w-full flex gap-2 justify-between">
+      <div className="w-full flex flex-col gap-4">
+        <div className="w-full flex justify-between">
           <LikeButton
             cardId={card.id}
             cardLikes={card.likes}
@@ -101,7 +109,8 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
             icon={<Icons.share />} 
             text="Share" 
             classes={classes} 
-            size="small" 
+            size="small"
+            onClick={copy}
           />
 
           <IconButton 
@@ -120,11 +129,11 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
             size="small"
           />
         </div>
-        <Divider classes="w-full h-px" />
+        <Divider />
 
         <Heading5 text={card.name} font="medium" classes="grow" />
         <TextBase text={card.whereIs} font="normal" />
-      </Link>
+      </div>
 
       {isCardInSavedPage ? (
         <>

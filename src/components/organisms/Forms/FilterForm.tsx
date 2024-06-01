@@ -16,9 +16,14 @@ import { useForm } from "react-hook-form";
 import { filterCardsSchema } from "@/src/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { getFilterOptions, trimObjectFields } from "@/src/lib/helpers";
-import { useGetCreatedCards, useGetSavedCards } from "@/src/hooks";
 import { Dispatch, memo, SetStateAction, useMemo } from "react";
-import { ATMOSPHERES, AUTHORS, CLIMATES, SPECIALS } from "@/src/lib/constants";
+import { 
+  ATMOSPHERES, 
+  AUTHORS, 
+  CLIMATES, 
+  SPECIALS 
+} from "@/src/lib/cardParameters";
+import { useGetUserCreatedCards, useGetUserSavedCards } from "@/src/queries";
 
 type Props = {
   type: 'Saved' | 'Created',
@@ -26,8 +31,8 @@ type Props = {
 };
 
 const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
-  const savedCards = useGetSavedCards();
-  const createdCards = useGetCreatedCards();
+  const { data: savedCards } = useGetUserSavedCards();
+  const { data: createdCards } = useGetUserCreatedCards();
 
   const { 
     atmospheres, 
@@ -56,13 +61,14 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .filter(([_, authorValue]) => filterOptions.authors
         .includes(authorValue));
+    const countries = Array.from(new Set(filterOptions.countries));
     
     return { 
       atmospheres, 
       climates, 
       specials, 
       authors, 
-      countries: filterOptions.countries 
+      countries, 
     };
   }, [savedCards, createdCards, type]);
 
@@ -89,93 +95,121 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
     setFilterParams(trimmedData);
   };
 
+  const onClear = () => {
+    reset();
+    setFilterParams(null);
+  };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col 
-      bg-white border-2 border-gray-30 gap-8"
+      className="min-h-full flex flex-col justify-between
+      bg-white border-2 border-gray-30 pt-8"
     >
+      <div className="flex flex-col w-full gap-8">
 
-      <div className="flex flex-col mx-10">
-        <TextBase
-          text="Country"
-          font="semibold"
-        />
-        <div className="flex flex-wrap gap-2 mt-3">
-          {countries.map((country) => (
-            <FilterButton
-              key={country}
-              control={control}
-              name="countries"
-              value={country}
-            />
-          ))}
-        </div>
-      </div>
+        {!!countries.length && (
+          <>
+            <div className="flex flex-col mx-10">
+              <TextBase
+                text="Country"
+                font="semibold"
+              />
+              <div className="flex flex-wrap gap-2 mt-3">
+                {countries.map((country) => (
+                  <FilterButton
+                    key={country}
+                    control={control}
+                    name="countries"
+                    value={country}
+                  />
+                ))}
+              </div>
+            </div>
 
-      <Divider classes="h-px w-full" />
+            <Divider />
+          </>
+        )}
+      
+        {!!atmospheres.length && (
+          <>
+            <div className="flex flex-col mx-10">
+              <TextBase text="Type" font="semibold" />
+              <div className="flex flex-wrap gap-2 mt-3">
+                {atmospheres.map((atmosphere) => (
+                  <FilterButton
+                    key={atmosphere}
+                    control={control}
+                    name="tripTypes"
+                    value={atmosphere}
+                  />
+                ))}
+              </div>
+            </div>
 
-      <div className="flex flex-col mx-10">
-        <TextBase text="Type" font="semibold" />
-        <div className="flex flex-wrap gap-2 mt-3">
-          {atmospheres.map((atmosphere) => (
-            <FilterButton
-              key={atmosphere}
-              control={control}
-              name="tripTypes"
-              value={atmosphere}
-            />
-          ))}
-        </div>
-      </div>
+            <Divider />
+          </>
+        )}
+      
 
-      <Divider classes="h-px w-full" />
+        {!!climates.length && (
+          <>
+            <div className="flex flex-col mx-10">
+              <TextBase text="Climate" font="semibold" />
+              <div className="flex flex-wrap gap-2 mt-3">
+                {climates.map((climate) => (
+                  <FilterButton
+                    key={climate}
+                    control={control}
+                    name="climates"
+                    value={climate}
+                  />
+                ))}
+              </div>
+            </div>
 
-      <div className="flex flex-col mx-10">
-        <TextBase text="Climate" font="semibold" />
-        <div className="flex flex-wrap gap-2 mt-3">
-          {climates.map((climate) => (
-            <FilterButton
-              key={climate}
-              control={control}
-              name="climates"
-              value={climate}
-            />
-          ))}
-        </div>
-      </div>
+            <Divider />
+          </>
+        )}
+      
+        {!!specials.length && (
+          <>
+            <div className="flex flex-col mx-10">
+              <TextBase text="Special requirements" font="semibold" />
+              <div className="flex flex-wrap gap-2 mt-3">
+                {specials.map((special) => (
+                  <FilterButton
+                    key={special}
+                    control={control}
+                    name="specialRequirements"
+                    value={special}
+                  />
+                ))}
+              </div>
+            </div>
 
-      <Divider classes="h-px w-full" />
-
-      <div className="flex flex-col mx-10">
-        <TextBase text="Special requirements" font="semibold" />
-        <div className="flex flex-wrap gap-2 mt-3">
-          {specials.map((special) => (
-            <FilterButton
-              key={special}
-              control={control}
-              name="specialRequirements"
-              value={special}
-            />
-          ))}
-        </div>
-      </div>
-
-      <Divider classes="h-px w-full" />
-
-      <div className="flex flex-col mx-10">
-        <TextBase text="Cards are" font="semibold" />
-        <div className="flex flex-wrap gap-2 mt-3">
-          {authors.map(([authorText, authorValue]) => (
-            <FilterButton 
-              key={authorValue}
-              name="authors"
-              control={control}
-              text={authorText}
-              value={authorValue}
-            />
-          ))}
-        </div>
+            <Divider />
+          </>
+        )}
+      
+        {!!authors.length && (
+          <>
+            <div className="flex flex-col mx-10">
+              <TextBase text="Cards are" font="semibold" />
+              <div className="flex flex-wrap gap-2 mt-3">
+                {authors.map(([authorText, authorValue]) => (
+                  <FilterButton 
+                    key={authorValue}
+                    name="authors"
+                    control={control}
+                    text={authorText}
+                    value={authorValue}
+                  />
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       <div className="flex gap-4 mx-10 my-8">
@@ -186,12 +220,9 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
         />
         <RoundedButton
           text="Clear"
-          type="reset"
+          type="button"
           style="light"
-          onClick={() => {
-            reset();
-            setFilterParams(null);
-          }}
+          onClick={onClear}
           disabled={!isDirty}
         />
       </div>

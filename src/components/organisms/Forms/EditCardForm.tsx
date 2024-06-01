@@ -2,9 +2,10 @@
 
 import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
-import { useGetCardDetails, useUpdateCard } from "@/src/queries";
+import { useUpdateCard } from "@/src/queries";
 import { 
   ClimateType, 
+  ICard, 
   SpecialRequirementsType, 
   TripTypesType 
 } from "@/src/services";
@@ -23,11 +24,12 @@ import {
 } from "@/src/components/moleculs";
 import { updateCardSchema } from "@/src/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
-import { ATMOSPHERES, CLIMATES, Routes, SPECIALS } from "@/src/lib/constants";
+import { ATMOSPHERES, CLIMATES, SPECIALS } from "@/src/lib/cardParameters";
+import { Routes } from "@/src/lib/constants";
 
 export interface UpdateCardFormData {
   name: string,
@@ -40,12 +42,13 @@ export interface UpdateCardFormData {
   imageLinks: string[],
 }
 
-const EditCardForm = () => {
+type Props = {
+  card: ICard,
+};
+
+const EditCardForm: React.FC<Props> = ({ card }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const { push } = useRouter();
-  const { id } = useParams();
-
-  const { data: card, error: cardError } = useGetCardDetails(+id);
 
   const validationSchema = updateCardSchema();
   
@@ -81,20 +84,18 @@ const EditCardForm = () => {
       ...trimmedData
     } = trimObjectFields(data);
     
-    if (id) {
-      mutate({
-        ...trimmedData,
-        id: +id,
-        populatedLocality: location?.city || '',
-        country: location?.country || '',
-        mapLink: `https://www.google.com/maps/search/?api=1&query=${location?.latitude},${location?.longitude}`,
-      },
-      {
-        onError: handleError,
-        onSuccess: () => push(Routes.MY_CARDS.MAIN),
-      }
-      );
+    mutate({
+      ...trimmedData,
+      id: card.id,
+      populatedLocality: location?.city || '',
+      country: location?.country || '',
+      mapLink: `https://www.google.com/maps/search/?api=1&query=${location?.latitude},${location?.longitude}`,
+    },
+    {
+      onError: handleError,
+      onSuccess: () => push(Routes.MY_CARDS.MAIN),
     }
+    );
   };
 
   const [selectedImage, setSelectedImage] = useState('');
@@ -109,10 +110,6 @@ const EditCardForm = () => {
       currentImageLinks.filter(img => img !== image));
   };
 
-  if (cardError) {
-    return (<ErrorText errorText={cardError.message} />);
-  }
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -125,21 +122,16 @@ const EditCardForm = () => {
             <div className="relative group grow h-full">
               <Image
                 src={selectedImage ? selectedImage : currentImageLinks[0]}
-                width={0}
-                height={0}
-                style={{ 
-                  width: '100%', 
-                  height: '100%', 
-                  objectFit: 'cover',
-                  borderRadius: '15px', 
-                }}
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover cursor-pointer rounded-2xl"
                 alt="Card image"
               />
               <IconButton 
                 icon={<Icons.delete />} 
                 classes="absolute top-3 right-3 rounded-full w-8 h-8 
                 border border-white bg-error hidden text-white 
-                group-hover:block group-hover:cursor-pointer"
+                group-hover:flex group-hover:cursor-pointer"
                 onClick={() => handleDelete(selectedImage)}
               />
             </div>
@@ -149,15 +141,9 @@ const EditCardForm = () => {
                 <Image
                   key={image}
                   src={image}
-                  width={0}
-                  height={0}
-                  style={{ 
-                    width: '100%', 
-                    height: '100%', 
-                    objectFit: 'cover',
-                    borderRadius: '15px',
-                    cursor: 'pointer', 
-                  }}
+                  width={160}
+                  height={109}
+                  className="object-cover cursor-pointer rounded-2xl"
                   alt="Card image"
                   onClick={() => setSelectedImage(image)}
                 />
@@ -217,7 +203,7 @@ const EditCardForm = () => {
       <div className="flex justify-between gap-5">
         <div className="flex flex-col gap-4 grow">
           <Heading5 text="Special" font="medium" />
-          <Divider classes="w-full h-px" />
+          <Divider />
           <div className="flex flex-col gap-2">
             {SPECIALS.map((special) => (
               <SquareCheckboxInput
@@ -236,7 +222,7 @@ const EditCardForm = () => {
         </div>
         <div className="flex flex-col gap-4 grow">
           <Heading5 text="Climate" font="medium" />
-          <Divider classes="w-full h-px" />
+          <Divider />
           <div className="flex flex-col gap-2">
             {CLIMATES.map((climate) => (
               <CheckboxInput

@@ -1,4 +1,5 @@
 import { baseClient, authClient } from "@/src/api";
+import { ApiEndpoints } from "@/src/lib/constants";
 import { 
   IUser, 
   IEmail, 
@@ -8,7 +9,7 @@ import {
 } from "@/src/services";
 
 class AuthService {
-  private BASE_URL = '/auth';
+  private BASE_URL = ApiEndpoints.AUTH;
 
   signUp (data: ISignUp) {
     return baseClient.post<never, IUser>(

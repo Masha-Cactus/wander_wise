@@ -7,13 +7,12 @@ import { Icons, TextSmall } from "@/src/components/atoms";
 type Props = {
   page: number,
   setPage: Dispatch<SetStateAction<number>>,
-  isPlaceholderData: boolean,
   isLastPage: boolean,
   total?: number,
 };
 
 const Pagination: React.FC<Props> = ({
-  page, setPage, isPlaceholderData, isLastPage, total
+  page, setPage, isLastPage, total
 }) => {
   const [pagesList, setPagesList] = useState<number[]>([]);
 
@@ -90,7 +89,7 @@ const Pagination: React.FC<Props> = ({
         className="text-black disabled:text-gray70 h-full w-8
           flex items-center justify-center"
         onClick={() => setPage(page + 1)}
-        disabled={isPlaceholderData || isLastPage}
+        disabled={isLastPage}
       >
         <Icons.right className="w-6 h-6"/>
       </button>

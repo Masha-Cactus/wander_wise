@@ -63,13 +63,13 @@ export const getFilteredCards
       .some(tripType => filterParams.tripTypes.includes(tripType));
     const isClimate = filterParams.climates.includes(card.climate);
     const isCountry = filterParams.countries
-      .includes(card.whereIs.split(',')[1].trim());
+      .includes(card.whereIs.split(',')[2].trim());
     const isSpecial = card.specialRequirements
       .some(special => filterParams.specialRequirements.includes(special));
     const isAuthor = filterParams.authors
       .includes(card.author as CardAuthorsType);
   
-    return isTripType && isClimate && isCountry && isSpecial && isAuthor;
+    return isTripType || isClimate || isCountry || isSpecial || isAuthor;
   }
   );
 };
@@ -110,7 +110,12 @@ export const getFilterOptions = (cards: ICard[]) => {
 };
 
 export function getDaysAgo(date: string) {
-  const timestamp = new Date(date).getTime();
+  const [datePart, timePart] = date.split(' ');
+  const [day, month, year] = datePart.split('.').map(Number);
+  const [hours, minutes, seconds] = timePart.split(':').map(Number);
+
+  const timestamp = new Date(year, month - 1, day, hours, minutes, seconds)
+    .getTime();
   const now = new Date().getTime();
   const timeDiff = now - timestamp;
   const oneDay = 24 * 60 * 60 * 1000;

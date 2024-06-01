@@ -15,14 +15,9 @@ const TripShortCard: React.FC<Props> = ({ card }) => {
       <Image
         src={card.imageLinks[0]}
         alt={card.name}
-        width={0}
-        height={0}
-        style={{ 
-          width: '100%', 
-          height: '100%', 
-          objectFit: 'cover',
-          borderRadius: '20px', 
-        }}
+        width={235}
+        height={160}
+        className="object-cover rounded-2xl"
       />
 
       <div className="absolute inset-x-2 bottom-3 

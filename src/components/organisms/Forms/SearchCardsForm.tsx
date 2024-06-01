@@ -33,7 +33,7 @@ import {
   CLIMATES, 
   DISTANCE, 
   SPECIALS 
-} from "@/src/lib/constants";
+} from "@/src/lib/cardParameters";
 
 type Props = {
   setFilterParams: Dispatch<SetStateAction<ISearchCard | null>>;
@@ -76,13 +76,18 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
     });
   };
 
+  const onClear = () => {
+    reset();
+    setFilterParams(null);
+  };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col
+      className="flex flex-col pt-8
       bg-white border-2 border-gray-30 gap-8"
     >
-      <div className="flex flex-col mt-8 mx-10">
+      <div className="flex flex-col mx-10">
         <TextBase text="Where are you now?*" font="semibold" />
         <TextSmall
           text="We need this info to build distance of your trip"
@@ -97,7 +102,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
         />
       </div>
 
-      <Divider classes="h-px w-full" />
+      <Divider />
 
       <div className="flex flex-col mx-10">
         <TextBase
@@ -126,7 +131,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
         </div>
       </div>
 
-      <Divider classes="h-px w-full" />
+      <Divider />
 
       <div className="flex flex-col mx-10">
         <TextBase text="Type of your trip" font="semibold" />
@@ -142,7 +147,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
         </div>
       </div>
 
-      <Divider classes="h-px w-full" />
+      <Divider />
 
       <div className="flex flex-col mx-10">
         <TextBase text="Desired climate" font="semibold" />
@@ -158,7 +163,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
         </div>
       </div>
 
-      <Divider classes="h-px w-full" />
+      <Divider />
 
       <div className="flex flex-col mx-10">
         <TextBase text="Special requirements" font="semibold" />
@@ -174,7 +179,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
         </div>
       </div>
 
-      <Divider classes="h-px w-full" />
+      <Divider />
 
       <div className="flex flex-col mx-10">
         <TextBase text="Cards author" font="semibold" />
@@ -202,9 +207,9 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
         />
         <RoundedButton
           text="Clear"
-          type="reset"
+          type="button"
           style="light"
-          onClick={reset}
+          onClick={onClear}
           disabled={!isDirty}
         />
       </div>

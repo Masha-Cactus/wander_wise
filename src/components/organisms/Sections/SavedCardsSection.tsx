@@ -1,6 +1,5 @@
 'use client';
 
-import { useGetSavedCards } from "@/src/hooks";
 import { Heading3, Heading4 } from "@/src/components/atoms";
 import { Gallery, Pagination } from "@/src/components/organisms";
 import { LinkButton } from "@/src/components/moleculs";
@@ -8,6 +7,7 @@ import { useEffect, useState } from "react";
 import { ICard, IFilterParams } from "@/src/services";
 import { getFilteredCards } from "@/src/lib/helpers";
 import { CARDS_PER_PAGE, Routes } from "@/src/lib/constants";
+import { useGetUserSavedCards } from "@/src/queries";
 
 type Props = {
   filterParams: IFilterParams | null;
@@ -15,7 +15,7 @@ type Props = {
 
 const SavedCardsSection: React.FC<Props> = ({ filterParams }) => {
   const [page, setPage] = useState(0);
-  const savedCards = useGetSavedCards();
+  const { data: savedCards } = useGetUserSavedCards();
 
   const [filteredCards, setFilteredCards] = useState<ICard[]>([]);
   const [displayedCards, setDisplayedCards] = useState<ICard[]>([]);
@@ -57,7 +57,6 @@ const SavedCardsSection: React.FC<Props> = ({ filterParams }) => {
         total={totalPages}
         setPage={setPage}
         isLastPage={page === totalPages - 1}
-        isPlaceholderData={false}
       />
 
     </section>

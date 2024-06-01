@@ -29,6 +29,8 @@ export { default as AddCardImagesModal} from "./Modals/AddCardImagesModal";
 export { default as AddProfileImageModal} from "./Modals/AddProfileImageModal";
 export { default as DeleteProfileModal } from "./Modals/DeleteProfileModal";
 export { default as DeleteCardModal } from "./Modals/DeleteCardModal";
+export { default as DeleteCollectionModal } from "./Modals/DeleteCollectionModal";
+export { default as RenameCollectionModal} from "./Modals/RenameCollectionModal";
 
 export { default as SignInForm } from "./Forms/SignInForm";
 export { default as SearchCardsForm } from "./Forms/SearchCardsForm";
@@ -58,3 +60,4 @@ export { default as ProfileInfoSection } from "./Sections/ProfileInfoSection";
 export { default as SavedCardsSection } from "./Sections/SavedCardsSection";
 export { default as CreatedCardsSection } from "./Sections/CreatedCardsSection";
 export { default as CardImagesSection } from "./Sections/CardImagesSection";
+export { default as PaginatedCardsSection } from "./Sections/PaginatedCardsSection";

@@ -20,6 +20,7 @@ export function QueryProvider({children}: PropsWithChildren) {
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
       },
     },
     queryCache: new QueryCache({

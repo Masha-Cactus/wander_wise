@@ -1,11 +1,20 @@
-import { Tab } from "@/src/components/organisms";
-import { Divider, Heading2, Heading4, Icons } from "@/src/components/atoms";
+'use client';
+
+import { 
+  Divider, 
+  Heading2, 
+  Heading4, 
+  Icons, 
+  Heading5 
+} from "@/src/components/atoms";
 import {
   IconButton,
   SaveButton,
   LikeButton,
 } from "@/src/components/moleculs/";
-import { CardImagesSection } from "@/src/components/organisms";
+import { CardImagesSection, Tab } from "@/src/components/organisms";
+import { useCopyUrlToClipboard } from "@/src/hooks";
+import { Routes } from "@/src/lib/constants";
 import { ICard } from "@/src/services";
 import { memo } from "react";
 
@@ -16,9 +25,11 @@ type Props = {
 const TripLongCard: React.FC<Props> = ({ card }) => {
   const tabs = {
     'Description': card.description,
-    "Why this place?": card.whyThisPlace,
+    'Why this place?': card.whyThisPlace,
     'Map': card.mapLink,
   };
+
+  const [isCopied, copy] = useCopyUrlToClipboard(Routes.TRIP(card.id));
 
   return (
     <article
@@ -42,14 +53,27 @@ const TripLongCard: React.FC<Props> = ({ card }) => {
         </div>
 
         <div className="col-span-7 flex flex-col gap-4">
-          <div className="flex gap-4 w-full justify-end h-8">
+          <div className="flex gap-4 w-full justify-end h-8 relative">
+            {isCopied && (
+              <span 
+                className="absolute flex justify-center items-center 
+              bg-white  rounded-2xl bottom-[44px] right-0 py-2 px-6"
+              >
+                <Heading5 
+                  text="Copied to clipboard!" 
+                  font="medium" 
+                  classes="text-gray80" 
+                />
+              </span>
+            )}
+
             <LikeButton
               cardId={card.id}
               cardLikes={card.likes}
               classes=""
             />
 
-            <Divider classes="w-px h-full bg-gray30" />
+            <Divider classes="h-full w-px" />
 
             <IconButton
               icon={card.author === "AI" ? <Icons.jpt /> : <Icons.user />}
@@ -66,13 +90,17 @@ const TripLongCard: React.FC<Props> = ({ card }) => {
               text-error rounded-full px-2 py-1"
             />
 
-            <Divider classes="w-px h-full bg-gray30" />
+            <Divider classes="h-full w-px" />
 
             <IconButton icon={<Icons.edit />} classes="" />
 
-            <Divider classes="w-px h-full bg-gray30" />
+            <Divider classes="h-full w-px" />
 
-            <IconButton icon={<Icons.share />} classes="" />
+            <IconButton 
+              icon={<Icons.share />} 
+              onClick={copy}
+              classes=""
+            />
           </div>
           <div className="w-full">
             <CardImagesSection images={card.imageLinks} />
