@@ -34,6 +34,7 @@ export interface CreateCardFormData {
   specialRequirements: SpecialRequirementsType[],
   description: string,
   whyThisPlace: string[],
+  mapLink: string;
 }
 
 type Props = {
@@ -58,6 +59,7 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
       specialRequirements: [],
       description: "",
       whyThisPlace: [],
+      mapLink: "",
     },
     resolver: yupResolver(validationSchema),
   });
@@ -78,7 +80,6 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
       ...trimmedData,
       populatedLocality: location?.city || '',
       country: location?.country || '',
-      mapLink: `https://www.google.com/maps/search/?api=1&query=${location?.latitude},${location?.longitude}`,
     },
     {
       onError: handleError,
@@ -111,6 +112,16 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
         errorText={errors.location?.message}
       />
 
+      <TextInput
+        type="text"
+        name="mapLink"
+        control={control}
+        errorText={errors.mapLink?.message}
+        disabled={isPending}
+        placeholder="Enter a valid Google Maps link"
+        label="Google Maps link"
+      />
+
       <TextAreaInput
         name="description"
         control={control}
@@ -138,8 +149,8 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
         label="Type of this place" 
       />
 
-      <div className="flex justify-between gap-5">
-        <div className="flex flex-col gap-4 grow">
+      <div className="grid grid-cols-2 gap-5">
+        <div className="flex flex-col gap-4">
           <Heading5 text="Special" font="medium" />
           <Divider />
           <div className="flex flex-col gap-2">
@@ -158,7 +169,7 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
             )}
           </div>
         </div>
-        <div className="flex flex-col gap-4 grow">
+        <div className="flex flex-col gap-4">
           <Heading5 text="Climate" font="medium" />
           <Divider />
           <div className="flex flex-col gap-2">

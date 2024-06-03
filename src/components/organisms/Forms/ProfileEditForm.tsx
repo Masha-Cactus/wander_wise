@@ -60,7 +60,9 @@ const ProfileEditForm = () => {
 
     mutate({
       ...trimmedData, 
-      location: location ? `${location.city}, ${location.country}` : ''
+      location: location 
+        ? `${location.city}, ${location.country}` 
+        : user?.location,
     }, {
       onError: handleError,
     }

@@ -42,8 +42,8 @@ const SelectInput = <T extends FieldValues>({
     <InputControllerWrapper
       control={control}
       name={name}
-      isLabelVisible={true}
-      isErrorLabelVisible={true}
+      isLabelVisible
+      isErrorLabelVisible
       label={label}
     >
       {(field) => (
@@ -57,12 +57,13 @@ const SelectInput = <T extends FieldValues>({
             onChange={(e) => setCurrentValue(e.target.value)}
             value={currentValue}
             className={classNames(
-              `border border-gray50 bg-white grow
+              `border bg-white grow
             text-black hover:bg-gray-50 flex h-10 w-full items-center
             justify-center space-x-3 text-sm shadow-sm rounded-md
             transition-all duration-75 focus:outline-none px-3`,
               {
                 "border-error": errorText,
+                "border-gray50": !errorText,
               }
             )}
             onKeyDown={(e) => {

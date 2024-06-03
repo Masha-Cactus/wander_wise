@@ -19,8 +19,6 @@ interface InputControllerWrapperProps<T extends FieldValues> {
   isErrorLabelVisible?: boolean;
   label?: string;
   children: (field: ControllerRenderProps<T, Path<T>>) => ReactNode;
-
-  marginBottom?: number;
 }
 
 const InputControllerWrapper = <T extends FieldValues>({
@@ -36,8 +34,9 @@ const InputControllerWrapper = <T extends FieldValues>({
       name={name}
       control={control}
       render={({ field, fieldState }) => (
-        <div className="flex flex-col gap-3">
-          <label 
+        <div className={classNames('flex flex-col', { 'gap-3': isLabelVisible })}>
+          <label
+            htmlFor={name}
             className={classNames('text-black text-xl font-medium',
             'relative flex flex-col w-full items-start',{
               'sr-only': !isLabelVisible,
@@ -46,13 +45,11 @@ const InputControllerWrapper = <T extends FieldValues>({
           >
             {label}
           </label>
-          {/* {isLabelVisible && <label className="text-black text-xl font-medium 
-          relative flex flex-col w-full items-start">{label}</label>} */}
 
           {children(field)}
 
           {isErrorLabelVisible && fieldState?.error?.message && (
-            <ErrorText errorText={fieldState.error.message} />
+            <ErrorText errorText={fieldState.error.message} classes="w-fit" />
           )}
         </div>
       )}

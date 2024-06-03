@@ -15,7 +15,7 @@ const CreateCardPage = () => {
 
   useEffect(() => {
     if (newCardId && scrollRef.current) {
-      scrollRef.current.scrollIntoView();
+      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [newCardId]);
 

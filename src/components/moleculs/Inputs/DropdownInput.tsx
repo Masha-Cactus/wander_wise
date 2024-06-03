@@ -8,7 +8,7 @@ import {
   FieldValues,
   useWatch,
 } from "react-hook-form";
-import { Heading5, Icons, TextBase } from "@/src/components/atoms";
+import { Heading5, Icons, TextBase, ErrorText } from "@/src/components/atoms";
 import { FilterButton } from "@/src/components/moleculs";
 
 interface DropdownInputProps<T extends FieldValues> {
@@ -35,18 +35,19 @@ const DropdownInput = <T extends FieldValues>({
   });
 
   return (
-    <div className="flex flex-col w-full gap-1">
+    <div className="flex flex-col w-full gap-3">
       {!!label && (
-        <Heading5 text={label} font="medium" classes="mb-2" />
+        <Heading5 text={label} font="medium" />
       )}
       <div
         className={classNames(
-          `border border-gray50 bg-white grow relative
+          `border bg-white grow relative
             text-black hover:bg-gray-50 flex h-16 w-full items-center
             text-sm shadow-sm rounded-md gap-4 placeholder:text-gray50
             transition-colors duration-75 focus:outline-none px-4 py-3`,
           {
             "border-error": errorText,
+            "border-gray50": !errorText,
           }
         )}
       >
@@ -109,6 +110,8 @@ const DropdownInput = <T extends FieldValues>({
           ))}
         </div>
       )}
+
+      {!!errorText && <ErrorText errorText={errorText} />}
     </div>
   );
 };

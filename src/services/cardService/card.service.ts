@@ -36,31 +36,27 @@ class CardService {
     );
   }
 
-  addImages (data: IAddCardImages) {
+  addImages ({id, images}: IAddCardImages) {
     return formDataClient.put<never, ICard>(
-      `${this.BASE_URL}/add-images/${data.id}`,
-      data,
+      `${this.BASE_URL}/add-images/${id}`,
+      { images },
     );
   };
 
-  //currently on the server the method is put
   addToSaved(cardId: number) {
-    return authClient.put(`${this.BASE_URL}/add-to-saved/${cardId}`);
+    return authClient.get(`${this.BASE_URL}/add-to-saved/${cardId}`);
   }
 
-  //currently on the server the method is put
   removeFromSaved(cardId: number) {
-    return authClient.put(`${this.BASE_URL}/remove-from-saved/${cardId}`);
+    return authClient.get(`${this.BASE_URL}/remove-from-saved/${cardId}`);
   }
 
-  //currently on the server the method is put
   likeCard(cardId: number) {
-    return authClient.put(`${this.BASE_URL}/post-like/${cardId}`);
+    return authClient.get(`${this.BASE_URL}/post-like/${cardId}`);
   }
 
-  //currently on the server the method is put
   unlikeCard(cardId: number) {
-    return authClient.put(`${this.BASE_URL}/remove-like/${cardId}`);
+    return authClient.get(`${this.BASE_URL}/remove-like/${cardId}`);
   }
 
   deleteCard(id: number) {

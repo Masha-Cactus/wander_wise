@@ -43,12 +43,13 @@ const TextInput = <T extends FieldValues>({
             disabled={disabled}
             placeholder={placeholder ? placeholder : `Enter your ${name}`}
             className={classNames(
-              `border border-gray50 bg-white placeholder:text-gray50
+              `border bg-white placeholder:text-gray50
                 text-black flex h-10 w-full items-center
                 justify-center text-sm shadow-sm rounded-md
                 transition-colors duration-75 focus:outline-none px-3`,
               {
                 "border-error": errorText,
+                "border-gray50": !errorText,
               }
             )}
           />

@@ -42,6 +42,7 @@ const UploadCardImagesForm: React.FC<Props> = ({ cardId, closeModal }) => {
   };
   
   const onSubmit = async ({images}: UploadCardImagesFormData) => {
+    console.log(images);
     if (typeof cardId === 'number') {
       mutate({
         images,

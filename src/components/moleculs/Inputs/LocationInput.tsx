@@ -51,9 +51,9 @@ const LocationInput = <T extends FieldValues>({
 
   useEffect(() => {
     if (!locationFieldValue) {
-      setValue('');
+      setValue(defaultLocation || '');
     }
-  }, [locationFieldValue]);
+  }, [locationFieldValue, defaultLocation]);
 
   return (
     <InputControllerWrapper
@@ -77,12 +77,13 @@ const LocationInput = <T extends FieldValues>({
               setValue(e.target.value);
             }}
             className={classNames(
-              `border border-gray50 bg-white
+              `border bg-white
               text-black hover:bg-gray-50 flex h-10 w-full items-center
               justify-center space-x-3 text-sm shadow-sm rounded-md
               transition-all duration-75 focus:outline-none px-3`,
               {
                 "border-error": errorText,
+                "border-gray50": !errorText,
               }
             )}
           />

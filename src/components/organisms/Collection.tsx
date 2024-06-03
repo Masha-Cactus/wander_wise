@@ -20,25 +20,25 @@ const Collection: React.FC<Props> = ({ collection }) => {
         {collectionCards?.length ? (
           <>
             {collectionCards.map(card => (
-              <div className="relative">
-              <Image 
-                key={card.id} 
-                src={card.imageLinks[0]} 
-                alt={card.name}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
-                className="object-cover" 
-              />
+              <div key={card.id} className="relative">
+                <Image 
+                  src={card.imageLinks[0]} 
+                  alt={card.name}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
+                  className="object-cover" 
+                />
               </div>
             ))}
           </>
         ) : (
-          <div className="bg-gray30 w-[282px] h-[282px] flex justify-center items-center">
+          <div className="bg-gray30 w-full h-full flex justify-center items-center">
             <Image 
               src="/trip-default.png" 
               alt="No collection images"
               width={120}
               height={120}
+              className="w-32 h-32"
             />
           </div>
         )}

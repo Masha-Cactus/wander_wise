@@ -23,14 +23,6 @@ const Review: React.FC<Props> = ({ review }) => {
     >
       <div className="flex gap-4 items-start justify-between">
         <div className="flex gap-4">
-          {/* <Image
-            src={review.rewiewImage}
-            alt="User image"
-            width={50}
-            height={50}
-            className="rounded-full"
-          /> */}
-
           <div className="flex flex-col gap-1">
             <Heading5 text={review.author} font="semibold" />
             <Stars stars={stars} />

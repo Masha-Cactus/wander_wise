@@ -19,6 +19,7 @@ export const TEXT_INPUT_LENGTH = {
 
 export const ONLY_SPACES_PATTERN = /^(?!\s+$).+$/;
 export const PASSWORD_PATTERN = /^(?!.*\s).{8,128}$/;
+const GOOGLE_MAPS_LINK_PATTERN = /^(https:\/\/(www\.)?google\.com\/maps\/.*)|(https:\/\/maps\.app\.goo\.gl\/.*)$/i;
 
 const requiredText = "is required";
 
@@ -104,6 +105,11 @@ export const genericValidationSchema = {
     .of(Yup.string().trim()
       .oneOf(Object.values(SpecialRequirements)).required()),
   link: Yup.string().url().required(`Link ${requiredText}`),
+  mapLink: Yup
+      .string()
+      .required('Google Maps link is required')
+      .url('Must be a valid URL')
+      .matches(GOOGLE_MAPS_LINK_PATTERN, 'Must be a valid Google Maps link'),
   confirmationCode: Yup.string()
     .trim()
     .required(`Confirmation code ${requiredText}`),

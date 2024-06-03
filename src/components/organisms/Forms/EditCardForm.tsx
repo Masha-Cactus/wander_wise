@@ -40,6 +40,7 @@ export interface UpdateCardFormData {
   description: string,
   whyThisPlace: string[],
   imageLinks: string[],
+  mapLink: string,
 }
 
 type Props = {
@@ -68,6 +69,7 @@ const EditCardForm: React.FC<Props> = ({ card }) => {
       description: card?.description,
       whyThisPlace: card?.whyThisPlace,
       imageLinks: card?.imageLinks,
+      mapLink: card?.mapLink,
     },
     resolver: yupResolver(validationSchema),
   });
@@ -87,9 +89,8 @@ const EditCardForm: React.FC<Props> = ({ card }) => {
     mutate({
       ...trimmedData,
       id: card.id,
-      populatedLocality: location?.city || '',
-      country: location?.country || '',
-      mapLink: `https://www.google.com/maps/search/?api=1&query=${location?.latitude},${location?.longitude}`,
+      populatedLocality: location?.city || card.whereIs.split(',')[0].trim(),
+      country: location?.country || card.whereIs.split(',')[2].trim(),
     },
     {
       onError: handleError,
@@ -135,18 +136,20 @@ const EditCardForm: React.FC<Props> = ({ card }) => {
                 onClick={() => handleDelete(selectedImage)}
               />
             </div>
-            <div className="relative w-40 h-full shrink-0 
+            <div className="w-40 h-full shrink-0 
         flex flex-col gap-2 overflow-y-scroll">
               {currentImageLinks.map(image => (
-                <Image
-                  key={image}
-                  src={image}
-                  width={160}
-                  height={109}
-                  className="object-cover cursor-pointer rounded-2xl"
-                  alt="Card image"
-                  onClick={() => setSelectedImage(image)}
-                />
+                <div className="relative w-full h-28">
+                  <Image
+                    key={image}
+                    src={image}
+                    fill
+                    sizes="160px"
+                    className="object-cover cursor-pointer rounded-2xl"
+                    alt="Card image"
+                    onClick={() => setSelectedImage(image)}
+                  />
+                </div>
               ))}
             </div>
           </div>
@@ -171,6 +174,16 @@ const EditCardForm: React.FC<Props> = ({ card }) => {
         disabled={isPending}
         defaultLocation={card?.whereIs}
         errorText={errors.location?.message}
+      />
+
+      <TextInput
+        type="text"
+        name="mapLink"
+        control={control}
+        errorText={errors.mapLink?.message}
+        disabled={isPending}
+        placeholder="Enter a valid Google Maps link"
+        label="Google Maps link"
       />
 
       <TextAreaInput
@@ -200,8 +213,8 @@ const EditCardForm: React.FC<Props> = ({ card }) => {
         label="Type of this place" 
       />
 
-      <div className="flex justify-between gap-5">
-        <div className="flex flex-col gap-4 grow">
+      <div className="grid grid-cols-2 gap-5">
+        <div className="flex flex-col gap-4">
           <Heading5 text="Special" font="medium" />
           <Divider />
           <div className="flex flex-col gap-2">
@@ -220,7 +233,7 @@ const EditCardForm: React.FC<Props> = ({ card }) => {
             )}
           </div>
         </div>
-        <div className="flex flex-col gap-4 grow">
+        <div className="flex flex-col gap-4">
           <Heading5 text="Climate" font="medium" />
           <Divider />
           <div className="flex flex-col gap-2">

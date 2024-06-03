@@ -37,13 +37,13 @@ const Navbar = () => {
 
       <Divider classes="h-full w-px" />
           
-      <Link href={Routes.PROFILE.MAIN}>
+      <Link href={Routes.PROFILE.MAIN} className="relative w-12 h-12">
         <Image
           src={user?.profileImage || "/user-default.png"}
           alt="user avatar"
-          width={100}
-          height={100}
-          className="rounded-full w-12 h-12 bg-gray30 object-cover"
+          fill
+          sizes="48px"
+          className="rounded-full object-cover"
         />
       </Link>
     </nav>

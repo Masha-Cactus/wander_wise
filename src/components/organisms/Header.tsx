@@ -26,12 +26,12 @@ const Header: React.FC = () => {
       className="flex items-center justify-between 
     mx-10 my-7"
     >
-      <Link href={Routes.HOME} className="text-3xl font-bold text-red-800">
+      <Link href={Routes.HOME} className="relative w-48 h-10">
         <Image
           src="/logo.svg"
-          alt="logo"
-          width={192}
-          height={40}
+          alt="Wander Wise logo"
+          fill
+          sizes="192px"
           priority={true}
         />
       </Link>

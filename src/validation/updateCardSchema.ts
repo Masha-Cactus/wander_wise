@@ -22,4 +22,5 @@ export const updateCardSchema
       .of(Yup.string().url().required()),
     specialRequirements: genericValidationSchema.specialRequirements
       .min(1, 'Choose at least one special feature'),
+    mapLink: genericValidationSchema.mapLink,
   });

@@ -73,17 +73,18 @@ const CreateCollectionForm = () => {
           <Heading5 text="Choose cards to add" font="semibold" />
           <Divider />
 
-          <div className="flex flex-col max-h-64 overflow-y-scroll">
+          <div className="flex flex-col gap-4 max-h-64 overflow-y-scroll">
             {savedCards?.map(card => (
-              <div key={card.id} className="flex justify-between items-center">
+              <div key={card.id} className="flex gap-4 justify-between items-center">
                 <Heading5 
                   text={`${card.name}, ${card.whereIs}`} 
-                  font="normal" 
+                  font="normal"
+                  classes="truncate"
                 />
                 <SquareCheckboxInput
                   name="cardIds" 
                   control={control} 
-                  value={card.id} 
+                  value={card.id}
                 />
               </div>
             ))}

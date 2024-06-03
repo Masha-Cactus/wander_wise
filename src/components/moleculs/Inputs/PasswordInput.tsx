@@ -37,12 +37,13 @@ const PasswordInput = <T extends FieldValues>({
         <div className="relative flex flex-col w-full">
           <div
             className={classNames( 
-              `border border-gray50 bg-white placeholder:text-gray50
+              `border bg-white placeholder:text-gray50
             text-black flex h-10 w-full items-center 
               justify-center text-sm shadow-sm rounded-md 
               transition-colors duration-75 focus:outline-none px-3`,
               {
                 "border-error": errorText,
+                "border-gray50": !errorText,
               }
             )}
           >

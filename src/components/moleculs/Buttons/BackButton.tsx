@@ -25,10 +25,10 @@ const BackButton = () => {
   const prevPageName = getPrevPageName(pathname);
 
   return (
-    <div className="flex gap-2 items-center" onClick={back}>
+    <button className="flex gap-2 items-center cursor-pointer" onClick={back}>
       <Icons.left className="w-6 h-6" />
       <Heading5 text={prevPageName} font="semibold"/>
-    </div>
+    </button>
   );
 };
 

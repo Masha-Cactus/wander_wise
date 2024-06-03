@@ -48,7 +48,7 @@ const CollectionPage = () => {
               text="Rename collection" 
               icon={<Icons.edit />} 
               classes="border border-black rounded-3xl"
-              onClick={() => setIsRenameCollectionModal(true)} 
+              onClick={() => setIsRenameCollectionModal(true)}
             />
             <IconButton 
               text="Delete collection" 

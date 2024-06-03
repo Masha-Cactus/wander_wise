@@ -40,18 +40,16 @@ const DeleteCollectionModal: React.FC<DeleteCollectionModalProps> = ({
       <Heading text="Delete your collection?" font="normal"/>
       <Heading4 text="This action cannot be undone 🫣" font="normal"/>
 
-      <div className="flex w-full gap-5 justify-between">
+      <div className="w-full grid grid-cols-2 gap-5">
         <RoundedButton
           text="Delete"
           onClick={handleDeleteCollection}
-          classes="grow"
           style='red'
           disabled={isPending}
         />
         <RoundedButton
           text="Cancel"
           onClick={onClose}
-          classes="grow"
           style="light"
         />
       </div>

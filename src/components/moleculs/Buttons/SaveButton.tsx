@@ -1,8 +1,8 @@
 'use client';
 
-import { useGetUserSavedCards, useSaveCard } from "@/src/queries";
+import { useGetUserSavedCards, useRemoveCardFromSaved, useSaveCard } from "@/src/queries";
 import { PrimaryButton } from "@/src/components/moleculs";
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { useUser } from "@/src/store/user";
 
 type Props = {
@@ -12,17 +12,25 @@ type Props = {
 const SaveButton: React.FC<Props> = ({ cardId }) => {
   const { user } = useUser();
   const { mutate: save } = useSaveCard();
+  const { mutate: removeFromSaved } = useRemoveCardFromSaved();
 
   const { data: savedCards } = useGetUserSavedCards();
-  const isCardSavedByUser = savedCards?.some(savedCard => 
-    savedCard.id === cardId);
+  const isCardSavedByUser = useMemo(() => 
+    savedCards?.some(savedCard => savedCard.id === cardId), 
+  [savedCards]);
+  
+  const handleClick = () => {
+    isCardSavedByUser
+      ? save(cardId)
+      : removeFromSaved(cardId);
+  }
 
   return (
     <PrimaryButton
-      text={isCardSavedByUser ? 'Saved' : 'Save'}
-      onClick={() => save(cardId)}
+      text={isCardSavedByUser ? 'Remove from saved' : 'Save'}
+      onClick={handleClick}
       type="button"
-      disabled={isCardSavedByUser || !user}
+      disabled={!user}
     />
   );
 };

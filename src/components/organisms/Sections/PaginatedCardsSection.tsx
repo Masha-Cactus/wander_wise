@@ -2,7 +2,7 @@
 
 import { useSearchCards } from "@/src/queries";
 import { ICard, ISearchCard } from "@/src/services";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { LoadedContentStateController } from "@/src/components/moleculs";
 import { Heading2 } from "@/src/components/atoms";
 import { Pagination, Gallery } from "@/src/components/organisms";
@@ -15,8 +15,9 @@ type Props = {
 const PaginatedCardsSection: React.FC<Props> = ({ filterParams }) => {
   const [page, setPage] = useState(0);
   const [displayedCards, setDisplayedCards] = useState<ICard[]>([]);
-  const [isLastPage, setIsLastPage] = useState(false);
+  const [lastPage, setLastPage] = useState<number | undefined>(undefined);
   const [isNothingFound, setIsNothingFound] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const { 
     data, 
@@ -28,7 +29,8 @@ const PaginatedCardsSection: React.FC<Props> = ({ filterParams }) => {
 
   const handleDataAbsence = () => {
     if (displayedCards.length) {
-      setIsLastPage(true);
+      setPage(page - 1);
+      setLastPage(page - 1);
     } else {
       setIsNothingFound(true);
     }
@@ -40,26 +42,30 @@ const PaginatedCardsSection: React.FC<Props> = ({ filterParams }) => {
         handleDataAbsence();
       } else {
         if (data.cards.length < CARDS_PER_PAGE) {
-          setIsLastPage(true);
+          setLastPage(page);
         }
 
         setDisplayedCards(data.cards);
       } 
 
     }
-  }, [data, filterParams, page, displayedCards]);
+  }, [data, filterParams]);
 
   useEffect(() => {
     if (error && failureCount >= 3) {
       handleDataAbsence();
     }
-  }, [error, failureCount, displayedCards]);
+  }, [error, failureCount, handleDataAbsence]);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (scrollRef) {
+      scrollRef.current?.scrollIntoView({ block: "end", behavior: 'smooth' });
+    }
   }, [displayedCards]);
 
   return (
+    <>
+    <div className="h-px absolute left-0 top-0" ref={scrollRef} />
     <LoadedContentStateController
       isEmpty={isNothingFound}
       emptyFallbackComponent={
@@ -91,10 +97,11 @@ const PaginatedCardsSection: React.FC<Props> = ({ filterParams }) => {
       <Pagination 
         page={page} 
         setPage={setPage} 
-        isLastPage={isLastPage}
+        isLastPage={page === lastPage}
       />
             
     </LoadedContentStateController>
+    </>
   );
 };
 

@@ -37,12 +37,13 @@ const SquareCheckboxInput = <T extends FieldValues>({
       control={control}
       name={name}
       isLabelVisible={false}
+      isErrorLabelVisible={false}
     >
       {(field) => (
         <div
           {...field}
           onClick={() => handleChange(field)}
-          className='flex gap-2 min-w-5/12 items-center'
+          className='flex gap-2 items-center'
         >
           <div className="flex justify-center h-6 w-6 cursor-pointer 
           items-center border border-gray80 rounded">

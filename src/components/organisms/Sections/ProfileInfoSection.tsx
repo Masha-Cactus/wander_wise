@@ -51,13 +51,15 @@ const ProfileInfoSection: React.FC = () => {
     text-black text-base font-normal text-center py-12"
     >
       <div className="relative top-0 flex justify-center">
-        <Image
-          src={user?.profileImage || "/user-default.png"}
-          alt="profile"
-          width={200}
-          height={200}
-          className="w-36 h-36 rounded-full object-cover"
-        />
+        <div className="relative w-36 h-36">
+          <Image
+            src={user?.profileImage || "/user-default.png"}
+            alt="profile"
+            fill
+            sizes="144px"
+            className="rounded-full object-cover"
+          />
+        </div>
 
         <div
           className="absolute bg-gray80 h-8 w-8 bottom-0 right-1/3 

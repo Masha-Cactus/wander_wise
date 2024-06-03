@@ -1,16 +1,3 @@
-export interface ResponseWithPagination<T> {
-  page: number;
-  size: number;
-  nextPageNumber: null | number;
-  previousPageNumber: null | number;
-  totalPages: number;
-  results: T[];
-}
-
-export interface StatusResponse {
-  status: string;
-}
-
 export enum TripTypes {
   active = 'Active',
   chill = 'Chill',
@@ -39,7 +26,7 @@ export type ClimateType = `${Climate}`;
 export enum SpecialRequirements {
   pets = 'With pets',
   kids = 'With kids',
-  queer = 'Queer friendly',
+  queer = 'LGBTQ friendly',
   disability = 'Disability',
 }
 

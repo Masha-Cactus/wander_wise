@@ -92,14 +92,9 @@ const MultipleImageInput = <T extends FieldValues>({
                 <div key={i} className="relative group h-full w-40 shrink-0">
                   <Image 
                     src={URL.createObjectURL(file)}
-                    width={0}
-                    height={0}
-                    style={{ 
-                      width: '100%', 
-                      height: '100%', 
-                      objectFit: 'cover',
-                      borderRadius: '15px', 
-                    }}
+                    fill
+                    sizes="160px"
+                    className="object-cover rounded-2xl"
                     alt="Card image"
                   />
                   <Icons.delete

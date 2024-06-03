@@ -13,29 +13,48 @@ const CardImagesSection: React.FC<Props> = ({ images }) => {
   const [displayedImages, setDisplayedImages] = useState(images);
 
   return (
-    <div className="flex flex-col rounded-3xl gap-px overflow-hidden h-full">
-      <CardSlider activeSlide={selectedImage} slides={displayedImages} />
+    <div className="w-full flex flex-col rounded-3xl gap-px overflow-hidden">
+      {displayedImages.length ? (
+        <>
+          <CardSlider activeSlide={selectedImage} slides={displayedImages} />
 
-      {images.length > 1 && (
-        <div className="w-full flex gap-px h-24 overflow-x-scroll">
-          {displayedImages.map((image, index) => (
-            <Image
-              key={image}
-              src={image}
-              alt="Trip image"
-              width={154}
-              height={84}
-              className="object-cover cursor-pointer grow"
-              onClick={() => setSelectedImage(index)}
-              onError={() => {
-                setDisplayedImages((currImages) => currImages
-                  .filter(currImage => currImage !== image)
-                );
-              }}
-            />
-          ))}
+          {displayedImages.length > 1 && (
+            <div className="w-full flex gap-px h-24 overflow-x-scroll">
+              {displayedImages.map((image, index) => (
+                <div key={image} className="relative h-full w-40 grow">
+                  <Image
+                    src={image}
+                    alt="Trip image"
+                    fill
+                    sizes="160px"
+                    className="object-cover cursor-pointer"
+                    onClick={() => setSelectedImage(index)}
+                    onError={() => {
+                      setDisplayedImages((currImages) => currImages
+                        .filter(currImage => currImage !== image)
+                      );
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      ) : (
+        <div 
+          className="bg-gray30 w-full pb-[68%] rounded-3xl 
+            flex justify-center items-center"
+          >
+          <Image 
+            src="/trip-default.png" 
+            alt="No card images"
+            width={120}
+            height={120}
+            className="w-80 h-80"
+          />
         </div>
       )}
+
     </div>
   );
 };

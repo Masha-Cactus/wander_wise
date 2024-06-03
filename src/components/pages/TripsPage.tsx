@@ -36,7 +36,7 @@ const TripsPage = () => {
 
       <div
         className="flex flex-col justify-between items-center gap-8 
-          col-span-9 px-10 py-8 overflow-y-scroll"
+          col-span-9 px-10 py-8 overflow-y-scroll relative"
       >
 
         {!!filterParams ? (

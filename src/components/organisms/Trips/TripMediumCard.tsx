@@ -1,26 +1,25 @@
 'use client';
 
-import Image from "next/image";
 import Link from "next/link";
-
 import { Divider, Icons, Heading5, TextBase } from "@/src/components/atoms";
 import { 
   LikeButton, 
   SaveButton, 
   IconButton, 
-  PrimaryButton 
+  PrimaryButton,
+  TripImage
 } from "@/src/components/moleculs";
 import { ICard } from "@/src/services";
 import { memo, useState } from "react";
 import {
   AddCardToCollectionModal,
-  RemoveTripFromCollectionModal
+  RemoveTripFromCollectionModal,
+  CreateReportModal,
+  DeleteCardModal
 } from "@/src/components/organisms";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import CreateReportModal from "../Modals/CreateReportModal";
 import { useUser } from "@/src/store/user";
 import { Routes } from "@/src/lib/constants";
-import DeleteCardModal from "../Modals/DeleteCardModal";
 import { useCopyUrlToClipboard } from "@/src/hooks";
 
 type Props = {
@@ -61,7 +60,7 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
     >
       <Link 
         href={Routes.TRIP(card.id)} 
-        className="w-full pb-[68%] relative group"
+        className="w-full pb-[68%] relative group rounded-3xl overflow-hidden"
       >
         {isCopied && (
           <span 
@@ -72,13 +71,10 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
           </span>
         )}
 
-        <Image
-          src={card.imageLinks[currentImageIndex] || '/trip-default.png'}
+        <TripImage 
+          imageLinks={card.imageLinks}
           alt={card.name}
-          fill
           sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw"
-          className="object-cover cursor-pointer rounded-3xl"
-          onError={handleImageError}
         />
 
         {isCardInMyCardsPage && (
@@ -123,7 +119,7 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
           />
 
           <IconButton
-            icon={card.author === "AI" ? <Icons.user /> : <Icons.jpt />}
+            icon={card.author === "AI" ? <Icons.jpt /> : <Icons.user />}
             text={card.author === "AI" ? "AI" : "User"}
             classes={classes}
             size="small"

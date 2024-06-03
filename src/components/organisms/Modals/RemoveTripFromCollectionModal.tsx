@@ -18,36 +18,18 @@ interface RemoveTripFromCollectionModalProps {
   onClose: () => void;
 }
 
-// todo 
-// check component in browser
-
 const RemoveTripFromCollectionModal: React.FC<
 RemoveTripFromCollectionModalProps
 > = ({ trip, collectionId, onClose }) => {
   const { isPending, mutate, isError } = useUpdateCollection();
-  const {
-    isPending: isRemovePending, 
-    mutate: remove, 
-    isError: isRemoveError 
-  } = useRemoveCardFromSaved();
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const { data: collection } = useGetCollection(collectionId);
-
 
   const handleError = (error: any) => {
     setErrorMessage(error);
   };
 
   const handleRemoveTrip = () => {
-    if (collection?.name === 'Saved cards') {
-      remove(trip.id, {
-        onError: handleError,
-        onSuccess: () => onClose(),
-      });
-
-      return;
-    }
-
     if (collection) {
       const data: IUpdateCollection = {
         ...collection,
@@ -65,26 +47,28 @@ RemoveTripFromCollectionModalProps
 
   return (
     <ModalSkeleton onClose={onClose}>
-      <Heading text={`Remove ${trip.name} from ${collection?.name}?`} font="normal"/>
+      <h1 className="text-4xl font-normal leading-normal">
+        Remove “
+        <span className="font-medium">{trip.name}</span>
+        ” from {collection?.name}?
+      </h1>
       <Heading4 text="This action cannot be undone 🫣" font="normal"/>
 
-      <div className="flex w-full gap-5 justify-between">
+      <div className="w-full grid grid-cols-2 gap-5">
         <RoundedButton
           text="Delete"
           onClick={handleRemoveTrip}
-          classes="grow"
           style="red"
-          disabled={isPending || isRemovePending}
+          disabled={isPending}
         />
         <RoundedButton
           text="Cancel"
           onClick={onClose}
-          classes="grow"
           style="light"
         />
       </div>
 
-      {(isError || isRemoveError) && <ErrorText errorText={errorMessage} />}
+      {(isError) && <ErrorText errorText={errorMessage} />}
     </ModalSkeleton>
   );
 };

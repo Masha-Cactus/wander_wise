@@ -76,7 +76,7 @@ const CreateCollectionShortForm: React.FC<Props> = ({ closeForm }) => {
           type="submit" 
           text="Create" 
           disabled={isPending} 
-          classes="w-full"
+          classes="w-full h-10"
         />
 
       {isError && <ErrorText errorText={errorMessage} />}

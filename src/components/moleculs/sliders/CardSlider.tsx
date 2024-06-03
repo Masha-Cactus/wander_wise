@@ -49,7 +49,7 @@ const CardSlider: React.FC<Props> = ({ slides, activeSlide }) => {
           <SwiperSlide key={slide} className="h-full w-full relative pb-[68%]">
             <Image
               src={slide}
-              alt="slide"
+              alt="Trip image"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover cursor-pointer"

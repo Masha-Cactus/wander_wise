@@ -8,7 +8,10 @@ import { Map } from "@/src/components/moleculs";
 type Tabs = {
   'Description': string;
   "Why this place?": string[];
-  'Map': string;
+  'Map': {
+    latitude: number;
+    longitude: number;
+  };
 };
 
 type Props = {
@@ -21,7 +24,7 @@ const Tab: React.FC<Props> = ({ tabs }) => {
 
   return (
     <div
-      className="flex flex-col border-2 h-full gap-2 
+      className="flex flex-col border-2 w-full h-full gap-2 
     border-gray-300 rounded-3xl p-8 bg-white"
     >
       <div className="flex justify-between">
@@ -66,7 +69,7 @@ const Tab: React.FC<Props> = ({ tabs }) => {
         )}
 
         {active === 'Map' && (
-          <Map mapLink={tabs['Map']} />
+          <Map coordinates={tabs['Map']} />
         )}
       </div>
     </div>

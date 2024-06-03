@@ -5,7 +5,7 @@ import {
   useLikeCard, 
   useRemoveLikeFromCard 
 } from "@/src/queries";
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { Icons } from "@/src/components/atoms";
 import { IconButton } from "@/src/components/moleculs";
 import { useUser } from "@/src/store/user";
@@ -22,13 +22,14 @@ const LikeButton: React.FC<Props> = ({ cardId, cardLikes, classes}) => {
   const { mutate: removeLike } = useRemoveLikeFromCard();
 
   const { data: likedCards } = useGetUserLikedCards();
-  const isCardLikedByUser = likedCards?.some(likedCard => 
-    likedCard.id === cardId);
+  const isCardLikedByUser = useMemo(() => 
+    likedCards?.some(likedCard => likedCard.id === cardId), 
+  [likedCards]);
 
-  const handleLikeClick = (id: number) => {
+  const handleLikeClick = () => {
     isCardLikedByUser
-      ? removeLike(id)
-      : like(id);
+      ? removeLike(cardId)
+      : like(cardId);
   };
 
   return (
@@ -36,7 +37,7 @@ const LikeButton: React.FC<Props> = ({ cardId, cardLikes, classes}) => {
       icon={isCardLikedByUser ? <Icons.heartFilled /> : <Icons.heart />}
       text={cardLikes.toString()}
       classes={classes}
-      onClick={() => handleLikeClick(cardId)}
+      onClick={handleLikeClick}
       disabled={!user}
     />
   );

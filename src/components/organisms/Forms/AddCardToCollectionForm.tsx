@@ -93,11 +93,11 @@ const AddCardToCollectionForm: React.FC<Props>
         ))}  
       </div>
       
-      <div className="flex w-full h-14 gap-5 items-center">
+      <div className="w-full grid grid-cols-2 gap-5">
         <RoundedButton
+          type="button"
           text="Cancel"
           style="light"
-          classes="grow h-full"
           onClick={closeModal}
           disabled={isPending}
         />
@@ -105,8 +105,8 @@ const AddCardToCollectionForm: React.FC<Props>
         <PrimaryButton 
           type="submit"
           text="Add" 
-          disabled={isPending} 
-          classes="grow h-full px-8" 
+          disabled={isPending}
+          classes="h-full" 
         />
       </div>
       {isError && <ErrorText errorText={errorMessage} />}

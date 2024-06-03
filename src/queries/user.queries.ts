@@ -52,6 +52,8 @@ export function useGetUserCollections() {
       return Promise.reject('No user authorized');
     },
     enabled: !!user,
+    select: (collections) => collections.filter(collection => 
+      !['Saved cards', 'Liked cards', 'Created cards'].includes(collection.name)),
   });
 }
 

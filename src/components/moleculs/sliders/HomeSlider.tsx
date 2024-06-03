@@ -45,7 +45,7 @@ const HomeSlider: React.FC<Props> = ({ slides }) => {
           <SwiperSlide key={slide} className="h-full w-full relative pb-[60%]">
             <Image
               src={slide}
-              alt="slide"
+              alt="Homepage slide"
               fill
               style={{ 
                 objectFit: 'cover',
