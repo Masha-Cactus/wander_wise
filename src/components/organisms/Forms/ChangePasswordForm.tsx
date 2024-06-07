@@ -7,9 +7,8 @@ import { changePasswordSchema } from "@/src/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
-import { PasswordInput, PrimaryButton } from "@/src/components/moleculs";
-import { useEffect, useState } from "react";
-import { saveCookies } from "@/src/actions/manageCookies";
+import { PasswordInput, PrimaryButton } from "@/src/components/molecules";
+import { useState } from "react";
 
 type Props = {
   closeModal: () => void;
@@ -32,7 +31,7 @@ const ChangePasswordForm: React.FC<Props> = ({ closeModal }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError, isSuccess, data } = useUpdatePassword();
+  const { isPending, mutate, isError } = useUpdatePassword();
   const handleError = (error: any) => {
     setErrorMessage(error.message);
   };
@@ -41,17 +40,9 @@ const ChangePasswordForm: React.FC<Props> = ({ closeModal }) => {
   = async(data) => {
     mutate(data, {
       onError: handleError,
+      onSuccess: closeModal,
     });
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      saveCookies({token: data.token})
-        .then(() => {
-          closeModal();
-        });
-    }
-  }, [isSuccess]);
 
   return (
     <form

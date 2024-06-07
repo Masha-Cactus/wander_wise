@@ -4,7 +4,7 @@ import { getDaysAgo } from "@/src/lib/helpers";
 import { IComment } from "@/src/services";
 import { memo } from "react";
 import { Divider, Icons, TextBase, Heading5 } from "@/src/components/atoms";
-import { LinkButton } from "@/src/components/moleculs";
+import { LinkButton } from "@/src/components/molecules";
 import { useGetCardDetails } from "@/src/queries";
 import { Stars } from "@/src/components/organisms";
 import { Routes } from "@/src/lib/constants";
@@ -28,7 +28,7 @@ const ReviewCardLong: React.FC<Props> = ({ review }) => {
           <TextBase 
             text={getDaysAgo(review.timeStamp) || 'recently'} 
             font="normal" 
-            classes="text-gray50" 
+            classes="text-gray-50" 
           />
           <Divider classes="h-full w-px" />
           <div className="flex items-center gap-2">
@@ -42,7 +42,7 @@ const ReviewCardLong: React.FC<Props> = ({ review }) => {
           
         </div>
       </div>
-      <TextBase text={review.text} font="normal" classes="text-gray80" />
+      <TextBase text={review.text} font="normal" classes="text-gray-80" />
     </article>
   );
 };

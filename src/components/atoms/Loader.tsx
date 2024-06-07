@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { memo } from "react";
 
 export interface LoaderProps {
@@ -8,8 +7,8 @@ export interface LoaderProps {
 const Loader: React.FC<LoaderProps> = ({ classes }) => {
   return (
     <div role="status" className={`m-auto ${classes ? classes : ''}`}>
-      <div className="w-40 h-40 border-[16px] border-gray50 rounded-full 
-      border-t-[16px] border-t-gray80 animate-spin"/>
+      <div className="w-40 h-40 border-[16px] border-gray-50 rounded-full 
+      border-t-[16px] border-t-gray-80 animate-spin"/>
       <span className="sr-only">Loading...</span>
     </div>
   );

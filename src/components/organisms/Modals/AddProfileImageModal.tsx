@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { Heading } from "@/src/components/atoms";
 import { 
   ModalSkeleton, 
   UploadProfileImageForm 
@@ -13,13 +12,13 @@ const AddProfileImageModal: React.FC<AddProfileImageModalProps> = ({
   onClose,
 }) => {
   return (
-    <ModalSkeleton onClose={onClose}>
-      <Heading text="Add your profile picture" font="normal"/>
-
+    <ModalSkeleton 
+      onClose={onClose}
+      title="Add your profile picture"
+    >
       <UploadProfileImageForm
         closeModal={onClose}
       />
-
     </ModalSkeleton>
   );
 };

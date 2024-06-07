@@ -3,7 +3,7 @@
 import { memo, useState } from "react";
 import { Divider, TextBase, Heading5 } from "@/src/components/atoms";
 import { twMerge } from "tailwind-merge";
-import { Map } from "@/src/components/moleculs";
+import { Map } from "@/src/components/molecules";
 
 type Tabs = {
   'Description': string;
@@ -23,10 +23,7 @@ const Tab: React.FC<Props> = ({ tabs }) => {
   = useState<keyof Tabs>('Description');
 
   return (
-    <div
-      className="flex flex-col border-2 w-full h-full gap-2 
-    border-gray-300 rounded-3xl p-8 bg-white"
-    >
+    <div className="flex flex-col w-full h-full gap-2">
       <div className="flex justify-between">
         {Object.keys(tabs).map((tab) => (
           <li
@@ -50,9 +47,12 @@ const Tab: React.FC<Props> = ({ tabs }) => {
 
       <Divider classes="mb-4" />
 
-      <div className="max-h-[420px] overflow-scroll">
+      <div className="overflow-y-scroll">
         {active === 'Description' && (
-          <TextBase text={tabs['Description']} font="normal" />
+          <TextBase 
+            text={tabs['Description']} 
+            font="normal" 
+          />
         )}
 
         {active === 'Why this place?' && (
@@ -60,7 +60,7 @@ const Tab: React.FC<Props> = ({ tabs }) => {
             <>
               {tabs['Why this place?'].map(reason => (
                 <li key={reason} className="flex gap-3 w-full items-center">
-                  <div className="w-2 h-2 bg-gray80 rounded-full" />
+                  <div className="w-2 h-2 bg-gray-80 rounded-full" />
                   <TextBase text={reason} font="normal" />
                 </li>
               ))}

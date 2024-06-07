@@ -7,8 +7,7 @@ import { useUser } from "@/src/store/user";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
-import { TextInput, PrimaryButton } from "@/src/components/moleculs";
-import { ICollection } from "@/src/services";
+import { TextInput, PrimaryButton } from "@/src/components/molecules";
 import { changeCollectionNameSchema } from "@/src/validation";
 import { useParams } from "next/navigation";
 
@@ -25,7 +24,7 @@ const ChangeCollectionNameForm: React.FC<Props>
   const { user } = useUser();
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const { id: collectionId } = useParams();
-  const { data: collection, error } = useGetCollection(+collectionId);
+  const { data: collection } = useGetCollection(+collectionId);
 
   const validationSchema = changeCollectionNameSchema();
 
@@ -67,21 +66,21 @@ const ChangeCollectionNameForm: React.FC<Props>
       onSubmit={handleSubmit(onSubmit)} 
       className="w-full flex flex-col gap-8"
     >
-        <TextInput
-          type="text"
-          name="newName"
-          control={control}
-          errorText={errors.newName?.message}
-          disabled={isPending}
-          label="New collection name"
-        />
+      <TextInput
+        type="text"
+        name="newName"
+        control={control}
+        errorText={errors.newName?.message}
+        disabled={isPending}
+        label="New collection name"
+      />
 
-        <PrimaryButton 
-          text="Change" 
-          type="submit" 
-          classes="w-full" 
-          disabled={isPending} 
-        />
+      <PrimaryButton 
+        text="Change" 
+        type="submit" 
+        classes="w-full" 
+        disabled={isPending} 
+      />
 
       {isError && <ErrorText errorText={errorMessage} />}
     </form>

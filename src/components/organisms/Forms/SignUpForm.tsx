@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ISignUp } from "@/src/services";
@@ -8,19 +8,20 @@ import { signUpSchema } from "@/src/validation";
 import {
   PrimaryButton,
   TextInput,
-} from "@/src/components/moleculs";
+} from "@/src/components/molecules";
 import { useSignUp } from "@/src/queries";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { ErrorText } from "@/src/components/atoms";
-import { PasswordInput } from "@/src/components/moleculs";
+import { PasswordInput } from "@/src/components/molecules";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
-import { saveCookies } from "@/src/actions/manageCookies";
 
 type Props = {
   openConfirmEmailModal: () => void;
+  openSignInModal: () => void;
 };
 
-const SignUpForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
+const SignUpForm: React.FC<Props> 
+= ({ openConfirmEmailModal, openSignInModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const [isShowPassword, setIsShowPassword] = useState(false);
   const validationSchema = signUpSchema();
@@ -43,24 +44,20 @@ const SignUpForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
     setErrorMessage(error);
   };
 
-  const { isPending, mutate, isError, isSuccess, data } = useSignUp();
+  const { isPending, mutate, isError } = useSignUp();
 
   const onSubmit = async (data: ISignUp) => {
     const trimmedUserData = trimObjectFields(data);
 
     mutate(trimmedUserData, {
       onError: handleError,
+      onSuccess: (user) => {
+        user.banned 
+          ? openConfirmEmailModal()
+          : openSignInModal();
+      }
     });
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      saveCookies({userId: data.id, confirmationCode: data.emailConfirmCode})
-        .then(() => {
-          openConfirmEmailModal();
-        });
-    }
-  }, [isSuccess]);
 
   return (
     <form

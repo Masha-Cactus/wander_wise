@@ -11,7 +11,7 @@ import {
   SignInModal,
   SignUpModal,
 } from "@/src/components/organisms";
-import { Navbar } from "@/src/components/moleculs";
+import { Navbar } from "@/src/components/molecules";
 import { Routes } from "@/src/lib/constants";
 
 const Header: React.FC = () => {
@@ -68,7 +68,6 @@ const Header: React.FC = () => {
           onClose={() => setIsShowSignUpModal(false)}
           onOpenSignIn={() => setIsShowSignInModal(true)}
           onOpenConfirmEmail={() => {
-            console.log('I open confirm email');
             setIsShowConfirmEmailModal(true);
           }}
         />

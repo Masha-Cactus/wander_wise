@@ -8,7 +8,7 @@ import {
   IconButton, 
   PrimaryButton,
   TripImage
-} from "@/src/components/moleculs";
+} from "@/src/components/molecules";
 import { ICard } from "@/src/services";
 import { memo, useState } from "react";
 import {
@@ -26,7 +26,7 @@ type Props = {
   card: ICard;
 };
 
-const classes = "bg-gray80 text-white rounded-full";
+const classes = "bg-gray-80 text-white rounded-full";
 
 const TripMediumCard: React.FC<Props> = ({ card }) => {
   const { user } = useUser();
@@ -44,18 +44,11 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
 
   const { push } = useRouter();
 
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const handleImageError = () => {
-    if (currentImageIndex + 1 < card.imageLinks.length) {
-      setCurrentImageIndex(currentImageIndex + 1);
-    }
-  };
-
   const [isCopied, copy] = useCopyUrlToClipboard(Routes.TRIP(card.id));
 
   return (
     <article
-      className="flex flex-col gap-4 items-center justify-between 
+      className="flex flex-col gap-4 items-center 
       rounded-3xl bg-white p-4"
     >
       <Link 
@@ -65,7 +58,7 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
         {isCopied && (
           <span 
             className="z-10 absolute flex justify-center items-center 
-         bg-gray10 rounded-3xl inset-x-2 top-2 py-2"
+         bg-gray-10 rounded-3xl inset-x-2 top-2 py-2"
           >
             <TextBase text="Copied to clipboard!" font="medium" />
           </span>
@@ -93,7 +86,7 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
           </div>
         )}
       </Link>
-      <div className="w-full flex flex-col gap-4">
+      <div className="w-full flex flex-col gap-4 grow">
         <div className="w-full flex justify-between">
           <LikeButton
             cardId={card.id}
@@ -127,8 +120,8 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
         </div>
         <Divider />
 
-        <Heading5 text={card.name} font="medium" classes="grow" />
-        <TextBase text={card.whereIs} font="normal" />
+        <Heading5 text={card.name} font="medium" />
+        <TextBase text={card.whereIs} font="normal" classes="grow" />
       </div>
 
       {isCardInSavedPage ? (
@@ -154,7 +147,7 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
                 text="Remove from the collection" 
                 type="button"
                 onClick={() => setIsRemoveFromCollectionModal(true)}
-                classes="bg-gray30 text-gray70"
+                classes="bg-gray-30 text-gray-70"
               />
           
               {isRemoveFromCollectionModal && (

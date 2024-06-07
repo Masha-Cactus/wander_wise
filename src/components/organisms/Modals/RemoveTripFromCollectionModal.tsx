@@ -2,12 +2,11 @@
 
 import { memo } from "react";
 import { ModalSkeleton } from "@/src/components/organisms";
-import { ErrorText, Heading, Heading4 } from "@/src/components/atoms";
-import { RoundedButton } from "@/src/components/moleculs";
+import { ErrorText, Heading4 } from "@/src/components/atoms";
+import { RoundedButton } from "@/src/components/molecules";
 import { ICard, IUpdateCollection } from "@/src/services";
 import { 
   useGetCollection, 
-  useRemoveCardFromSaved, 
   useUpdateCollection 
 } from "@/src/queries";
 import { useNormalizedError } from "@/src/hooks";
@@ -32,7 +31,9 @@ RemoveTripFromCollectionModalProps
   const handleRemoveTrip = () => {
     if (collection) {
       const data: IUpdateCollection = {
-        ...collection,
+        id: collection.id,
+        name: collection.name,
+        isPublic: collection.isPublic,
         cardIds: collection.cardDtos
           .filter(card => card.id !== trip.id)
           .map(card => card.id),
@@ -52,7 +53,11 @@ RemoveTripFromCollectionModalProps
         <span className="font-medium">{trip.name}</span>
         ” from {collection?.name}?
       </h1>
-      <Heading4 text="This action cannot be undone 🫣" font="normal"/>
+      <Heading4 
+        text="This action cannot be undone 🫣" 
+        font="normal"
+        classes="mb-2 text-gray-80"
+      />
 
       <div className="w-full grid grid-cols-2 gap-5">
         <RoundedButton

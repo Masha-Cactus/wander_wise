@@ -11,7 +11,7 @@ const ProfilePage: React.FC = () => {
   return (
     <div
       className="gap-6 p-4 justify-center 
-    bg-gray10 grid grid-cols-12 grid-rows-auto h-full"
+    bg-gray-10 grid grid-cols-12 grid-rows-auto h-full"
     >
       <div className="col-span-4 row-span-all">
         <ProfileInfoSection />

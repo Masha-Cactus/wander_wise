@@ -7,7 +7,7 @@ type Props = {
 
 const Divider: React.FC<Props> = ({ classes }) => {
   return (
-    <div className={twMerge('bg-gray30 w-full h-px', classes)}></div>
+    <div className={twMerge('bg-gray-30 w-full h-px', classes)}></div>
   );
 };
 

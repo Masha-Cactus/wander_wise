@@ -19,7 +19,7 @@ import {
   CheckboxInput,
   PrimaryButton,
   SquareCheckboxInput
-} from "@/src/components/moleculs";
+} from "@/src/components/molecules";
 import { createCardSchema } from "@/src/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Dispatch, SetStateAction } from "react";

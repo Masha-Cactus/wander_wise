@@ -21,6 +21,7 @@ export function QueryProvider({children}: PropsWithChildren) {
       queries: {
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
+        staleTime: 5 * 60 * 1000,
       },
     },
     queryCache: new QueryCache({

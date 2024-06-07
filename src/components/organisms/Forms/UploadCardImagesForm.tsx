@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
-import { MultipleImageInput, PrimaryButton } from "@/src/components/moleculs";
+import { MultipleImageInput, PrimaryButton } from "@/src/components/molecules";
 import { Routes } from "@/src/lib/constants";
 
 type UploadCardImagesFormData = {
@@ -42,7 +42,6 @@ const UploadCardImagesForm: React.FC<Props> = ({ cardId, closeModal }) => {
   };
   
   const onSubmit = async ({images}: UploadCardImagesFormData) => {
-    console.log(images);
     if (typeof cardId === 'number') {
       mutate({
         images,

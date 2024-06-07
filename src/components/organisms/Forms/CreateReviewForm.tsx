@@ -11,7 +11,7 @@ import {
   PrimaryButton, 
   TextAreaInput, 
   StarsInput, 
-} from "@/src/components/moleculs";
+} from "@/src/components/molecules";
 import { useParams } from "next/navigation";
 
 type Props = {

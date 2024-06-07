@@ -21,7 +21,7 @@ import {
   PrimaryButton,
   SquareCheckboxInput,
   IconButton
-} from "@/src/components/moleculs";
+} from "@/src/components/molecules";
 import { updateCardSchema } from "@/src/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
@@ -139,9 +139,8 @@ const EditCardForm: React.FC<Props> = ({ card }) => {
             <div className="w-40 h-full shrink-0 
         flex flex-col gap-2 overflow-y-scroll">
               {currentImageLinks.map(image => (
-                <div className="relative w-full h-28">
+                <div key={image} className="relative w-full h-28">
                   <Image
-                    key={image}
                     src={image}
                     fill
                     sizes="160px"

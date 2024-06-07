@@ -21,7 +21,7 @@ const ReviewsList: React.FC<Props> = ({ reviews }) => {
         <div className="flex justify-between gap-2 items-center">
           <div className="flex gap-2 items-center">
             <Heading3 text="Reviews" />
-            <Heading4 text={`(${reviews?.length || 0})`} font="normal" classes="text-gray30" />
+            <Heading4 text={`(${reviews?.length || 0})`} font="normal" classes="text-gray-30" />
           </div>
         </div>
 
@@ -35,7 +35,7 @@ const ReviewsList: React.FC<Props> = ({ reviews }) => {
             font="semibold" 
             classes={
               "underline underline-offset-8 " 
-              + (user ? '' : 'text-gray30')
+              + (user ? '' : 'text-gray-30')
             }
           />
         </button>

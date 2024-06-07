@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 export { default as Tab } from "./Tab";
 export { default as Gallery } from "./Lists/Gallery";
+export { default as InfiniteList } from "./Lists/InfiniteList";
 export { default as ReviewsList } from "./Lists/ReviewsList";
 export { default as Stars } from "./Stars";
 export { default as Header } from "./Header";
@@ -10,6 +11,9 @@ export { default as Pagination } from "./Pagination";
 export { default as TripShortCard } from "./Trips/TripShortCard";
 export { default as TripMediumCard } from "./Trips/TripMediumCard";
 export { default as TripLongCard } from "./Trips/TripLongCard";
+export { default as TripXLCard } from "./Trips/TripXLCard";
+export { default as TripXSCard } from "./Trips/TripXSCard";
+
 export { default as ReviewCard } from "./ReviewCards/ReviewCard";
 export { default as ReviewCardLong } from "./ReviewCards/ReviewCardLong";
 
@@ -60,4 +64,5 @@ export { default as ProfileInfoSection } from "./Sections/ProfileInfoSection";
 export { default as SavedCardsSection } from "./Sections/SavedCardsSection";
 export { default as CreatedCardsSection } from "./Sections/CreatedCardsSection";
 export { default as CardImagesSection } from "./Sections/CardImagesSection";
-export { default as PaginatedCardsSection } from "./Sections/PaginatedCardsSection";
+export { default as SearchedCardsSection } from "./Sections/SearchedCardsSection";
+export { default as PopularCardsSection } from "./Sections/PopularCardsSection";

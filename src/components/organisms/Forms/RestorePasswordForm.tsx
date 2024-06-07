@@ -8,7 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Dispatch, SetStateAction } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ErrorText } from '@/src/components/atoms';
-import { PrimaryButton, TextInput } from '@/src/components/moleculs';
+import { PrimaryButton, TextInput } from '@/src/components/molecules';
 
 type Props = {
   setIsSubmitted: Dispatch<SetStateAction<boolean>>,
@@ -48,7 +48,7 @@ const RestorePasswordForm: React.FC<Props> = ({setIsSubmitted}) => {
 
   return (
     <form
-      className="flex flex-col gap-4 h-full w-full"
+      className="flex flex-col gap-12 h-full w-full"
       onSubmit={handleSubmit(onSubmit)}
     >
       <TextInput 

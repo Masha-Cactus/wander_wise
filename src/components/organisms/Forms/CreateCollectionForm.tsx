@@ -13,7 +13,7 @@ import {
   PrimaryButton, 
   TextInput,
   SquareCheckboxInput
-} from "@/src/components/moleculs";
+} from "@/src/components/molecules";
 import { Routes } from "@/src/lib/constants";
 
 
@@ -75,7 +75,10 @@ const CreateCollectionForm = () => {
 
           <div className="flex flex-col gap-4 max-h-64 overflow-y-scroll">
             {savedCards?.map(card => (
-              <div key={card.id} className="flex gap-4 justify-between items-center">
+              <div 
+                key={card.id} 
+                className="flex gap-4 justify-between items-center"
+              >
                 <Heading5 
                   text={`${card.name}, ${card.whereIs}`} 
                   font="normal"

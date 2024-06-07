@@ -15,7 +15,7 @@ import {
   TextAreaInput, 
   LocationInput, 
   TextInput 
-} from "@/src/components/moleculs";
+} from "@/src/components/molecules";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
 
 export interface ProfileEditFormData {

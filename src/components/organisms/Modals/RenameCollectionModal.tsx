@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { Heading } from "@/src/components/atoms";
 import { 
   ModalSkeleton,
   ChangeCollectionNameForm
@@ -13,13 +12,13 @@ const RenameCollectionModal: React.FC<RenameCollectionModalProps> = ({
   onClose,
 }) => {
   return (
-    <ModalSkeleton onClose={onClose}>
-      <Heading text="Change collection name" font="normal"/>
-
+    <ModalSkeleton 
+      onClose={onClose}
+      title="Change collection name"
+    >
       <ChangeCollectionNameForm
         closeModal={onClose}
       />
-
     </ModalSkeleton>
   );
 };

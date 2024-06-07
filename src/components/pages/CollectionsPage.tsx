@@ -1,14 +1,17 @@
 'use client';
 
-import { Heading3, Divider } from "@/src/components/atoms";
-import { LinkButton } from "@/src/components/moleculs";
+import { Heading3, Divider, Heading4 } from "@/src/components/atoms";
+import { 
+  LinkButton, 
+  LoadedContentStateController 
+} from "@/src/components/molecules";
 import { useGetUserCollections } from "@/src/queries";
 import { Collection } from "@/src/components/organisms";
 import { FormPageLayout } from "@/src/components/layouts";
 import { Routes } from "@/src/lib/constants";
 
 const CollectionsPage = () => {
-  const { data: collections } = useGetUserCollections();
+  const { data: collections, isLoading} = useGetUserCollections();
 
   return (
     <FormPageLayout>
@@ -26,12 +29,24 @@ const CollectionsPage = () => {
 
         <Divider />
 
-        <div className="w-full grid gap-5
-          grid-cols-[repeat(2,282px)]">
-          {collections?.map(collection => (
-            <Collection key={collection.id} collection={collection} />
-          ))}
-        </div>
+        <LoadedContentStateController
+          isEmpty={collections && !collections.length}
+          emptyFallbackComponent={
+            <Heading4 
+              text="You don’t have any collection yet." 
+              classes="text-gray-80 self-start" 
+              font="normal"
+            />
+          }
+          isLoading={isLoading}
+        >
+          <div className="w-full grid gap-5
+            grid-cols-[repeat(2,282px)]">
+            {collections?.map(collection => (
+              <Collection key={collection.id} collection={collection} />
+            ))}
+          </div>
+        </LoadedContentStateController>
       </article>
     </FormPageLayout>
   );

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { memo, useState } from "react";
-import CardSlider from "../../moleculs/sliders/CardSlider";
+import CardSlider from "../../molecules/sliders/CardSlider";
 
 type Props = {
   images: string[];
@@ -42,9 +42,9 @@ const CardImagesSection: React.FC<Props> = ({ images }) => {
         </>
       ) : (
         <div 
-          className="bg-gray30 w-full pb-[68%] rounded-3xl 
+          className="bg-gray-30 w-full pb-[68%] rounded-3xl 
             flex justify-center items-center"
-          >
+        >
           <Image 
             src="/trip-default.png" 
             alt="No card images"

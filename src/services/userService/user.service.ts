@@ -1,4 +1,4 @@
-import { authClient, baseClient, formDataClient } from "@/src/api";
+import { authClient, baseClient } from "@/src/api";
 import { ApiEndpoints } from "@/src/lib/constants";
 import { 
   ISocial,
@@ -60,7 +60,7 @@ class UserService {
   };
 
   updateImage (data: IUpdateImage) {
-    return formDataClient.put<never, IUser>(
+    return authClient.putForm<never, IUser>(
       `${this.BASE_URL}/update-user-image/${data.id}`,
       data, 
     );

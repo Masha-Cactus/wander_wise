@@ -1,6 +1,6 @@
 'use client';
 
-import { PrimaryButton } from "@/src/components/moleculs";
+import { PrimaryButton } from "@/src/components/molecules";
 import { ReviewCardLong } from "@/src/components/organisms";
 import { memo } from "react";
 import { Heading3, Heading5, Divider } from "@/src/components/atoms";
@@ -16,11 +16,11 @@ const RecentlyLikedSection: React.FC = () => {
     <section
       className="bg-white py-12 px-10 rounded-2xl flex flex-col"
     >
-      <Heading3 text="Reviews you've recently added" classes="mb-6" />
+      <Heading3 text="Reviews you've recently added" classes="mb-2" />
 
       {reviews && reviews?.length > 0 ? (
         <>
-          <Divider />
+          <Divider classes="mt-6" />
           {reviews.map((review) => (
             <div key={review.id}>
               <ReviewCardLong review={review} />

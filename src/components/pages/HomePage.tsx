@@ -2,7 +2,7 @@
 "use client";
 
 import { Routes, SLIDER_IMAGES } from "@/src/lib/constants";
-import { PrimaryButton, HomeSlider } from "@/src/components/moleculs";
+import { PrimaryButton, HomeSlider } from "@/src/components/molecules";
 import { memo } from "react";
 import { useRouter } from "next/navigation";
 import { Heading2, TitleText } from "@/src/components/atoms";
@@ -27,7 +27,7 @@ const HomePage: React.FC<Props> = ({}) => {
 
         <Heading2
           font="normal"
-          classes="text-center text-gray5 text-[2rem] leading-[3rem]"
+          classes="text-center text-gray-5 text-[2rem] leading-[3rem]"
           text="Your AI-powered travel buddy, adept at meticulously designing personalized journeys perfectly aligned with your unique preferences and desires."
         />
 

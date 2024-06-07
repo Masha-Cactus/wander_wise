@@ -11,15 +11,14 @@ import {
   IconButton,
   SaveButton,
   LikeButton,
-} from "@/src/components/moleculs/";
+} from "@/src/components/molecules";
 import { CardImagesSection, Tab } from "@/src/components/organisms";
 import { useCopyUrlToClipboard } from "@/src/hooks";
 import { Routes } from "@/src/lib/constants";
-import { useGetUserCreatedCards } from "@/src/queries";
 import { ICard } from "@/src/services";
-import Image from "next/image";
+import { useUser } from "@/src/store/user";
 import { useRouter } from "next/navigation";
-import { memo, useMemo, useState } from "react";
+import { memo, useState } from "react";
 import CreateReportModal from "../Modals/CreateReportModal";
 
 type Props = {
@@ -35,12 +34,10 @@ const TripLongCard: React.FC<Props> = ({ card }) => {
 
   const [isCopied, copy] = useCopyUrlToClipboard(Routes.TRIP(card.id));
   const [isReportCardModal, setIsReportCardModal] = useState(false);
+  const { user } = useUser();
   const { push } = useRouter();
-  const { data: createdCards } = useGetUserCreatedCards();
 
-  const isCardCreatedByUser = useMemo(() => 
-    createdCards?.some(createdCard => createdCard.id === card.id), 
-  [createdCards]);
+  const isCardCreatedByUser = card.author === user?.pseudonym;
 
   return (
     <article
@@ -67,7 +64,7 @@ const TripLongCard: React.FC<Props> = ({ card }) => {
                 <Heading5 
                   text="Copied to clipboard!" 
                   font="medium" 
-                  classes="text-gray80" 
+                  classes="text-gray-80" 
                 />
               </span>
             )}
@@ -119,7 +116,12 @@ const TripLongCard: React.FC<Props> = ({ card }) => {
         </div>
 
         <div className="col-span-5 row-span-1 flex flex-col gap-6">
-          <Tab tabs={tabs} />
+          <div 
+            className="border-2 border-gray-300 rounded-3xl 
+            p-8 bg-white max-h-[546px]"
+          >
+            <Tab tabs={tabs} />
+          </div>
           <SaveButton cardId={card.id} />
         </div>
 

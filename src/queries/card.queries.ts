@@ -1,6 +1,4 @@
 import { 
-  keepPreviousData, 
-  useInfiniteQuery, 
   useMutation, 
   useQuery, 
   useQueryClient 
@@ -12,7 +10,6 @@ import {
   ISearchCard,
   IReportCard,
   cardService,
-  ISearchCardResponse
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
 
@@ -168,9 +165,9 @@ export function useReportCard() {
   });
 }
 
-export function usePopularCards() {
+export function usePopularCards(page: number) {
   return useQuery({
-    queryKey: ['popular-cards'],
+    queryKey: ['popular-cards', { page }],
     queryFn: () => cardService.getPopular(),
   });
 }
@@ -186,20 +183,5 @@ export function useSearchCards(page: number, filterParams: ISearchCard | null) {
       return null;
     },
     enabled: !!filterParams,
-  });
-}
-
-export function useInfiniteSearchCards(filterParams: ISearchCard | null) {
-  return useInfiniteQuery({
-    queryKey: ['cards', filterParams],
-    queryFn: ({ pageParam }) => cardService.searchCards(
-      pageParam, filterParams as ISearchCard),
-    initialPageParam: 0,
-    placeholderData: keepPreviousData,
-    enabled: !!filterParams,
-    getNextPageParam: 
-      (lastPage: ISearchCardResponse ) => lastPage.currentPage + 1,
-    getPreviousPageParam: 
-      (firstPage: ISearchCardResponse) => firstPage.currentPage - 1,
   });
 }

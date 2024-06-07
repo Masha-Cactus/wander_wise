@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { ModalSkeleton, SignUpForm } from "@/src/components/organisms";
 import { Heading, Heading4, TextBase, Divider } from "@/src/components/atoms";
-import { UnstyledButton } from "@/src/components/moleculs";
+import { UnstyledButton } from "@/src/components/molecules";
 
 interface SignUpModalProps {
   onClose: () => void;
@@ -28,18 +28,25 @@ const SignUpModal: React.FC<SignUpModalProps>
         <Heading text="Wander Wise" font="medium" classes="font-maven" />
       </div>
 
-      <Heading4 text="Let’s begin the adventure ✨" font="normal" />
+      <Heading4 
+        text="Let’s begin the adventure ✨" 
+        font="normal" 
+        classes="text-gray-80"
+      />
 
-      <Divider />
+      <Divider classes="mb-2" />
 
-      <SignUpForm openConfirmEmailModal={handleFormSubmit} />
+      <SignUpForm 
+        openConfirmEmailModal={handleFormSubmit} 
+        openSignInModal={handleSignInClick} 
+      />
 
-      <Divider />
+      <Divider classes="mb-2" />
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 justify-center">
         <TextBase text="Already have an account?" font="normal" />
         <UnstyledButton
-          text="Log In"
+          text="Log in"
           classes="font-bold"
           onClick={handleSignInClick}
         />

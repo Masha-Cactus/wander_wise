@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { ModalSkeleton, SignInForm } from "@/src/components/organisms";
 import { Heading, Heading4, TextBase, Divider } from "@/src/components/atoms";
-import { UnstyledButton } from "@/src/components/moleculs";
+import { UnstyledButton } from "@/src/components/molecules";
 
 interface SignInModalProps {
   onClose: () => void;
@@ -30,9 +30,13 @@ const SignInModal: React.FC<SignInModalProps> = ({
         <Heading text="Welcome back to " font="normal" />
         <Heading text="Wander Wise" font="medium" classes="font-maven" />
       </div>
-      <Heading4 text="Let's continue our trip planning 🌍" font="normal" />
+      <Heading4 
+        text="Let's continue our trip planning 🌍" 
+        font="normal" 
+        classes="text-gray-80"
+      />
 
-      <Divider />
+      <Divider classes="mb-2" />
 
       <SignInForm closeModal={onClose} />
 
@@ -42,9 +46,9 @@ const SignInModal: React.FC<SignInModalProps> = ({
         onClick={handleRestorePasswordClick}
       />
 
-      <Divider />
+      <Divider classes="mb-2" />
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 jystify-center">
         <TextBase
           text="Don’t have an account yet?"
           classes="text-nowrap"

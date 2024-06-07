@@ -7,15 +7,18 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useGetCardDetails } from "@/src/queries";
 import { Routes } from "@/src/lib/constants";
+import { useUser } from "@/src/store/user";
 
 const EditCardPage = () => {
   const { id } = useParams();
   const { push } = useRouter();
+  const { user } = useUser();
   const { data: card, error } = useGetCardDetails(+id);
   const [isAddCardImagesModal, setIsAddCardImagesModal] = useState(false);
+  const isCardCreatedByUser = card?.author === user?.pseudonym;
 
   useEffect(() => {
-    if (isNaN(+id) || error) {
+    if (isNaN(+id) || error || !isCardCreatedByUser) {
       push(Routes.NOT_FOUND);
     }
   }, [id, error]);

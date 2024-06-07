@@ -1,15 +1,13 @@
 'use client';
 
-import { useConfirmEmail } from "@/src/queries/auth.queries";
+import { useConfirmEmail } from "@/src/queries";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { PrimaryButton } from "@/src/components/moleculs/";
+import { PrimaryButton } from "@/src/components/molecules";
 import { ErrorText } from "@/src/components/atoms";
-import { TextInput }from "@/src/components/moleculs";
+import { TextInput }from "@/src/components/molecules";
 import { confirmEmailSchema } from "@/src/validation/confirmEmailSchema";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
-import { useEffect } from "react";
-import { saveCookies } from "@/src/actions/manageCookies";
 
 interface FormData {
   confirmationCode: string,
@@ -38,22 +36,14 @@ const ConfirmEmailForm: React.FC<Props> = ({ closeModal }) => {
     setErrorMessage(error.message);
   };
 
-  const { isPending, mutate, isError, isSuccess, data } = useConfirmEmail();
+  const { isPending, mutate, isError } = useConfirmEmail();
 
   const onSubmit: SubmitHandler<FormData> = async({confirmationCode}) => {
     mutate(confirmationCode, {
       onError: handleError,
+      onSuccess: closeModal,
     });
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      saveCookies({token: data.token})
-        .then(() => {
-          closeModal();
-        });
-    }
-  }, [isSuccess]);
 
   return (
     <form 

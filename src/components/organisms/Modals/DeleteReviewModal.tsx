@@ -1,11 +1,10 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo } from "react";
 import { ModalSkeleton } from "@/src/components/organisms";
-import { ErrorText, Heading, Heading4 } from "@/src/components/atoms";
-import { RoundedButton } from "@/src/components/moleculs";
+import { ErrorText } from "@/src/components/atoms";
+import { RoundedButton } from "@/src/components/molecules";
 import { useDeleteComment } from "@/src/queries";
-import { normalizeError } from "@/src/lib/helpers";
 import { useParams } from "next/navigation";
 import { useNormalizedError } from "@/src/hooks";
 
@@ -37,9 +36,17 @@ const DeleteReviewModal: React.FC<DeleteReviewModalProps> = ({
   };
 
   return (
-    <ModalSkeleton onClose={onClose}>
-      <Heading text="Delete your review?" font="normal"/>
-      <Heading4 text="This action cannot be undone 🫣" font="normal"/>
+    <ModalSkeleton 
+      onClose={onClose}
+      title="Delete your review?"
+      subtitle="This action cannot be undone 🫣"
+    >
+      {/* <Heading text="Delete your review?" font="normal"/>
+      <Heading4 
+        text="This action cannot be undone 🫣" 
+        font="normal" 
+        classes="mb-2 text-gray-80"
+      /> */}
 
       <div className="w-full grid grid-cols-2 gap-5">
         <RoundedButton

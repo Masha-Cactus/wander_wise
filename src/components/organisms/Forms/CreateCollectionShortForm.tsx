@@ -9,7 +9,7 @@ import { ErrorText } from "@/src/components/atoms";
 import { 
   PrimaryButton, 
   TextInput,
-} from "@/src/components/moleculs";
+} from "@/src/components/molecules";
 import { createCollectionShortSchema } from "@/src/validation";
 
 type CreateCollectionShortData = {
@@ -61,23 +61,23 @@ const CreateCollectionShortForm: React.FC<Props> = ({ closeForm }) => {
       onSubmit={handleSubmit(onSubmit)}
       className="w-full flex flex-col gap-2"
     >
-        <div className="w-full">
-          <TextInput
-            type="text"
-            name="name"
-            control={control}
-            errorText={errors.name?.message}
-            disabled={isPending}
-            placeholder="My wished place to visit"
-          />
-        </div>     
-
-        <PrimaryButton 
-          type="submit" 
-          text="Create" 
-          disabled={isPending} 
-          classes="w-full h-10"
+      <div className="w-full">
+        <TextInput
+          type="text"
+          name="name"
+          control={control}
+          errorText={errors.name?.message}
+          disabled={isPending}
+          placeholder="My wished place to visit"
         />
+      </div>     
+
+      <PrimaryButton 
+        type="submit" 
+        text="Create" 
+        disabled={isPending} 
+        classes="w-full h-10"
+      />
 
       {isError && <ErrorText errorText={errorMessage} />}
     </form>

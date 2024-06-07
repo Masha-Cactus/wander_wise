@@ -7,7 +7,7 @@ import { Heading, Heading4, Loader } from "@/src/components/atoms";
 import { 
   PrimaryButton,
   LoadedContentStateController
-} from "@/src/components/moleculs";
+} from "@/src/components/molecules";
 import { useRouter } from "next/navigation";
 import { Routes } from "@/src/lib/constants";
 import { useGetUserCreatedCards } from "@/src/queries";
@@ -19,21 +19,21 @@ const MyCardsPage = () => {
 
   return (
     <main className="grow overflow-hidden
-      grid grid-cols-12 text-black bg-gray10">
+      grid grid-cols-12 text-black bg-gray-10">
       <LoadedContentStateController
         isEmpty={createdCards && !createdCards.length}
         emptyFallbackComponent={
-          <div className="col-span-12 flex items-center
-          flex-col gap-8 justify-center text-center">
+          <div className="col-span-12 w-[670px] flex items-center bg-white
+          flex-col gap-4 justify-center text-center rounded-3xl py-12 px-10">
             <Heading 
               text="You don’t have any created cards yet." 
               font="normal" 
+              classes="mb-2 text-gray-80"
             />
             <Heading4 text="Create your first card now! 🌏" font="medium" />
             <PrimaryButton 
               text="Create" 
               onClick={() => push(Routes.MY_CARDS.CREATE)}
-              classes="w-1/3"
             />
           </div>
         }

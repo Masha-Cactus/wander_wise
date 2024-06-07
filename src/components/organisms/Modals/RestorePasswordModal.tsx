@@ -2,8 +2,7 @@
 
 import { memo, useState } from "react";
 import { ModalSkeleton, RestorePasswordForm } from "@/src/components/organisms";
-import { Heading, Heading4 } from "@/src/components/atoms";
-import { UnstyledButton } from "@/src/components/moleculs";
+import { UnstyledButton } from "@/src/components/molecules";
 
 interface RestorePasswordModalProps {
   onClose: () => void;
@@ -28,22 +27,16 @@ const RestorePasswordModal: React.FC<RestorePasswordModalProps> = ({
   };
 
   return (
-    <ModalSkeleton onClose={onClose}>
-      <Heading text="Password assistance" font="normal"/>
-      {isSubmitted ? (
-        <Heading4 
-          text="Your new password will be sent to your email" 
-          font="medium"
-        />
-      ) : (
-        <>
-          <Heading4 
-            text="Enter the email address associated with your WanderWise account 🤔" 
-            font="normal"
-          />
-
-          <RestorePasswordForm setIsSubmitted={setIsSubmitted} />
-        </>
+    <ModalSkeleton 
+      onClose={onClose}
+      title="Password assistance"
+      subtitle={isSubmitted 
+        ? "Your new password will be sent to your email" 
+        : "Enter the email address associated with your WanderWise account 🤔"
+      }
+    >
+      {!isSubmitted && (
+        <RestorePasswordForm setIsSubmitted={setIsSubmitted} />
       )}
 
       {!!(onOpenSignIn && onOpenSignUp) && (

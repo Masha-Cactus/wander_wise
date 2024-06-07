@@ -22,13 +22,14 @@ import {
   MdOutlineFolder
 } from "react-icons/md";
 import { IoShareSocialOutline } from "react-icons/io5";
-import { HiOutlineUserCircle } from "react-icons/hi2";
+import { HiOutlineUserCircle, HiMiniSquares2X2 } from "react-icons/hi2";
 import { GiRobotAntennas } from "react-icons/gi";
 import { TiArrowLeftThick, TiArrowRightThick } from "react-icons/ti";
 import { FiEdit2 } from "react-icons/fi";
 import { GrLocation } from "react-icons/gr";
 import { RiDeleteBinLine, RiGlobalLine } from "react-icons/ri";
 import { FaRegEye, FaRegEyeSlash, FaCheck, FaGlobe } from "react-icons/fa6";
+import { TbLayoutListFilled } from "react-icons/tb";
 
 const Icons = {
   close: IoIosClose,
@@ -61,6 +62,8 @@ const Icons = {
   website: FaGlobe,
   download: MdOutlineFileDownload,
   folder: MdOutlineFolder,
+  list: TbLayoutListFilled,
+  gallery: HiMiniSquares2X2,
 };
 
 export default Icons;

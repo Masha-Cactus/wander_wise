@@ -3,7 +3,7 @@
 import { useUser } from "@/src/store/user";
 import { useState } from "react";
 import { Divider, Heading2, Heading5, TextBase } from "@/src/components/atoms";
-import { PrimaryButton, RoundedButton } from "@/src/components/moleculs";
+import { PrimaryButton, RoundedButton } from "@/src/components/molecules";
 import { 
   ChangeUserEmailModal, 
   ChangeUserPasswordModal, 
@@ -56,7 +56,7 @@ const ProfileEditPage = () => {
               <TextBase 
                 text={user?.email || ''} 
                 font="normal" 
-                classes="text-gray70" 
+                classes="text-gray-70" 
               />
             </div>
             <div className="w-32">
@@ -74,7 +74,7 @@ const ProfileEditPage = () => {
               <TextBase 
                 text="********" 
                 font="normal" 
-                classes="text-gray70" 
+                classes="text-gray-70" 
               />
             </div>
             <div className="w-32">

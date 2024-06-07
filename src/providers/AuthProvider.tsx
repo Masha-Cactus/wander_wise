@@ -1,13 +1,10 @@
 'use client';
 
-import { 
-  clearCookies, 
-  saveCookies
-} from "@/src/actions/manageCookies";
 import { useRefreshToken } from "@/src/queries";
 import { useUser } from "@/src/store/user";
 import { PropsWithChildren, useEffect, useState } from "react";
-import { LoadedContentStateController } from "@/src/components/moleculs";
+import { LoadedContentStateController } from "@/src/components/molecules";
+import { deleteCookie, setCookie } from "cookies-next";
 
 export const AuthProvider = ({children}: PropsWithChildren) => {
   const [isInitialAuthorizing, setIsInitialAuthorizing] = useState(true);
@@ -17,12 +14,12 @@ export const AuthProvider = ({children}: PropsWithChildren) => {
   useEffect(() => {
     if (isFetched) {
       if (isSuccess) {
-        saveCookies({token: data.token, userId: data.user.id})
-          .then (() => {
-            setUser(data.user);
-          });
+        setUser(data.user);
+        setCookie('token', data.token);
+        setCookie('userId', data.user.id);
       } else {
-        clearCookies();
+        deleteCookie('token');
+        deleteCookie('userId');
       }
 
       setIsInitialAuthorizing(false);

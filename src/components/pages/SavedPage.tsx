@@ -6,7 +6,7 @@ import { Heading, Heading4, Loader } from "@/src/components/atoms";
 import { 
   PrimaryButton, 
   LoadedContentStateController 
-} from "@/src/components/moleculs";
+} from "@/src/components/molecules";
 import { IFilterParams } from "@/src/services";
 import { useRouter } from "next/navigation";
 import { Routes } from "@/src/lib/constants";
@@ -19,18 +19,21 @@ const SavedPage = () => {
 
   return (
     <main className="grow overflow-hidden 
-      grid grid-cols-12 text-black bg-gray10">
+      grid grid-cols-12 text-black bg-gray-10">
       <LoadedContentStateController
         isEmpty={savedCards && !savedCards.length}
         emptyFallbackComponent={
-          <div className="col-span-12 flex items-center
-          flex-col gap-8 justify-center text-center">
+          <div className="col-span-12 w-[670px] flex items-center bg-white
+          flex-col gap-4 justify-center text-center rounded-3xl py-12 px-10">
             <Heading text="You don’t have any saved cards yet." font="normal" />
-            <Heading4 text="Explore our community 🌏" font="medium" />
+            <Heading4 
+              text="Explore our community 🌏" 
+              font="medium" 
+              classes="mb-2 text-gray-80" 
+            />
             <PrimaryButton 
               text="Continue" 
-              onClick={() => push(Routes.TRIPS)} 
-              classes="w-1/3" 
+              onClick={() => push(Routes.TRIPS)}  
             />
           </div>
         }

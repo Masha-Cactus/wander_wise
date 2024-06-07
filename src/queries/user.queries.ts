@@ -6,7 +6,7 @@ import {
   userService 
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
-import { getCookie, deleteCookie } from "cookies-next";
+import { getCookie, deleteCookie, setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { Routes } from "../lib/constants";
 
@@ -53,7 +53,8 @@ export function useGetUserCollections() {
     },
     enabled: !!user,
     select: (collections) => collections.filter(collection => 
-      !['Saved cards', 'Liked cards', 'Created cards'].includes(collection.name)),
+      !['Saved cards', 'Liked cards', 'Created cards']
+        .includes(collection.name)),
   });
 }
 
@@ -200,6 +201,7 @@ export function useRequestUpdateEmail() {
     },
     onSuccess: (user) => {
       setUser(user);
+      setCookie('confirmationCode', user.emailConfirmCode);
     }
   });
 }
@@ -221,8 +223,9 @@ export function useUpdateEmail() {
         
       return Promise.reject('No user authorized');
     },
-    onSuccess: () => {
+    onSuccess: ({ token }) => {
       unbanUser();
+      setCookie('token', token);
       deleteCookie('confirmationCode');
     },
   });
@@ -239,5 +242,8 @@ export function useUpdatePassword() {
 
       return Promise.reject('No user authorized');
     },
+    onSuccess: ({ token }) => {
+      setCookie('token', token);
+    }
   });
 }

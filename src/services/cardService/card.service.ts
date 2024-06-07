@@ -1,4 +1,4 @@
-import { formDataClient, authClient, baseClient } from "@/src/api";
+import { authClient, baseClient } from "@/src/api";
 import { ApiEndpoints, CARDS_PER_PAGE } from "@/src/lib/constants";
 import { 
   ICard, 
@@ -37,7 +37,7 @@ class CardService {
   }
 
   addImages ({id, images}: IAddCardImages) {
-    return formDataClient.put<never, ICard>(
+    return authClient.putForm<never, ICard>(
       `${this.BASE_URL}/add-images/${id}`,
       { images },
     );

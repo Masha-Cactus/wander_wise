@@ -6,7 +6,7 @@ import { uploadProfileImageSchema } from "@/src/validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
-import { SingleImageInput, PrimaryButton } from "@/src/components/moleculs";
+import { SingleImageInput, PrimaryButton } from "@/src/components/molecules";
 
 type UploadProfileImageFormData = {
   image: File,

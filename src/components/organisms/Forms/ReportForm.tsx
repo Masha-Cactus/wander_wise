@@ -6,7 +6,7 @@ import { useReportCard, useReportComment } from "@/src/queries";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
-import { TextAreaInput, PrimaryButton } from "@/src/components/moleculs";
+import { TextAreaInput, PrimaryButton } from "@/src/components/molecules";
 import { useParams } from "next/navigation";
 import { reportCardSchema } from "@/src/validation";
 import { IComment } from "@/src/services";

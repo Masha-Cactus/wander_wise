@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import { TextBase } from '@/src/components/atoms';
-import { PrimaryButton } from '@/src/components/moleculs';
+import { PrimaryButton } from '@/src/components/molecules';
 import { Routes } from '../lib/constants';
  
 export default function NotFound() {
   return (
     <div className='w-full h-full flex flex-col gap-6 
-      justify-center items-center text-center bg-gray10'>
-      <h1 className='text-7xl text-gray80'>
+      justify-center items-center text-center bg-gray-10'>
+      <h1 className='text-7xl text-gray-80'>
         Page not found 😢
       </h1>
       <TextBase

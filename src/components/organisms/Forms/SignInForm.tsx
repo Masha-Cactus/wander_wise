@@ -1,18 +1,17 @@
 "use client";
 
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ISignIn } from "@/src/services";
 import { signInSchema } from "@/src/validation";
-import { PrimaryButton, TextInput } from "@/src/components/moleculs";
+import { PrimaryButton, TextInput } from "@/src/components/molecules";
 import { useSignIn } from "@/src/queries";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { ErrorText } from "@/src/components/atoms";
-import { PasswordInput } from "@/src/components/moleculs";
+import { PasswordInput } from "@/src/components/molecules";
 import { useRouter } from "next/navigation";
 import { useNormalizedError } from "@/src/hooks/useNormalizedError";
-import { saveCookies } from "@/src/actions/manageCookies";
 import { Routes } from "@/src/lib/constants";
 
 type Props = {
@@ -41,7 +40,7 @@ const SignInForm: React.FC<Props> = ({ closeModal }) => {
     setErrorMessage(error.message);
   };
 
-  const { isPending, mutate, isError, isSuccess, data } = useSignIn();
+  const { isPending, mutate, isError } = useSignIn();
   const { push } = useRouter();
 
   const onSubmit = async (data: ISignIn) => {
@@ -49,18 +48,12 @@ const SignInForm: React.FC<Props> = ({ closeModal }) => {
 
     mutate(trimmedUserData, {
       onError: handleError,
+      onSuccess: () => {
+        closeModal();
+        push(Routes.PROFILE.MAIN);
+      }
     });
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      saveCookies({token: data.token, userId: data.user.id})
-        .then(() => {
-          closeModal();
-          push(Routes.PROFILE.MAIN);
-        });
-    }
-  }, [isSuccess]);
 
   return (
     <form

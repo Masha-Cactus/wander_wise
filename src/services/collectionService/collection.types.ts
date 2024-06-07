@@ -8,7 +8,6 @@ export interface ICollection {
   isPublic: boolean,
   cardDtos: ICard[],
 }
-// export type ShortCollection = Omit<ICollection, 'cardWithoutDistanceDtos'>;
 
 export interface ICreateCollection {
   userId: number,

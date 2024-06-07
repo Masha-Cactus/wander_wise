@@ -10,9 +10,10 @@ import {
   SquareCheckboxInput, 
   PrimaryButton, 
   RoundedButton 
-} from "@/src/components/moleculs";
+} from "@/src/components/molecules";
 import { ICollection } from "@/src/services";
 import { addCardToCollectionSchema } from "@/src/validation";
+import { useMemo } from "react";
 
 type Props = {
   cardId: number,
@@ -26,6 +27,10 @@ type AddCardToCollectionFormData = {
 
 const AddCardToCollectionForm: React.FC<Props> 
 = ({ cardId, collections, closeModal }) => {
+  const collectionsWithoutCard = useMemo(() => 
+    collections.filter(c =>! c.cardDtos.find(card => card.id === cardId)), 
+  [collections, cardId]);
+
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
   const validationSchema = addCardToCollectionSchema();
@@ -53,45 +58,51 @@ const AddCardToCollectionForm: React.FC<Props>
   const onSubmit = async (data: AddCardToCollectionFormData) => {
     const { selectedCollectionIds } = trimObjectFields(data);
 
-    collections?.forEach(collection => {
+    collectionsWithoutCard.forEach(collection => {
       if (selectedCollectionIds.includes(collection.id)) {
         mutate({
-          ...collection, 
+          id: collection.id,
+          name: collection.name,
+          isPublic: collection.isPublic,
           cardIds: [...collection.cardDtos.map(c => c.id), cardId]
+        }, {
+          onError: handleError,
+          onSuccess: closeModal,
         });
       }
-    },
-    {
-      onError: handleError,
-      onSuccess: () => closeModal(),
-    }
-    );
+    });
   };
 
   return (
     <form 
       onSubmit={handleSubmit(onSubmit)} 
-      className="w-full flex flex-col gap-6"
+      className="w-full flex flex-col gap-8"
     >
-      <div className="flex flex-col gap-5 max-h-52 overflow-y-scroll">
-        {collections.map(collection => (
-          <div
-            key={collection.id}
-            className="flex w-full justify-between items-center"
-          >
-            <div className="flex gap-2 items-center">
-              <Icons.folder className="w-6 h-6" />
-              <Heading4 text={collection.name} font="normal" />
-            </div>
+      {!!collectionsWithoutCard.length && (
+        <div className="flex flex-col gap-5 max-h-52 overflow-y-scroll">
+          {collectionsWithoutCard.map(collection => (
+            <div
+              key={collection.id}
+              className="flex w-full justify-between items-center"
+            >
+              <div className="flex gap-2 items-center">
+                <Icons.folder className="w-6 h-6" />
+                <Heading4 
+                  text={collection.name} 
+                  font="normal" 
+                  classes="text-gray-80" 
+                />
+              </div>
 
-            <SquareCheckboxInput
-              value={collection.id}
-              control={control}
-              name="selectedCollectionIds"
-            />
-          </div>
-        ))}  
-      </div>
+              <SquareCheckboxInput
+                value={collection.id}
+                control={control}
+                name="selectedCollectionIds"
+              />
+            </div>
+          ))}  
+        </div>
+      )}
       
       <div className="w-full grid grid-cols-2 gap-5">
         <RoundedButton
@@ -109,6 +120,7 @@ const AddCardToCollectionForm: React.FC<Props>
           classes="h-full" 
         />
       </div>
+      
       {isError && <ErrorText errorText={errorMessage} />}
     </form>
   );

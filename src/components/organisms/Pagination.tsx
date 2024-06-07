@@ -38,7 +38,7 @@ const Pagination: React.FC<Props> = ({
   return (
     <div className="h-8 flex gap-2 items-center">
       <button
-        className="text-black disabled:text-gray70 h-full w-8 
+        className="text-black disabled:text-gray-70 h-full w-8 
           flex items-center justify-center"
         onClick={() => setPage(Math.max(page - 1, 0))}
         disabled={page === 0}
@@ -86,7 +86,7 @@ const Pagination: React.FC<Props> = ({
       )} 
 
       <button
-        className="text-black disabled:text-gray70 h-full w-8
+        className="text-black disabled:text-gray-70 h-full w-8
           flex items-center justify-center"
         onClick={() => setPage(page + 1)}
         disabled={isLastPage}

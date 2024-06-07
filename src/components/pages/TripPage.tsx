@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useEffect } from "react";
-import { BackButton } from "@/src/components/moleculs";
+import { BackButton } from "@/src/components/molecules";
 import { TripLongCard, ReviewsList } from "@/src/components/organisms";
 import { useParams, useRouter } from "next/navigation";
 import { useGetCardDetails } from "@/src/queries";
@@ -19,7 +19,7 @@ const TripPage = () => {
   }, [id, error]);
 
   return (
-    <main className="grow bg-gray10">
+    <main className="grow bg-gray-10">
       <div className="mx-10 my-10 flex flex-col gap-8">
         <BackButton />
 

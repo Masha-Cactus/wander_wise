@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { authService, IEmail, ISignIn, ISignUp } from "@/src/services";
 import { useUser } from "@/src/store/user";
-import { getCookie, deleteCookie } from "cookies-next";
+import { getCookie, deleteCookie, setCookie } from "cookies-next";
 
 export function useSignUp() {
   const setUser = useUser((state) => state.setUser);
@@ -10,6 +10,12 @@ export function useSignUp() {
     mutationFn: (data: ISignUp) => authService.signUp(data),
     onSuccess: (user) => {
       setUser(user);
+
+      if (user.emailConfirmCode) {
+        setCookie('confirmationCode', user.emailConfirmCode);
+      }
+
+      setCookie('userId', user.id);
     },
   });
 }
@@ -31,8 +37,9 @@ export function useConfirmEmail() {
     
       return Promise.reject('User has not completed registration');
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       unbanUser();
+      setCookie('token', data.token);
       deleteCookie('confirmationCode');
     }
   });
@@ -43,8 +50,10 @@ export function useSignIn() {
 
   return useMutation({
     mutationFn: (data: ISignIn) => authService.signIn(data),
-    onSuccess: async({ user }) => {
+    onSuccess: async({ user, token }) => {
       setUser(user);
+      setCookie('token', token);
+      setCookie('userId', user.id);
     },
   });
 }
@@ -70,6 +79,8 @@ export function useLogout() {
 
     onSuccess: () => {
       setUser(null);
+      deleteCookie('userId');
+      deleteCookie('token');
     }
   });
 }

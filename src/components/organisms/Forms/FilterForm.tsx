@@ -7,7 +7,7 @@ import {
 import {
   RoundedButton,
   FilterButton,
-} from "@/src/components/moleculs";
+} from "@/src/components/molecules";
 import {
   IFilterParams,
   ICard
@@ -104,7 +104,7 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="min-h-full flex flex-col justify-between
-      bg-white border-2 border-gray-30 pt-8"
+      bg-white border border-gray-30 pt-8"
     >
       <div className="flex flex-col w-full gap-8">
 

@@ -1,10 +1,9 @@
 import { Routes } from "@/src/lib/constants";
 import { ICard } from "@/src/services";
-import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
 import { TextMedium } from "@/src/components/atoms";
-import { TripImage } from "@/src/components/moleculs";
+import { TripImage } from "@/src/components/molecules";
 
 type Props = {
   card: ICard;
@@ -23,7 +22,7 @@ const TripShortCard: React.FC<Props> = ({ card }) => {
       />
 
       <div className="absolute inset-x-2 bottom-3 
-          py-2 px-6 bg-gray80">
+          py-2 px-6 bg-gray-80">
         <TextMedium 
           text={card.name} 
           font="semibold" 

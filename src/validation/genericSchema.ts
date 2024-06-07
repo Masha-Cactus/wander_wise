@@ -106,10 +106,10 @@ export const genericValidationSchema = {
       .oneOf(Object.values(SpecialRequirements)).required()),
   link: Yup.string().url().required(`Link ${requiredText}`),
   mapLink: Yup
-      .string()
-      .required('Google Maps link is required')
-      .url('Must be a valid URL')
-      .matches(GOOGLE_MAPS_LINK_PATTERN, 'Must be a valid Google Maps link'),
+    .string()
+    .required('Google Maps link is required')
+    .url('Must be a valid URL')
+    .matches(GOOGLE_MAPS_LINK_PATTERN, 'Must be a valid Google Maps link'),
   confirmationCode: Yup.string()
     .trim()
     .required(`Confirmation code ${requiredText}`),

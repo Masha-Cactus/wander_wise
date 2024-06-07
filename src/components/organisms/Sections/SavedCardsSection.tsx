@@ -2,7 +2,7 @@
 
 import { Heading3, Heading4 } from "@/src/components/atoms";
 import { Gallery, Pagination } from "@/src/components/organisms";
-import { LinkButton } from "@/src/components/moleculs";
+import { LinkButton } from "@/src/components/molecules";
 import { useEffect, useState } from "react";
 import { ICard, IFilterParams } from "@/src/services";
 import { getFilteredCards } from "@/src/lib/helpers";
@@ -42,7 +42,7 @@ const SavedCardsSection: React.FC<Props> = ({ filterParams }) => {
       <div className="w-full flex justify-between align-center">
         <div className="flex gap-2 items-center">
           <Heading3 text="My saved cards" />
-          <Heading4 text={`(${savedCards?.length || 0})`} font="normal" classes="text-gray30" />
+          <Heading4 text={`(${savedCards?.length || 0})`} font="normal" classes="text-gray-30" />
         </div>
         <LinkButton 
           path={Routes.COLLECTIONS.MAIN}

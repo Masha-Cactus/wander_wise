@@ -10,11 +10,10 @@ import {
   TextBase, 
   ErrorText 
 } from "@/src/components/atoms";
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import { useUser } from "@/src/store/user";
 import { useGetUserSocials, useLogout } from "@/src/queries";
 import { useNormalizedError } from "@/src/hooks";
-import { clearCookies } from "@/src/actions/manageCookies";
 import { useRouter } from "next/navigation";
 import AddProfileImageModal from "../Modals/AddProfileImageModal";
 import ConfirmEmailModal from "../Modals/ConfirmEmailModal";
@@ -27,7 +26,7 @@ const ProfileInfoSection: React.FC = () => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
   const { data: userSocials } = useGetUserSocials();
-  const { isPending, mutate, isError, isSuccess } = useLogout();
+  const { isPending, mutate, isError } = useLogout();
 
   const [isAddImageModal, setIsAddImageModal] = useState(false);
   const [isConfirmEmailModal, setIsConfirmEmailModal] = useState(false);
@@ -35,15 +34,9 @@ const ProfileInfoSection: React.FC = () => {
   const handleLogout = () => {
     mutate(undefined, {
       onError: (err) => setErrorMessage(err),
+      onSuccess: () => push(Routes.HOME),
     });
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      clearCookies()
-        .then(() => push(Routes.HOME));
-    }
-  }, [isSuccess]);
 
   return (
     <section
@@ -62,7 +55,7 @@ const ProfileInfoSection: React.FC = () => {
         </div>
 
         <div
-          className="absolute bg-gray80 h-8 w-8 bottom-0 right-1/3 
+          className="absolute bg-gray-80 h-8 w-8 bottom-0 right-1/3 
           flex items-center justify-center rounded-full"
         >
           <Icons.edit 
@@ -75,7 +68,7 @@ const ProfileInfoSection: React.FC = () => {
       <div className="flex flex-col gap-2">
         <TextBase
           text={user?.pseudonym || "traveller"}
-          classes="text-gray70"
+          classes="text-gray-70"
           font="normal"
         />
 
@@ -92,12 +85,12 @@ const ProfileInfoSection: React.FC = () => {
       <div className="flex flex-col gap-2 text-start">
         {user?.location && (
           <div className="flex items-center gap-2">
-            <Icons.location className="text-gray70 h-4 w-4" />
+            <Icons.location className="text-gray-70 h-4 w-4" />
             <TextBase text={user.location} font="normal" />
           </div>
         )}
         <div className="flex items-center gap-2">
-          <Icons.mail className="text-gray70 h-4 w-4" />
+          <Icons.mail className="text-gray-70 h-4 w-4" />
           <TextBase text={user?.email || ''} font="normal" />
         </div>
         {user?.banned && (

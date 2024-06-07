@@ -1,7 +1,6 @@
 'use client';
 
-// import Image from "next/image";
-import { IconButton } from "@/src/components/moleculs";
+import { IconButton } from "@/src/components/molecules";
 import { Icons, TextBase, Heading5 } from "@/src/components/atoms";
 import { DeleteReviewModal, Stars } from "@/src/components/organisms";
 import { IComment } from "@/src/services";
@@ -43,7 +42,7 @@ const Review: React.FC<Props> = ({ review }) => {
         </div>
       </div>
       
-      <TextBase text={review.text} font="normal" classes="text-gray80" />
+      <TextBase text={review.text} font="normal" classes="text-gray-80" />
 
       {isDeleteReviewModal && (
         <DeleteReviewModal 
