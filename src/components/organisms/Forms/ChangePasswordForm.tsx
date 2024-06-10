@@ -8,7 +8,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
 import { PasswordInput, PrimaryButton } from "@/src/components/molecules";
-import { useState } from "react";
 
 type Props = {
   closeModal: () => void;
@@ -16,7 +15,6 @@ type Props = {
 
 const ChangePasswordForm: React.FC<Props> = ({ closeModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
-  const [isShowPassword, setIsShowPassword] = useState(false);
   const validationSchema = changePasswordSchema();
   const {
     control,
@@ -32,14 +30,11 @@ const ChangePasswordForm: React.FC<Props> = ({ closeModal }) => {
   });
 
   const { isPending, mutate, isError } = useUpdatePassword();
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
 
   const onSubmit: SubmitHandler<Omit<IUpdatePassword, 'userId'>> 
   = async(data) => {
     mutate(data, {
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
       onSuccess: closeModal,
     });
   };
@@ -56,8 +51,6 @@ const ChangePasswordForm: React.FC<Props> = ({ closeModal }) => {
           control={control}
           errorText={errors.oldPassword?.message}
           disabled={isPending}
-          isShown={isShowPassword}
-          onClick={() => setIsShowPassword(!isShowPassword)}
         />
       </div>
 
@@ -69,8 +62,6 @@ const ChangePasswordForm: React.FC<Props> = ({ closeModal }) => {
           control={control}
           errorText={errors.password?.message}
           disabled={isPending}
-          isShown={isShowPassword}
-          onClick={() => setIsShowPassword(!isShowPassword)}
         />
       </div>
       <div className="row-start-2">
@@ -80,8 +71,6 @@ const ChangePasswordForm: React.FC<Props> = ({ closeModal }) => {
           control={control}
           errorText={errors.repeatPassword?.message}
           disabled={isPending}
-          isShown={isShowPassword}
-          onClick={() => setIsShowPassword(!isShowPassword)}
         />
       </div>
 

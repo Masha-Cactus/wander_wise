@@ -2,7 +2,7 @@
 
 import { usePopularCards } from "@/src/queries";
 import { ICard } from "@/src/services";
-import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { LoadedContentStateController } from "@/src/components/molecules";
 import { Heading2 } from "@/src/components/atoms";
 import { Pagination, Gallery, InfiniteList } from "@/src/components/organisms";
@@ -16,48 +16,39 @@ const PopularCardsSection: React.FC<Props> = ({ view }) => {
   const [page, setPage] = useState(0);
   const [displayedCards, setDisplayedCards] = useState<ICard[]>([]);
   const [lastPage, setLastPage] = useState<number | undefined>(undefined);
-  const [isNothingFound, setIsNothingFound] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const pageCards = displayedCards.slice(
+    CARDS_PER_PAGE * page, 
+    CARDS_PER_PAGE * (page + 1)
+  );
 
   const { 
     data, 
     error, 
-    isLoading,
+    isLoading
   } = usePopularCards(page);
 
-  const pageCards = useMemo(() =>  displayedCards.slice(
-    CARDS_PER_PAGE * page, 
-    CARDS_PER_PAGE * (page + 1)
-  ), [displayedCards, page]);
-
-  const handleDataAbsence = () => {
-    if (displayedCards.length) {
-      setPage(page - 1);
-      setLastPage(page - 1);
-    } else {
-      setIsNothingFound(true);
-    }
-  };
+  const isShowSkeleton = isLoading && view === 'Gallery';
+  const isShowEmpty = !!(lastPage && lastPage < 0);
 
   useEffect(() => {
-    if (data) {
-      if (!data.length) {
-        handleDataAbsence();
-      } else {
-        if (data.length < CARDS_PER_PAGE) {
-          setLastPage(page);
-        }
-
-        setDisplayedCards(curr => [...curr, ...data]);
-      } 
+    if (data && data.length) {
+      if (data.length < CARDS_PER_PAGE) {
+        setLastPage(page);
+      }
+      
+      setDisplayedCards(curr => [...curr, ...data]);
     }
   }, [data, page]);
 
   useEffect(() => {
     if (error) {
-      handleDataAbsence();
+      setPage(page => page - 1);
+      setLastPage(page - 1);
     }
   }, [error]);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (scrollRef && view === 'Gallery') {
@@ -69,7 +60,7 @@ const PopularCardsSection: React.FC<Props> = ({ view }) => {
     <>
       <div className="h-px absolute left-0 top-0" ref={scrollRef} />
       <LoadedContentStateController
-        isEmpty={isNothingFound}
+        isEmpty={isShowEmpty}
         emptyFallbackComponent={
           <Heading2 
             text="No cards found" 
@@ -77,7 +68,7 @@ const PopularCardsSection: React.FC<Props> = ({ view }) => {
             classes="m-auto"
           />
         }
-        isLoading={isLoading}
+        isLoading={isShowSkeleton}
       >
         {view === 'Gallery' ? (
           <>
@@ -100,8 +91,6 @@ const PopularCardsSection: React.FC<Props> = ({ view }) => {
             isFetchingNextPage={isLoading}
           />
         )}
-        
-            
       </LoadedContentStateController>
     </>
   );

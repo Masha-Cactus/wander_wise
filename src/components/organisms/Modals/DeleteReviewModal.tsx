@@ -22,14 +22,10 @@ const DeleteReviewModal: React.FC<DeleteReviewModalProps> = ({
 
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
-  const handleError = (error: any) => {
-    setErrorMessage(error);
-  };
-
   const handleDeleteReview = () => {
     if (cardId) {
       mutate({commentId, cardId: +cardId}, { 
-        onError: handleError,
+        onError: (e) => setErrorMessage(e),
         onSuccess: () => onClose(),
       });
     }
@@ -41,13 +37,6 @@ const DeleteReviewModal: React.FC<DeleteReviewModalProps> = ({
       title="Delete your review?"
       subtitle="This action cannot be undone 🫣"
     >
-      {/* <Heading text="Delete your review?" font="normal"/>
-      <Heading4 
-        text="This action cannot be undone 🫣" 
-        font="normal" 
-        classes="mb-2 text-gray-80"
-      /> */}
-
       <div className="w-full grid grid-cols-2 gap-5">
         <RoundedButton
           text="Delete"

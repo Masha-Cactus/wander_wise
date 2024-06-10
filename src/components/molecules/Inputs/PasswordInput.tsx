@@ -1,8 +1,10 @@
-import { memo } from "react";
+"use client";
+
+import { memo, useState } from "react";
 import { Control, FieldPath, FieldValues } from "react-hook-form";
-import classNames from "classnames";
 import { Icons } from "@/src/components/atoms";
 import { InputControllerWrapper } from "@/src/components/molecules";
+import { twMerge } from "tailwind-merge";
 
 interface PasswordInputProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -11,8 +13,6 @@ interface PasswordInputProps<T extends FieldValues> {
   errorText?: string;
   placeholder?: string;
   disabled: boolean;
-  isShown: boolean;
-  onClick: () => void;
 }
 
 const PasswordInput = <T extends FieldValues>({
@@ -21,10 +21,10 @@ const PasswordInput = <T extends FieldValues>({
   errorText,
   placeholder,
   disabled,
-  isShown,
-  onClick,
   control,
 }: PasswordInputProps<T>) => {
+  const [isShown, setIsShown] = useState(false);
+
   return (
     <InputControllerWrapper
       label={label}
@@ -36,15 +36,12 @@ const PasswordInput = <T extends FieldValues>({
       {(field) => (
         <div className="relative flex flex-col w-full">
           <div
-            className={classNames( 
-              `border bg-white placeholder:text-gray-50
-            text-black flex h-10 w-full items-center 
-              justify-center text-sm shadow-sm rounded-md 
-              transition-colors duration-75 focus:outline-none px-3`,
-              {
-                "border-error": errorText,
-                "border-gray-50": !errorText,
-              }
+            className={twMerge( 
+              `border border-gray-50 bg-white placeholder:text-gray-50
+            text-black flex w-full items-center 
+              justify-center text-base rounded-md 
+              transition-colors focus:outline-none px-4 py-3`,
+              errorText && 'border-error',
             )}
           >
             <input
@@ -56,7 +53,10 @@ const PasswordInput = <T extends FieldValues>({
               className="w-full bg-transparent outline-none"
             />
 
-            <span onClick={onClick} className="cursor-pointer">
+            <span 
+              onClick={() => setIsShown(curr => !curr)} 
+              className="cursor-pointer"
+            >
               {isShown ? <Icons.eyeClosed /> : <Icons.eye />}
             </span>
           </div>

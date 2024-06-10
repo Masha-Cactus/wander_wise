@@ -39,10 +39,6 @@ const ChangeCollectionNameForm: React.FC<Props>
     resolver: yupResolver(validationSchema),
   });
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
-
   const { isPending, mutate, isError } = useUpdateCollection();
 
   const onSubmit = async (data: FormData) => {
@@ -55,7 +51,7 @@ const ChangeCollectionNameForm: React.FC<Props>
         id: collection.id,
         isPublic: collection.isPublic,
       }, {
-        onError: handleError,
+        onError: (e) => setErrorMessage(e),
         onSuccess: closeModal,
       });
     }

@@ -14,9 +14,9 @@ const RecentlyLikedSection: React.FC = () => {
 
   return (
     <section
-      className="bg-white py-12 px-10 rounded-2xl flex flex-col"
+      className="bg-white py-12 px-10 rounded-2xl flex flex-col gap-2"
     >
-      <Heading3 text="Reviews you've recently added" classes="mb-2" />
+      <Heading3 text="Reviews you've recently added" />
 
       {reviews && reviews?.length > 0 ? (
         <>

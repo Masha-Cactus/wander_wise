@@ -24,10 +24,6 @@ RemoveTripFromCollectionModalProps
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const { data: collection } = useGetCollection(collectionId);
 
-  const handleError = (error: any) => {
-    setErrorMessage(error);
-  };
-
   const handleRemoveTrip = () => {
     if (collection) {
       const data: IUpdateCollection = {
@@ -40,7 +36,7 @@ RemoveTripFromCollectionModalProps
       };
       
       mutate(data, { 
-        onError: handleError,
+        onError: (e) => setErrorMessage(e),
         onSuccess: () => onClose(),
       });
     }

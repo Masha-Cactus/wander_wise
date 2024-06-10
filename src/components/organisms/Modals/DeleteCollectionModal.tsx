@@ -23,13 +23,9 @@ const DeleteCollectionModal: React.FC<DeleteCollectionModalProps> = ({
 
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
-  const handleError = (error: any) => {
-    setErrorMessage(error);
-  };
-
   const handleDeleteCollection = () => {
     mutate(collectionId, { 
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
       onSuccess: () => push(Routes.COLLECTIONS.MAIN),
     });
   };
@@ -40,13 +36,6 @@ const DeleteCollectionModal: React.FC<DeleteCollectionModalProps> = ({
       title="Delete your collection?"
       subtitle="This action cannot be undone 🫣"
     >
-      {/* <Heading text="Delete your collection?" font="normal"/>
-      <Heading4 
-        text="This action cannot be undone 🫣" 
-        font="normal" 
-        classes="mb-2 text-gray-80"
-      /> */}
-
       <div className="w-full grid grid-cols-2 gap-5">
         <RoundedButton
           text="Delete"

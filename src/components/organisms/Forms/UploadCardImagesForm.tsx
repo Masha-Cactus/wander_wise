@@ -36,27 +36,28 @@ const UploadCardImagesForm: React.FC<Props> = ({ cardId, closeModal }) => {
   });
 
   const { isPending, mutate, isError } = useAddCardImages();
-
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
   
   const onSubmit = async ({images}: UploadCardImagesFormData) => {
-    if (typeof cardId === 'number') {
-      mutate({
-        images,
-        id: cardId,
-      },
-      {
-        onError: handleError,
-        onSuccess: () => {
-          if (closeModal) {
-            closeModal();
-          }
+    const formData = new FormData();
 
-          push(Routes.MY_CARDS.MAIN);
-        },
+    if (images && images.length) {
+      for (let i = 0; i < images.length; i++) {
+        formData.append('images', images[i]);
       }
+    }
+
+    if (typeof cardId === 'number') {
+      mutate({ images: formData, id: cardId },
+        {
+          onError: (e) => setErrorMessage(e),
+          onSuccess: () => {
+            if (closeModal) {
+              closeModal();
+            }
+
+            push(Routes.TRIP(cardId));
+          },
+        }
       );
     }
   };

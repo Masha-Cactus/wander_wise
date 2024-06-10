@@ -55,3 +55,10 @@ export interface IFilterParams {
   climates: ClimateType[],
   authors: CardAuthorsType[],
 };
+
+export interface ICardTabs {
+  'Description': string,
+  'Why this place?': string[],
+  'Map'?: { latitude: number, longitude: number},
+  'Distance'?: { value: number, mapsLink: string },
+}

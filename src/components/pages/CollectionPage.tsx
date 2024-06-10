@@ -4,7 +4,7 @@ import { Routes } from '@/src/lib/constants';
 import { useGetCollection } from '@/src/queries';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Heading2, Icons } from '@/src/components/atoms';
+import { Heading2, Icons, Divider } from '@/src/components/atoms';
 import { 
   BackButton, 
   IconButton, 
@@ -37,6 +37,7 @@ const CollectionPage = () => {
 
   return (
     <main className="grow bg-gray-10">
+      <Divider />
       <div className="mx-10 my-10 flex flex-col gap-8">
         <BackButton />
 

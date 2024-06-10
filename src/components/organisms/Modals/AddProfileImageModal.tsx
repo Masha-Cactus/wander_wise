@@ -14,7 +14,7 @@ const AddProfileImageModal: React.FC<AddProfileImageModalProps> = ({
   return (
     <ModalSkeleton 
       onClose={onClose}
-      title="Add your profile picture"
+      title="Edit your profile picture"
     >
       <UploadProfileImageForm
         closeModal={onClose}

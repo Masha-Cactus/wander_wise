@@ -5,7 +5,7 @@ export function useCopyUrlToClipboard(pathname: string):
   const [isCopied, setIsCopied] = useState(false);
 
   const copy = async () => {
-    const base = "http://localhost:3000";
+    const base = process.env.NEXT_PUBLIC_CLIENT_HOST;
     const link = base + pathname;
 
     navigator.clipboard.writeText(link)

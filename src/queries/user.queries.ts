@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { 
   IUpdateInfo, 
-  IUpdateImage, 
   IUpdatePassword, 
   userService 
 } from "@/src/services";
@@ -151,9 +150,11 @@ export function useUpdateUserImage() {
   const setUser = useUser((state) => state.setUser);
 
   return useMutation({
-    mutationFn: (data: Omit<IUpdateImage, 'id'>) => {
+    mutationFn: (image: File | null) => {
+      const data = image || new Uint8Array(0);
+
       if (user) {
-        return userService.updateImage({...data, id: user.id});
+        return userService.updateImage({ image: data, id: user.id});
       }
 
       return Promise.reject('No user authorized'); 

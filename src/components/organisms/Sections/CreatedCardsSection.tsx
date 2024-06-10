@@ -50,13 +50,15 @@ const CreatedCardsSection: React.FC<Props> = ({ filterParams }) => {
       </div>
 
       <Gallery cards={displayedCards} />
-      <Pagination 
-        page={page} 
-        total={totalPages}
-        setPage={setPage}
-        isLastPage={page === totalPages - 1}
-      />
 
+      {totalPages > 1 && (
+        <Pagination 
+          page={page} 
+          total={totalPages}
+          setPage={setPage}
+          isLastPage={page === totalPages - 1}
+        />
+      )}
     </section>
   );
 };

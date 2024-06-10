@@ -30,13 +30,9 @@ const ChangeEmailForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
 
   const { isPending, mutate, isError } = useRequestUpdateEmail();
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
-
   const onSubmit: SubmitHandler<IEmail> = async(data) => {
     mutate(data.email, {
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
       onSuccess: openConfirmEmailModal,
     });
   };

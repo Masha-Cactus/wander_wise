@@ -21,8 +21,20 @@ const maven = Maven_Pro({
 });
 
 export const metadata: Metadata = {
-  title: SITE_NAME,
-  description: 'Your AI-powered travel buddy, adept at meticulously designing personalized journeys perfectly aligned with your unique preferences and desires.'
+  title: {
+    template: `%s | ${SITE_NAME}`,
+    default: SITE_NAME,
+  },
+  description: 'Your AI-powered travel buddy, adept at meticulously designing personalized journeys perfectly aligned with your unique preferences and desires.',
+  openGraph: {
+    title: SITE_NAME,
+    description: 'Your AI-powered travel buddy',
+    images: {
+      url: `${process.env.NEXT_PUBLIC_CLIENT_HOST}/public/logo.svg`,
+      width: 800,
+      height: 600,
+    },
+  }
 };
 
 export default function RootLayout({

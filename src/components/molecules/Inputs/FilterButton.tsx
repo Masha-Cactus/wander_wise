@@ -4,6 +4,7 @@ import {
   FieldValues, 
 } from "react-hook-form";
 import { InputControllerWrapper } from "@/src/components/molecules";
+import { twMerge } from "tailwind-merge";
 
 interface FilterButtonProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -37,8 +38,11 @@ const FilterButton = <T extends FieldValues>({
                 : [...field.value, value]
             );
           }}
-          className={`text-sm rounded-full py-2 px-3 w-max text-regular 
-            ${field.value.includes(value) ? "bg-gray-80 text-white" : "bg-gray-10"}`}
+          className={twMerge(
+            `bg-gray-10 text-sm rounded-full py-2 px-3 
+            w-max transition-colors hover:bg-gray-20`,
+            field.value.includes(value) && 'bg-gray-80 text-white'
+          )}
         >
           {text? text : value}
         </button>

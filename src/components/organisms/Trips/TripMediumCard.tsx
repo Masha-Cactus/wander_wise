@@ -43,6 +43,10 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
   const isCardInSavedPage = pathname === (Routes.SAVED);
 
   const { push } = useRouter();
+  const handleEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    push(Routes.MY_CARDS.EDIT(card.id));
+  };
 
   const [isCopied, copy] = useCopyUrlToClipboard(Routes.TRIP(card.id));
 
@@ -73,14 +77,14 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
         {isCardInMyCardsPage && (
           <div className="hidden absolute top-4 right-4 gap-2 group-hover:flex">
             <IconButton 
-              icon={<Icons.edit />} 
-              classes={`${classes} w-8 h-8 border-1 border-white`}
-              onClick={() => push(Routes.MY_CARDS.EDIT(card.id))}
+              icon={<Icons.edit className="w-5 h-5" />} 
+              classes={`${classes} p-1 border-1 border-white`}
+              onClick={handleEdit}
             />
 
             <IconButton 
-              icon={<Icons.delete />} 
-              classes={`${classes} w-8 h-8 border-1 border-white bg-error`}
+              icon={<Icons.delete className="w-5 h-5" />} 
+              classes={`${classes} p-1 border-1 border-white bg-error`}
               onClick={() => setIsDeleteCardModal(true)}
             />
           </div>

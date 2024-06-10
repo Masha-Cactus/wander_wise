@@ -5,7 +5,7 @@ import Radar from "radar-sdk-js";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
 import { Control, FieldPath, FieldValues, useWatch } from "react-hook-form";
 import { InputControllerWrapper } from "@/src/components/molecules";
-import classNames from "classnames";
+import { twMerge } from "tailwind-merge";
 
 interface LocationInputProps <T extends FieldValues> {
   placeholder: string,
@@ -76,15 +76,12 @@ const LocationInput = <T extends FieldValues>({
               handleLocationChange(e);
               setValue(e.target.value);
             }}
-            className={classNames(
-              `border bg-white
-              text-black hover:bg-gray-50 flex h-10 w-full items-center
-              justify-center space-x-3 text-sm shadow-sm rounded-md
-              transition-all duration-75 focus:outline-none px-3`,
-              {
-                "border-error": errorText,
-                "border-gray-50": !errorText,
-              }
+            className={twMerge(
+              `border border-gray-50 bg-white placeholder:text-gray-50
+              text-black flex w-full items-center
+              justify-center text-base rounded-md
+              transition-colors focus:outline-none px-4 py-3`,
+              errorText && 'border-error',
             )}
           />
           {autocompleteSuggestions.length > 0 && (

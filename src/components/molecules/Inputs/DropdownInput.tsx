@@ -1,6 +1,5 @@
 'use client';
 
-import classNames from "classnames";
 import { memo, useState } from "react";
 import {
   Control,
@@ -10,6 +9,7 @@ import {
 } from "react-hook-form";
 import { Heading5, Icons, TextBase, ErrorText } from "@/src/components/atoms";
 import { FilterButton } from "@/src/components/molecules";
+import { twMerge } from "tailwind-merge";
 
 interface DropdownInputProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -40,15 +40,12 @@ const DropdownInput = <T extends FieldValues>({
         <Heading5 text={label} font="medium" />
       )}
       <div
-        className={classNames(
-          `border bg-white grow relative
-            text-black hover:bg-gray-50 flex h-16 w-full items-center
-            text-sm shadow-sm rounded-md gap-4 placeholder:text-gray-50
-            transition-colors duration-75 focus:outline-none px-4 py-3`,
-          {
-            "border-error": errorText,
-            "border-gray-50": !errorText,
-          }
+        className={twMerge(
+          `border border-gray-50 bg-white grow relative
+            text-black flex w-full items-center
+            rounded-md gap-4 placeholder:text-gray-50
+            transition-colors focus:outline-none px-4 py-3`,
+          errorText && 'border-error',
         )}
       >
         <div className="flex justify-between items-center grow">

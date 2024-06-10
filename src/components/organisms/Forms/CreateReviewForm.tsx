@@ -36,16 +36,12 @@ const CreateReviewForm: React.FC<Props> = ({ closeModal }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
-
   const { isPending, mutate, isError } = useCreateComment();
 
   const onSubmit: SubmitHandler<Omit<ICreateComment, 'cardId'>> 
   = async(data) => {
     mutate({...data, cardId: +id}, {
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
       onSuccess: () => {
         reset();
         closeModal();

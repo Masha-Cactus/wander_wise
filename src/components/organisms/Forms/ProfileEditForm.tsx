@@ -49,10 +49,6 @@ const ProfileEditForm = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const handleError = (error: any) => {
-    setErrorMessage(error);
-  };
-
   const { isPending, mutate, isError } = useUpdateUserInfo();
 
   const onSubmit = async (data: ProfileEditFormData) => {
@@ -64,7 +60,7 @@ const ProfileEditForm = () => {
         ? `${location.city}, ${location.country}` 
         : user?.location,
     }, {
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
     }
     );
   };

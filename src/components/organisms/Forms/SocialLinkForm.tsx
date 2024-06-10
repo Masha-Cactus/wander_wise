@@ -42,10 +42,6 @@ const SocialLinkForm: React.FC<Props> = ({ name }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
-
   const { 
     isPending: isPendingAdd, 
     mutate: add, 
@@ -64,11 +60,11 @@ const SocialLinkForm: React.FC<Props> = ({ name }) => {
     if (user && currentSocial?.link !== link) {
       if (currentSocial) {
         update({ link, name, id: currentSocial.id, userId: user.id}, {
-          onError: handleError,
+          onError: (e) => setErrorMessage(e),
         });
       } else {
         add({ link, name, userId: user.id}, {
-          onError: handleError,
+          onError: (e) => setErrorMessage(e),
         });
       }
     }

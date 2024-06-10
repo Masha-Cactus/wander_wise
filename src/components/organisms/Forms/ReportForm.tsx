@@ -37,11 +37,7 @@ const ReportForm: React.FC<Props> = ({ closeModal, type, comment }) => {
     },
     resolver: yupResolver(validationSchema),
   });
-
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
-
+  
   const { 
     isPending: isReportCardPending, 
     mutate: reportCard, 
@@ -64,7 +60,7 @@ const ReportForm: React.FC<Props> = ({ closeModal, type, comment }) => {
         commentText: comment.text,
         id: comment.id, 
       }, {
-        onError: handleError,
+        onError: (e) => setErrorMessage(e),
         onSuccess: () => closeModal(),
       });
 
@@ -73,7 +69,7 @@ const ReportForm: React.FC<Props> = ({ closeModal, type, comment }) => {
     
     if (type === 'Card' && id) {
       reportCard({text, cardId: +id}, {
-        onError: handleError,
+        onError: (e) => setErrorMessage(e),
         onSuccess: () => closeModal(),
       });
     }

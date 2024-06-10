@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import AddProfileImageModal from "../Modals/AddProfileImageModal";
 import ConfirmEmailModal from "../Modals/ConfirmEmailModal";
 import { Routes } from "@/src/lib/constants";
+import { RoundedButton } from "../../molecules";
 
 const ProfileInfoSection: React.FC = () => {
   const { user } = useUser();
@@ -145,17 +146,18 @@ const ProfileInfoSection: React.FC = () => {
 
       <Link
         href={Routes.PROFILE.EDIT}
-        className="border border-black rounded-full p-2"
+        className="w-full"
       >
-        Edit profile
+        <RoundedButton text="Edit profile" style="light" classes="p-2" />
       </Link>
-      <button 
-        className="bg-error text-white rounded-full p-2"
-        disabled={isPending}
-        onClick={handleLogout}
-      >
-        Logout
-      </button>
+      <RoundedButton 
+        text="Logout" 
+        style="red" 
+        onClick={handleLogout} 
+        disabled={isPending} 
+        classes="p-2"
+      />
+
       {isError && <ErrorText errorText={errorMessage} />}
 
       {isAddImageModal && (

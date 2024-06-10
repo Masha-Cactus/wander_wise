@@ -16,21 +16,24 @@ const Navbar = () => {
         <Link href={Routes.TRIPS}>
           <Heading5 
             text="Trips" 
-            font={pathname.startsWith('/trips') ? 'semibold' : 'normal'} 
+            font={pathname.startsWith('/trips') ? 'semibold' : 'normal'}
+            classes="hover:text-gray-70"
           />
         </Link>
 
         <Link href={Routes.SAVED}>
           <Heading5 
             text="Saved" 
-            font={pathname.startsWith('/saved') ? 'semibold' : 'normal'} 
+            font={pathname.startsWith('/saved') ? 'semibold' : 'normal'}
+            classes="hover:text-gray-70"
           />
         </Link>
 
         <Link href={Routes.MY_CARDS.MAIN}>
           <Heading5 
             text="My cards" 
-            font={pathname.startsWith('/my-cards') ? 'semibold' : 'normal'} 
+            font={pathname.startsWith('/my-cards') ? 'semibold' : 'normal'}
+            classes="hover:text-gray-70"
           />
         </Link>
       </div>

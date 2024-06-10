@@ -11,7 +11,7 @@ import {
   SignInModal,
   SignUpModal,
 } from "@/src/components/organisms";
-import { Navbar } from "@/src/components/molecules";
+import { Navbar, RoundedButton, UnstyledButton } from "@/src/components/molecules";
 import { Routes } from "@/src/lib/constants";
 
 const Header: React.FC = () => {
@@ -23,8 +23,7 @@ const Header: React.FC = () => {
 
   return (
     <header
-      className="flex items-center justify-between 
-    mx-10 my-7"
+      className="flex items-center justify-between mx-10 my-7"
     >
       <Link href={Routes.HOME} className="relative w-48 h-10">
         <Image
@@ -38,20 +37,18 @@ const Header: React.FC = () => {
       {user ? (
         <Navbar />
       ) : (
-        <div className="flex gap-8">
-          <button
-            className="text-black flex justify-center items-center"
+        <div className="flex gap-8 items-center">
+          <UnstyledButton 
+            text="Login"
             onClick={() => setIsShowSignInModal(true)}
-          >
-            Login
-          </button>
-          <button
-            className="w-36 h-14 bg-black text-white flex 
-            justify-center items-center rounded-full"
-            onClick={() => setIsShowSignUpModal(true)}
-          >
-            Sign Up
-          </button>
+            classes="w-36"
+          />
+          <RoundedButton 
+            text="Sign Up" 
+            style="dark" 
+            classes="w-36" 
+            onClick={() => setIsShowSignUpModal(true)} 
+          />
         </div>
       )}
 

@@ -1,7 +1,5 @@
 import { ProfileEditPage } from "@/src/components/pages";
 
-const Page = () => {
+export default function Page() {
   return <ProfileEditPage />;
-};
-
-export default Page;
+}

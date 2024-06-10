@@ -175,13 +175,13 @@ export function usePopularCards(page: number) {
 export function useSearchCards(page: number, filterParams: ISearchCard | null) {
   return useQuery({
     queryKey: ['cards', page, filterParams],
-    queryFn: () => {
+    queryFn: ({ signal }) => {
       if (filterParams) {
-        return cardService.searchCards(page, filterParams);
+        return cardService.searchCards(page, filterParams, signal);
       }
 
       return null;
     },
-    enabled: !!filterParams,
+    enabled: !!(filterParams && page >= 0),
   });
 }

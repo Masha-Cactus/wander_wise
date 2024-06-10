@@ -20,13 +20,9 @@ const DeleteCardModal: React.FC<DeleteCardModalProps> = ({
 
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
-  const handleError = (error: any) => {
-    setErrorMessage(error);
-  };
-
   const handleDeleteCard = () => {
     mutate(cardId, { 
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
       onSuccess: () => onClose(),
     });
   };
@@ -37,13 +33,6 @@ const DeleteCardModal: React.FC<DeleteCardModalProps> = ({
       title="Delete your card?"
       subtitle="This action cannot be undone 🫣"
     >
-      {/* <Heading text="Delete your card?" font="normal"/>
-      <Heading4 
-        text="This action cannot be undone 🫣" 
-        font="normal" 
-        classes="mb-2 text-gray-80"
-      /> */}
-
       <div className="w-full grid grid-cols-2 gap-5">
         <RoundedButton
           text="Delete"
@@ -57,7 +46,6 @@ const DeleteCardModal: React.FC<DeleteCardModalProps> = ({
           style="light"
         />
       </div>
-
       {isError && <ErrorText errorText={errorMessage} />}
     </ModalSkeleton>
   );

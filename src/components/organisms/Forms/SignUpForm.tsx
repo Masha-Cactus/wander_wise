@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ISignUp } from "@/src/services";
@@ -23,7 +23,6 @@ type Props = {
 const SignUpForm: React.FC<Props> 
 = ({ openConfirmEmailModal, openSignInModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
-  const [isShowPassword, setIsShowPassword] = useState(false);
   const validationSchema = signUpSchema();
 
   const {
@@ -39,18 +38,14 @@ const SignUpForm: React.FC<Props>
     resolver: yupResolver(validationSchema),
     mode: 'onBlur',
   });
-
-  const handleError = (error: any) => {
-    setErrorMessage(error);
-  };
-
+  
   const { isPending, mutate, isError } = useSignUp();
 
   const onSubmit = async (data: ISignUp) => {
     const trimmedUserData = trimObjectFields(data);
 
     mutate(trimmedUserData, {
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
       onSuccess: (user) => {
         user.banned 
           ? openConfirmEmailModal()
@@ -79,8 +74,6 @@ const SignUpForm: React.FC<Props>
         control={control}
         errorText={errors.password?.message}
         disabled={isPending}
-        isShown={isShowPassword}
-        onClick={() => setIsShowPassword(!isShowPassword)}
         placeholder="Enter your password"
       />
 
@@ -90,8 +83,6 @@ const SignUpForm: React.FC<Props>
         control={control}
         errorText={errors.repeatPassword?.message}
         disabled={isPending}
-        isShown={isShowPassword}
-        onClick={() => setIsShowPassword(!isShowPassword)}
         placeholder="Confirm password"
       />
 

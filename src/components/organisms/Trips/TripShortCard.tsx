@@ -22,7 +22,7 @@ const TripShortCard: React.FC<Props> = ({ card }) => {
       />
 
       <div className="absolute inset-x-2 bottom-3 
-          py-2 px-6 bg-gray-80">
+          py-2 px-6 bg-gray-80 rounded-full">
         <TextMedium 
           text={card.name} 
           font="semibold" 

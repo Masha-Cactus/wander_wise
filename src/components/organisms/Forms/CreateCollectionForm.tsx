@@ -38,16 +38,12 @@ const CreateCollectionForm = () => {
 
   const { isPending, mutate, isError } = useCreateCollection();
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
-
   const onSubmit = async (data: Omit<ICreateCollection, "userId">) => {
     const trimmedData = trimObjectFields(data);
 
     mutate(trimmedData,
       {
-        onError: handleError,
+        onError: (e) => setErrorMessage(e),
         onSuccess: () => push(Routes.COLLECTIONS.MAIN),
       }
     );

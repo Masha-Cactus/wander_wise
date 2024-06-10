@@ -1,6 +1,5 @@
 'use client';
 
-import classNames from "classnames";
 import {
   Control,
   ControllerRenderProps,
@@ -12,6 +11,7 @@ import { Icons, TextMedium } from "@/src/components/atoms";
 import { InputControllerWrapper } from "@/src/components/molecules";
 import { useState, memo } from "react";
 import IconButton from "../Buttons/IconButton";
+import { twMerge } from "tailwind-merge";
   
 interface SelectInputProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -56,15 +56,12 @@ const SelectInput = <T extends FieldValues>({
             placeholder={placeholder ? placeholder : ''}
             onChange={(e) => setCurrentValue(e.target.value)}
             value={currentValue}
-            className={classNames(
-              `border bg-white grow
-            text-black hover:bg-gray-50 flex h-10 w-full items-center
-            justify-center space-x-3 text-sm shadow-sm rounded-md
-            transition-all duration-75 focus:outline-none px-3`,
-              {
-                "border-error": errorText,
-                "border-gray-50": !errorText,
-              }
+            className={twMerge(
+              `border border-gray-50 bg-white grow placeholder:text-gray-50
+              text-black flex w-full items-center
+              justify-center text-base rounded-md
+              transition-colors focus:outline-none px-4 py-3`,
+              errorText && 'border-error',
             )}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
@@ -89,8 +86,8 @@ const SelectInput = <T extends FieldValues>({
                     <TextMedium text={value} font="normal" />
                   </div>
                   <IconButton
-                    icon={<Icons.delete />}
-                    classes="p-0 h-6 w-6 text-gray-80"
+                    icon={<Icons.delete className="w-6 h-6" />}
+                    classes="p-0 text-gray-80"
                     onClick={() => 
                       field.onChange(
                         field.value.filter((v: string) => v !== value))

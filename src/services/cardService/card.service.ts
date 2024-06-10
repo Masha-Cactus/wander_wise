@@ -39,7 +39,7 @@ class CardService {
   addImages ({id, images}: IAddCardImages) {
     return authClient.putForm<never, ICard>(
       `${this.BASE_URL}/add-images/${id}`,
-      { images },
+      images,
     );
   };
 
@@ -63,10 +63,11 @@ class CardService {
     return authClient.delete(`${this.BASE_URL}/${id}`);
   };
 
-  searchCards(page: number, data: ISearchCard) {
+  searchCards(page: number, data: ISearchCard, signal: AbortSignal) {
     return baseClient.post<never, ISearchCardResponse>(
       `${this.BASE_URL}/search?page=${page}&size=${CARDS_PER_PAGE}&sort=asc`, 
       data,
+      { signal }
     );
   };
 

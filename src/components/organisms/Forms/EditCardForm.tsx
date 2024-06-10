@@ -75,10 +75,6 @@ const EditCardForm: React.FC<Props> = ({ card }) => {
   });
 
   const { isPending, mutate, isError } = useUpdateCard();
-
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
   
   const onSubmit = async (data: UpdateCardFormData) => {
     const {
@@ -93,7 +89,7 @@ const EditCardForm: React.FC<Props> = ({ card }) => {
       country: location?.country || card.whereIs.split(',')[2].trim(),
     },
     {
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
       onSuccess: () => push(Routes.MY_CARDS.MAIN),
     }
     );

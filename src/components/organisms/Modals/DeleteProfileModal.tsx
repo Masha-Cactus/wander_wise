@@ -18,13 +18,9 @@ const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
 
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
-  const handleError = (error: any) => {
-    setErrorMessage(error);
-  };
-
   const handleDeleteProfile = () => {
     mutate(undefined, { 
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
       onSuccess: () => onClose(),
     });
   };
@@ -35,13 +31,6 @@ const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
       title="Delete your profile?"
       subtitle="This action cannot be undone 🫣"
     >
-      {/* <Heading text="Delete your profile?" font="normal"/>
-      <Heading4 
-        text="This action cannot be undone 🫣" 
-        font="normal" 
-        classes="mb-2 text-gray-80"
-      /> */}
-
       <div className="w-full grid grid-cols-2 gap-5">
         <RoundedButton
           text="Delete"

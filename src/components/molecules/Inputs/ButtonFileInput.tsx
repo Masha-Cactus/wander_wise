@@ -8,10 +8,8 @@ import {
   FieldValues,
   Path,
 } from "react-hook-form";
-import { 
-  InputControllerWrapper, 
-  ImageInputPlaceholder 
-} from "@/src/components/molecules";
+import { InputControllerWrapper } from "@/src/components/molecules";
+import { Icons, TextBase } from "@/src/components/atoms";
 
 interface SingleFileInputProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -60,9 +58,11 @@ const SingleImageInput = <T extends FieldValues>({
           {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label 
             htmlFor={name} 
-            className="w-full h-64 flex rounded-xl overflow-hidden relative"
+            className="w-full flex gap-1 p-2 justify-center 
+            items-center text-gray-80 hover:text-gray-50 cursor-pointer"
           >
-            <ImageInputPlaceholder image={field.value} />            
+            <Icons.download className="w-4 h-4 text-inherit" />
+            <TextBase text="Upload image" font="normal" classes="text-inherit"/>
           </label>
         </div>
       )}

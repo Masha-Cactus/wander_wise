@@ -48,15 +48,13 @@ const SignInModal: React.FC<SignInModalProps> = ({
 
       <Divider classes="mb-2" />
 
-      <div className="flex gap-2 jystify-center">
+      <div className="flex gap-2 justify-center">
         <TextBase
           text="Don’t have an account yet?"
-          classes="text-nowrap"
           font="normal"
         />
         <UnstyledButton
           text="Create account"
-          classes="text-nowrap font-bold"
           onClick={handleSignUpClick}
         />
       </div>

@@ -45,10 +45,6 @@ const AddCardToCollectionForm: React.FC<Props>
     resolver: yupResolver(validationSchema),
   });
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
-
   const {
     isPending,
     mutate,
@@ -66,7 +62,7 @@ const AddCardToCollectionForm: React.FC<Props>
           isPublic: collection.isPublic,
           cardIds: [...collection.cardDtos.map(c => c.id), cardId]
         }, {
-          onError: handleError,
+          onError: (e) => setErrorMessage(e),
           onSuccess: closeModal,
         });
       }
@@ -120,7 +116,7 @@ const AddCardToCollectionForm: React.FC<Props>
           classes="h-full" 
         />
       </div>
-      
+
       {isError && <ErrorText errorText={errorMessage} />}
     </form>
   );

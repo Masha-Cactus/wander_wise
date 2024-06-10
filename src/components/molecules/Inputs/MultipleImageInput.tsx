@@ -10,7 +10,8 @@ import {
 } from "react-hook-form";
 import { 
   InputControllerWrapper,
-  ImageInputPlaceholder 
+  ImageInputPlaceholder,
+  IconButton 
 } from "@/src/components/molecules";
 import Image from "next/image";
 import { Icons } from "@/src/components/atoms";
@@ -97,9 +98,10 @@ const MultipleImageInput = <T extends FieldValues>({
                     className="object-cover rounded-2xl"
                     alt="Card image"
                   />
-                  <Icons.delete
-                    className="absolute top-2 right-2 rounded-full w-6 h-6 p-1 
-                    border border-white bg-error hidden text-white 
+                  <IconButton 
+                    icon={<Icons.delete className="w-5 h-5" />} 
+                    classes="absolute top-2 right-2 rounded-full p-1 
+                    border-1 border-white bg-error hidden text-white
                     group-hover:block group-hover:cursor-pointer"
                     onClick={() => handleDelete(field, i)}
                   />

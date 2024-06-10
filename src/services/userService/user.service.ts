@@ -64,7 +64,7 @@ class UserService {
       `${this.BASE_URL}/update-user-image/${data.id}`,
       data, 
     );
-  }
+  };
 
   deleteUser (userId: number) {
     return authClient.delete(`${this.BASE_URL}/delete-user/${userId}`);

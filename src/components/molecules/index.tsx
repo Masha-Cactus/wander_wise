@@ -19,7 +19,7 @@ export { default as StarsInput } from "./Inputs/StarsInput";
 export { default as SelectInput } from "./Inputs/SelectInput";
 export { default as DropdownInput } from "./Inputs/DropdownInput";
 export { default as SquareCheckboxInput } from "./Inputs/SquareCheckboxInput";
-export { default as SingleImageInput } from "./Inputs/SingleImageInput";
+export { default as ButtonFileInput } from "./Inputs/ButtonFileInput";
 export { default as MultipleImageInput } from "./Inputs/MultipleImageInput";
 
 export { default as LoadedContentStateController } from "./LoadedContentStateController";

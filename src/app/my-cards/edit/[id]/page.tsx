@@ -1,7 +1,5 @@
 import { EditCardPage } from "@/src/components/pages";
 
-const Page = () => {
-  return (<EditCardPage />);
-};
-
-export default Page;
+export default function Page() {
+  return <EditCardPage />;
+}

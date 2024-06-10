@@ -2,7 +2,7 @@
 
 import { useSearchCards } from "@/src/queries";
 import { ICard, ISearchCard } from "@/src/services";
-import { memo, useEffect, useMemo, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { 
   LoadedContentStateController, 
   CardsSkeleton 
@@ -20,53 +20,41 @@ const PaginatedCardsSection: React.FC<Props> = ({ filterParams, view }) => {
   const [page, setPage] = useState(0);
   const [displayedCards, setDisplayedCards] = useState<ICard[]>([]);
   const [lastPage, setLastPage] = useState<number | undefined>(undefined);
-  const [isNothingFound, setIsNothingFound] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const pageCards = displayedCards.slice(
+    CARDS_PER_PAGE * page, 
+    CARDS_PER_PAGE * (page + 1)
+  );
 
   const { 
     data, 
     error, 
-    failureCount,
     isLoading,
     fetchStatus,
   } = useSearchCards(page, filterParams);
 
   const isShowSkeleton = isLoading && fetchStatus !== 'idle' 
     && view === 'Gallery';
-
-  const handleDataAbsence = () => {
-    if (displayedCards.length) {
-      setPage(page - 1);
-      setLastPage(page - 1);
-    } else {
-      setIsNothingFound(true);
-    }
-  };
-
-  const pageCards = useMemo(() =>  displayedCards.slice(
-    CARDS_PER_PAGE * page, 
-    CARDS_PER_PAGE * (page + 1)
-  ), [displayedCards, page]);
+  const isShowEmpty = !!(lastPage && lastPage < 0);
 
   useEffect(() => {
-    if (data) {
-      if (!data.cards.length) {
-        handleDataAbsence();
-      } else {
-        if (data.cards.length < CARDS_PER_PAGE) {
-          setLastPage(page);
-        }
-
-        setDisplayedCards(curr => [...curr, ...data.cards]);
-      } 
+    if (data && data.cards.length) {
+      if (data.cards.length < CARDS_PER_PAGE) {
+        setLastPage(page);
+      }
+      
+      setDisplayedCards(curr => [...curr, ...data.cards]);
     }
   }, [data, filterParams, page]);
 
   useEffect(() => {
-    if (error && failureCount >= 3) {
-      handleDataAbsence();
+    if (error) {
+      setPage(page => page - 1);
+      setLastPage(page - 1);
     }
-  }, [error, failureCount]);
+  }, [error]);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (scrollRef && view === 'Gallery') {
@@ -78,13 +66,13 @@ const PaginatedCardsSection: React.FC<Props> = ({ filterParams, view }) => {
     <>
       <div className="h-px absolute left-0 top-0" ref={scrollRef} />
       <LoadedContentStateController
-        isEmpty={isNothingFound}
+        isEmpty={isShowEmpty}
         emptyFallbackComponent={
           <Heading2 
             text="No cards matching your preferences found 😢. 
                     Try setting other filter parameters" 
             font="semibold"
-            classes="m-auto"
+            classes="m-auto text-gray-80 text-center"
           />
         }
         isLoading={isShowSkeleton}
@@ -111,8 +99,6 @@ const PaginatedCardsSection: React.FC<Props> = ({ filterParams, view }) => {
             isFetchingNextPage={isLoading && fetchStatus !== 'idle'}
           />
         )}
-        
-            
       </LoadedContentStateController>
     </>
   );

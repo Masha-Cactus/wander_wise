@@ -1,11 +1,11 @@
 import { memo } from "react";
-import classNames from "classnames";
 import {
   Control,
   FieldPath,
   FieldValues,
 } from "react-hook-form";
 import { InputControllerWrapper } from "@/src/components/molecules";
+import { twMerge } from "tailwind-merge";
 
 interface TextInputProps<T extends FieldValues> {
   type: string;
@@ -42,15 +42,12 @@ const TextInput = <T extends FieldValues>({
             type={type}
             disabled={disabled}
             placeholder={placeholder ? placeholder : `Enter your ${name}`}
-            className={classNames(
-              `border bg-white placeholder:text-gray-50
-                text-black flex h-10 w-full items-center
-                justify-center text-sm shadow-sm rounded-md
-                transition-colors duration-75 focus:outline-none px-3`,
-              {
-                "border-error": errorText,
-                "border-gray-50": !errorText,
-              }
+            className={twMerge(
+              `border border-gray-50 bg-white placeholder:text-gray-50
+                text-black flex w-full items-center
+                justify-center text-base rounded-md
+                transition-colors focus:outline-none px-4 py-3`,
+              errorText && 'border-error',
             )}
           />
         </div>

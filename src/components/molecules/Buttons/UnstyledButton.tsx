@@ -13,7 +13,7 @@ const UnstyledButton: React.FC<UnstyledButtonProps> = ({
   text,
 }) => {
 
-  const className = twMerge(`text-base font-regular text-black ${classes}`);
+  const className = twMerge(`text-base font-semibold text-black ${classes}`);
 
   return (
     <button className={className} onClick={onClick}>

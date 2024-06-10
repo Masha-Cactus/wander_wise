@@ -32,13 +32,9 @@ const RestorePasswordForm: React.FC<Props> = ({setIsSubmitted}) => {
 
   const { isPending, mutate, isError } = useRestorePassword();
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
-
   const onSubmit: SubmitHandler<IEmail> = async(data) => {
     mutate(data, {
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
       onSuccess: () => {
         reset();
         setIsSubmitted(true);

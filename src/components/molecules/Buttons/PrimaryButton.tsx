@@ -24,8 +24,8 @@ const PrimaryButton: React.FC<Props> = ({
       onClick={onClick}
       className={twMerge(
         "w-full h-14 bg-yellow rounded-full flex",
-        "justify-center items-center font-bold",
-        "transition-all duration-75 text-black",
+        "justify-center items-center text-base font-semibold",
+        "transition-colors text-black",
         "hover:bg-[#E79200]", 
         "active:bg-[#E47A00]",
         "disabled:bg-gray-30 disabled:text-gray-70",

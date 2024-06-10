@@ -85,7 +85,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col pt-8
-      bg-white border border-gray-30 gap-8"
+      bg-white border-r border-gray-30 gap-8"
     >
       <div className="flex flex-col mx-10">
         <TextBase text="Where are you now?*" font="semibold" />

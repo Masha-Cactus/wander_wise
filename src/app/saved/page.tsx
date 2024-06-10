@@ -1,8 +1,10 @@
 import { SavedPage } from "@/src/components/pages";
-import { memo } from "react";
-
-const Page = () => {
-  return (<SavedPage />);
+import { Metadata } from 'next';
+ 
+export const metadata: Metadata = {
+  title: 'Saved',
 };
 
-export default memo(Page);
+export default function Page() {
+  return <SavedPage />;
+}

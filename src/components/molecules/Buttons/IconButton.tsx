@@ -1,9 +1,10 @@
 import { memo } from "react";
 import { TextBase, TextSmall } from "@/src/components/atoms";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   icon: React.ReactNode;
-  onClick?: () => void;
+  onClick?: (arg: any) => void;
   text?: string;
   classes: string;
   size?: 'small',
@@ -14,9 +15,12 @@ const IconButton: React.FC<Props>
 = ({ icon, onClick, text, classes, size, disabled }) => {
   return (
     <button 
-      className={`flex items-center justify-center gap-1 px-2 py-1 ${classes}`} 
+      className={twMerge(
+        'flex items-center justify-center gap-1 px-2 py-1', classes
+      )}
       onClick={onClick}
       disabled={disabled}
+      type="button"
     >
       {icon}
       {text && (

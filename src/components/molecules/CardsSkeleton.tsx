@@ -12,7 +12,7 @@ const CardsSkeleton = () => {
         classes="text-gray-80 text-center"
       />
 
-      <div className="w-full grid grid-cols-[repeat(auto-fill,300px)] 
+      <div className="w-full grid grid-cols-[repeat(auto-fill,325px)] 
       justify-center gap-y-6 gap-x-5 col-start-2 col-span-3 row-start-2">
         {cards.map((card, i) => (
           <article

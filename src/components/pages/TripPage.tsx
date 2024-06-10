@@ -6,6 +6,7 @@ import { TripLongCard, ReviewsList } from "@/src/components/organisms";
 import { useParams, useRouter } from "next/navigation";
 import { useGetCardDetails } from "@/src/queries";
 import { Routes } from "@/src/lib/constants";
+import { Divider } from "@/src/components/atoms";
 
 const TripPage = () => {
   const { id } = useParams();
@@ -20,7 +21,8 @@ const TripPage = () => {
 
   return (
     <main className="grow bg-gray-10">
-      <div className="mx-10 my-10 flex flex-col gap-8">
+      <Divider />
+      <div className="w-full h-full px-10 py-10 flex flex-col gap-8">
         <BackButton />
 
         {card && (
@@ -29,7 +31,6 @@ const TripPage = () => {
             <ReviewsList reviews={card?.comments}/>
           </>
         )}
-        
       </div>
     </main>
   );

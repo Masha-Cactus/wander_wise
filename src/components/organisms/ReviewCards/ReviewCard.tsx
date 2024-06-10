@@ -6,19 +6,22 @@ import { DeleteReviewModal, Stars } from "@/src/components/organisms";
 import { IComment } from "@/src/services";
 import { memo, useState } from "react";
 import CreateReportModal from "../Modals/CreateReportModal";
+import { useUser } from "@/src/store/user";
 
 type Props = {
   review: IComment;
 };
 
-const Review: React.FC<Props> = ({ review }) => {
+const ReviewCard: React.FC<Props> = ({ review }) => {
   const stars = new Array(5).fill(0).fill(1, 0, review.stars);
   const [isDeleteReviewModal, setIsDeleteReviewModal] = useState(false);
   const [isReportReviewModal, setIsReportReviewModal] = useState(false);
+  const { user } = useUser();
+  const isReviewedByUser = user?.pseudonym === review.author;
 
   return (
     <div 
-      className="bg-white flex flex-col gap-4 rounded-2xl p-6 group w-[440px]"
+      className="bg-white flex flex-col gap-4 rounded-2xl p-6 w-[440px]"
     >
       <div className="flex gap-4 items-start justify-between">
         <div className="flex gap-4">
@@ -29,16 +32,20 @@ const Review: React.FC<Props> = ({ review }) => {
         </div>
 
         <div className="flex gap-4">
-          <IconButton
-            icon={<Icons.delete />}
-            classes="hidden group-hover:block"
-            onClick={() => setIsDeleteReviewModal(true)}
-          />
+          
           <IconButton 
-            icon={<Icons.report />} 
-            classes=""
+            icon={<Icons.report className="w-6 h-6" />} 
+            classes="p-0"
             onClick={() => setIsReportReviewModal(true)}
           />
+
+          {isReviewedByUser && (
+            <IconButton
+              icon={<Icons.delete className="w-6 h-6" />}
+              classes="p-0"
+              onClick={() => setIsDeleteReviewModal(true)}
+            />
+          )}
         </div>
       </div>
       
@@ -62,4 +69,4 @@ const Review: React.FC<Props> = ({ review }) => {
   );
 };
 
-export default memo(Review);
+export default memo(ReviewCard);

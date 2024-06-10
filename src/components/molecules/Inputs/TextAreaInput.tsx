@@ -1,7 +1,7 @@
 import { memo } from "react";
-import classNames from "classnames";
 import { Control, FieldPath, FieldValues } from "react-hook-form";
 import { InputControllerWrapper } from "@/src/components/molecules";
+import { twMerge } from "tailwind-merge";
 
 interface TextareaProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -30,14 +30,12 @@ const TextAreaInput = <T extends FieldValues>({
     >
       {(field) => (
         <textarea
-          className={classNames(
-            `w-full h-64 px-4 py-3 border bg-white
-                text-black hover:bg-gray-50 text-sm rounded-lg resize-none
-                transition-all duration-75 focus:outline-none`,
-            {
-              "border-error": errorText,
-              "border-gray-50": !errorText,
-            }
+          className={twMerge(
+            `w-full h-64 px-4 py-3 border border-gray-50
+            text-base bg-white placeholder:text-gray-50
+          text-black rounded-lg resize-none
+            transition-colors focus:outline-none`,
+            errorText && 'border-error',
           )}
           id={name}
           {...field}

@@ -32,15 +32,11 @@ const ConfirmNewEmailForm: React.FC<Props> = ({ closeModal }) => {
     },
   });
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
-
   const { isPending, mutate, isError } = useUpdateEmail();
 
   const onSubmit: SubmitHandler<FormData> = async({confirmationCode}) => {
     mutate(confirmationCode, {
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
       onSuccess: closeModal,
     });
   };

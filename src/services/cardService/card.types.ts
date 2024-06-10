@@ -52,7 +52,7 @@ export interface IReportCard {
 
 export interface IAddCardImages {
   id: number,
-  images: File[],
+  images: FormData,
 }
 
 export interface ISearchCard {

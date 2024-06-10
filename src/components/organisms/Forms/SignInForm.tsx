@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ISignIn } from "@/src/services";
@@ -20,7 +20,6 @@ type Props = {
 
 const SignInForm: React.FC<Props> = ({ closeModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
-  const [isShowPassword, setIsShowPassword] = useState(false);
   const validationSchema = signInSchema();
 
   const {
@@ -36,10 +35,6 @@ const SignInForm: React.FC<Props> = ({ closeModal }) => {
     mode: 'onBlur'
   });
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
-
   const { isPending, mutate, isError } = useSignIn();
   const { push } = useRouter();
 
@@ -47,7 +42,7 @@ const SignInForm: React.FC<Props> = ({ closeModal }) => {
     const trimmedUserData = trimObjectFields(data);
 
     mutate(trimmedUserData, {
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
       onSuccess: () => {
         closeModal();
         push(Routes.PROFILE.MAIN);
@@ -76,8 +71,6 @@ const SignInForm: React.FC<Props> = ({ closeModal }) => {
         control={control}
         errorText={errors.password?.message}
         disabled={isPending}
-        isShown={isShowPassword}
-        onClick={() => setIsShowPassword(!isShowPassword)}
       />
 
       {isError && <ErrorText errorText={errorMessage} />}

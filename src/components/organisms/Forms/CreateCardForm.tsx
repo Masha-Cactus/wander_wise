@@ -65,10 +65,6 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
   });
 
   const { isPending, mutate, isError } = useCreateCard();
-
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
   
   const onSubmit = async (data: CreateCardFormData) => {
     const {
@@ -82,7 +78,7 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
       country: location?.country || '',
     },
     {
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
       onSuccess: ({id}) => setNewCardId(id),
     }
     );

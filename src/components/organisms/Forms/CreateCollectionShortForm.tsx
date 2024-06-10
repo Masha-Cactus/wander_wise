@@ -38,10 +38,6 @@ const CreateCollectionShortForm: React.FC<Props> = ({ closeForm }) => {
 
   const { isPending, mutate, isError } = useCreateCollection();
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
-
   const onSubmit = async (data: CreateCollectionShortData) => {
     const { name } = trimObjectFields(data);
 
@@ -50,7 +46,7 @@ const CreateCollectionShortForm: React.FC<Props> = ({ closeForm }) => {
       cardIds: [],
     },
     {
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
       onSuccess: closeForm,
     }
     );

@@ -1,7 +1,10 @@
 import { MyCardsPage } from "@/src/components/pages";
-
-const Page = () => {
-  return (<MyCardsPage />);
+import { Metadata } from 'next';
+ 
+export const metadata: Metadata = {
+  title: 'My cards',
 };
 
-export default Page;
+export default function Page() {
+  return <MyCardsPage />;
+}

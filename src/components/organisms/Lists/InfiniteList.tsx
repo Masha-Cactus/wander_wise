@@ -9,9 +9,10 @@ import {
   useRef, 
   useState 
 } from "react";
-import { Icons, TextMedium } from "@/src/components/atoms";
+import { Icons, TextBase } from "@/src/components/atoms";
 import { TripXLCard, TripXSCard } from "@/src/components/organisms";
 import { CARDS_PER_PAGE } from "@/src/lib/constants";
+import { CardsSkeleton } from "../../molecules";
 
 type Props = {
   cards: ICard[];
@@ -47,7 +48,11 @@ const InfiniteList: React.FC<Props>
         observer.unobserve(observedElement);
       }
     };
-  }, [isLastPage, setPage, isFetchingNextPage]);
+  }, [cards, isLastPage, setPage, isFetchingNextPage]);
+
+  if (!cards.length) {
+    return <CardsSkeleton />;
+  }
 
   return (
     <section
@@ -85,10 +90,10 @@ const InfiniteList: React.FC<Props>
         ))}
         <div className="h-1 shrink-0" ref={observerElem}>
           {isFetchingNextPage && (
-            <TextMedium 
+            <TextBase 
               text="Loading more..." 
-              classes="animate-pulse text-center mb-6" 
-              font="normal" 
+              classes="animate-pulse text-center text-gray-80 mb-6" 
+              font="medium" 
             />
           )}
         </div>
