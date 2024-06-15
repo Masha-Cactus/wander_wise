@@ -1,11 +1,11 @@
 'use client';
 
-import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useNormalizedError } from "@/src/hooks";
 import { useUpdatePassword } from "@/src/queries";
 import { IUpdatePassword } from "@/src/services";
 import { changePasswordSchema } from "@/src/validation";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
 import { PasswordInput, PrimaryButton } from "@/src/components/molecules";
 
@@ -41,7 +41,7 @@ const ChangePasswordForm: React.FC<Props> = ({ closeModal }) => {
 
   return (
     <form
-      className="grid grid-cols-2 gap-y-6 gap-x-4 h-full w-full"
+      className="grid h-full w-full grid-cols-2 gap-x-4 gap-y-6"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="col-span-1">

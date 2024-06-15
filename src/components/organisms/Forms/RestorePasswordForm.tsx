@@ -1,12 +1,12 @@
 'use client';
 
-import { useNormalizedError } from '@/src/hooks/useNormalizedError';
-import { useRestorePassword } from '@/src/queries';
-import { IEmail } from '@/src/services';
-import { restorePasswordSchema } from '@/src/validation/restorePasswordSchema';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { Dispatch, SetStateAction } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useNormalizedError } from '@/src/hooks';
+import { useRestorePassword } from '@/src/queries';
+import { IEmail } from '@/src/services';
+import { restorePasswordSchema } from '@/src/validation';
 import { ErrorText } from '@/src/components/atoms';
 import { PrimaryButton, TextInput } from '@/src/components/molecules';
 
@@ -44,7 +44,7 @@ const RestorePasswordForm: React.FC<Props> = ({setIsSubmitted}) => {
 
   return (
     <form
-      className="flex flex-col gap-12 h-full w-full"
+      className="flex h-full w-full flex-col gap-12"
       onSubmit={handleSubmit(onSubmit)}
     >
       <TextInput 

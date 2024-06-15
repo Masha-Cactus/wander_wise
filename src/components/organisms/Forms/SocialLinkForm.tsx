@@ -1,6 +1,8 @@
 'use client';
 
-import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { 
   useAddSocial, 
@@ -8,9 +10,7 @@ import {
   useUpdateSocial 
 } from "@/src/queries";
 import { useUser } from "@/src/store/user";
-import { socialLinkSchema } from "@/src/validation/socialLinkSchema";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+import { socialLinkSchema } from "@/src/validation";
 import { ErrorText } from "@/src/components/atoms";
 import { TextInput, PrimaryButton } from "@/src/components/molecules";
 import { SocialLinkName } from "@/src/services";
@@ -76,7 +76,7 @@ const SocialLinkForm: React.FC<Props> = ({ name }) => {
   return (
     <form 
       onSubmit={handleSubmit(onSubmit)} 
-      className="w-full flex flex-col gap-6"
+      className="flex w-full flex-col gap-6"
     >
       <div className="flex items-end gap-3">
         <div className="grow">

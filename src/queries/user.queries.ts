@@ -1,13 +1,13 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { getCookie, deleteCookie, setCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 import { 
   IUpdateInfo, 
   IUpdatePassword, 
   userService 
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
-import { getCookie, deleteCookie, setCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
-import { Routes } from "../lib/constants";
+import { Routes } from "@/src/lib/constants";
 
 export function useGetUserProfile(userId: number | null) {
   return useQuery({

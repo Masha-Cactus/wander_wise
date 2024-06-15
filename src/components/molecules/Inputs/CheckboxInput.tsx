@@ -1,3 +1,4 @@
+import { memo } from "react";
 import {
   Control,
   ControllerRenderProps,
@@ -6,15 +7,13 @@ import {
   Path,
 } from "react-hook-form";
 import { InputControllerWrapper } from "@/src/components/molecules";
-import { memo } from "react";
-import { TextMedium } from "@/src/components/atoms";
+import { Icons, TextMedium } from "@/src/components/atoms";
 
 interface CheckboxInputProps<T extends FieldValues> {
-  text: string,
+  text?: string,
   name: FieldPath<T>;
   control: Control<T>;
   value: string | number;
-  radio?: boolean;
 }
 
 const CheckboxInput = <T extends FieldValues>({
@@ -22,22 +21,15 @@ const CheckboxInput = <T extends FieldValues>({
   value,
   name,
   control,
-  radio,
 }: CheckboxInputProps<T>) => {
   const handleChange = (field: ControllerRenderProps<T, Path<T>>) => {
-    const isChecked = radio 
-      ? field.value === value 
-      : field.value.includes(value);
+    const isChecked = field.value.includes(value);
 
-    if (radio) {
-      field.onChange(isChecked ? "" : value); 
-    } else {
-      field.onChange(
-        isChecked
-          ? field.value.filter((v: string) => v !== value)
-          : [...field.value, value]
-      );
-    } 
+    field.onChange(
+      isChecked
+        ? field.value.filter((v: string) => v !== value)
+        : [...field.value, value]
+    );
   };
 
   return (
@@ -51,16 +43,19 @@ const CheckboxInput = <T extends FieldValues>({
         <div
           {...field}
           onClick={() => handleChange(field)}
-          className='flex gap-2 min-w-5/12 justify-start items-center'
+          className='flex items-center gap-2'
         >
-          <div className="flex justify-center h-4 w-4 cursor-pointer 
-          items-center border border-gray-80 rounded-full">
-            {(field.value === value || field.value.includes(value)) && (
-              <div className="h-2 w-2 rounded-full bg-gray-80" />
+          <div className="flex h-6 w-6 cursor-pointer items-center 
+          justify-center rounded border border-gray-80">
+            {field.value.includes(value) && (
+              <Icons.checked className="h-3 w-3 text-gray-80" />
             )}
           </div>
 
-          <TextMedium text={text} font="normal" />
+          {text && (
+            <TextMedium text={text} font="normal" />
+          )}
+
         </div>
       )}
     </InputControllerWrapper>

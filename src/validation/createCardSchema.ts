@@ -1,13 +1,11 @@
-import { ObjectSchema } from "yup";
 import * as Yup from "yup";
-
 import { genericValidationSchema } from "@/src/validation";
 import { CreateCardFormData } 
-  from "../components/organisms/Forms/CreateCardForm";
+  from "@/src/components/organisms/Forms/CreateCardForm";
 
 
 export const createCardSchema 
-= (): ObjectSchema<CreateCardFormData> =>
+= (): Yup.ObjectSchema<CreateCardFormData> =>
   Yup.object().shape({
     name: genericValidationSchema.name,
     location: genericValidationSchema.address

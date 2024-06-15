@@ -1,6 +1,5 @@
 import React, { ReactNode, memo } from "react";
-
-import { EmptyStateText, ErrorText, Loader } from "@/src/components/atoms";
+import { ErrorText, Loader } from "@/src/components/atoms";
 
 interface LoadedContentStateControllerProps {
   isEmpty?: boolean;
@@ -11,7 +10,6 @@ interface LoadedContentStateControllerProps {
   errorAlertFallbackComponent?: JSX.Element;
   isLoading?: boolean;
   loadingFallbackComponent?: JSX.Element;
-  isHidden?: boolean;
   children: ReactNode;
 }
 
@@ -21,7 +19,7 @@ LoadedContentStateControllerProps
   isEmpty,
   emptyText,
   emptyFallbackComponent = (
-    <EmptyStateText text={emptyText || ""} />
+    <ErrorText errorText={emptyText || ""} />
   ),
   isError,
   errorText,
@@ -30,7 +28,6 @@ LoadedContentStateControllerProps
   ),
   isLoading,
   loadingFallbackComponent = <Loader />,
-  isHidden,
   children,
 }) => {
   if (isEmpty) {
@@ -43,10 +40,6 @@ LoadedContentStateControllerProps
 
   if (isLoading) {
     return loadingFallbackComponent;
-  }
-
-  if (isHidden) {
-    return null;
   }
 
   return <>{children}</>;

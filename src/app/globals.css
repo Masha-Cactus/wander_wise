@@ -25,16 +25,3 @@
     text-wrap: balance;
   }
 }
-
-@layer components {
-  .sign-input {
-    @apply border-b border-black bg-white
-    text-black hover:bg-gray-50 flex h-10 w-full items-center
-    justify-center space-x-3 text-sm shadow-sm
-    transition-all duration-75 focus:outline-none;
-  }
-
-  .sign-input-error {
-    @apply border-red-200 bg-red-50;
-  }
-}

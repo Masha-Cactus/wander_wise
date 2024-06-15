@@ -1,7 +1,8 @@
 'use client';
 
+import { memo, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { useUser } from "@/src/store/user";
-import { useState } from "react";
 import { Divider, Heading2, Heading5, TextBase } from "@/src/components/atoms";
 import { PrimaryButton, RoundedButton } from "@/src/components/molecules";
 import { 
@@ -13,7 +14,7 @@ import {
   ConfirmEmailModal,
   DeleteProfileModal
 } from "@/src/components/organisms";
-import { FormPageLayout } from "@/src/components/layouts";
+import { StandardPageLayout } from "@/src/components/templates";
 
 const ProfileEditPage = () => {
   const { user } = useUser();
@@ -38,9 +39,11 @@ const ProfileEditPage = () => {
   };
 
   return (
-    <FormPageLayout>
-      <article className="w-[670px] self-center flex flex-col gap-6 
-      items-center bg-white px-10 py-12 rounded-3xl">
+    <StandardPageLayout>
+      <article 
+        className="flex w-[670px] flex-col items-center gap-6 
+        self-center rounded-3xl bg-white px-10 py-12"
+      >
         <Heading2 
           text="Personal information" 
           font="semibold" 
@@ -49,8 +52,8 @@ const ProfileEditPage = () => {
 
         <ProfileEditForm />
 
-        <div className="w-full flex flex-col gap-4">
-          <div className="flex justify-between items-center">
+        <div className="flex w-full flex-col gap-4">
+          <div className="flex items-center justify-between">
             <div className="flex flex-col">
               <Heading5 text="Email" font="medium" />
               <TextBase 
@@ -68,7 +71,7 @@ const ProfileEditPage = () => {
             </div>
           </div>
           <Divider />
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <div className="flex flex-col">
               <Heading5 text="Password" font="medium" />
               <TextBase 
@@ -88,8 +91,8 @@ const ProfileEditPage = () => {
         </div>
       </article>
 
-      <article className="w-[670px] self-center flex flex-col gap-6 
-      items-center bg-white px-10 py-12 rounded-3xl">
+      <article className="flex w-[670px] flex-col items-center gap-6 
+      self-center rounded-3xl bg-white px-10 py-12">
         <Heading2 
           text="Social networks" 
           font="semibold" 
@@ -110,40 +113,47 @@ const ProfileEditPage = () => {
         />
       </div>
 
-      {isShowChangeEmailModal && (
-        <ChangeUserEmailModal
-          onClose={() => setIsShowChangeEmailModal(false)}
-          onOpenConfirmEmail={handleConfirmEmailOpen}
-        />
-      )}
+      <AnimatePresence>
+        {isShowChangeEmailModal && (
+          <ChangeUserEmailModal
+            key="changeUserEmailModal"
+            onClose={() => setIsShowChangeEmailModal(false)}
+            onOpenConfirmEmail={handleConfirmEmailOpen}
+          />
+        )}
 
-      {isShowChangePassModal && (
-        <ChangeUserPasswordModal
-          onClose={() => setIsShowChangePassModal(false)}
-          onOpenRestorePasswordModal={handleRestorePassOpen}
-        />
-      )}
+        {isShowChangePassModal && (
+          <ChangeUserPasswordModal
+            key="changeUserPasswordModal"
+            onClose={() => setIsShowChangePassModal(false)}
+            onOpenRestorePasswordModal={handleRestorePassOpen}
+          />
+        )}
 
-      {isShowRestorePasswordModal && (
-        <RestorePasswordModal 
-          onClose={() => setIsShowRestorePasswordModal(false)}
-        />
-      )}
+        {isShowRestorePasswordModal && (
+          <RestorePasswordModal 
+            key="restorePasswordModal"
+            onClose={() => setIsShowRestorePasswordModal(false)}
+          />
+        )}
 
-      {isShowConfirmEmailModal && (
-        <ConfirmEmailModal
-          onClose={() => setIsShowConfirmEmailModal(false)}
-          type="Update"
-        />
-      )}
+        {isShowConfirmEmailModal && (
+          <ConfirmEmailModal
+            key="confirmEmailModal"
+            onClose={() => setIsShowConfirmEmailModal(false)}
+            type="Update"
+          />
+        )}
 
-      {isShowDeleteProfileModal && (
-        <DeleteProfileModal 
-          onClose={() => setIsShowDeleteProfileModal(false)}
-        />
-      )}
-    </FormPageLayout>
+        {isShowDeleteProfileModal && (
+          <DeleteProfileModal 
+            key="deleteProfileModal"
+            onClose={() => setIsShowDeleteProfileModal(false)}
+          />
+        )}
+      </AnimatePresence>
+    </StandardPageLayout>
   );
 };
 
-export default ProfileEditPage;
+export default memo(ProfileEditPage);

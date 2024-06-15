@@ -8,12 +8,12 @@ import {
   FieldValues,
   Path,
 } from "react-hook-form";
+import Image from "next/image";
 import { 
   InputControllerWrapper,
   ImageInputPlaceholder,
   IconButton 
 } from "@/src/components/molecules";
-import Image from "next/image";
 import { Icons } from "@/src/components/atoms";
 import { CARD_IMAGES_LIMIT } from "@/src/lib/constants";
 
@@ -60,7 +60,7 @@ const MultipleImageInput = <T extends FieldValues>({
       isErrorLabelVisible
     >
       {(field) => (
-        <div className="w-full flex flex-col gap-3">
+        <div className="flex w-full flex-col gap-3">
           <input
             { ...field }
             id={name}
@@ -79,7 +79,7 @@ const MultipleImageInput = <T extends FieldValues>({
           {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label 
             htmlFor={name} 
-            className="w-full h-64 flex rounded-xl overflow-hidden relative"
+            className="relative flex h-64 w-full overflow-hidden rounded-xl"
           >
             <ImageInputPlaceholder 
               image={field.value[field.value.length - 1]} 
@@ -87,19 +87,19 @@ const MultipleImageInput = <T extends FieldValues>({
           </label>
 
           {!!field.value.length && (
-            <div className="relative flex w-full h-28 
-              overflow-x-scroll gap-3">
+            <div className="relative flex h-28 w-full 
+              gap-3 overflow-x-scroll">
               {(field.value as File[]).map((file, i) => (
-                <div key={i} className="relative group h-full w-40 shrink-0">
+                <div key={i} className="group relative h-full w-40 shrink-0">
                   <Image 
                     src={URL.createObjectURL(file)}
                     fill
                     sizes="160px"
-                    className="object-cover rounded-2xl"
+                    className="rounded-2xl object-cover"
                     alt="Card image"
                   />
                   <IconButton 
-                    icon={<Icons.delete className="w-5 h-5" />} 
+                    icon={<Icons.delete className="h-5 w-5" />} 
                     classes="absolute top-2 right-2 rounded-full p-1 
                     border-1 border-white bg-error hidden text-white
                     group-hover:block group-hover:cursor-pointer"

@@ -1,18 +1,18 @@
 'use client';
 
+import { useEffect, useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import Image from "next/image";
 import { useNormalizedError } from "@/src/hooks";
 import { useUpdateUserImage } from "@/src/queries";
 import { uploadProfileImageSchema } from "@/src/validation";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm, useWatch } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
 import { 
   ButtonFileInput, 
   PrimaryButton, 
   RoundedButton 
 } from "@/src/components/molecules";
-import Image from "next/image";
-import { useEffect, useState } from "react";
 import { useUser } from "@/src/store/user";
 
 type UploadProfileImageFormData = {
@@ -54,13 +54,13 @@ const UploadProfileImageForm: React.FC<Props> = ({ closeModal }) => {
   const deleteImage = () => {
     mutate(null, { 
       onError: (e) => setErrorMessage(e), 
-      onSuccess: () => setImageUrl('/user-default.png') 
+      onSuccess: () => setImageUrl('/user-default.webp') 
     });
   };
 
   const { user } = useUser();
   const [imageUrl, setImageUrl] = useState(
-    user?.profileImage || '/user-default.png'
+    user?.profileImage || '/user-default.webp'
   );
 
   useEffect(() => {
@@ -78,13 +78,13 @@ const UploadProfileImageForm: React.FC<Props> = ({ closeModal }) => {
   return (
     <form 
       onSubmit={handleSubmit(onSubmit)} 
-      className="w-full flex flex-col gap-6"
+      className="flex w-full flex-col gap-6"
     >
       <div className="flex gap-8">
         <div className="flex flex-col gap-2">
           <div 
-            className="relative w-[200px] h-[200px] 
-            rounded-full overflow-hidden"
+            className="relative h-[200px] w-[200px] 
+            overflow-hidden rounded-full"
           >
             <Image 
               src={imageUrl} 
@@ -102,7 +102,7 @@ const UploadProfileImageForm: React.FC<Props> = ({ closeModal }) => {
           />
         </div>
 
-        <div className="flex flex-col gap-4 justify-center grow">
+        <div className="flex grow flex-col justify-center gap-4">
           <PrimaryButton 
             type="submit"
             text="Replace" 

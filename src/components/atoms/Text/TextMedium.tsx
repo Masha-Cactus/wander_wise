@@ -6,13 +6,8 @@ interface TextProps {
   font: "semibold" | "normal";
 }
 
-//this is for 14px
-const TextMedium: React.FC<TextProps> = ({
-  text,
-  classes,
-  font,
-}) => {
-  return <p className={`text-sm text-black font-${font} ${classes}`}>{text}</p>;
+const TextMedium: React.FC<TextProps> = ({ text, classes, font }) => {
+  return <p className={`font-${font} text-sm text-black ${classes}`}>{text}</p>;
 };
 
 export default memo(TextMedium);

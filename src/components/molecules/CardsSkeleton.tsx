@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Divider, Heading5 } from '../atoms';
+import { Divider, Heading5 } from '@/src/components/atoms';
 
 const CardsSkeleton = () => {
   const cards = new Array(6).fill(1);
@@ -12,28 +12,28 @@ const CardsSkeleton = () => {
         classes="text-gray-80 text-center"
       />
 
-      <div className="w-full grid grid-cols-[repeat(auto-fill,325px)] 
-      justify-center gap-y-6 gap-x-5 col-start-2 col-span-3 row-start-2">
+      <div 
+        className="col-span-3 col-start-2 row-start-2 grid w-full 
+        grid-cols-[repeat(auto-fill,325px)] justify-center gap-x-5 gap-y-6"
+      >
         {cards.map((card, i) => (
           <article
             key={i}
-            className="flex flex-col gap-4 items-center 
+            className="flex flex-col items-center gap-4 
             rounded-3xl bg-white p-4"
           >
             <div 
-              className="w-full pb-[68%] rounded-3xl bg-gray-30 animate-pulse"
+              className="w-full animate-pulse rounded-3xl bg-gray-30 pb-[68%]"
             />
 
             <Divider />
 
-            <div className="w-full h-7 rounded-2xl bg-gray-30 animate-pulse" />
-            <div className="w-full h-6 rounded-2xl bg-gray-30 animate-pulse" />
-            <div className="w-full h-14 rounded-2xl bg-gray-30 animate-pulse" />
+            <div className="h-7 w-full animate-pulse rounded-2xl bg-gray-30" />
+            <div className="h-6 w-full animate-pulse rounded-2xl bg-gray-30" />
+            <div className="h-14 w-full animate-pulse rounded-2xl bg-gray-30" />
           </article>
         ))}
       </div>
-
-      <span/>
     </>
   );
 };

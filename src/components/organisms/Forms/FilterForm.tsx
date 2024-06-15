@@ -1,22 +1,22 @@
 "use client";
 
+import { Dispatch, memo, SetStateAction, useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Divider,
   TextBase,
 } from "@/src/components/atoms";
 import {
   RoundedButton,
-  FilterButton,
+  ButtonCheckboxInput,
 } from "@/src/components/molecules";
 import {
   IFilterParams,
   ICard
 } from "@/src/services";
-import { useForm } from "react-hook-form";
 import { filterCardsSchema } from "@/src/validation";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { getFilterOptions, trimObjectFields } from "@/src/lib/helpers";
-import { Dispatch, memo, SetStateAction, useMemo } from "react";
 import { 
   ATMOSPHERES, 
   AUTHORS, 
@@ -100,24 +100,30 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
     setFilterParams(null);
   };
 
+  useEffect(() => {
+    if (!isDirty) {
+      setFilterParams(null);
+    }
+  }, [isDirty, setFilterParams]);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="min-h-full flex flex-col justify-between
-      bg-white border-r border-gray-30 pt-8"
+      className="flex min-h-full flex-col justify-between
+      border-r border-gray-30 bg-white pt-8"
     >
-      <div className="flex flex-col w-full gap-8">
+      <div className="flex w-full flex-col gap-8">
 
         {!!countries.length && (
           <>
-            <div className="flex flex-col mx-10">
+            <div className="mx-10 flex flex-col">
               <TextBase
                 text="Country"
                 font="semibold"
               />
-              <div className="flex flex-wrap gap-2 mt-3">
+              <div className="mt-3 flex flex-wrap gap-2">
                 {countries.map((country) => (
-                  <FilterButton
+                  <ButtonCheckboxInput
                     key={country}
                     control={control}
                     name="countries"
@@ -133,11 +139,11 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
       
         {!!atmospheres.length && (
           <>
-            <div className="flex flex-col mx-10">
+            <div className="mx-10 flex flex-col">
               <TextBase text="Type" font="semibold" />
-              <div className="flex flex-wrap gap-2 mt-3">
+              <div className="mt-3 flex flex-wrap gap-2">
                 {atmospheres.map((atmosphere) => (
-                  <FilterButton
+                  <ButtonCheckboxInput
                     key={atmosphere}
                     control={control}
                     name="tripTypes"
@@ -154,11 +160,11 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
 
         {!!climates.length && (
           <>
-            <div className="flex flex-col mx-10">
+            <div className="mx-10 flex flex-col">
               <TextBase text="Climate" font="semibold" />
-              <div className="flex flex-wrap gap-2 mt-3">
+              <div className="mt-3 flex flex-wrap gap-2">
                 {climates.map((climate) => (
-                  <FilterButton
+                  <ButtonCheckboxInput
                     key={climate}
                     control={control}
                     name="climates"
@@ -174,11 +180,11 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
       
         {!!specials.length && (
           <>
-            <div className="flex flex-col mx-10">
+            <div className="mx-10 flex flex-col">
               <TextBase text="Special requirements" font="semibold" />
-              <div className="flex flex-wrap gap-2 mt-3">
+              <div className="mt-3 flex flex-wrap gap-2">
                 {specials.map((special) => (
-                  <FilterButton
+                  <ButtonCheckboxInput
                     key={special}
                     control={control}
                     name="specialRequirements"
@@ -194,11 +200,11 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
       
         {!!authors.length && (
           <>
-            <div className="flex flex-col mx-10">
+            <div className="mx-10 flex flex-col">
               <TextBase text="Cards are" font="semibold" />
-              <div className="flex flex-wrap gap-2 mt-3">
+              <div className="mt-3 flex flex-wrap gap-2">
                 {authors.map(([authorText, authorValue]) => (
-                  <FilterButton 
+                  <ButtonCheckboxInput 
                     key={authorValue}
                     name="authors"
                     control={control}
@@ -212,7 +218,7 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
         )}
       </div>
 
-      <div className="flex gap-4 mx-10 my-8">
+      <div className="mx-10 my-8 flex gap-4">
         <RoundedButton
           text="Apply"
           type="submit"

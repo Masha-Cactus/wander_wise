@@ -1,11 +1,11 @@
 "use client";
 
 import { memo } from "react";
-import { ModalSkeleton } from "@/src/components/organisms";
+import { useParams } from "next/navigation";
+import { ModalTemplate } from "@/src/components/organisms";
 import { ErrorText } from "@/src/components/atoms";
 import { RoundedButton } from "@/src/components/molecules";
 import { useDeleteComment } from "@/src/queries";
-import { useParams } from "next/navigation";
 import { useNormalizedError } from "@/src/hooks";
 
 interface DeleteReviewModalProps {
@@ -32,12 +32,12 @@ const DeleteReviewModal: React.FC<DeleteReviewModalProps> = ({
   };
 
   return (
-    <ModalSkeleton 
+    <ModalTemplate 
       onClose={onClose}
       title="Delete your review?"
       subtitle="This action cannot be undone 🫣"
     >
-      <div className="w-full grid grid-cols-2 gap-5">
+      <div className="grid w-full grid-cols-2 gap-5">
         <RoundedButton
           text="Delete"
           onClick={handleDeleteReview}
@@ -52,7 +52,7 @@ const DeleteReviewModal: React.FC<DeleteReviewModalProps> = ({
       </div>
 
       {isError && <ErrorText errorText={errorMessage} />}
-    </ModalSkeleton>
+    </ModalTemplate>
   );
 };
 

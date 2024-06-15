@@ -1,8 +1,8 @@
 "use client";
 
 import { memo, useState } from "react";
-import { Divider, TextBase, Heading5 } from "@/src/components/atoms";
 import { twMerge } from "tailwind-merge";
+import { Divider, TextBase, Heading5 } from "@/src/components/atoms";
 import { Map } from "@/src/components/molecules";
 import { ICardTabs } from "@/src/services";
 
@@ -19,7 +19,7 @@ const Tab: React.FC<Props> = ({ tabs, location }) => {
     : tabs['Why this place?'];
 
   return (
-    <div className="flex flex-col w-full h-full gap-2">
+    <div className="flex h-full w-full flex-col gap-2">
       <div className="flex justify-between">
         {Object.keys(tabs).map((tab) => (
           <li
@@ -61,10 +61,10 @@ const Tab: React.FC<Props> = ({ tabs, location }) => {
         )}
 
         {active === 'Why this place?' && (
-          <ul className="w-full flex flex-col gap-2">
+          <ul className="flex w-full flex-col gap-2">
             {displayedReasons.map(reason => (
-              <li key={reason} className="flex gap-3 w-full items-center">
-                <div className="w-2 h-2 bg-gray-80 rounded-full" />
+              <li key={reason} className="flex w-full items-center gap-3">
+                <div className="h-2 w-2 rounded-full bg-gray-80" />
                 <TextBase text={reason} font="normal" />
               </li>
             ))}

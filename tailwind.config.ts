@@ -42,7 +42,25 @@ const config: Config = {
         "3xl": ['28px', '42px'],
         "4xl": ['32px', '48px'],
         "5xl": ['40px', '60px'],
+        "7xl": ['70px', '84px'],
         "8xl": ['120px', '126px'],
+      },
+
+      keyframes: {
+        spin: {
+          "0%": {transform: "scale(1) rotate(0)"},
+          "20%": {transform: "scale(1.3) rotate(90deg)"},
+          "25%": {transform: "scale(1.3) rotate(90deg)"},
+          "45%": {transform: "scale(1) rotate(180deg)"},
+          "50%": {transform: "scale(1) rotate(180deg)"},
+          "70%": {transform: "scale(1.3) rotate(270deg)"},
+          "75%": {transform: "scale(1.3) rotate(270deg)"},
+          "95%": {transform: "scale(1) rotate(360deg)"},
+          "100%": {transform: "scale(1) rotate(360deg)"},
+        }
+      },
+      animation: {
+        "loader-spin": "spin 3s linear infinite",
       }
     },
   },

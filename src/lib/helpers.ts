@@ -1,5 +1,4 @@
 import { AxiosError } from "axios";
-import { JwtPayload, jwtDecode } from "jwt-decode";
 import { 
   CardAuthorsType, 
   ICard, 
@@ -8,29 +7,7 @@ import {
   SpecialRequirementsType,
   ClimateType,
 } from "@/src/services";
-
-export const isTokenAlive = (expirationTime: number) => {
-  const currentTime = Date.now();
-
-  return currentTime <= expirationTime;
-};
-
-export const tokenExpiresIn = (token: string) => {
-  if (token) {
-    const decoded = jwtDecode<JwtPayload>(token);
-    const expirationTime = decoded.exp || 0;
-
-    // convert from seconds to milliseconds
-    const expirationTimeInMilliSeconds = expirationTime * 1000;
-
-    return expirationTimeInMilliSeconds;
-  }
-
-  return 0;
-};
-
-export const getPlainObject = <T>(object: T): T =>
-  JSON.parse(JSON.stringify(object));
+import { Routes } from "@/src/lib/constants";
 
 export const trimObjectFields = <T>(object: T): T => {
   const jsonString = JSON.stringify(object, (_, value) =>
@@ -128,3 +105,34 @@ export function getDaysAgo(date: string) {
     return `${daysAgo} days ago`;
   }
 }
+
+export const getPrevPage = (currPathname: string) => {
+  let name = 'Back';
+  let link = '';
+
+  switch (true) {
+    case currPathname.startsWith('/trips'):
+      name = 'Back to cards';
+      link = Routes.TRIPS;
+      break;
+    case currPathname.startsWith('/my-cards'):
+      name = 'Back to cards';
+      link = Routes.MY_CARDS.MAIN;
+      break;
+    case currPathname.startsWith('/profile'):
+      name = 'Back to profile';
+      link = Routes.PROFILE.MAIN;
+      break; 
+    case currPathname.startsWith('/saved'):
+      const isInCollections = currPathname === '/saved/collections';
+
+      name = isInCollections ? 'Back to saved' : 'Back to my collections';
+      link = isInCollections ? Routes.SAVED : Routes.COLLECTIONS.MAIN;
+      break;
+    
+    default:
+      break;
+  } 
+
+  return { name, link };
+};

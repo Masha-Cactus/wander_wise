@@ -3,6 +3,7 @@
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/navigation";
 import { ISignIn } from "@/src/services";
 import { signInSchema } from "@/src/validation";
 import { PrimaryButton, TextInput } from "@/src/components/molecules";
@@ -10,8 +11,7 @@ import { useSignIn } from "@/src/queries";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { ErrorText } from "@/src/components/atoms";
 import { PasswordInput } from "@/src/components/molecules";
-import { useRouter } from "next/navigation";
-import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import { useNormalizedError } from "@/src/hooks";
 import { Routes } from "@/src/lib/constants";
 
 type Props = {
@@ -52,7 +52,7 @@ const SignInForm: React.FC<Props> = ({ closeModal }) => {
 
   return (
     <form
-      className="flex flex-col gap-4 h-full w-full"
+      className="flex h-full w-full flex-col gap-4"
       onSubmit={handleSubmit(onSubmit)}
     >
       <TextInput

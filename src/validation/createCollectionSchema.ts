@@ -1,10 +1,9 @@
-import { ObjectSchema } from "yup";
 import * as Yup from "yup";
-import { ICreateCollection } from "../services";
-import { genericValidationSchema } from "./genericSchema";
+import { ICreateCollection } from "@/src/services";
+import { genericValidationSchema } from "@/src/validation";
 
 export const createCollectionSchema 
-= (): ObjectSchema<Omit<ICreateCollection, 'userId'>> => 
+= (): Yup.ObjectSchema<Omit<ICreateCollection, 'userId'>> => 
   Yup.object().shape({
     name: genericValidationSchema.name,
     cardIds: genericValidationSchema.arrayPossiblyEmpty
@@ -12,7 +11,7 @@ export const createCollectionSchema
   });
 
 export const createCollectionShortSchema
-= (): ObjectSchema<{name: string}> => 
+= (): Yup.ObjectSchema<{name: string}> => 
   Yup.object().shape({
     name: genericValidationSchema.name,
   });

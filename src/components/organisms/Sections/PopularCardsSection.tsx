@@ -1,10 +1,11 @@
 'use client';
 
+import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { usePopularCards } from "@/src/queries";
 import { ICard } from "@/src/services";
-import { memo, useEffect, useRef, useState } from "react";
 import { LoadedContentStateController } from "@/src/components/molecules";
-import { Heading2 } from "@/src/components/atoms";
+import { Heading } from "@/src/components/atoms";
 import { Pagination, Gallery, InfiniteList } from "@/src/components/organisms";
 import { CARDS_PER_PAGE } from "@/src/lib/constants";
 
@@ -17,16 +18,16 @@ const PopularCardsSection: React.FC<Props> = ({ view }) => {
   const [displayedCards, setDisplayedCards] = useState<ICard[]>([]);
   const [lastPage, setLastPage] = useState<number | undefined>(undefined);
 
-  const pageCards = displayedCards.slice(
-    CARDS_PER_PAGE * page, 
-    CARDS_PER_PAGE * (page + 1)
-  );
-
   const { 
     data, 
     error, 
     isLoading
   } = usePopularCards(page);
+
+  const queryClient = useQueryClient();
+  const pageCards = useMemo(() => 
+    queryClient.getQueryData<ICard[] | undefined>(['popular-cards', { page }]),
+  [page, queryClient, data]);
 
   const isShowSkeleton = isLoading && view === 'Gallery';
   const isShowEmpty = !!(lastPage && lastPage < 0);
@@ -54,17 +55,17 @@ const PopularCardsSection: React.FC<Props> = ({ view }) => {
     if (scrollRef && view === 'Gallery') {
       scrollRef.current?.scrollIntoView({ block: "end", behavior: 'smooth' });
     }
-  }, [displayedCards, view]);
+  }, [pageCards, view]);
 
   return (
     <>
-      <div className="h-px absolute left-0 top-0" ref={scrollRef} />
+      <div className="absolute left-0 top-0 h-px" ref={scrollRef} />
       <LoadedContentStateController
         isEmpty={isShowEmpty}
         emptyFallbackComponent={
-          <Heading2 
-            text="No cards found" 
-            font="semibold"
+          <Heading 
+            text="No cards found 😢" 
+            font="normal"
             classes="m-auto"
           />
         }
@@ -72,15 +73,15 @@ const PopularCardsSection: React.FC<Props> = ({ view }) => {
       >
         {view === 'Gallery' ? (
           <>
-            <Gallery cards={pageCards} />
+            {pageCards && (
+              <Gallery cards={pageCards} />
+            )}
 
             <Pagination 
               page={page} 
               setPage={setPage} 
               isLastPage={page === lastPage}
             />
-
-            <span />
           </>
         ) : (
           <InfiniteList 

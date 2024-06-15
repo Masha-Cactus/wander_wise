@@ -1,11 +1,11 @@
 'use client';
 
+import { memo } from "react";
+import { useRouter } from "next/navigation";
 import { PrimaryButton } from "@/src/components/molecules";
 import { ReviewCardLong } from "@/src/components/organisms";
-import { memo } from "react";
 import { Heading3, Heading5, Divider } from "@/src/components/atoms";
 import { useGetUserComments } from "@/src/queries";
-import { useRouter } from "next/navigation";
 import { Routes } from "@/src/lib/constants";
 
 const RecentlyLikedSection: React.FC = () => {
@@ -14,7 +14,7 @@ const RecentlyLikedSection: React.FC = () => {
 
   return (
     <section
-      className="bg-white py-12 px-10 rounded-2xl flex flex-col gap-2"
+      className="flex flex-col gap-2 rounded-2xl bg-white px-10 py-12"
     >
       <Heading3 text="Reviews you've recently added" />
 

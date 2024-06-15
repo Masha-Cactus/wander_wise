@@ -1,10 +1,10 @@
 "use client";
 
 import { memo } from "react";
-import { ModalSkeleton } from "@/src/components/organisms";
-import { PrimaryButton } from "@/src/components/molecules";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { ModalTemplate } from "@/src/components/organisms";
+import { PrimaryButton } from "@/src/components/molecules";
 
 type Props =  {
   title: string;
@@ -18,7 +18,7 @@ const EmptyFallbackModal: React.FC<Props>
   const router = useRouter();
 
   return (
-    <ModalSkeleton 
+    <ModalTemplate 
       onClose={router.back}
       title={title}
       subtitle={subtitle}
@@ -26,7 +26,7 @@ const EmptyFallbackModal: React.FC<Props>
       <Link href={path} className="w-full">
         <PrimaryButton text={buttonText} />
       </Link>
-    </ModalSkeleton>
+    </ModalTemplate>
   );
 };
 

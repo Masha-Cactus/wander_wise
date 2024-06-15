@@ -1,7 +1,7 @@
 "use client";
 
 import { memo } from "react";
-import { ModalSkeleton } from "@/src/components/organisms";
+import { ModalTemplate } from "@/src/components/organisms";
 import { ErrorText } from "@/src/components/atoms";
 import { RoundedButton } from "@/src/components/molecules";
 import { useDeleteUser } from "@/src/queries";
@@ -26,12 +26,12 @@ const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
   };
 
   return (
-    <ModalSkeleton 
+    <ModalTemplate 
       onClose={onClose}
       title="Delete your profile?"
       subtitle="This action cannot be undone 🫣"
     >
-      <div className="w-full grid grid-cols-2 gap-5">
+      <div className="grid w-full grid-cols-2 gap-5">
         <RoundedButton
           text="Delete"
           onClick={handleDeleteProfile}
@@ -46,7 +46,7 @@ const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
       </div>
 
       {isError && <ErrorText errorText={errorMessage} />}
-    </ModalSkeleton>
+    </ModalTemplate>
   );
 };
 

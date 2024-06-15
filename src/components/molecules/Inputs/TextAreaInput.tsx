@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Control, FieldPath, FieldValues } from "react-hook-form";
-import { InputControllerWrapper } from "@/src/components/molecules";
 import { twMerge } from "tailwind-merge";
+import { InputControllerWrapper } from "@/src/components/molecules";
 
 interface TextareaProps<T extends FieldValues> {
   name: FieldPath<T>;

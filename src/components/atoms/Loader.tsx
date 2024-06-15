@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { twMerge } from "tailwind-merge";
 
 export interface LoaderProps {
   classes?: string;
@@ -6,9 +7,18 @@ export interface LoaderProps {
 
 const Loader: React.FC<LoaderProps> = ({ classes }) => {
   return (
-    <div role="status" className={`m-auto ${classes ? classes : ''}`}>
-      <div className="w-40 h-40 border-[16px] border-gray-50 rounded-full 
-      border-t-[16px] border-t-gray-80 animate-spin"/>
+    <div 
+      role="status" 
+      className={twMerge(
+        `m-auto w-28 h-28 grid grid-cols-2 grid-rows-2 gap-3 
+        animate-loader-spin`,
+        classes,
+      )}
+    >
+      <div className="rounded-full bg-gray-80"/>
+      <div className="rounded-full bg-gray-80"/>
+      <div className="rounded-full bg-gray-80"/>
+      <div className="rounded-full bg-gray-80"/>
       <span className="sr-only">Loading...</span>
     </div>
   );

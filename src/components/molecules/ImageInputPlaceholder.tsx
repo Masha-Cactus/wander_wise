@@ -31,15 +31,14 @@ const ImageInputPlaceholder: React.FC<Props> = ({ image }) => {
           alt="Uploaded image"
           fill
           sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-cover cursor-pointer" 
+          className="cursor-pointer object-cover" 
         />
       ) : (
-        <div className="border border-black border-dashed bg-white
-       text-black hover:bg-gray-50 w-full h-full cursor-pointer
-        transition-all duration-75 focus:outline-none rounded-xl
-        flex flex-col gap-3 items-center justify-center"
+        <div className="flex h-full w-full cursor-pointer
+       flex-col items-center justify-center gap-3 rounded-xl
+        border border-dashed border-black bg-white focus:outline-none"
         >
-          <Icons.download className="w-6 h-6" />
+          <Icons.download className="h-6 w-6" />
           <Heading5 
             text="Upload a cover photo or video" 
             font="semibold" 

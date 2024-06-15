@@ -6,9 +6,8 @@ interface HeadingProps {
   font: "semibold" | "normal";
 }
 
-//this is for 32px 
 const Heading2: React.FC<HeadingProps> = ({ text, classes, font }) => {
-  return <h2 className={(`text-4xl text-black font-${font} ${classes}`)}>{text}</h2>;
+  return <h2 className={(`font-${font} text-4xl text-black ${classes}`)}>{text}</h2>;
 };
 
 export default memo(Heading2);

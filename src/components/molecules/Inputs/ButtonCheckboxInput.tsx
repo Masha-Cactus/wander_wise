@@ -1,25 +1,25 @@
+import { memo } from "react";
 import { 
   Control, 
   FieldPath, 
   FieldValues, 
 } from "react-hook-form";
-import { InputControllerWrapper } from "@/src/components/molecules";
 import { twMerge } from "tailwind-merge";
+import { InputControllerWrapper } from "@/src/components/molecules";
 
-interface FilterButtonProps<T extends FieldValues> {
+interface ButtonCheckboxInputProps<T extends FieldValues> {
   name: FieldPath<T>;
   control: Control<T>;
   value: string;
   text?: string,
 }
 
-const FilterButton = <T extends FieldValues>({
+const ButtonCheckboxInput = <T extends FieldValues>({
   value,
   name,
   control,
   text,
-}: FilterButtonProps<T>) => {
-
+}: ButtonCheckboxInputProps<T>) => {
   return (
     <InputControllerWrapper
       control={control}
@@ -51,4 +51,4 @@ const FilterButton = <T extends FieldValues>({
   );
 };
 
-export default FilterButton;
+export default memo(ButtonCheckboxInput) as typeof ButtonCheckboxInput;

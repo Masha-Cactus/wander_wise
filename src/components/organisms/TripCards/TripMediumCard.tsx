@@ -1,5 +1,8 @@
 'use client';
 
+import { memo, useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Divider, Icons, Heading5, TextBase } from "@/src/components/atoms";
 import { 
@@ -10,14 +13,12 @@ import {
   TripImage
 } from "@/src/components/molecules";
 import { ICard } from "@/src/services";
-import { memo, useState } from "react";
 import {
   AddCardToCollectionModal,
   RemoveTripFromCollectionModal,
   CreateReportModal,
   DeleteCardModal
 } from "@/src/components/organisms";
-import { useParams, usePathname, useRouter } from "next/navigation";
 import { useUser } from "@/src/store/user";
 import { Routes } from "@/src/lib/constants";
 import { useCopyUrlToClipboard } from "@/src/hooks";
@@ -25,8 +26,6 @@ import { useCopyUrlToClipboard } from "@/src/hooks";
 type Props = {
   card: ICard;
 };
-
-const classes = "bg-gray-80 text-white rounded-full";
 
 const TripMediumCard: React.FC<Props> = ({ card }) => {
   const { user } = useUser();
@@ -47,22 +46,26 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
     e.preventDefault();
     push(Routes.MY_CARDS.EDIT(card.id));
   };
+  
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsDeleteCardModal(true);
+  }; 
 
   const [isCopied, copy] = useCopyUrlToClipboard(Routes.TRIP(card.id));
 
   return (
     <article
-      className="flex flex-col gap-4 items-center 
-      rounded-3xl bg-white p-4"
+      className="flex flex-col items-center gap-4 rounded-3xl bg-white p-4"
     >
       <Link 
         href={Routes.TRIP(card.id)} 
-        className="w-full pb-[68%] relative group rounded-3xl overflow-hidden"
+        className="group relative w-full overflow-hidden rounded-3xl pb-[68%]"
       >
         {isCopied && (
           <span 
-            className="z-10 absolute flex justify-center items-center 
-         bg-gray-10 rounded-3xl inset-x-2 top-2 py-2"
+            className="absolute inset-x-2 top-2 z-10 flex 
+         items-center justify-center rounded-3xl bg-gray-10 py-2"
           >
             <TextBase text="Copied to clipboard!" font="medium" />
           </span>
@@ -75,33 +78,33 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
         />
 
         {isCardInMyCardsPage && (
-          <div className="hidden absolute top-4 right-4 gap-2 group-hover:flex">
+          <div className="absolute right-4 top-4 hidden gap-2 group-hover:flex">
             <IconButton 
-              icon={<Icons.edit className="w-5 h-5" />} 
-              classes={`${classes} p-1 border-1 border-white`}
+              icon={<Icons.edit className="h-4 w-4" />} 
+              classes={`bg-gray-80 text-white rounded-full p-2 border border-white`}
               onClick={handleEdit}
             />
 
             <IconButton 
-              icon={<Icons.delete className="w-5 h-5" />} 
-              classes={`${classes} p-1 border-1 border-white bg-error`}
-              onClick={() => setIsDeleteCardModal(true)}
+              icon={<Icons.delete className="h-4 w-4" />} 
+              classes={`text-white rounded-full p-2 border border-white bg-error`}
+              onClick={handleDelete}
             />
           </div>
         )}
       </Link>
-      <div className="w-full flex flex-col gap-4 grow">
-        <div className="w-full flex justify-between">
+      <div className="flex w-full grow flex-col gap-4">
+        <div className="flex w-full justify-between">
           <LikeButton
             cardId={card.id}
             cardLikes={card.likes}
-            classes={classes}
+            classes="bg-gray-80 text-white rounded-full"
           />
 
           <IconButton 
             icon={<Icons.share />} 
             text="Share" 
-            classes={classes} 
+            classes="bg-gray-80 text-white rounded-full" 
             size="small"
             onClick={copy}
           />
@@ -109,7 +112,7 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
           <IconButton 
             icon={<Icons.report />} 
             text="Report" 
-            classes={classes}
+            classes="bg-gray-80 text-white rounded-full"
             size="small"
             onClick={() => setIsReportCardModal(true)}
             disabled={!user}
@@ -118,7 +121,7 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
           <IconButton
             icon={card.author === "AI" ? <Icons.jpt /> : <Icons.user />}
             text={card.author === "AI" ? "AI" : "User"}
-            classes={classes}
+            classes="bg-gray-80 text-white rounded-full"
             size="small"
           />
         </div>
@@ -129,58 +132,58 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
       </div>
 
       {isCardInSavedPage ? (
-        <>
-          <PrimaryButton 
-            text="Add to the collection" 
-            type="button"
-            onClick={() => setIsAddToCollectionModal(true)}
-          />
-
-          {isAddToCollectionModal && (
-            <AddCardToCollectionModal
-              card={card}
-              onClose={() => setIsAddToCollectionModal(false)}
-            />
-          )}
-        </>
+        <PrimaryButton 
+          text="Add to the collection" 
+          type="button"
+          onClick={() => setIsAddToCollectionModal(true)}
+        />
       ) : (
         <>
           {isCardInCollectionPage ? (
-            <>
-              <PrimaryButton 
-                text="Remove from the collection" 
-                type="button"
-                onClick={() => setIsRemoveFromCollectionModal(true)}
-                classes="bg-gray-30 text-gray-70"
-              />
-          
-              {isRemoveFromCollectionModal && (
-                <RemoveTripFromCollectionModal
-                  trip={card}
-                  collectionId={+collectionId}
-                  onClose={() => setIsRemoveFromCollectionModal(false)}
-                />
-              )}
-            </>
+            <PrimaryButton 
+              text="Remove from the collection" 
+              type="button"
+              onClick={() => setIsRemoveFromCollectionModal(true)}
+              classes="bg-gray-30 text-gray-70"
+            />
           ) : (
             <SaveButton cardId={card.id} />
           )}
         </>
       )}
 
-      {isReportCardModal && (
-        <CreateReportModal 
-          type="Card" 
-          onClose={() => setIsReportCardModal(false)} 
-        />
-      )}
+      <AnimatePresence>
+        {isAddToCollectionModal && (
+          <AddCardToCollectionModal
+            key="addCardToCollectionModal"
+            card={card}
+            onClose={() => setIsAddToCollectionModal(false)}
+          />
+        )}
+        {isRemoveFromCollectionModal && (
+          <RemoveTripFromCollectionModal
+            key="removeCardFromCollectionModal"
+            trip={card}
+            collectionId={+collectionId}
+            onClose={() => setIsRemoveFromCollectionModal(false)}
+          />
+        )}
+        {isReportCardModal && (
+          <CreateReportModal 
+            key="createReportModal"
+            type="Card" 
+            onClose={() => setIsReportCardModal(false)} 
+          />
+        )}
 
-      {isDeleteCardModal && (
-        <DeleteCardModal 
-          onClose={() => setIsDeleteCardModal(false)} 
-          cardId={card.id}
-        />
-      )}
+        {isDeleteCardModal && (
+          <DeleteCardModal 
+            key="deleteCardModal"
+            onClose={() => setIsDeleteCardModal(false)} 
+            cardId={card.id}
+          />
+        )}
+      </AnimatePresence>
     </article>
   );
 };

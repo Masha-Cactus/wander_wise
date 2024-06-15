@@ -1,15 +1,15 @@
 'use client';
 
-import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useParams } from "next/navigation";
+import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { useGetCollection, useUpdateCollection } from "@/src/queries";
 import { useUser } from "@/src/store/user";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
 import { TextInput, PrimaryButton } from "@/src/components/molecules";
 import { changeCollectionNameSchema } from "@/src/validation";
-import { useParams } from "next/navigation";
 
 type Props = {
   closeModal: () => void,
@@ -60,7 +60,7 @@ const ChangeCollectionNameForm: React.FC<Props>
   return (
     <form 
       onSubmit={handleSubmit(onSubmit)} 
-      className="w-full flex flex-col gap-8"
+      className="flex w-full flex-col gap-8"
     >
       <TextInput
         type="text"

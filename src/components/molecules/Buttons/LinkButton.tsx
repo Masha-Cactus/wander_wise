@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { memo } from "react";
+import Link from "next/link";
 import { Heading5, TextBase } from "@/src/components/atoms";
 
 interface LinkBtnProps {

@@ -43,7 +43,7 @@ const SingleImageInput = <T extends FieldValues>({
       isErrorLabelVisible
     >
       {(field) => (
-        <div className="w-full flex flex-col gap-3">
+        <div className="flex w-full flex-col gap-3">
           <input
             { ...field }
             id={name}
@@ -58,10 +58,10 @@ const SingleImageInput = <T extends FieldValues>({
           {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label 
             htmlFor={name} 
-            className="w-full flex gap-1 p-2 justify-center 
-            items-center text-gray-80 hover:text-gray-50 cursor-pointer"
+            className="flex w-full cursor-pointer items-center justify-center 
+            gap-1 p-2 text-gray-80 hover:text-gray-50"
           >
-            <Icons.download className="w-4 h-4 text-inherit" />
+            <Icons.download className="h-4 w-4 text-inherit" />
             <TextBase text="Upload image" font="normal" classes="text-inherit"/>
           </label>
         </div>

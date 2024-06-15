@@ -1,8 +1,10 @@
 'use client';
 
+import { memo, useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-
 import { 
   Divider, 
   Heading2, 
@@ -10,17 +12,17 @@ import {
   TextBase, 
   ErrorText 
 } from "@/src/components/atoms";
-import { memo, useState } from "react";
 import { useUser } from "@/src/store/user";
 import { useGetUserSocials, useLogout } from "@/src/queries";
 import { useNormalizedError } from "@/src/hooks";
-import { useRouter } from "next/navigation";
-import AddProfileImageModal from "../Modals/AddProfileImageModal";
-import ConfirmEmailModal from "../Modals/ConfirmEmailModal";
+import { 
+  AddProfileImageModal, 
+  ConfirmEmailModal 
+} from "@/src/components/organisms";
 import { Routes } from "@/src/lib/constants";
-import { RoundedButton } from "../../molecules";
+import { IconButton, RoundedButton } from "@/src/components/molecules";
 
-const ProfileInfoSection: React.FC = () => {
+const ProfileInfo: React.FC = () => {
   const { user } = useUser();
   const { push } = useRouter();
 
@@ -40,14 +42,14 @@ const ProfileInfoSection: React.FC = () => {
   };
 
   return (
-    <section
-      className="flex flex-col gap-4 bg-white p-6 rounded-2xl
-    text-black text-base font-normal text-center py-12"
+    <article
+      className="flex h-fit flex-col gap-4 rounded-2xl bg-white p-6
+    py-12 text-center text-base font-normal text-black"
     >
       <div className="relative top-0 flex justify-center">
-        <div className="relative w-36 h-36">
+        <div className="relative h-36 w-36">
           <Image
-            src={user?.profileImage || "/user-default.png"}
+            src={user?.profileImage || "/user-default.webp"}
             alt="profile"
             fill
             sizes="144px"
@@ -55,15 +57,12 @@ const ProfileInfoSection: React.FC = () => {
           />
         </div>
 
-        <div
-          className="absolute bg-gray-80 h-8 w-8 bottom-0 right-1/3 
-          flex items-center justify-center rounded-full"
-        >
-          <Icons.edit 
-            className="text-white h-4 w-4" 
-            onClick={() => setIsAddImageModal(true)} 
-          />
-        </div>
+        <IconButton 
+          icon={<Icons.edit className="h-4 w-4 text-white" />} 
+          onClick={() => setIsAddImageModal(true)}
+          classes="p-2 absolute bottom-0 right-1/3 bg-gray-80 
+          rounded-full border border-white"
+        />
       </div>
 
       <div className="flex flex-col gap-2">
@@ -86,12 +85,12 @@ const ProfileInfoSection: React.FC = () => {
       <div className="flex flex-col gap-2 text-start">
         {user?.location && (
           <div className="flex items-center gap-2">
-            <Icons.location className="text-gray-70 h-4 w-4" />
+            <Icons.location className="h-4 w-4 text-gray-70" />
             <TextBase text={user.location} font="normal" />
           </div>
         )}
         <div className="flex items-center gap-2">
-          <Icons.mail className="text-gray-70 h-4 w-4" />
+          <Icons.mail className="h-4 w-4 text-gray-70" />
           <TextBase text={user?.email || ''} font="normal" />
         </div>
         {user?.banned && (
@@ -117,18 +116,18 @@ const ProfileInfoSection: React.FC = () => {
                 key={social.id} 
                 href={social.link} 
                 target="_blank" 
-                className="flex gap-2 items-center"
+                className="flex items-center gap-2"
               >
                 {social.name === 'Website' && (
-                  <Icons.website className="w-6 h-6" />
+                  <Icons.website className="h-6 w-6" />
                 )}
 
                 {social.name === 'Instagram' && (
-                  <Icons.insta className="w-6 h-6" />
+                  <Icons.insta className="h-6 w-6" />
                 )}
 
                 {social.name === 'Twitter' && (
-                  <Icons.twitter className="w-6 h-6" />
+                  <Icons.twitter className="h-6 w-6" />
                 )}
 
                 <TextBase
@@ -160,19 +159,24 @@ const ProfileInfoSection: React.FC = () => {
 
       {isError && <ErrorText errorText={errorMessage} />}
 
-      {isAddImageModal && (
-        <AddProfileImageModal 
-          onClose={() => setIsAddImageModal(false)}
-        />
-      )}
-      {isConfirmEmailModal && (
-        <ConfirmEmailModal
-          type="Confirm"
-          onClose={() => setIsConfirmEmailModal(false)}
-        />
-      )}
-    </section>
+      <AnimatePresence>
+        {isAddImageModal && (
+          <AddProfileImageModal
+            key="addProfileImageModal"
+            onClose={() => setIsAddImageModal(false)}
+          />
+        )}
+
+        {isConfirmEmailModal && (
+          <ConfirmEmailModal
+            key="confirmEmailModal"
+            type="Confirm"
+            onClose={() => setIsConfirmEmailModal(false)}
+          />
+        )}
+      </AnimatePresence>
+    </article>
   );
 };
 
-export default memo(ProfileInfoSection);
+export default memo(ProfileInfo);

@@ -1,4 +1,4 @@
-import { IUser } from "../userService/user.types";
+import { IUser } from "@/src/services";
 
 export interface ISignIn {
   email: string;

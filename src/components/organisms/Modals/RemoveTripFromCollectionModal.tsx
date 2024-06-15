@@ -1,7 +1,7 @@
 'use client';
 
 import { memo } from "react";
-import { ModalSkeleton } from "@/src/components/organisms";
+import { ModalTemplate } from "@/src/components/organisms";
 import { ErrorText, Heading4 } from "@/src/components/atoms";
 import { RoundedButton } from "@/src/components/molecules";
 import { ICard, IUpdateCollection } from "@/src/services";
@@ -43,7 +43,7 @@ RemoveTripFromCollectionModalProps
   };
 
   return (
-    <ModalSkeleton onClose={onClose}>
+    <ModalTemplate onClose={onClose}>
       <h1 className="text-4xl font-normal leading-normal">
         Remove “
         <span className="font-medium">{trip.name}</span>
@@ -55,7 +55,7 @@ RemoveTripFromCollectionModalProps
         classes="mb-2 text-gray-80"
       />
 
-      <div className="w-full grid grid-cols-2 gap-5">
+      <div className="grid w-full grid-cols-2 gap-5">
         <RoundedButton
           text="Delete"
           onClick={handleRemoveTrip}
@@ -70,7 +70,7 @@ RemoveTripFromCollectionModalProps
       </div>
 
       {(isError) && <ErrorText errorText={errorMessage} />}
-    </ModalSkeleton>
+    </ModalTemplate>
   );
 };
 

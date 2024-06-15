@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
 "use client";
 
-import { memo, useEffect } from "react";
+import { memo, useEffect, useMemo } from "react";
+import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { editProfileSchema } from "@/src/validation";
@@ -9,14 +10,13 @@ import { trimObjectFields } from "@/src/lib/helpers";
 import { ErrorText } from "@/src/components/atoms";
 import { useUpdateUserInfo } from "@/src/queries";
 import { useUser } from "@/src/store/user";
-import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import { useNormalizedError } from "@/src/hooks";
 import { 
   PrimaryButton, 
   TextAreaInput, 
   LocationInput, 
   TextInput 
 } from "@/src/components/molecules";
-import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
 
 export interface ProfileEditFormData {
   pseudonym: string,
@@ -31,13 +31,13 @@ const ProfileEditForm = () => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = editProfileSchema();
 
-  const defaultValues = {
+  const defaultValues = useMemo(() => ({
     pseudonym: user?.pseudonym || '',
     firstName: user?.firstName || '',
     lastName: user?.lastName || '',
     location: null,
     bio: user?.bio || '',
-  };
+  }), [user]);
 
   const {
     control,
@@ -67,12 +67,12 @@ const ProfileEditForm = () => {
 
   useEffect(() => {
     reset(defaultValues);
-  }, [user]);
+  }, [user, reset, defaultValues]);
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full flex flex-col gap-6"
+      className="flex w-full flex-col gap-6"
     >
       <TextInput
         type="text"
@@ -84,7 +84,7 @@ const ProfileEditForm = () => {
         label="Username"
       />
 
-      <div className="w-full flex gap-4">
+      <div className="flex w-full gap-4">
         <div className="grow">
           <TextInput
             type="text"

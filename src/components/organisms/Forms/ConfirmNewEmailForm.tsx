@@ -2,11 +2,10 @@
 
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { PrimaryButton } from "@/src/components/molecules";
+import { PrimaryButton, TextInput } from "@/src/components/molecules";
 import { ErrorText } from "@/src/components/atoms";
-import { TextInput }from "@/src/components/molecules";
-import { confirmEmailSchema } from "@/src/validation/confirmEmailSchema";
-import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import { confirmEmailSchema } from "@/src/validation";
+import { useNormalizedError } from "@/src/hooks";
 import { useUpdateEmail } from "@/src/queries";
 
 interface FormData {
@@ -43,7 +42,7 @@ const ConfirmNewEmailForm: React.FC<Props> = ({ closeModal }) => {
 
   return (
     <form 
-      className="flex flex-col gap-4 h-full w-full"
+      className="flex h-full w-full flex-col gap-4"
       onSubmit={handleSubmit(onSubmit)}
     >
       <TextInput 

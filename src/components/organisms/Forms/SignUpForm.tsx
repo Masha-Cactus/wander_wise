@@ -13,7 +13,7 @@ import { useSignUp } from "@/src/queries";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { ErrorText } from "@/src/components/atoms";
 import { PasswordInput } from "@/src/components/molecules";
-import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import { useNormalizedError } from "@/src/hooks";
 
 type Props = {
   openConfirmEmailModal: () => void;
@@ -56,7 +56,7 @@ const SignUpForm: React.FC<Props>
 
   return (
     <form
-      className="flex flex-col gap-4 h-full w-full" 
+      className="flex h-full w-full flex-col gap-4" 
       onSubmit={handleSubmit(onSubmit)}
     >
       <TextInput

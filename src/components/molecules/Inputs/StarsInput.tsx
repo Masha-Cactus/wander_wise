@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Control, FieldPath, FieldValues } from "react-hook-form";
 import { Icons } from "@/src/components/atoms";
-import { InputControllerWrapper } from "@/src/components/molecules";
+import { InputControllerWrapper, IconButton } from "@/src/components/molecules";
 
 interface StarsInputProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -18,19 +18,17 @@ const StarsInput = <T extends FieldValues>({
       isLabelVisible={false}
     >
       {(field) => (
-        <div className="flex gap-0.5 justify-center h-8">
+        <div className="flex h-8 justify-center gap-0.5">
           {[1, 2, 3, 4, 5].map(item => (
-            <button 
-              key={item} 
-              type="button" 
+            <IconButton 
+              key={item}
+              icon={item <= field.value && field.value > 0 
+                ? <Icons.filledStar className="h-full w-12 text-yellow"/>
+                : <Icons.star className="h-full w-12 text-yellow"/>
+              }
               onClick={() => field.onChange(item)}
-            >
-              {item <= field.value && field.value > 0 ? (
-                <Icons.filledStar className="w-12 h-full text-yellow"/>
-              ) : (
-                <Icons.star className="w-12 h-full text-yellow"/>
-              )}
-            </button>
+              classes="p-0" 
+            />
           ))}
         </div>
       )}

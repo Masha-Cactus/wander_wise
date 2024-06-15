@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { getCookie, deleteCookie, setCookie } from "cookies-next";
 import { authService, IEmail, ISignIn, ISignUp } from "@/src/services";
 import { useUser } from "@/src/store/user";
-import { getCookie, deleteCookie, setCookie } from "cookies-next";
 
 export function useSignUp() {
   const setUser = useUser((state) => state.setUser);

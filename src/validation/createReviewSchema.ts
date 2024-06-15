@@ -1,10 +1,9 @@
-import { ObjectSchema } from "yup";
 import * as Yup from "yup";
-import { ICreateComment } from "../services";
-import { genericValidationSchema } from "./genericSchema";
+import { ICreateComment } from "@/src/services";
+import { genericValidationSchema } from "@/src/validation";
 
 export const createReviewSchema 
-= (): ObjectSchema<Omit<ICreateComment, 'cardId'>> => 
+= (): Yup.ObjectSchema<Omit<ICreateComment, 'cardId'>> => 
   Yup.object().shape({
     text: genericValidationSchema.description
       .required('Review text is required'),

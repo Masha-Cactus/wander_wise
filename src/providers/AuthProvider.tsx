@@ -1,10 +1,10 @@
 'use client';
 
+import { PropsWithChildren, useEffect, useState } from "react";
+import { deleteCookie, setCookie } from "cookies-next";
 import { useRefreshToken } from "@/src/queries";
 import { useUser } from "@/src/store/user";
-import { PropsWithChildren, useEffect, useState } from "react";
 import { LoadedContentStateController } from "@/src/components/molecules";
-import { deleteCookie, setCookie } from "cookies-next";
 
 export const AuthProvider = ({children}: PropsWithChildren) => {
   const [isInitialAuthorizing, setIsInitialAuthorizing] = useState(true);

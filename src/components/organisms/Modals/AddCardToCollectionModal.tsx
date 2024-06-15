@@ -2,7 +2,7 @@
 
 import { memo, useEffect, useState } from "react";
 import { 
-  ModalSkeleton, 
+  ModalTemplate, 
   AddCardToCollectionForm,
   CreateCollectionShortForm,
 } from "@/src/components/organisms";
@@ -36,8 +36,8 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
   }, [error, setErrorMessage]);
 
   return (
-    <ModalSkeleton onClose={onClose}>
-      <div className="w-full flex flex-col gap-8">
+    <ModalTemplate onClose={onClose}>
+      <div className="flex w-full flex-col gap-8">
         <h1 className="text-4xl font-normal leading-normal">
           Add “
           <span className="font-medium">{card.name}</span>
@@ -65,7 +65,7 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
 
         {isError && <ErrorText errorText={errorMessage} />}
       </div>
-    </ModalSkeleton>
+    </ModalTemplate>
   );
 };
 

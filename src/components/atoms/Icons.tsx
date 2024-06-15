@@ -13,7 +13,7 @@ import {
   FaTwitter, 
   FaInstagram, 
   FaStar, 
-  FaRegStar 
+  FaRegStar,
 } from "react-icons/fa";
 import { 
   MdErrorOutline, 

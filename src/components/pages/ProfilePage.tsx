@@ -1,30 +1,32 @@
 "use client";
 
-import { ProfileInfoSection } from "@/src/components/organisms";
+import { memo } from "react";
+import { ProfileInfo } from "@/src/components/organisms";
 import {
   RecentlyLikedSection,
   RecentlyReviewsSection,
 } from "@/src/components/organisms";
-import { Divider } from "../atoms";
+import { Divider } from "@/src/components/atoms";
 
 
 const ProfilePage: React.FC = () => {
   return (
-    <main className="grow bg-gray-10">
+    <section className="h-full w-full">
       <Divider />
-      <div className="h-full w-full gap-6 p-4 justify-center grid grid-cols-12">
-        <div className="col-span-4 h-full">
-          <ProfileInfoSection />
-        </div>
+      <div 
+        className="grid h-full w-full grid-cols-[380px,1fr] 
+        justify-center gap-9 overflow-auto px-10 py-8"
+      >
+        <ProfileInfo />
 
-        <div className="col-span-8 flex flex-col gap-6">
+        <div className="flex flex-col gap-6">
           <RecentlyLikedSection />
 
           <RecentlyReviewsSection />
         </div>
       </div>
-    </main>
+    </section>
   );
 };
 
-export default ProfilePage;
+export default memo(ProfilePage);

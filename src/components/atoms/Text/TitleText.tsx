@@ -4,11 +4,8 @@ interface TextProps {
   text: string;
 }
 
-const TitleText: React.FC<TextProps> = ({
-  text,
-}) => {
-  return <p className={`font-bold 
-  text-8xl text-center font-maven`}>{text}</p>;
+const TitleText: React.FC<TextProps> = ({ text }) => {
+  return <p className="text-center font-maven text-8xl font-bold">{text}</p>;
 };
 
 export default memo(TitleText);

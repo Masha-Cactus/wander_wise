@@ -4,8 +4,8 @@ import {
   FieldPath,
   FieldValues,
 } from "react-hook-form";
-import { InputControllerWrapper } from "@/src/components/molecules";
 import { twMerge } from "tailwind-merge";
+import { InputControllerWrapper } from "@/src/components/molecules";
 
 interface TextInputProps<T extends FieldValues> {
   type: string;
@@ -35,7 +35,7 @@ const TextInput = <T extends FieldValues>({
       isErrorLabelVisible
     >
       {(field) => (
-        <div className="relative flex flex-col w-full">
+        <div className="relative flex w-full flex-col">
           <input
             {...field}
             id={name}

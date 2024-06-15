@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import * as Yup from "yup";
-import { CardAuthors, Climate, SpecialRequirements, TravelDistance, TripTypes } from "../services";
+import { CardAuthors, Climate, SpecialRequirements, TravelDistance, TripTypes } from "@/src/services";
 
 export const TEXT_INPUT_LENGTH = {
   userName: {
@@ -19,7 +19,7 @@ export const TEXT_INPUT_LENGTH = {
 
 export const ONLY_SPACES_PATTERN = /^(?!\s+$).+$/;
 export const PASSWORD_PATTERN = /^(?!.*\s).{8,128}$/;
-const GOOGLE_MAPS_LINK_PATTERN = /^(https:\/\/(www\.)?google\.com\/maps\/.*)|(https:\/\/maps\.app\.goo\.gl\/.*)$/i;
+const GOOGLE_MAPS_LINK_PATTERN = /^https:\/\/(www\.)?(google\.com\/maps\/place\/|maps\.app\.goo\.gl\/)/i;
 
 const requiredText = "is required";
 
@@ -97,10 +97,8 @@ export const genericValidationSchema = {
   whyThisPlace: Yup.array().required(`This field ${requiredText}`)
     .min(1, 'You must provide at least one reason')
     .of(Yup.string().trim().required()),
-  travelDistance: Yup.array().required(`Travel distance ${requiredText}`)
-    .min(1, 'Choose at least one option')
-    .of(Yup.string().trim()
-      .oneOf(Object.values(TravelDistance)).required()),
+  travelDistance: Yup.string().trim()
+    .oneOf(Object.values(TravelDistance)).required(`Travel distance ${requiredText}`),
   specialRequirements: Yup.array().required(`Special requirements ${requiredText}`)
     .of(Yup.string().trim()
       .oneOf(Object.values(SpecialRequirements)).required()),

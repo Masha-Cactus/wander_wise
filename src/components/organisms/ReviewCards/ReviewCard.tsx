@@ -1,11 +1,14 @@
 'use client';
 
-import { IconButton } from "@/src/components/molecules";
-import { Icons, TextBase, Heading5 } from "@/src/components/atoms";
-import { DeleteReviewModal, Stars } from "@/src/components/organisms";
-import { IComment } from "@/src/services";
 import { memo, useState } from "react";
-import CreateReportModal from "../Modals/CreateReportModal";
+import { AnimatePresence } from "framer-motion";
+import { IconButton, Stars } from "@/src/components/molecules";
+import { Icons, TextBase, Heading5 } from "@/src/components/atoms";
+import { 
+  DeleteReviewModal, 
+  CreateReportModal 
+} from "@/src/components/organisms";
+import { IComment } from "@/src/services";
 import { useUser } from "@/src/store/user";
 
 type Props = {
@@ -21,9 +24,9 @@ const ReviewCard: React.FC<Props> = ({ review }) => {
 
   return (
     <div 
-      className="bg-white flex flex-col gap-4 rounded-2xl p-6 w-[440px]"
+      className="flex flex-col gap-4 rounded-2xl bg-white p-6"
     >
-      <div className="flex gap-4 items-start justify-between">
+      <div className="flex items-start justify-between gap-6">
         <div className="flex gap-4">
           <div className="flex flex-col gap-1">
             <Heading5 text={review.author} font="semibold" />
@@ -31,17 +34,16 @@ const ReviewCard: React.FC<Props> = ({ review }) => {
           </div>
         </div>
 
-        <div className="flex gap-4">
-          
+        <div className="flex items-center gap-2">
           <IconButton 
-            icon={<Icons.report className="w-6 h-6" />} 
+            icon={<Icons.report className="h-6 w-6 text-gray-70" />} 
             classes="p-0"
             onClick={() => setIsReportReviewModal(true)}
           />
 
           {isReviewedByUser && (
             <IconButton
-              icon={<Icons.delete className="w-6 h-6" />}
+              icon={<Icons.delete className="h-6 w-6 text-gray-70" />}
               classes="p-0"
               onClick={() => setIsDeleteReviewModal(true)}
             />
@@ -50,21 +52,25 @@ const ReviewCard: React.FC<Props> = ({ review }) => {
       </div>
       
       <TextBase text={review.text} font="normal" classes="text-gray-80" />
+      
+      <AnimatePresence>
+        {isDeleteReviewModal && (
+          <DeleteReviewModal 
+            key="deleteReviewModal"
+            commentId={review.id} 
+            onClose={() => setIsDeleteReviewModal(false)} 
+          />
+        )}
 
-      {isDeleteReviewModal && (
-        <DeleteReviewModal 
-          commentId={review.id} 
-          onClose={() => setIsDeleteReviewModal(false)} 
-        />
-      )}
-
-      {isReportReviewModal && (
-        <CreateReportModal 
-          onClose={() => setIsReportReviewModal(false)}
-          type="Comment"
-          comment={review}
-        />
-      )}
+        {isReportReviewModal && (
+          <CreateReportModal 
+            key="createReportModal"
+            onClose={() => setIsReportReviewModal(false)}
+            type="Comment"
+            comment={review}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

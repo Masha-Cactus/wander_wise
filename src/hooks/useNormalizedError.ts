@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { normalizeError } from "../lib/helpers";
+import { normalizeError } from "@/src/lib/helpers";
 
 export const useNormalizedError 
 = (): [string, Dispatch<SetStateAction<any>>] => {

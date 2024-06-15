@@ -17,3 +17,4 @@ export * from "./changeCollectionNameSchema";
 export * from "./filterCardsSchema";
 export * from "./uploadProfileImageSchema";
 export * from "./addCardToCollectionSchema";
+export * from "./socialLinkSchema";

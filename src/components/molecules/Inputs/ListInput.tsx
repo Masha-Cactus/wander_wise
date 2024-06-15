@@ -1,5 +1,7 @@
 'use client';
 
+import { useState, memo } from "react";
+import { twMerge } from "tailwind-merge";
 import {
   Control,
   ControllerRenderProps,
@@ -8,12 +10,9 @@ import {
   Path,
 } from "react-hook-form";
 import { Icons, TextMedium } from "@/src/components/atoms";
-import { InputControllerWrapper } from "@/src/components/molecules";
-import { useState, memo } from "react";
-import IconButton from "../Buttons/IconButton";
-import { twMerge } from "tailwind-merge";
+import { InputControllerWrapper, IconButton } from "@/src/components/molecules";
   
-interface SelectInputProps<T extends FieldValues> {
+interface ListInputProps<T extends FieldValues> {
   name: FieldPath<T>;
   control: Control<T>;
   errorText?: string;
@@ -22,14 +21,14 @@ interface SelectInputProps<T extends FieldValues> {
   disabled: boolean;
 }
   
-const SelectInput = <T extends FieldValues>({
+const ListInput = <T extends FieldValues>({
   name,
   control,
   errorText,
   placeholder,
   label,
   disabled,
-}: SelectInputProps<T>) => {
+}: ListInputProps<T>) => {
   const [currentValue, setCurrentValue] = useState('');
   const handleAdd = (field: ControllerRenderProps<T, Path<T>>) => {
     if (currentValue.trim()) {
@@ -47,7 +46,7 @@ const SelectInput = <T extends FieldValues>({
       label={label}
     >
       {(field) => (
-        <div className="relative flex flex-col w-full">
+        <div className="relative flex w-full flex-col">
           <input
             {...field}
             id={name}
@@ -73,20 +72,19 @@ const SelectInput = <T extends FieldValues>({
           />
           {field.value.length > 0 && (
             <ul
-              className="mt-3 w-full z-10 flex flex-col gap-2"
+              className="z-10 mt-3 flex w-full flex-col gap-2"
             >
               {field.value.map((value: string) => (
                 <li
                   key={value}
-                  className="px-4
-                    flex justify-between w-full items-center"
+                  className="flex w-full items-center justify-between px-4"
                 >
-                  <div className="flex gap-3 grow items-center">
-                    <div className="w-2 h-2 bg-gray-80 rounded-full" />
+                  <div className="flex grow items-center gap-3">
+                    <div className="h-2 w-2 rounded-full bg-gray-80" />
                     <TextMedium text={value} font="normal" />
                   </div>
                   <IconButton
-                    icon={<Icons.delete className="w-6 h-6" />}
+                    icon={<Icons.delete className="h-5 w-5" />}
                     classes="p-0 text-gray-80"
                     onClick={() => 
                       field.onChange(
@@ -103,4 +101,4 @@ const SelectInput = <T extends FieldValues>({
   );
 };
   
-export default memo(SelectInput) as typeof SelectInput;
+export default memo(ListInput) as typeof ListInput;

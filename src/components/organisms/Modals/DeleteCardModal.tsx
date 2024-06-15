@@ -1,7 +1,7 @@
 "use client";
 
 import { memo } from "react";
-import { ModalSkeleton } from "@/src/components/organisms";
+import { ModalTemplate } from "@/src/components/organisms";
 import { ErrorText } from "@/src/components/atoms";
 import { RoundedButton } from "@/src/components/molecules";
 import { useDeleteCard } from "@/src/queries";
@@ -28,12 +28,12 @@ const DeleteCardModal: React.FC<DeleteCardModalProps> = ({
   };
 
   return (
-    <ModalSkeleton 
+    <ModalTemplate 
       onClose={onClose}
       title="Delete your card?"
       subtitle="This action cannot be undone 🫣"
     >
-      <div className="w-full grid grid-cols-2 gap-5">
+      <div className="grid w-full grid-cols-2 gap-5">
         <RoundedButton
           text="Delete"
           onClick={handleDeleteCard}
@@ -47,7 +47,7 @@ const DeleteCardModal: React.FC<DeleteCardModalProps> = ({
         />
       </div>
       {isError && <ErrorText errorText={errorMessage} />}
-    </ModalSkeleton>
+    </ModalTemplate>
   );
 };
 

@@ -1,17 +1,14 @@
-import { ObjectSchema } from "yup";
 import * as Yup from "yup";
-
 import { genericValidationSchema } from "@/src/validation";
 import { UpdateCardFormData } 
-  from "../components/organisms/Forms/EditCardForm";
+  from "@/src/components/organisms/Forms/EditCardForm";
 
 
 export const updateCardSchema 
-= (): ObjectSchema<UpdateCardFormData> =>
+= (): Yup.ObjectSchema<UpdateCardFormData> =>
   Yup.object().shape({
     name: genericValidationSchema.name,
-    location: genericValidationSchema.address
-      .nonNullable('Location is required'),
+    location: genericValidationSchema.address.nullable(),
     description: genericValidationSchema.description
       .required('Description is required'),
     tripTypes: genericValidationSchema.tripTypes

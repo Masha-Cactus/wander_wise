@@ -1,16 +1,16 @@
 'use client';
 
+import { PropsWithChildren, useState } from "react";
 import { 
   QueryCache, 
   QueryClient, 
   QueryClientProvider 
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { PropsWithChildren, useState } from "react";
-import { useUser } from "@/src/store/user";
 import { useRouter } from "next/navigation";
 import { deleteCookie } from "cookies-next";
-import { Routes } from "../lib/constants";
+import { useUser } from "@/src/store/user";
+import { Routes } from "@/src/lib/constants";
 
 export function QueryProvider({children}: PropsWithChildren) {
   const setUser = useUser((state) => state.setUser);

@@ -1,13 +1,13 @@
 'use client';
 
-import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useParams } from "next/navigation";
+import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { useReportCard, useReportComment } from "@/src/queries";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
 import { TextAreaInput, PrimaryButton } from "@/src/components/molecules";
-import { useParams } from "next/navigation";
 import { reportCardSchema } from "@/src/validation";
 import { IComment } from "@/src/services";
 
@@ -80,7 +80,7 @@ const ReportForm: React.FC<Props> = ({ closeModal, type, comment }) => {
   return (
     <form 
       onSubmit={handleSubmit(onSubmit)} 
-      className="w-full flex flex-col gap-8"
+      className="flex w-full flex-col gap-8"
     >
       <TextAreaInput
         name="text"

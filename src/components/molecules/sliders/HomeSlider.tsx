@@ -1,14 +1,12 @@
 "use client";
 
-import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
-import { EffectCreative } from "swiper/modules";
 import { memo, useCallback, useState } from "react";
+import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import Image from "next/image";
-import "swiper/css";
-
 import { IconButton } from "@/src/components/molecules";
 import { Icons } from "@/src/components/atoms";
+import "swiper/css";
 
 type Props = {
   slides: string[];
@@ -26,10 +24,10 @@ const HomeSlider: React.FC<Props> = ({ slides }) => {
   }, [swiperRef]);
 
   return (
-    <div className="h-full w-full rounded-3xl relative">
+    <div className="relative h-full w-full overflow-hidden rounded-3xl">
       <Swiper
         onSwiper={setSwiperRef}
-        className=""
+        className="h-full"
         spaceBetween={50}
         slidesPerView={1}
         speed={1000}
@@ -37,28 +35,23 @@ const HomeSlider: React.FC<Props> = ({ slides }) => {
           delay: 3000,
           disableOnInteraction: false,
         }}
-        modules={[Autoplay, EffectCreative]}
+        modules={[Autoplay]}
         scrollbar={{ draggable: true }}
         loop
       >
         {slides.map((slide) => (
-          <SwiperSlide key={slide} className="h-full w-full relative pb-[60%]">
+          <SwiperSlide key={slide} className="relative h-full w-full">
             <Image
               src={slide}
               alt="Homepage slide"
               fill
-              style={{ 
-                objectFit: 'cover',
-                borderRadius: '40px',
-                cursor: 'pointer', 
-              }}
+              className="rounded-3xl object-cover"
             />
           </SwiperSlide>
         ))}
 
         <div
-          className="product-slider__icons absolute z-20 
-        bottom-20 left-16 flex gap-7"
+          className="absolute bottom-[10%] left-16 z-20 flex gap-7"
         >
           <IconButton
             onClick={handlePrevious}

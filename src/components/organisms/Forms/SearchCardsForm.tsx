@@ -1,5 +1,9 @@
 "use client";
 
+import { Dispatch, SetStateAction, useEffect } from "react";
+import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Divider,
   TextBase,
@@ -7,11 +11,11 @@ import {
   ErrorText
 } from "@/src/components/atoms";
 import {
-  CheckboxInput,
+  RadioButtonInput,
   LocationInput,
   RoundedButton,
-  FilterButton,
-  SquareCheckboxInput
+  ButtonCheckboxInput,
+  CheckboxInput
 } from "@/src/components/molecules";
 import {
   ISearchCard,
@@ -21,12 +25,8 @@ import {
   SpecialRequirementsType,
   TravelDistanceType,
 } from "@/src/services";
-import { useForm } from "react-hook-form";
 import { searchCardsSchema } from "@/src/validation";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { trimObjectFields } from "@/src/lib/helpers";
-import { Dispatch, SetStateAction } from "react";
-import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
 import { 
   ATMOSPHERES, 
   AUTHORS, 
@@ -45,7 +45,7 @@ export interface FilterFormData {
   tripTypes: TripTypesType[],
   climate: ClimateType[],
   specialRequirements: SpecialRequirementsType[],
-  travelDistance: TravelDistanceType[],
+  travelDistance: TravelDistanceType,
 }
 
 const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
@@ -62,16 +62,21 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
       tripTypes: [],
       climate: [],
       specialRequirements: [],
-      travelDistance: [],
+      travelDistance: undefined,
     },
     resolver: yupResolver(validationSchema),
   });
 
   const onSubmit = async (data: FilterFormData) => {
-    const {startLocation, ...trimmedData} = trimObjectFields(data);
+    const {
+      startLocation, 
+      travelDistance, 
+      ...trimmedData
+    } = trimObjectFields(data);
 
     setFilterParams({
       ...trimmedData,
+      travelDistance: [ travelDistance ],
       startLocation: `${startLocation?.city}, ${startLocation?.country}`,
     });
   };
@@ -81,13 +86,19 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
     setFilterParams(null);
   };
 
+  useEffect(() => {
+    if (!isDirty) {
+      setFilterParams(null);
+    }
+  }, [isDirty, setFilterParams]);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col pt-8
-      bg-white border-r border-gray-30 gap-8"
+      className="flex flex-col gap-8
+      border-r border-gray-30 bg-white pt-8"
     >
-      <div className="flex flex-col mx-10">
+      <div className="mx-10 flex flex-col">
         <TextBase text="Where are you now?*" font="semibold" />
         <TextSmall
           text="We need this info to build distance of your trip"
@@ -104,7 +115,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
 
       <Divider />
 
-      <div className="flex flex-col mx-10">
+      <div className="mx-10 flex flex-col">
         <TextBase
           text="What is your preferred travel distance?*"
           font="semibold"
@@ -114,9 +125,9 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
           font="normal"
           classes="mt-2"
         />
-        <div className="flex flex-wrap gap-3 mt-3">
+        <div className="mt-3 flex flex-wrap gap-3">
           {DISTANCE.map(([distanceText, distanceValue]) => (
-            <CheckboxInput
+            <RadioButtonInput
               key={distanceValue}
               name="travelDistance"
               control={control}
@@ -133,11 +144,11 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
 
       <Divider />
 
-      <div className="flex flex-col mx-10">
+      <div className="mx-10 flex flex-col">
         <TextBase text="Type of your trip" font="semibold" />
-        <div className="flex flex-wrap gap-2 mt-3">
+        <div className="mt-3 flex flex-wrap gap-2">
           {ATMOSPHERES.map((atmosphere) => (
-            <FilterButton
+            <ButtonCheckboxInput
               key={atmosphere}
               control={control}
               name="tripTypes"
@@ -149,11 +160,11 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
 
       <Divider />
 
-      <div className="flex flex-col mx-10">
+      <div className="mx-10 flex flex-col">
         <TextBase text="Desired climate" font="semibold" />
-        <div className="flex flex-wrap gap-2 mt-3">
+        <div className="mt-3 flex flex-wrap gap-2">
           {CLIMATES.map((climate) => (
-            <FilterButton
+            <ButtonCheckboxInput
               key={climate}
               control={control}
               name="climate"
@@ -165,11 +176,11 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
 
       <Divider />
 
-      <div className="flex flex-col mx-10">
+      <div className="mx-10 flex flex-col">
         <TextBase text="Special requirements" font="semibold" />
-        <div className="flex flex-wrap gap-2 mt-3">
+        <div className="mt-3 flex flex-wrap gap-2">
           {SPECIALS.map((special) => (
-            <FilterButton
+            <ButtonCheckboxInput
               key={special}
               control={control}
               name="specialRequirements"
@@ -181,11 +192,11 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
 
       <Divider />
 
-      <div className="flex flex-col mx-10">
+      <div className="mx-10 flex flex-col">
         <TextBase text="Cards author" font="semibold" />
-        <div className="flex flex-wrap gap-2 mt-3">
+        <div className="mt-3 flex flex-wrap gap-2">
           {AUTHORS.map(([authorText, authorValue]) => (
-            <SquareCheckboxInput
+            <CheckboxInput
               key={authorValue}
               name="author"
               control={control}
@@ -197,8 +208,8 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
       </div>
 
       <div 
-        className="px-10 py-6
-        flex gap-4 items-center justify-center"
+        className="flex items-center
+        justify-center gap-4 px-10 py-6"
       >
         <RoundedButton
           text="Apply"

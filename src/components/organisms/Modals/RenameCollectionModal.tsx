@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { 
-  ModalSkeleton,
+  ModalTemplate,
   ChangeCollectionNameForm
 } from "@/src/components/organisms";
 
@@ -12,14 +12,14 @@ const RenameCollectionModal: React.FC<RenameCollectionModalProps> = ({
   onClose,
 }) => {
   return (
-    <ModalSkeleton 
+    <ModalTemplate 
       onClose={onClose}
       title="Change collection name"
     >
       <ChangeCollectionNameForm
         closeModal={onClose}
       />
-    </ModalSkeleton>
+    </ModalTemplate>
   );
 };
 

@@ -1,5 +1,9 @@
 'use client';
 
+import { Dispatch, SetStateAction } from "react";
+import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { useCreateCard } from "@/src/queries";
@@ -8,22 +12,18 @@ import {
   SpecialRequirementsType, 
   TripTypesType 
 } from "@/src/services";
-import { useForm } from "react-hook-form";
 import { Divider, ErrorText, Heading5 } from "@/src/components/atoms";
 import { 
   DropdownInput, 
   LocationInput, 
-  SelectInput, 
+  ListInput, 
   TextAreaInput, 
   TextInput,
-  CheckboxInput,
+  RadioButtonInput,
   PrimaryButton,
-  SquareCheckboxInput
+  CheckboxInput
 } from "@/src/components/molecules";
 import { createCardSchema } from "@/src/validation";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Dispatch, SetStateAction } from "react";
-import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
 import { ATMOSPHERES, CLIMATES, SPECIALS } from "@/src/lib/cardParameters";
 
 export interface CreateCardFormData {
@@ -87,7 +87,7 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full flex flex-col gap-6"
+      className="flex w-full flex-col gap-6"
     >
       <TextInput
         type="text"
@@ -127,7 +127,7 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
         label="Description"
       />
 
-      <SelectInput
+      <ListInput
         name="whyThisPlace"
         control={control}
         errorText={errors.whyThisPlace?.message}
@@ -151,7 +151,7 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
           <Divider />
           <div className="flex flex-col gap-2">
             {SPECIALS.map((special) => (
-              <SquareCheckboxInput
+              <CheckboxInput
                 key={special}
                 control={control}
                 name="specialRequirements"
@@ -170,13 +170,12 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
           <Divider />
           <div className="flex flex-col gap-2">
             {CLIMATES.map((climate) => (
-              <CheckboxInput
+              <RadioButtonInput
                 key={climate}
                 control={control}
                 name="climate"
                 value={climate}
                 text={climate}
-                radio={true}
               />
             ))}
 

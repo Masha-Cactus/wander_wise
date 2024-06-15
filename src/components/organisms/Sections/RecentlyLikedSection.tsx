@@ -1,10 +1,10 @@
 'use client';
 
+import { memo } from "react";
+import { useRouter } from "next/navigation";
 import { PrimaryButton } from "@/src/components/molecules";
 import { TripShortCard } from "@/src/components/organisms";
-import { memo } from "react";
 import { Heading5, Heading3 } from "@/src/components/atoms";
-import { useRouter } from "next/navigation";
 import { Routes } from "@/src/lib/constants";
 import { useGetUserLikedCards } from "@/src/queries";
 
@@ -14,12 +14,11 @@ const RecentlyLikedSection: React.FC = () => {
 
   return (
     <section
-      className="bg-white py-12 px-10 rounded-2xl flex flex-col gap-2 
-        w-full"
+      className="flex w-full flex-col gap-2 rounded-2xl bg-white px-10 py-12"
     >
       <Heading3 text="Cards you&apos;ve recently liked" />
       {likedCards && likedCards.length > 0 ? (
-        <div className="mt-4 w-full flex gap-5 items-center overflow-x-scroll">
+        <div className="mt-4 flex w-full items-center gap-5 overflow-x-scroll">
           {likedCards.map((trip) => (
             <TripShortCard key={trip.id} card={trip} />
           ))}

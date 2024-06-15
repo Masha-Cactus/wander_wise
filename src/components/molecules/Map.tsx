@@ -1,8 +1,8 @@
 'use client';
 
+import { useEffect, memo } from 'react';
 import Radar from 'radar-sdk-js';
 import 'radar-sdk-js/dist/radar.css';
-import { useEffect, memo } from 'react';
 
 type Props = {
   coordinates: {
@@ -33,7 +33,7 @@ const Map: React.FC<Props> = ({ coordinates }) => {
   }, [radarKey, latitude, longitude]);
 
   return (
-    <div className="relative w-full h-72 rounded-2xl overflow-hidden">
+    <div className="relative h-72 w-full overflow-hidden rounded-2xl">
       <div 
         id="map-container" 
         style={{ height: '100%', position: 'absolute', width: '100%' }}

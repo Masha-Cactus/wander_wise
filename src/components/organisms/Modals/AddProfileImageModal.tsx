@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { 
-  ModalSkeleton, 
+  ModalTemplate, 
   UploadProfileImageForm 
 } from "@/src/components/organisms";
 
@@ -12,14 +12,14 @@ const AddProfileImageModal: React.FC<AddProfileImageModalProps> = ({
   onClose,
 }) => {
   return (
-    <ModalSkeleton 
+    <ModalTemplate 
       onClose={onClose}
       title="Edit your profile picture"
     >
       <UploadProfileImageForm
         closeModal={onClose}
       />
-    </ModalSkeleton>
+    </ModalTemplate>
   );
 };
 

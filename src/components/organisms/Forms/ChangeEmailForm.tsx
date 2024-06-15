@@ -1,10 +1,10 @@
 'use client';
 
-import { useNormalizedError } from '@/src/hooks/useNormalizedError';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useNormalizedError } from '@/src/hooks';
 import { useRequestUpdateEmail } from '@/src/queries';
 import { IEmail } from '@/src/services';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { ErrorText } from '@/src/components/atoms';
 import { PrimaryButton, TextInput } from '@/src/components/molecules';
 import { changeEmailSchema } from '@/src/validation';
@@ -39,7 +39,7 @@ const ChangeEmailForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
 
   return (
     <form
-      className="flex flex-col gap-8 h-full w-full"
+      className="flex h-full w-full flex-col gap-8"
       onSubmit={handleSubmit(onSubmit)}
     >
       <TextInput 

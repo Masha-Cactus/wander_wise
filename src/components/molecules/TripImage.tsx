@@ -1,7 +1,7 @@
 'use client';
 
-import Image from "next/image";
 import { useState } from "react";
+import Image from "next/image";
 
 type Props = {
   imageLinks: string[],
@@ -28,20 +28,20 @@ const TripImage: React.FC<Props> = ({ imageLinks, alt, sizes }) => {
           alt={alt}
           fill
           sizes={sizes}
-          className="object-cover cursor-pointer"
+          className="cursor-pointer object-cover"
           onError={handleImageError}
         />
       ) : (
         <div 
-          className="bg-gray-30 flex justify-center 
-          items-center absolute inset-0"
+          className="absolute inset-0 flex 
+          items-center justify-center bg-gray-30"
         >
           <Image 
-            src="/trip-default.png" 
+            src="/trip-default.webp" 
             alt="No card images"
             width={120}
             height={120}
-            className="w-32 h-32"
+            className="h-32 w-32"
           />
         </div>
       )}

@@ -7,9 +7,9 @@ import {
   FieldValues,
   useWatch,
 } from "react-hook-form";
-import { Heading5, Icons, TextBase, ErrorText } from "@/src/components/atoms";
-import { FilterButton } from "@/src/components/molecules";
 import { twMerge } from "tailwind-merge";
+import { Heading5, Icons, TextBase, ErrorText } from "@/src/components/atoms";
+import { ButtonCheckboxInput, IconButton } from "@/src/components/molecules";
 
 interface DropdownInputProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -35,7 +35,7 @@ const DropdownInput = <T extends FieldValues>({
   });
 
   return (
-    <div className="flex flex-col w-full gap-3">
+    <div className="flex w-full flex-col gap-3">
       {!!label && (
         <Heading5 text={label} font="medium" />
       )}
@@ -48,15 +48,15 @@ const DropdownInput = <T extends FieldValues>({
           errorText && 'border-error',
         )}
       >
-        <div className="flex justify-between items-center grow">
-          <div className="h-10 flex items-center gap-2">
+        <div className="flex grow items-center justify-between">
+          <div className="flex h-10 items-center gap-2">
             {selectedOptions.length ? (
               <>
                 {selectedOptions.slice(0,3).map((option: string) => (
                   <div 
                     key={option}
-                    className="text-sm rounded-full py-2 px-3 w-max 
-                   text-regular bg-gray-80 text-white"
+                    className="text-regular w-max rounded-full bg-gray-80 px-3 
+                   py-2 text-sm text-white"
                   >
                     {option}
                   </div>
@@ -79,26 +79,24 @@ const DropdownInput = <T extends FieldValues>({
           )}
         </div>
         
-        <button
-          type="button"
+        <IconButton 
+          icon={ isExtended 
+            ? <Icons.up className="h-6 w-6" /> 
+            : <Icons.down className="h-6 w-6" />
+          }
           onClick={() => setIsExtended(isExt => !isExt)}
-        >
-          {isExtended ? (
-            <Icons.up className="w-6 h-6" />
-          ) : (
-            <Icons.down className="w-6 h-6" />
-          )}
-        </button>
+          classes="p-0"
+        />
       </div>
 
       {isExtended && (
         <div
-          className="bg-white border 
-            border-gray-50 py-3 px-4 shadow-lg w-full 
-            rounded-b-md flex flex-wrap gap-2"
+          className="flex w-full 
+            flex-wrap gap-2 rounded-b-md border border-gray-50 
+            bg-white px-4 py-3 shadow-lg"
         >
           {options.map((option: string) => (
-            <FilterButton 
+            <ButtonCheckboxInput 
               key={option} 
               value={option} 
               name={name} 

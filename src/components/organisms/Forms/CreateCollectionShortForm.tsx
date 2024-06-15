@@ -1,10 +1,10 @@
 'use client';
 
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { useCreateCollection } from "@/src/queries";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
 import { 
   PrimaryButton, 
@@ -55,7 +55,7 @@ const CreateCollectionShortForm: React.FC<Props> = ({ closeForm }) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full flex flex-col gap-2"
+      className="flex w-full flex-col gap-2"
     >
       <div className="w-full">
         <TextInput

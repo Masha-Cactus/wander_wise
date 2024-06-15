@@ -1,13 +1,14 @@
 'use client';
 
+import React, { memo, useEffect, useMemo, useRef, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useSearchCards } from "@/src/queries";
-import { ICard, ISearchCard } from "@/src/services";
-import React, { memo, useEffect, useRef, useState } from "react";
+import { ICard, ISearchCard, ISearchCardResponse } from "@/src/services";
 import { 
   LoadedContentStateController, 
   CardsSkeleton 
 } from "@/src/components/molecules";
-import { Heading2 } from "@/src/components/atoms";
+import { Heading4 } from "@/src/components/atoms";
 import { Pagination, Gallery, InfiniteList } from "@/src/components/organisms";
 import { CARDS_PER_PAGE } from "@/src/lib/constants";
 
@@ -21,17 +22,19 @@ const PaginatedCardsSection: React.FC<Props> = ({ filterParams, view }) => {
   const [displayedCards, setDisplayedCards] = useState<ICard[]>([]);
   const [lastPage, setLastPage] = useState<number | undefined>(undefined);
 
-  const pageCards = displayedCards.slice(
-    CARDS_PER_PAGE * page, 
-    CARDS_PER_PAGE * (page + 1)
-  );
-
   const { 
     data, 
     error, 
     isLoading,
     fetchStatus,
   } = useSearchCards(page, filterParams);
+
+  const queryClient = useQueryClient();
+  const pageCards = useMemo(() => 
+    queryClient.getQueryData<ISearchCardResponse | undefined>(
+      ['cards', page, filterParams]
+    )?.cards,
+  [page, queryClient, data]);
 
   const isShowSkeleton = isLoading && fetchStatus !== 'idle' 
     && view === 'Gallery';
@@ -60,35 +63,41 @@ const PaginatedCardsSection: React.FC<Props> = ({ filterParams, view }) => {
     if (scrollRef && view === 'Gallery') {
       scrollRef.current?.scrollIntoView({ block: "end", behavior: 'smooth' });
     }
-  }, [displayedCards, view]);
+  }, [pageCards, view]);
 
   return (
     <>
-      <div className="h-px absolute left-0 top-0" ref={scrollRef} />
+      <div className="absolute left-0 top-0 h-px" ref={scrollRef} />
       <LoadedContentStateController
         isEmpty={isShowEmpty}
         emptyFallbackComponent={
-          <Heading2 
-            text="No cards matching your preferences found 😢. 
-                    Try setting other filter parameters" 
-            font="semibold"
-            classes="m-auto text-gray-80 text-center"
-          />
+          <div className="m-auto text-center">
+            <Heading4 
+              text="No cards matching your preferences found 😢." 
+              font="medium"
+              classes="text-gray-80"
+            />
+            <Heading4 
+              text="Try setting other filter parameters"
+              font="medium" 
+              classes="text-gray-80"
+            />
+          </div>
         }
         isLoading={isShowSkeleton}
         loadingFallbackComponent={<CardsSkeleton />}
       >
         {view === 'Gallery' ? (
           <>
-            <Gallery cards={pageCards} />
+            {pageCards && (
+              <Gallery cards={pageCards} />
+            )}
 
             <Pagination 
               page={page} 
               setPage={setPage} 
               isLastPage={page === lastPage}
             />
-
-            <span />
           </>
         ) : (
           <InfiniteList 

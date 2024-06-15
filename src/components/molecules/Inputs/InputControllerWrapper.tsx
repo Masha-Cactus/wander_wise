@@ -9,8 +9,8 @@ import {
   FieldValues,
   Path,
 } from "react-hook-form";
+import { twMerge } from "tailwind-merge";
 import { ErrorText } from "@/src/components/atoms";
-import classNames from "classnames";
 
 interface InputControllerWrapperProps<T extends FieldValues> {
   control: Control<T>;
@@ -35,14 +35,13 @@ const InputControllerWrapper = <T extends FieldValues>({
       control={control}
       render={({ field, fieldState }) => (
         <div 
-          className={classNames('flex flex-col', { 'gap-3': isLabelVisible })}
+          className={twMerge('flex flex-col', isLabelVisible && 'gap-3')}
         >
           <label
             htmlFor={name}
-            className={classNames('text-black text-xl font-medium',
-              'relative flex flex-col w-full items-start',{
-                'sr-only': !isLabelVisible,
-              }
+            className={twMerge(`text-black text-xl font-medium
+            relative flex flex-col w-full items-start`,
+            !isLabelVisible && 'sr-only'
             )}
           >
             {label}

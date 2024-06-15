@@ -3,21 +3,21 @@ export { default as Tab } from "./Tab";
 export { default as Gallery } from "./Lists/Gallery";
 export { default as InfiniteList } from "./Lists/InfiniteList";
 export { default as ReviewsList } from "./Lists/ReviewsList";
-export { default as Stars } from "./Stars";
 export { default as Header } from "./Header";
 export { default as Collection } from "./Collection";
 export { default as Pagination } from "./Pagination";
+export { default as ProfileInfo } from "./ProfileInfo";
 
-export { default as TripShortCard } from "./Trips/TripShortCard";
-export { default as TripMediumCard } from "./Trips/TripMediumCard";
-export { default as TripLongCard } from "./Trips/TripLongCard";
-export { default as TripXLCard } from "./Trips/TripXLCard";
-export { default as TripXSCard } from "./Trips/TripXSCard";
+export { default as TripShortCard } from "./TripCards/TripShortCard";
+export { default as TripMediumCard } from "./TripCards/TripMediumCard";
+export { default as TripLongCard } from "./TripCards/TripLongCard";
+export { default as TripXLCard } from "./TripCards/TripXLCard";
+export { default as TripXSCard } from "./TripCards/TripXSCard";
 
 export { default as ReviewCard } from "./ReviewCards/ReviewCard";
 export { default as ReviewCardLong } from "./ReviewCards/ReviewCardLong";
 
-export { default as ModalSkeleton } from "./Modals/ModalSkeleton";
+export { default as ModalTemplate } from "./Modals/ModalTemplate";
 export { default as SignInModal } from "./Modals/SignInModal";
 export { default as SignUpModal } from "./Modals/SignUpModal";
 export { default as RestorePasswordModal } from "./Modals/RestorePasswordModal";
@@ -61,7 +61,6 @@ export { default as UploadProfileImageForm} from "./Forms/UploadProfileImageForm
 
 export { default as RecentlyLikedSection } from "./Sections/RecentlyLikedSection";
 export { default as RecentlyReviewsSection } from "./Sections/RecentlyReviewsSection";
-export { default as ProfileInfoSection } from "./Sections/ProfileInfoSection";
 export { default as SavedCardsSection } from "./Sections/SavedCardsSection";
 export { default as CreatedCardsSection } from "./Sections/CreatedCardsSection";
 export { default as CardImagesSection } from "./Sections/CardImagesSection";

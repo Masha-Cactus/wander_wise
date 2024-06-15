@@ -1,18 +1,18 @@
 'use client';
 
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/navigation";
 import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { useCreateCollection, useGetUserSavedCards } from "@/src/queries";
 import { ICreateCollection } from "@/src/services";
 import { createCollectionSchema } from "@/src/validation";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
 import { Divider, ErrorText, Heading5 } from "@/src/components/atoms";
 import { 
   PrimaryButton, 
   TextInput,
-  SquareCheckboxInput
+  CheckboxInput
 } from "@/src/components/molecules";
 import { Routes } from "@/src/lib/constants";
 
@@ -52,7 +52,7 @@ const CreateCollectionForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full flex flex-col gap-6"
+      className="flex w-full flex-col gap-8"
     >
       <TextInput
         type="text"
@@ -65,22 +65,22 @@ const CreateCollectionForm = () => {
       />
 
       {!!savedCards?.length && (
-        <>
+        <div className="flex w-full flex-col gap-4">
           <Heading5 text="Choose cards to add" font="semibold" />
           <Divider />
 
-          <div className="flex flex-col gap-4 max-h-64 overflow-y-scroll">
+          <div className="flex max-h-64 flex-col gap-4 overflow-y-scroll">
             {savedCards?.map(card => (
               <div 
                 key={card.id} 
-                className="flex gap-4 justify-between items-center"
+                className="flex items-center justify-between gap-4"
               >
                 <Heading5 
                   text={`${card.name}, ${card.whereIs}`} 
                   font="normal"
                   classes="truncate"
                 />
-                <SquareCheckboxInput
+                <CheckboxInput
                   name="cardIds" 
                   control={control} 
                   value={card.id}
@@ -88,7 +88,7 @@ const CreateCollectionForm = () => {
               </div>
             ))}
           </div>
-        </>
+        </div>
       )}
 
       <PrimaryButton type="submit" text="Create" disabled={isPending} />

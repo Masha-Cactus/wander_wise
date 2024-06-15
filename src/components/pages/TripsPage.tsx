@@ -1,14 +1,15 @@
 'use client';
 
+import { memo, useState } from "react";
 import { 
   SearchCardsForm, 
   SearchedCardsSection,
   PopularCardsSection 
 } from "@/src/components/organisms";
 import { ISearchCard } from "@/src/services";
-import { memo, useState } from "react";
-import { Heading2, Divider } from "@/src/components/atoms";
+import { Heading2 } from "@/src/components/atoms";
 import { ViewSwitcher } from "@/src/components/molecules";
+import { ScreenHeightLayout } from "@/src/components/templates";
 
 type View = 'Gallery' | 'List';
 
@@ -17,18 +18,16 @@ const TripsPage = () => {
   const [view, setView] = useState<View>('Gallery');
 
   return (
-    <main className="grow overflow-hidden bg-gray-10">
-      <Divider />
-      <div className="w-full h-full grid grid-cols-[345px,1fr] overflow-hidden">
+    <ScreenHeightLayout>
+      <div className="grid h-full w-full grid-cols-[345px,1fr] overflow-hidden">
         <div className="overflow-y-scroll">
           <SearchCardsForm setFilterParams={setFilterParams} />
         </div>
 
         <div
-          className="flex flex-col justify-between items-center gap-8 
-          px-10 pt-8 overflow-y-scroll relative"
+          className="flex flex-col items-center 
+          justify-between gap-8 overflow-auto px-10 py-8"
         >
-
           <div className="flex w-full justify-between">
             <Heading2 
               text={filterParams 
@@ -53,7 +52,7 @@ const TripsPage = () => {
           )}
         </div>
       </div>
-    </main>
+    </ScreenHeightLayout>
   );
 };
 

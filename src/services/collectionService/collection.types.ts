@@ -1,4 +1,4 @@
-import { ICard } from "../cardService/card.types";
+import { ICard } from "@/src/services";
 
 export interface ICollection {
   id: number,

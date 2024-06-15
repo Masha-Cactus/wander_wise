@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { 
   ConfirmEmailForm, 
-  ModalSkeleton, 
+  ModalTemplate, 
   ConfirmNewEmailForm 
 } from "@/src/components/organisms";
 
@@ -13,7 +13,7 @@ interface ConfirmEmailModalProps {
 const ConfirmEmailModal: React.FC<ConfirmEmailModalProps> 
 = ({ onClose, type }) => {
   return (
-    <ModalSkeleton onClose={onClose}
+    <ModalTemplate onClose={onClose}
       title="Confirm your email"
       subtitle="Enter the confirmation code sent to your email 🤔"
     >
@@ -22,7 +22,7 @@ const ConfirmEmailModal: React.FC<ConfirmEmailModalProps>
       ) : (
         <ConfirmNewEmailForm closeModal={onClose} />
       )}
-    </ModalSkeleton>
+    </ModalTemplate>
   );
 };
 

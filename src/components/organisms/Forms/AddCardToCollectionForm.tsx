@@ -1,19 +1,19 @@
 'use client';
 
-import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import { useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { useUpdateCollection } from "@/src/queries";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
 import { ErrorText, Heading4, Icons } from "@/src/components/atoms";
 import { 
-  SquareCheckboxInput, 
+  CheckboxInput, 
   PrimaryButton, 
   RoundedButton 
 } from "@/src/components/molecules";
 import { ICollection } from "@/src/services";
 import { addCardToCollectionSchema } from "@/src/validation";
-import { useMemo } from "react";
 
 type Props = {
   cardId: number,
@@ -72,17 +72,17 @@ const AddCardToCollectionForm: React.FC<Props>
   return (
     <form 
       onSubmit={handleSubmit(onSubmit)} 
-      className="w-full flex flex-col gap-8"
+      className="flex w-full flex-col gap-8"
     >
       {!!collectionsWithoutCard.length && (
-        <div className="flex flex-col gap-5 max-h-52 overflow-y-scroll">
+        <div className="flex max-h-52 flex-col gap-5 overflow-y-scroll">
           {collectionsWithoutCard.map(collection => (
             <div
               key={collection.id}
-              className="flex w-full justify-between items-center"
+              className="flex w-full items-center justify-between"
             >
-              <div className="flex gap-2 items-center">
-                <Icons.folder className="w-6 h-6" />
+              <div className="flex items-center gap-2">
+                <Icons.folder className="h-6 w-6" />
                 <Heading4 
                   text={collection.name} 
                   font="normal" 
@@ -90,7 +90,7 @@ const AddCardToCollectionForm: React.FC<Props>
                 />
               </div>
 
-              <SquareCheckboxInput
+              <CheckboxInput
                 value={collection.id}
                 control={control}
                 name="selectedCollectionIds"
@@ -100,7 +100,7 @@ const AddCardToCollectionForm: React.FC<Props>
         </div>
       )}
       
-      <div className="w-full grid grid-cols-2 gap-5">
+      <div className="grid w-full grid-cols-2 gap-5">
         <RoundedButton
           type="button"
           text="Cancel"

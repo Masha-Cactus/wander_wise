@@ -1,18 +1,18 @@
 'use client';
 
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useParams } from "next/navigation";
 import { useNormalizedError } from "@/src/hooks";
 import { useCreateComment } from "@/src/queries";
 import { ICreateComment } from "@/src/services";
 import { createReviewSchema } from "@/src/validation";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
 import { 
   PrimaryButton, 
   TextAreaInput, 
   StarsInput, 
 } from "@/src/components/molecules";
-import { useParams } from "next/navigation";
 
 type Props = {
   closeModal: () => void,
@@ -52,7 +52,7 @@ const CreateReviewForm: React.FC<Props> = ({ closeModal }) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full flex flex-col gap-6"
+      className="flex w-full flex-col gap-6"
     >
       <StarsInput control={control} name="stars" />
 

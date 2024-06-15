@@ -1,8 +1,8 @@
 "use client";
 
+import { memo, useEffect, useState } from "react";
 import { Swiper, SwiperSlide, SwiperClass } from "swiper/react";
 import { Pagination } from "swiper/modules";
-import { memo, useEffect, useState } from "react";
 import { Autoplay } from "swiper/modules";
 import Image from "next/image";
 import "swiper/css";
@@ -21,7 +21,7 @@ const CardSlider: React.FC<Props> = ({ slides, activeSlide }) => {
   }, [activeSlide, swiperRef]);
 
   return (
-    <div className="w-full relative">
+    <div className="relative w-full">
       <Swiper
         onSwiper={setSwiperRef}
         pagination={{
@@ -36,7 +36,7 @@ const CardSlider: React.FC<Props> = ({ slides, activeSlide }) => {
         }}
         modules={[Autoplay, Pagination]}
         scrollbar={{ draggable: true }}
-        loop
+        loop={slides.length > 1}
         style={{
           "--swiper-pagination-color": "#F9F9F9",
           "--swiper-pagination-bullet-inactive-color": "#C1C1C1",
@@ -46,13 +46,13 @@ const CardSlider: React.FC<Props> = ({ slides, activeSlide }) => {
         }}
       >
         {slides.map((slide) => (
-          <SwiperSlide key={slide} className="h-full w-full relative pb-[68%]">
+          <SwiperSlide key={slide} className="relative h-full w-full pb-[68%]">
             <Image
               src={slide}
               alt="Trip image"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover cursor-pointer"
+              className="cursor-pointer object-cover"
             />
           </SwiperSlide>
         ))}

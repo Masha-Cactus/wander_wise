@@ -1,7 +1,7 @@
 'use client';
 
 import { memo, useState } from "react";
-import { ModalSkeleton, RestorePasswordForm } from "@/src/components/organisms";
+import { ModalTemplate, RestorePasswordForm } from "@/src/components/organisms";
 import { UnstyledButton } from "@/src/components/molecules";
 
 interface RestorePasswordModalProps {
@@ -27,7 +27,7 @@ const RestorePasswordModal: React.FC<RestorePasswordModalProps> = ({
   };
 
   return (
-    <ModalSkeleton 
+    <ModalTemplate 
       onClose={onClose}
       title="Password assistance"
       subtitle={isSubmitted 
@@ -54,7 +54,7 @@ const RestorePasswordModal: React.FC<RestorePasswordModalProps> = ({
         </div>
       )}
 
-    </ModalSkeleton>
+    </ModalTemplate>
   );
 };
 

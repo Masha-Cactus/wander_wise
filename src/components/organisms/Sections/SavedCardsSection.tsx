@@ -1,9 +1,9 @@
 'use client';
 
+import { useEffect, useState } from "react";
 import { Heading3, Heading4 } from "@/src/components/atoms";
 import { Gallery, Pagination } from "@/src/components/organisms";
 import { LinkButton } from "@/src/components/molecules";
-import { useEffect, useState } from "react";
 import { ICard, IFilterParams } from "@/src/services";
 import { getFilteredCards } from "@/src/lib/helpers";
 import { CARDS_PER_PAGE, Routes } from "@/src/lib/constants";
@@ -36,13 +36,17 @@ const SavedCardsSection: React.FC<Props> = ({ filterParams }) => {
   }, [savedCards, filterParams]);
 
   return (
-    <section className="w-full px-10 py-8 flex flex-col 
-      justify-between items-center gap-8"
+    <section className="flex w-full flex-col items-center justify-between 
+      gap-8 px-10 py-8"
     >
-      <div className="w-full flex justify-between align-center">
-        <div className="flex gap-2 items-center">
+      <div className="align-center flex w-full justify-between">
+        <div className="flex items-center gap-2">
           <Heading3 text="My saved cards" />
-          <Heading4 text={`(${savedCards?.length || 0})`} font="normal" classes="text-gray-30" />
+          <Heading4 
+            text={`(${savedCards?.length || 0})`} 
+            font="normal" 
+            classes="text-gray-30" 
+          />
         </div>
         <LinkButton 
           path={Routes.COLLECTIONS.MAIN}

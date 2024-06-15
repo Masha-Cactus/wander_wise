@@ -1,11 +1,11 @@
 "use client";
 
 import { memo } from "react";
-import { ModalSkeleton } from "@/src/components/organisms";
+import { useRouter } from "next/navigation";
+import { ModalTemplate } from "@/src/components/organisms";
 import { ErrorText } from "@/src/components/atoms";
 import { RoundedButton } from "@/src/components/molecules";
 import { useDeleteCollection } from "@/src/queries";
-import { useRouter } from "next/navigation";
 import { Routes } from "@/src/lib/constants";
 import { useNormalizedError } from "@/src/hooks";
 
@@ -31,12 +31,12 @@ const DeleteCollectionModal: React.FC<DeleteCollectionModalProps> = ({
   };
 
   return (
-    <ModalSkeleton 
+    <ModalTemplate 
       onClose={onClose}
       title="Delete your collection?"
       subtitle="This action cannot be undone 🫣"
     >
-      <div className="w-full grid grid-cols-2 gap-5">
+      <div className="grid w-full grid-cols-2 gap-5">
         <RoundedButton
           text="Delete"
           onClick={handleDeleteCollection}
@@ -51,7 +51,7 @@ const DeleteCollectionModal: React.FC<DeleteCollectionModalProps> = ({
       </div>
 
       {isError && <ErrorText errorText={errorMessage} />}
-    </ModalSkeleton>
+    </ModalTemplate>
   );
 };
 

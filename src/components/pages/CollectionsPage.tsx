@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from "react";
 import { Heading3, Divider, Heading4 } from "@/src/components/atoms";
 import { 
   LinkButton, 
@@ -7,17 +8,17 @@ import {
 } from "@/src/components/molecules";
 import { useGetUserCollections } from "@/src/queries";
 import { Collection } from "@/src/components/organisms";
-import { FormPageLayout } from "@/src/components/layouts";
 import { Routes } from "@/src/lib/constants";
+import { StandardPageLayout } from "@/src/components/templates";
 
 const CollectionsPage = () => {
   const { data: collections, isLoading} = useGetUserCollections();
 
   return (
-    <FormPageLayout>
-      <article className="w-[670px] self-center flex flex-col gap-6 
-      items-center bg-white px-10 py-12 rounded-3xl">
-        <div className="w-full flex justify-between">
+    <StandardPageLayout>
+      <article className="flex w-[670px] flex-col items-center gap-6 
+      self-center rounded-3xl bg-white px-10 py-12">
+        <div className="flex w-full items-center justify-between">
           <Heading3 
             text="My collections" 
           />
@@ -40,16 +41,15 @@ const CollectionsPage = () => {
           }
           isLoading={isLoading}
         >
-          <div className="w-full grid gap-5
-            grid-cols-[repeat(2,282px)]">
+          <div className="grid w-full grid-cols-[repeat(2,282px)] gap-5">
             {collections?.map(collection => (
               <Collection key={collection.id} collection={collection} />
             ))}
           </div>
         </LoadedContentStateController>
       </article>
-    </FormPageLayout>
+    </StandardPageLayout>
   );
 };
 
-export default CollectionsPage;
+export default memo(CollectionsPage);

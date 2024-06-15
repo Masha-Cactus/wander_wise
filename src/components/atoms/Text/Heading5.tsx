@@ -6,9 +6,8 @@ interface HeadingProps {
   font: "medium" | "normal" | "semibold";
 }
 
-//this is for 20px
 const Heading5: React.FC<HeadingProps> = ({ text, classes, font }) => {
-  return <h5 className={`text-xl text-black font-${font} ${classes}`}>{text}</h5>;
+  return <h5 className={`font-${font} text-xl text-black ${classes}`}>{text}</h5>;
 };
 
 export default memo(Heading5);

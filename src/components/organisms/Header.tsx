@@ -1,10 +1,11 @@
 /* eslint-disable max-len */
 "use client";
 
-import { useUser } from "@/src/store/user";
+import { memo, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { memo, useState } from "react";
+import { useUser } from "@/src/store/user";
 import {
   ConfirmEmailModal,
   RestorePasswordModal,
@@ -23,9 +24,9 @@ const Header: React.FC = () => {
 
   return (
     <header
-      className="flex items-center justify-between mx-10 my-7"
+      className="flex items-center justify-between px-10 py-7"
     >
-      <Link href={Routes.HOME} className="relative w-48 h-10">
+      <Link href={Routes.HOME} className="relative h-10 w-48">
         <Image
           src="/logo.svg"
           alt="Wander Wise logo"
@@ -37,7 +38,7 @@ const Header: React.FC = () => {
       {user ? (
         <Navbar />
       ) : (
-        <div className="flex gap-8 items-center">
+        <div className="flex items-center gap-8">
           <UnstyledButton 
             text="Login"
             onClick={() => setIsShowSignInModal(true)}
@@ -52,38 +53,44 @@ const Header: React.FC = () => {
         </div>
       )}
 
-      {isShowSignInModal && (
-        <SignInModal
-          onClose={() => setIsShowSignInModal(false)}
-          onOpenSignUp={() => setIsShowSignUpModal(true)}
-          onOpenRestorePassword={() => setIsShowRestorePasswordModal(true)}
-        />
-      )}
+      <AnimatePresence>
+        {isShowSignInModal && (
+          <SignInModal
+            key="signInModal"
+            onClose={() => setIsShowSignInModal(false)}
+            onOpenSignUp={() => setIsShowSignUpModal(true)}
+            onOpenRestorePassword={() => setIsShowRestorePasswordModal(true)}
+          />
+        )}
 
-      {isShowSignUpModal && (
-        <SignUpModal
-          onClose={() => setIsShowSignUpModal(false)}
-          onOpenSignIn={() => setIsShowSignInModal(true)}
-          onOpenConfirmEmail={() => {
-            setIsShowConfirmEmailModal(true);
-          }}
-        />
-      )}
+        {isShowSignUpModal && (
+          <SignUpModal
+            key="signUpModal"
+            onClose={() => setIsShowSignUpModal(false)}
+            onOpenSignIn={() => setIsShowSignInModal(true)}
+            onOpenConfirmEmail={() => {
+              setIsShowConfirmEmailModal(true);
+            }}
+          />
+        )}
 
-      {isShowRestorePasswordModal && (
-        <RestorePasswordModal 
-          onClose={() => setIsShowRestorePasswordModal(false)}
-          onOpenSignIn={() => setIsShowSignInModal(true)}
-          onOpenSignUp={() => setIsShowSignUpModal(true)}
-        />
-      )}
+        {isShowRestorePasswordModal && (
+          <RestorePasswordModal 
+            key="restorePasswordModal"
+            onClose={() => setIsShowRestorePasswordModal(false)}
+            onOpenSignIn={() => setIsShowSignInModal(true)}
+            onOpenSignUp={() => setIsShowSignUpModal(true)}
+          />
+        )}
 
-      {isShowConfirmEmailModal && (
-        <ConfirmEmailModal 
-          type="Confirm" 
-          onClose={() => setIsShowConfirmEmailModal(false)}
-        />
-      )}
+        {isShowConfirmEmailModal && (
+          <ConfirmEmailModal
+            key="confirmEmailModal" 
+            type="Confirm" 
+            onClose={() => setIsShowConfirmEmailModal(false)}
+          />
+        )}
+      </AnimatePresence>
     </header>
   );
 };

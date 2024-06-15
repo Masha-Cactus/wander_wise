@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { memo, useState } from "react";
-import CardSlider from "../../molecules/sliders/CardSlider";
+import Image from "next/image";
+import { CardSlider } from "@/src/components/molecules";
 
 type Props = {
   images: string[];
@@ -13,13 +13,18 @@ const CardImagesSection: React.FC<Props> = ({ images }) => {
   const [displayedImages, setDisplayedImages] = useState(images);
 
   return (
-    <div className="w-full flex flex-col rounded-3xl gap-px overflow-hidden">
+    <section 
+      className="flex w-full flex-col gap-px overflow-hidden rounded-3xl"
+    >
       {displayedImages.length ? (
         <>
           <CardSlider activeSlide={selectedImage} slides={displayedImages} />
 
           {displayedImages.length > 1 && (
-            <div className="w-full flex gap-px h-24 overflow-x-scroll">
+            <div 
+              className="flex h-24 w-full justify-center 
+              gap-px overflow-x-scroll"
+            >
               {displayedImages.map((image, index) => (
                 <div key={image} className="relative h-full w-40 grow">
                   <Image
@@ -27,7 +32,7 @@ const CardImagesSection: React.FC<Props> = ({ images }) => {
                     alt="Trip image"
                     fill
                     sizes="160px"
-                    className="object-cover cursor-pointer"
+                    className="cursor-pointer object-cover"
                     onClick={() => setSelectedImage(index)}
                     onError={() => {
                       setDisplayedImages((currImages) => currImages
@@ -42,20 +47,19 @@ const CardImagesSection: React.FC<Props> = ({ images }) => {
         </>
       ) : (
         <div 
-          className="bg-gray-30 w-full pb-[68%] rounded-3xl 
-            flex justify-center items-center"
+          className="flex w-full items-center justify-center 
+            rounded-3xl bg-gray-30 pb-[68%]"
         >
           <Image 
-            src="/trip-default.png" 
+            src="/trip-default.webp" 
             alt="No card images"
             width={120}
             height={120}
-            className="w-80 h-80"
+            className="h-80 w-80"
           />
         </div>
       )}
-
-    </div>
+    </section>
   );
 };
 

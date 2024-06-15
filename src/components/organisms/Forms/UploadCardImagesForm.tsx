@@ -1,11 +1,11 @@
 'use client';
 
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/navigation";
 import { useNormalizedError } from "@/src/hooks";
 import { useAddCardImages } from "@/src/queries";
 import { uploadCardImagesSchema } from "@/src/validation";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
 import { MultipleImageInput, PrimaryButton } from "@/src/components/molecules";
 import { Routes } from "@/src/lib/constants";
@@ -53,9 +53,9 @@ const UploadCardImagesForm: React.FC<Props> = ({ cardId, closeModal }) => {
           onSuccess: () => {
             if (closeModal) {
               closeModal();
+            } else {
+              push(Routes.TRIP(cardId));
             }
-
-            push(Routes.TRIP(cardId));
           },
         }
       );
@@ -65,7 +65,7 @@ const UploadCardImagesForm: React.FC<Props> = ({ cardId, closeModal }) => {
   return (
     <form 
       onSubmit={handleSubmit(onSubmit)} 
-      className="w-full flex flex-col gap-6"
+      className="flex w-full flex-col gap-6"
     >
       <MultipleImageInput
         name="images"

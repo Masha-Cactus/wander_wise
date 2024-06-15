@@ -2,9 +2,9 @@
 
 import { memo, useState } from "react";
 import { Control, FieldPath, FieldValues } from "react-hook-form";
+import { twMerge } from "tailwind-merge";
 import { Icons } from "@/src/components/atoms";
 import { InputControllerWrapper } from "@/src/components/molecules";
-import { twMerge } from "tailwind-merge";
 
 interface PasswordInputProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -34,7 +34,7 @@ const PasswordInput = <T extends FieldValues>({
       isErrorLabelVisible
     >
       {(field) => (
-        <div className="relative flex flex-col w-full">
+        <div className="relative flex w-full flex-col">
           <div
             className={twMerge( 
               `border border-gray-50 bg-white placeholder:text-gray-50

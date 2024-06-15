@@ -1,8 +1,8 @@
+import { memo } from 'react';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { memo } from 'react';
 import { Divider, Heading5 } from '@/src/components/atoms';
-import { usePathname } from 'next/navigation';
 import { useUser } from '@/src/store/user';
 import { Routes } from '@/src/lib/constants';
 
@@ -11,8 +11,8 @@ const Navbar = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex gap-8 items-center h-12">
-      <div className="flex gap-8 text-black justify-center items-center">
+    <nav className="flex h-12 items-center gap-8">
+      <div className="flex items-center justify-center gap-8 text-black">
         <Link href={Routes.TRIPS}>
           <Heading5 
             text="Trips" 
@@ -40,9 +40,9 @@ const Navbar = () => {
 
       <Divider classes="h-full w-px" />
           
-      <Link href={Routes.PROFILE.MAIN} className="relative w-12 h-12">
+      <Link href={Routes.PROFILE.MAIN} className="relative h-12 w-12">
         <Image
-          src={user?.profileImage || "/user-default.png"}
+          src={user?.profileImage || "/user-default.webp"}
           alt="user avatar"
           fill
           sizes="48px"

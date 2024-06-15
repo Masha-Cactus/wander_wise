@@ -1,12 +1,12 @@
 'use client';
 
+import { memo, useMemo } from "react";
 import { 
   useGetUserSavedCards, 
   useRemoveCardFromSaved, 
   useSaveCard 
 } from "@/src/queries";
 import { PrimaryButton } from "@/src/components/molecules";
-import { memo, useMemo } from "react";
 import { useUser } from "@/src/store/user";
 
 type Props = {
@@ -21,7 +21,7 @@ const SaveButton: React.FC<Props> = ({ cardId }) => {
   const { data: savedCards } = useGetUserSavedCards();
   const isCardSavedByUser = useMemo(() => 
     savedCards?.some(savedCard => savedCard.id === cardId), 
-  [savedCards]);
+  [savedCards, cardId]);
   
   const handleClick = () => {
     isCardSavedByUser
