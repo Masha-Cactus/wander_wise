@@ -1,7 +1,7 @@
 'use client';
 
 import { memo } from "react";
-import { Heading3, Divider, Heading4 } from "@/src/components/atoms";
+import { Heading3, Divider, Heading4, Loader } from "@/src/components/atoms";
 import { 
   LinkButton, 
   LoadedContentStateController 
@@ -10,9 +10,12 @@ import { useGetUserCollections } from "@/src/queries";
 import { Collection } from "@/src/components/organisms";
 import { Routes } from "@/src/lib/constants";
 import { StandardPageLayout } from "@/src/components/templates";
+import { selectOtherCollections } from "@/src/lib/collectionSelectors";
+import { ICollection } from "@/src/services";
 
 const CollectionsPage = () => {
-  const { data: collections, isLoading} = useGetUserCollections();
+  const { data: collections, isLoading, isFetched } 
+    = useGetUserCollections<ICollection[]>(selectOtherCollections);
 
   return (
     <StandardPageLayout>
@@ -40,12 +43,17 @@ const CollectionsPage = () => {
             />
           }
           isLoading={isLoading}
+          loadingFallbackComponent={
+            <Loader classes="my-8 h-14 w-14 gap-1.5" />
+          }
         >
-          <div className="grid w-full grid-cols-[repeat(2,282px)] gap-5">
-            {collections?.map(collection => (
-              <Collection key={collection.id} collection={collection} />
-            ))}
-          </div>
+          {!!collections?.length && (
+            <div className="grid w-full grid-cols-[repeat(2,282px)] gap-5">
+              {collections.map(collection => (
+                <Collection key={collection.id} collection={collection} />
+              ))}
+            </div>
+          )}
         </LoadedContentStateController>
       </article>
     </StandardPageLayout>

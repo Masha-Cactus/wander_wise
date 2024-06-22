@@ -1,15 +1,15 @@
 'use client';
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import Image from "next/image";
 
-type Props = {
+interface TripImageProps {
   imageLinks: string[],
   alt: string,
   sizes: string,
-};
+}
 
-const TripImage: React.FC<Props> = ({ imageLinks, alt, sizes }) => {
+const TripImage: React.FC<TripImageProps> = ({ imageLinks, alt, sizes }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isTripImages, setIsTripImages] = useState(!!imageLinks.length);
   const handleImageError = () => {
@@ -42,6 +42,7 @@ const TripImage: React.FC<Props> = ({ imageLinks, alt, sizes }) => {
             width={120}
             height={120}
             className="h-32 w-32"
+            priority={true}
           />
         </div>
       )}
@@ -49,4 +50,4 @@ const TripImage: React.FC<Props> = ({ imageLinks, alt, sizes }) => {
   );
 };
 
-export default TripImage;
+export default memo(TripImage);

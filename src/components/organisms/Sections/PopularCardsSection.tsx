@@ -3,24 +3,25 @@
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePopularCards } from "@/src/queries";
-import { ICard } from "@/src/services";
+import { ICard, ISearchCardResponse, TripsPageView } from "@/src/services";
 import { LoadedContentStateController } from "@/src/components/molecules";
 import { Heading } from "@/src/components/atoms";
 import { Pagination, Gallery, InfiniteList } from "@/src/components/organisms";
 import { CARDS_PER_PAGE } from "@/src/lib/constants";
+import { AnimatePresence } from "framer-motion";
 
-type Props = {
-  view: 'Gallery' | 'List';
-};
+interface PopularCardsSectionProps {
+  view: TripsPageView;
+}
 
-const PopularCardsSection: React.FC<Props> = ({ view }) => {
+const PopularCardsSection: React.FC<PopularCardsSectionProps> = ({ view }) => {
   const [page, setPage] = useState(0);
-  const [displayedCards, setDisplayedCards] = useState<ICard[]>([]);
+  const [displayedCards, setDisplayedCards] = useState<ISearchCardResponse[]>([]);
   const [lastPage, setLastPage] = useState<number | undefined>(undefined);
 
   const { 
     data, 
-    error, 
+    isError, 
     isLoading
   } = usePopularCards(page);
 
@@ -29,7 +30,7 @@ const PopularCardsSection: React.FC<Props> = ({ view }) => {
     queryClient.getQueryData<ICard[] | undefined>(['popular-cards', { page }]),
   [page, queryClient, data]);
 
-  const isShowSkeleton = isLoading && view === 'Gallery';
+  const isShowSkeleton = isLoading && view === TripsPageView.Gallery;
   const isShowEmpty = !!(lastPage && lastPage < 0);
 
   useEffect(() => {
@@ -38,24 +39,24 @@ const PopularCardsSection: React.FC<Props> = ({ view }) => {
         setLastPage(page);
       }
       
-      setDisplayedCards(curr => [...curr, ...data]);
+      setDisplayedCards(curr => [...curr, {currentPage: page, cards: data}]);
     }
   }, [data, page]);
 
   useEffect(() => {
-    if (error) {
+    if (isError) {
       setPage(page => page - 1);
       setLastPage(page - 1);
     }
-  }, [error]);
+  }, [isError]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (scrollRef && view === 'Gallery') {
-      scrollRef.current?.scrollIntoView({ block: "end", behavior: 'smooth' });
+    if (scrollRef.current && view === TripsPageView.Gallery) {
+      scrollRef.current.scrollIntoView({ block: "end", behavior: 'smooth' });
     }
-  }, [pageCards, view]);
+  }, [page, view]);
 
   return (
     <>
@@ -71,7 +72,7 @@ const PopularCardsSection: React.FC<Props> = ({ view }) => {
         }
         isLoading={isShowSkeleton}
       >
-        {view === 'Gallery' ? (
+        {view === TripsPageView.Gallery ? (
           <>
             {pageCards && (
               <Gallery cards={pageCards} />
@@ -80,13 +81,13 @@ const PopularCardsSection: React.FC<Props> = ({ view }) => {
             <Pagination 
               page={page} 
               setPage={setPage} 
-              isLastPage={page === lastPage}
+              lastPage={lastPage}
             />
           </>
         ) : (
           <InfiniteList 
-            cards={displayedCards} 
-            setPage={setPage} 
+            pages={displayedCards} 
+            handleNextPage={() => setPage(curr => curr + 1)}
             isLastPage={page === lastPage}
             page={page}
             isFetchingNextPage={isLoading}

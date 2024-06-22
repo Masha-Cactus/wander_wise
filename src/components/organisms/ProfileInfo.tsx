@@ -54,6 +54,7 @@ const ProfileInfo: React.FC = () => {
             fill
             sizes="144px"
             className="rounded-full object-cover"
+            priority={true}
           />
         </div>
 
@@ -170,7 +171,6 @@ const ProfileInfo: React.FC = () => {
         {isConfirmEmailModal && (
           <ConfirmEmailModal
             key="confirmEmailModal"
-            type="Confirm"
             onClose={() => setIsConfirmEmailModal(false)}
           />
         )}

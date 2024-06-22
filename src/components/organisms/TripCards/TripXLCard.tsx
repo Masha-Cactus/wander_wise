@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState } from "react";
+import { forwardRef, memo, Ref, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { 
@@ -17,16 +17,17 @@ import {
   Divider, 
   Icons 
 } from "@/src/components/atoms";
-import { Tab, CreateReportModal } from "@/src/components/organisms";
+import { Tabs, CreateReportModal } from "@/src/components/organisms";
 import { useCopyUrlToClipboard } from "@/src/hooks";
 import { Routes } from "@/src/lib/constants";
 import { ICard, ICardTabs } from "@/src/services";
 
-type Props = {
+interface TripXLCardProps {
   card: ICard;
-};
+}
 
-const TripXLCard: React.FC<Props> = ({ card }) => {
+const TripXLCard: React.FC<TripXLCardProps> 
+= forwardRef(({ card }, ref: Ref<HTMLDivElement> | undefined) => {
   const [isCopied, copy] = useCopyUrlToClipboard(Routes.TRIP(card.id));
   const [isReportCardModal, setIsReportCardModal] = useState(false);
   const tabs: ICardTabs = {
@@ -40,8 +41,8 @@ const TripXLCard: React.FC<Props> = ({ card }) => {
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       exit={{ y: -100, opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      className="flex w-[596px] flex-col items-center justify-between 
+      ref={ref}
+      className="flex w-[596px] h-fit flex-col items-center justify-between 
       gap-3 overflow-hidden rounded-3xl bg-white"
     >
       <Link 
@@ -90,7 +91,7 @@ const TripXLCard: React.FC<Props> = ({ card }) => {
           </div>
         </div>
 
-        <Tab tabs={tabs} location="Card" />
+        <Tabs tabs={tabs} location="Card" />
 
         <Divider />
 
@@ -143,6 +144,6 @@ const TripXLCard: React.FC<Props> = ({ card }) => {
       </AnimatePresence>
     </motion.article>
   );
-};
+});
 
 export default memo(TripXLCard);

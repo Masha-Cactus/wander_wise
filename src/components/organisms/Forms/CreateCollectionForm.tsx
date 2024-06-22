@@ -1,12 +1,12 @@
 'use client';
 
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
-import { useCreateCollection, useGetUserSavedCards } from "@/src/queries";
-import { ICreateCollection } from "@/src/services";
+import { useCreateCollection, useGetUserCollections } from "@/src/queries";
+import { ICollection, ICreateCollection } from "@/src/services";
 import { createCollectionSchema } from "@/src/validation";
 import { Divider, ErrorText, Heading5 } from "@/src/components/atoms";
 import { 
@@ -15,12 +15,14 @@ import {
   CheckboxInput
 } from "@/src/components/molecules";
 import { Routes } from "@/src/lib/constants";
+import { selectSavedCards } from "@/src/lib/collectionSelectors";
 
+type CreateCollectionFormData = Omit<ICreateCollection, 'userId'>;
 
 const CreateCollectionForm = () => {
   const { push } = useRouter();
   const [errorMessage, setErrorMessage] = useNormalizedError();
-  const { data: savedCards } = useGetUserSavedCards();
+  const { data: savedCollection } = useGetUserCollections<ICollection>(selectSavedCards);
 
   const validationSchema = createCollectionSchema();
 
@@ -28,7 +30,7 @@ const CreateCollectionForm = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<Omit<ICreateCollection, 'userId'>>({
+  } = useForm<CreateCollectionFormData>({
     values: {
       name: "",
       cardIds: [],
@@ -38,7 +40,7 @@ const CreateCollectionForm = () => {
 
   const { isPending, mutate, isError } = useCreateCollection();
 
-  const onSubmit = async (data: Omit<ICreateCollection, "userId">) => {
+  const onSubmit: SubmitHandler<CreateCollectionFormData> = (data) => {
     const trimmedData = trimObjectFields(data);
 
     mutate(trimmedData,
@@ -64,13 +66,13 @@ const CreateCollectionForm = () => {
         label="Name of your collection"
       />
 
-      {!!savedCards?.length && (
+      {!!savedCollection?.cardDtos.length && (
         <div className="flex w-full flex-col gap-4">
           <Heading5 text="Choose cards to add" font="semibold" />
           <Divider />
 
           <div className="flex max-h-64 flex-col gap-4 overflow-y-scroll">
-            {savedCards?.map(card => (
+            {savedCollection.cardDtos.map(card => (
               <div 
                 key={card.id} 
                 className="flex items-center justify-between gap-4"

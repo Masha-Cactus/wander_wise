@@ -2,7 +2,7 @@
 
 import { Dispatch, SetStateAction } from "react";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
@@ -26,6 +26,10 @@ import {
 import { createCardSchema } from "@/src/validation";
 import { ATMOSPHERES, CLIMATES, SPECIALS } from "@/src/lib/cardParameters";
 
+interface CreateCardFormProps {
+  setNewCardId: Dispatch<SetStateAction<number | null>>,
+}
+
 export interface CreateCardFormData {
   name: string,
   location: RadarAutocompleteAddress | null,
@@ -37,11 +41,7 @@ export interface CreateCardFormData {
   mapLink: string;
 }
 
-type Props = {
-  setNewCardId: Dispatch<SetStateAction<number | null>>,
-};
-
-const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
+const CreateCardForm: React.FC<CreateCardFormProps> = ({ setNewCardId }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   
   const validationSchema = createCardSchema();
@@ -66,7 +66,7 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
 
   const { isPending, mutate, isError } = useCreateCard();
   
-  const onSubmit = async (data: CreateCardFormData) => {
+  const onSubmit: SubmitHandler<CreateCardFormData> = (data) => {
     const {
       location,
       ...trimmedData

@@ -62,3 +62,8 @@ export interface ICardTabs {
   'Map'?: { latitude: number, longitude: number},
   'Distance'?: { value: number, mapsLink: string },
 }
+
+export enum TripsPageView {
+  Gallery,
+  List,
+}

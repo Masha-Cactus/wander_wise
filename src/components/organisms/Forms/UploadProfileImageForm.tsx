@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
 import { useNormalizedError } from "@/src/hooks";
@@ -15,15 +15,16 @@ import {
 } from "@/src/components/molecules";
 import { useUser } from "@/src/store/user";
 
-type UploadProfileImageFormData = {
-  image: File,
-};
-
-type Props = {
+interface UploadProfileImageFormProps {
   closeModal: () => void;
-};
+}
 
-const UploadProfileImageForm: React.FC<Props> = ({ closeModal }) => {
+interface UploadProfileImageFormData {
+  image: File,
+}
+
+const UploadProfileImageForm: React.FC<UploadProfileImageFormProps> 
+= ({ closeModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   
   const validationSchema = uploadProfileImageSchema();
@@ -42,7 +43,7 @@ const UploadProfileImageForm: React.FC<Props> = ({ closeModal }) => {
 
   const { isPending, mutate, isError } = useUpdateUserImage();
   
-  const onSubmit = async ({ image }: UploadProfileImageFormData) => {
+  const onSubmit: SubmitHandler<UploadProfileImageFormData> = ({ image }) => {
     mutate(image,
       {
         onError: (e) => setErrorMessage(e),

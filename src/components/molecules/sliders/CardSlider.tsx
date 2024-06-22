@@ -8,12 +8,12 @@ import Image from "next/image";
 import "swiper/css";
 import 'swiper/css/pagination';
 
-type Props = {
+interface CardSliderProps {
   slides: string[];
   activeSlide: number;
-};
+}
 
-const CardSlider: React.FC<Props> = ({ slides, activeSlide }) => {
+const CardSlider: React.FC<CardSliderProps> = ({ slides, activeSlide }) => {
   const [swiperRef, setSwiperRef] = useState<SwiperClass>();
 
   useEffect(() => {

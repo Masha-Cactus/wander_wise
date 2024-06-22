@@ -37,7 +37,7 @@ RemoveTripFromCollectionModalProps
       
       mutate(data, { 
         onError: (e) => setErrorMessage(e),
-        onSuccess: () => onClose(),
+        onSuccess: onClose,
       });
     }
   };

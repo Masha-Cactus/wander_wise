@@ -7,16 +7,17 @@ import {
   CreateCollectionShortForm,
 } from "@/src/components/organisms";
 import { ErrorText, Heading4, Divider } from "@/src/components/atoms";
-import { ICard } from "@/src/services";
+import { ICard, ICollection } from "@/src/services";
 import { useGetUserCollections } from "@/src/queries";
 import { useNormalizedError } from "@/src/hooks";
+import { selectOtherCollections } from "@/src/lib/collectionSelectors";
 
-interface AddCardToCollectionProps {
+interface AddCardToCollectionModalProps {
   onClose: () => void;
   card: ICard;
 }
 
-const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
+const AddCardToCollectionModal: React.FC<AddCardToCollectionModalProps> = ({
   onClose,
   card,
 }) => {
@@ -27,7 +28,7 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
     isError,
     data: collections,
     error,
-  } = useGetUserCollections();
+  } = useGetUserCollections<ICollection[]>(selectOtherCollections);
 
   useEffect(() => {
     if (error) {
@@ -55,7 +56,7 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
           </button>
         )}
 
-        {!!(collections && collections.length) && (
+        {!!collections?.length && (
           <AddCardToCollectionForm
             closeModal={onClose}
             cardId={card.id}

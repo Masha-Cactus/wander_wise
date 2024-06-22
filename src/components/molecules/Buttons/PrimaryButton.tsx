@@ -1,16 +1,16 @@
 import { memo } from "react";
 import { twMerge } from "tailwind-merge";
 
-type Props = {
+interface PrimaryButtonProps {
   text: string;
   classes?: string;
   path?: string;
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
-};
+}
 
-const PrimaryButton: React.FC<Props> = ({
+const PrimaryButton: React.FC<PrimaryButtonProps> = ({
   text,
   classes,
   onClick,

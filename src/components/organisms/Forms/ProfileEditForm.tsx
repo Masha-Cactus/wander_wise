@@ -3,7 +3,7 @@
 
 import { memo, useEffect, useMemo } from "react";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { editProfileSchema } from "@/src/validation";
 import { trimObjectFields } from "@/src/lib/helpers";
@@ -51,7 +51,7 @@ const ProfileEditForm = () => {
 
   const { isPending, mutate, isError } = useUpdateUserInfo();
 
-  const onSubmit = async (data: ProfileEditFormData) => {
+  const onSubmit: SubmitHandler<ProfileEditFormData> = (data) => {
     const { location, ...trimmedData } = trimObjectFields(data);
 
     mutate({

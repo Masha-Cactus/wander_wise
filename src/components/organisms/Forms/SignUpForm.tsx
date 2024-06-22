@@ -1,7 +1,7 @@
 "use client";
 
 import { memo } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ISignUp } from "@/src/services";
 import { signUpSchema } from "@/src/validation";
@@ -15,12 +15,12 @@ import { ErrorText } from "@/src/components/atoms";
 import { PasswordInput } from "@/src/components/molecules";
 import { useNormalizedError } from "@/src/hooks";
 
-type Props = {
+interface SignUpFormProps {
   openConfirmEmailModal: () => void;
   openSignInModal: () => void;
-};
+}
 
-const SignUpForm: React.FC<Props> 
+const SignUpForm: React.FC<SignUpFormProps> 
 = ({ openConfirmEmailModal, openSignInModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = signUpSchema();
@@ -41,7 +41,7 @@ const SignUpForm: React.FC<Props>
   
   const { isPending, mutate, isError } = useSignUp();
 
-  const onSubmit = async (data: ISignUp) => {
+  const onSubmit: SubmitHandler<ISignUp> = (data) => {
     const trimmedUserData = trimObjectFields(data);
 
     mutate(trimmedUserData, {

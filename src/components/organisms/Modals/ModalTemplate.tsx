@@ -5,14 +5,14 @@ import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import { Heading, Heading4 } from "@/src/components/atoms";
 
-type Props = {
+interface ModalTemplateProps {
   children: React.ReactNode;
   onClose: (toClose: boolean) => void;
   title?: string;
   subtitle?: string;
-};
+}
 
-const ModalTemplate: React.FC<Props> 
+const ModalTemplate: React.FC<ModalTemplateProps> 
 = ({ children, onClose, title, subtitle }) => {
 
   useEffect(() => {

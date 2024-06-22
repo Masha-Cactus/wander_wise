@@ -47,6 +47,7 @@ const Navbar = () => {
           fill
           sizes="48px"
           className="rounded-full object-cover"
+          priority={true}
         />
       </Link>
     </nav>

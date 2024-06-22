@@ -10,16 +10,16 @@ import { restorePasswordSchema } from '@/src/validation';
 import { ErrorText } from '@/src/components/atoms';
 import { PrimaryButton, TextInput } from '@/src/components/molecules';
 
-type Props = {
+interface RestorePasswordFormProps {
   setIsSubmitted: Dispatch<SetStateAction<boolean>>,
-};
+}
 
-const RestorePasswordForm: React.FC<Props> = ({setIsSubmitted}) => {
+const RestorePasswordForm: React.FC<RestorePasswordFormProps> 
+= ({setIsSubmitted}) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = restorePasswordSchema();
 
   const {
-    reset,
     control,
     handleSubmit,
     formState: { errors },
@@ -32,13 +32,10 @@ const RestorePasswordForm: React.FC<Props> = ({setIsSubmitted}) => {
 
   const { isPending, mutate, isError } = useRestorePassword();
 
-  const onSubmit: SubmitHandler<IEmail> = async(data) => {
+  const onSubmit: SubmitHandler<IEmail> = (data) => {
     mutate(data, {
       onError: (e) => setErrorMessage(e),
-      onSuccess: () => {
-        reset();
-        setIsSubmitted(true);
-      },
+      onSuccess: () => setIsSubmitted(true),
     });
   };
 
@@ -60,7 +57,6 @@ const RestorePasswordForm: React.FC<Props> = ({setIsSubmitted}) => {
         text="Continue" 
         disabled={isPending} 
         type='submit' 
-        classes='mt-8' 
       />
 
       {isError && <ErrorText errorText={errorMessage} />}

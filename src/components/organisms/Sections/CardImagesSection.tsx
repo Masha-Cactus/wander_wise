@@ -4,11 +4,12 @@ import { memo, useState } from "react";
 import Image from "next/image";
 import { CardSlider } from "@/src/components/molecules";
 
-type Props = {
+interface CardImagesSectionProps {
   images: string[];
-};
+}
 
-const CardImagesSection: React.FC<Props> = ({ images }) => {
+const CardImagesSection: React.FC<CardImagesSectionProps> 
+= ({ images }) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [displayedImages, setDisplayedImages] = useState(images);
 
@@ -48,7 +49,7 @@ const CardImagesSection: React.FC<Props> = ({ images }) => {
       ) : (
         <div 
           className="flex w-full items-center justify-center 
-            rounded-3xl bg-gray-30 pb-[68%]"
+            rounded-3xl bg-gray-30 py-[14%] relative"
         >
           <Image 
             src="/trip-default.webp" 
@@ -56,6 +57,7 @@ const CardImagesSection: React.FC<Props> = ({ images }) => {
             width={120}
             height={120}
             className="h-80 w-80"
+            priority={true}
           />
         </div>
       )}

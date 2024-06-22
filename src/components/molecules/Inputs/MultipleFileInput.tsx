@@ -23,7 +23,7 @@ interface MultipleFileInputProps<T extends FieldValues> {
   disabled: boolean;
 }
 
-const MultipleImageInput = <T extends FieldValues>({
+const MultipleFileInput = <T extends FieldValues>({
   control,
   name,
   disabled,
@@ -115,4 +115,4 @@ const MultipleImageInput = <T extends FieldValues>({
   );
 };
 
-export default memo(MultipleImageInput) as typeof MultipleImageInput;
+export default memo(MultipleFileInput) as typeof MultipleFileInput;

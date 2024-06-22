@@ -1,8 +1,8 @@
 'use client';
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -31,6 +31,10 @@ import { updateCardSchema } from "@/src/validation";
 import { ATMOSPHERES, CLIMATES, SPECIALS } from "@/src/lib/cardParameters";
 import { Routes } from "@/src/lib/constants";
 
+interface EditCardFormProps {
+  card: ICard,
+}
+
 export interface UpdateCardFormData {
   name: string,
   location: RadarAutocompleteAddress | null,
@@ -43,11 +47,7 @@ export interface UpdateCardFormData {
   mapLink: string,
 }
 
-type Props = {
-  card: ICard,
-};
-
-const EditCardForm: React.FC<Props> = ({ card }) => {
+const EditCardForm: React.FC<EditCardFormProps> = ({ card }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const { push } = useRouter();
 
@@ -77,7 +77,7 @@ const EditCardForm: React.FC<Props> = ({ card }) => {
 
   const { isPending, mutate, isError } = useUpdateCard();
   
-  const onSubmit = async (data: UpdateCardFormData) => {
+  const onSubmit: SubmitHandler<UpdateCardFormData> = (data) => {
     const {
       location, 
       ...trimmedData
@@ -89,9 +89,9 @@ const EditCardForm: React.FC<Props> = ({ card }) => {
       ...trimmedData,
       id: card.id,
       populatedLocality: location?.city || currentLocation[0].trim(),
-      region: currentLocation[1].trim(),
+      // region: currentLocation[1].trim(),
       country: location?.country || currentLocation[2].trim(),
-      continent: currentLocation[3].trim(),
+      // continent: currentLocation[3].trim(),
     },
     {
       onError: (e) => setErrorMessage(e),
@@ -104,13 +104,18 @@ const EditCardForm: React.FC<Props> = ({ card }) => {
   const currentImageLinks = watch('imageLinks');
 
   const handleDelete = (image: string) => {
+    const updatedImageLinks = currentImageLinks.filter(img => img !== image);
+
     if (selectedImage === image) {
-      setSelectedImage(currentImageLinks[0]);
+      setSelectedImage(updatedImageLinks[0]);
     }
 
-    setValue('imageLinks', 
-      currentImageLinks.filter(img => img !== image));
+    setValue('imageLinks', updatedImageLinks);
   };
+
+  useEffect(() => {
+    setValue('imageLinks', card.imageLinks);
+  }, [card]);
 
   return (
     <form
@@ -138,9 +143,9 @@ const EditCardForm: React.FC<Props> = ({ card }) => {
               />
             </div>
             <div className="flex h-full w-40 
-        shrink-0 flex-col gap-2 overflow-y-scroll">
+            shrink-0 flex-col gap-2 overflow-y-scroll">
               {currentImageLinks.map(image => (
-                <div key={image} className="relative h-28 w-full">
+                <div key={image} className="relative h-28 w-full shrink-0">
                   <Image
                     src={image}
                     fill

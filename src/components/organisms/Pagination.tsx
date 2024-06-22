@@ -5,27 +5,22 @@ import { twMerge } from "tailwind-merge";
 import { Icons, TextSmall } from "@/src/components/atoms";
 import { IconButton } from "../molecules";
 
-type Props = {
+interface PaginationProps {
   page: number,
   setPage: Dispatch<SetStateAction<number>>,
-  isLastPage: boolean,
-  total?: number,
-};
+  lastPage: number | undefined,
+}
 
-const Pagination: React.FC<Props> = ({
-  page, setPage, isLastPage, total
+const Pagination: React.FC<PaginationProps> = ({
+  page, setPage, lastPage
 }) => {
   const [pagesList, setPagesList] = useState<number[]>([]);
 
   useEffect(() => {
     const maxPages = 5;
-    let length = maxPages;
-
-    if (total) {
-      length = Math.min(maxPages, total);
-    } else if (isLastPage) {
-      length = Math.min(maxPages, page + 1);
-    }
+    const length = typeof lastPage === 'number' 
+      ? Math.min(maxPages, lastPage + 1)
+      : maxPages;
 
     const startPage = Math.max(page - length + 1, 0);
 
@@ -34,7 +29,7 @@ const Pagination: React.FC<Props> = ({
       (_, index) => startPage + index);
 
     setPagesList(newPagesList);
-  }, [page, isLastPage, total]);
+  }, [page, lastPage]);
 
   return (
     <div className="flex h-8 items-center gap-2">
@@ -44,12 +39,6 @@ const Pagination: React.FC<Props> = ({
         onClick={() => setPage(Math.max(page - 1, 0))}
         disabled={page === 0}
       />
-
-      {pagesList[0] !== 0 && (
-        <button className="h-8 w-8 text-black">
-          <TextSmall text="..." font="semibold" />
-        </button>
-      )}
 
       {pagesList.map(pageNumber => (
         <button
@@ -69,17 +58,11 @@ const Pagination: React.FC<Props> = ({
         </button> 
       ))}
 
-      {!isLastPage && (
-        <button className="h-full w-8 text-black">
-          <TextSmall text="..." font="semibold" />
-        </button>
-      )} 
-
       <IconButton 
         icon={<Icons.right className="h-6 w-6"/>} 
         classes="p-0 disabled:text-gray-70" 
         onClick={() => setPage(page + 1)}
-        disabled={isLastPage}
+        disabled={page === lastPage}
       />
     </div>
   );

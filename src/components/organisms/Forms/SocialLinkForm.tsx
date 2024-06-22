@@ -1,6 +1,6 @@
 'use client';
 
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
@@ -15,15 +15,15 @@ import { ErrorText } from "@/src/components/atoms";
 import { TextInput, PrimaryButton } from "@/src/components/molecules";
 import { SocialLinkName } from "@/src/services";
 
-type Props = {
+interface SocialLinkFormProps {
   name: SocialLinkName,
-};
+}
 
-type FormData = {
+interface SocialLinkFormData {
   link: string;
-};
+}
 
-const SocialLinkForm: React.FC<Props> = ({ name }) => {
+const SocialLinkForm: React.FC<SocialLinkFormProps> = ({ name }) => {
   const { user } = useUser();
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const { data: userSocials } = useGetUserSocials();
@@ -35,7 +35,7 @@ const SocialLinkForm: React.FC<Props> = ({ name }) => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<SocialLinkFormData>({
     values: {
       link: currentSocial?.link || '',
     },
@@ -54,7 +54,7 @@ const SocialLinkForm: React.FC<Props> = ({ name }) => {
     isError: isUpdateError 
   } = useUpdateSocial();
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit: SubmitHandler<SocialLinkFormData> = (data) => {
     const { link } = trimObjectFields(data);
     
     if (user && currentSocial?.link !== link) {
@@ -91,7 +91,7 @@ const SocialLinkForm: React.FC<Props> = ({ name }) => {
         </div>
         <PrimaryButton 
           text={currentSocial ? "Update" : "Add"} 
-          classes="h-10 w-1/4"
+          classes="h-12 w-1/4 rounded-md"
           disabled={isPending}
           type="submit"
         />

@@ -2,7 +2,7 @@
 
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Divider,
@@ -67,7 +67,7 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = async (data: FilterFormData) => {
+  const onSubmit: SubmitHandler<FilterFormData> = (data) => {
     const {
       startLocation, 
       travelDistance, 

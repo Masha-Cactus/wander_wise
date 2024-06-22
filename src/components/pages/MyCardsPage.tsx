@@ -2,27 +2,29 @@
 
 import { memo, useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { IFilterParams } from "@/src/services";
+import { ICollection, IFilterParams } from "@/src/services";
 import { 
   FilterForm, 
-  CreatedCardsSection, 
+  FilteredCardsSection, 
   EmptyFallbackModal 
 } from "@/src/components/organisms";
 import { Loader } from "@/src/components/atoms";
 import { LoadedContentStateController } from "@/src/components/molecules";
 import { Routes } from "@/src/lib/constants";
-import { useGetUserCreatedCards } from "@/src/queries";
+import { useGetUserCollections } from "@/src/queries";
 import { ScreenHeightLayout } from "@/src/components/templates";
+import { selectCreatedCards } from "@/src/lib/collectionSelectors";
 
 const MyCardsPage = () => {
   const [filterParams, setFilterParams] = useState<IFilterParams | null>(null);
-  const { data: createdCards, isLoading } = useGetUserCreatedCards();
+  const { data: createdCollection, isLoading } 
+    = useGetUserCollections<ICollection>(selectCreatedCards);
 
   return (
     <ScreenHeightLayout>
       <AnimatePresence>
         <LoadedContentStateController
-          isEmpty={createdCards && !createdCards.length}
+          isEmpty={createdCollection && !createdCollection.cardDtos.length}
           emptyFallbackComponent={
             <EmptyFallbackModal
               key="emptyFallbackModal"
@@ -39,17 +41,23 @@ const MyCardsPage = () => {
             </div>
           }
         >
-          <div 
-            className="grid h-full w-full grid-cols-[345px,1fr] overflow-hidden"
-          >
-            <div className="overflow-y-scroll">
-              <FilterForm type="Created" setFilterParams={setFilterParams} />
-            </div>
+          {!!createdCollection?.cardDtos.length && (
+            <div 
+              className="grid h-full w-full grid-cols-[345px,1fr] overflow-hidden"
+            >
+              <div className="overflow-y-scroll">
+                <FilterForm type="Created" setFilterParams={setFilterParams} />
+              </div>
 
-            <div className="overflow-y-scroll">
-              <CreatedCardsSection filterParams={filterParams} />
+              <div className="overflow-y-scroll">
+                <FilteredCardsSection 
+                  filterParams={filterParams} 
+                  cards={createdCollection.cardDtos} 
+                  title="My created cards" 
+                />
+              </div>
             </div>
-          </div>
+          )}
         </LoadedContentStateController> 
       </AnimatePresence>   
     </ScreenHeightLayout>

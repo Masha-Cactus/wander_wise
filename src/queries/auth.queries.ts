@@ -4,43 +4,41 @@ import { authService, IEmail, ISignIn, ISignUp } from "@/src/services";
 import { useUser } from "@/src/store/user";
 
 export function useSignUp() {
-  const setUser = useUser((state) => state.setUser);
-
   return useMutation({
     mutationFn: (data: ISignUp) => authService.signUp(data),
     onSuccess: (user) => {
-      setUser(user);
-
+      setCookie('email', user.email);
+      localStorage.setItem('emailConfirmationType', 'initial');
       if (user.emailConfirmCode) {
         setCookie('confirmationCode', user.emailConfirmCode);
       }
-
-      setCookie('userId', user.id);
     },
   });
 }
 
 export function useConfirmEmail() {
-  const [user, unbanUser] = useUser((state) => 
-    [state.user, state.unbanUser]);
+  const setUser = useUser((state) => state.setUser);
   const confirmationCode = getCookie('confirmationCode');
+  const userEmail = getCookie('email');
 
   return useMutation({
     mutationFn: (codeFromUser: string) => {
-      if (user && confirmationCode) {
+      if (confirmationCode && userEmail) {
         if (codeFromUser !== confirmationCode) {
           return Promise.reject('Wrong confirmation code');
         }
 
-        return authService.confirmEmail(user.email);
+        return authService.confirmEmail(userEmail);
       }
     
       return Promise.reject('User has not completed registration');
     },
-    onSuccess: (data) => {
-      unbanUser();
-      setCookie('token', data.token);
+    onSuccess: ({ user, token }) => {
+      setUser(user);
+      setCookie('token', token);
+      localStorage.removeItem('emailConfirmationType');
       deleteCookie('confirmationCode');
+      deleteCookie('email');
     }
   });
 }
@@ -50,10 +48,9 @@ export function useSignIn() {
 
   return useMutation({
     mutationFn: (data: ISignIn) => authService.signIn(data),
-    onSuccess: async({ user, token }) => {
+    onSuccess: ({ user, token }) => {
       setUser(user);
       setCookie('token', token);
-      setCookie('userId', user.id);
     },
   });
 }
@@ -79,19 +76,31 @@ export function useLogout() {
 
     onSuccess: () => {
       setUser(null);
-      deleteCookie('userId');
       deleteCookie('token');
     }
   });
 }
 
-// this query is currently used only for auto-authorization on first load
+// this mutation is currently used only for auto-authorization on first load
 export function useRefreshToken() {
-  return useQuery({
-    queryKey: ['refresh'],
-    queryFn: () => authService.refresh(),
-    staleTime: Infinity,
-    gcTime: Infinity,
+  const token = getCookie('token');
+  const setUser = useUser((state) => state.setUser);
+
+  return useMutation({
+    mutationFn: () => {
+      if (token) {
+        return authService.refresh();
+      }
+
+      return Promise.reject("User not authorized");
+    },
     retry: false,
+    onSuccess: ({ user, token }) => {
+      setUser(user);
+      setCookie('token', token);
+    }, 
+    onError: () => {
+        deleteCookie('token');
+    },
   });
 }

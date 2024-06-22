@@ -3,11 +3,11 @@ import { TripImage } from "@/src/components/molecules";
 import { Heading5, TextBase } from "@/src/components/atoms";
 import { ICard } from "@/src/services";
 
-type Props = {
+interface TripXSCardProps {
   card: ICard;
-};
+}
 
-const TripXSCard: React.FC<Props> = ({ card }) => {
+const TripXSCard: React.FC<TripXSCardProps> = ({ card }) => {
   return (
     <article
       className="flex flex-col items-center justify-between gap-3 

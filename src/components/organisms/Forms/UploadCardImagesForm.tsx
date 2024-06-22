@@ -1,25 +1,26 @@
 'use client';
 
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useNormalizedError } from "@/src/hooks";
 import { useAddCardImages } from "@/src/queries";
 import { uploadCardImagesSchema } from "@/src/validation";
 import { ErrorText } from "@/src/components/atoms";
-import { MultipleImageInput, PrimaryButton } from "@/src/components/molecules";
+import { MultipleFileInput, PrimaryButton } from "@/src/components/molecules";
 import { Routes } from "@/src/lib/constants";
 
-type UploadCardImagesFormData = {
-  images: File[],
-};
-
-type Props = {
+interface UploadCardImagesFormProps {
   cardId: number | null,
   closeModal?: () => void;
-};
+}
 
-const UploadCardImagesForm: React.FC<Props> = ({ cardId, closeModal }) => {
+interface UploadCardImagesFormData {
+  images: File[],
+}
+
+const UploadCardImagesForm: React.FC<UploadCardImagesFormProps> 
+= ({ cardId, closeModal }) => {
   const { push } = useRouter();
   const [errorMessage, setErrorMessage] = useNormalizedError();
   
@@ -37,7 +38,7 @@ const UploadCardImagesForm: React.FC<Props> = ({ cardId, closeModal }) => {
 
   const { isPending, mutate, isError } = useAddCardImages();
   
-  const onSubmit = async ({images}: UploadCardImagesFormData) => {
+  const onSubmit: SubmitHandler<UploadCardImagesFormData> = ({ images }) => {
     const formData = new FormData();
 
     if (images && images.length) {
@@ -67,7 +68,7 @@ const UploadCardImagesForm: React.FC<Props> = ({ cardId, closeModal }) => {
       onSubmit={handleSubmit(onSubmit)} 
       className="flex w-full flex-col gap-6"
     >
-      <MultipleImageInput
+      <MultipleFileInput
         name="images"
         disabled={isPending}
         control={control}

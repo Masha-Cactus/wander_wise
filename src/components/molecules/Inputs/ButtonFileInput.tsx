@@ -11,17 +11,17 @@ import {
 import { InputControllerWrapper } from "@/src/components/molecules";
 import { Icons, TextBase } from "@/src/components/atoms";
 
-interface SingleFileInputProps<T extends FieldValues> {
+interface ButtonFileInputProps<T extends FieldValues> {
   name: FieldPath<T>;
   control: Control<T>;
   disabled: boolean;
 }
 
-const SingleImageInput = <T extends FieldValues>({
+const ButtonFileInput = <T extends FieldValues>({
   control,
   name,
   disabled,
-}: SingleFileInputProps<T>) => {
+}: ButtonFileInputProps<T>) => {
   const [value, setValue] = useState('');
 
   const handleAdd = (
@@ -70,4 +70,4 @@ const SingleImageInput = <T extends FieldValues>({
   );
 };
 
-export default memo(SingleImageInput) as typeof SingleImageInput;
+export default memo(ButtonFileInput) as typeof ButtonFileInput;

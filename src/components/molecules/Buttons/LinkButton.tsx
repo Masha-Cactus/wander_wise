@@ -2,14 +2,14 @@ import { memo } from "react";
 import Link from "next/link";
 import { Heading5, TextBase } from "@/src/components/atoms";
 
-interface LinkBtnProps {
+interface LinkButtonProps {
   path: string;
   text: string;
   classes?: string;
   textSize?: 'standard' | 'small';
 }
 
-const LinkButton: React.FC<LinkBtnProps> = ({
+const LinkButton: React.FC<LinkButtonProps> = ({
   path,
   text,
   classes,

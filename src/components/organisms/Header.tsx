@@ -42,7 +42,7 @@ const Header: React.FC = () => {
           <UnstyledButton 
             text="Login"
             onClick={() => setIsShowSignInModal(true)}
-            classes="w-36"
+            classes="w-16"
           />
           <RoundedButton 
             text="Sign Up" 
@@ -79,14 +79,12 @@ const Header: React.FC = () => {
             key="restorePasswordModal"
             onClose={() => setIsShowRestorePasswordModal(false)}
             onOpenSignIn={() => setIsShowSignInModal(true)}
-            onOpenSignUp={() => setIsShowSignUpModal(true)}
           />
         )}
 
         {isShowConfirmEmailModal && (
           <ConfirmEmailModal
             key="confirmEmailModal" 
-            type="Confirm" 
             onClose={() => setIsShowConfirmEmailModal(false)}
           />
         )}

@@ -7,11 +7,11 @@ import { Divider, Heading5, Heading3, Heading4 } from "@/src/components/atoms";
 import { IComment } from "@/src/services";
 import { useUser } from "@/src/store/user";
 
-type Props = {
+interface ReviewsListProps {
   reviews: IComment[];
 };
 
-const ReviewsList: React.FC<Props> = ({ reviews }) => {
+const ReviewsList: React.FC<ReviewsListProps> = ({ reviews }) => {
   const [isPostReviewModal, setIsReviewModal] = useState(false);
   const { user } = useUser();
 
@@ -28,7 +28,7 @@ const ReviewsList: React.FC<Props> = ({ reviews }) => {
         <button
           type="button"
           onClick={() => setIsReviewModal(true)}
-          disabled={!user}
+          disabled={!user || user.banned}
         >
           <Heading5
             text="Post review" 

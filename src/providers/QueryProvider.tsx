@@ -25,16 +25,14 @@ export function QueryProvider({children}: PropsWithChildren) {
       },
     },
     queryCache: new QueryCache({
-      onError: (error, query) => {
-        if (error instanceof AxiosError 
-          && error.response?.status === 401 && query.queryKey !== ['refresh']) {
-          deleteCookie('userId');
+      onError: (error) => {
+        if (error instanceof AxiosError && error.response?.status === 401) {
           deleteCookie('token');
           setUser(null);
           push(Routes.HOME);
         }
       }
-    })
+    }),
   }));
 
   return (

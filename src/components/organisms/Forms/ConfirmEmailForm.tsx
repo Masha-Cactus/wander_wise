@@ -4,19 +4,21 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { PrimaryButton, TextInput } from "@/src/components/molecules";
 import { ErrorText } from "@/src/components/atoms";
-import { useConfirmEmail } from "@/src/queries";
+import { useConfirmEmail, useUpdateEmail } from "@/src/queries";
 import { confirmEmailSchema } from "@/src/validation";
 import { useNormalizedError } from "@/src/hooks";
 
-interface FormData {
+interface ConfirmEmailFormProps {
+  closeModal: () => void;
+}
+
+interface ConfirmEmailFormData {
   confirmationCode: string,
 };
 
-type Props = {
-  closeModal: () => void;
-};
+const ConfirmEmailForm: React.FC<ConfirmEmailFormProps> = ({ closeModal }) => {
+  const emailConfirmationType = localStorage.getItem('emailConfirmationType');
 
-const ConfirmEmailForm: React.FC<Props> = ({ closeModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = confirmEmailSchema();
 
@@ -24,20 +26,36 @@ const ConfirmEmailForm: React.FC<Props> = ({ closeModal }) => {
     handleSubmit,
     control,
     formState: { errors }, 
-  } = useForm<FormData>({
+  } = useForm<ConfirmEmailFormData>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
       confirmationCode: '',
     },
   });
 
-  const { isPending, mutate, isError } = useConfirmEmail();
+  const { 
+    isPending: isConfirmPending, 
+    mutate: confirm, 
+    isError: isConfirmError 
+  } = useConfirmEmail();
+  const { 
+    isPending: isUpdatePending, 
+    mutate: update, 
+    isError: isUpdateError 
+  } = useUpdateEmail();
+  const isPending = isConfirmPending || isUpdatePending;
+  const isError = isConfirmError || isUpdateError;
+  const mutationOptions = {
+    onError: (e: any) => setErrorMessage(e),
+    onSuccess: closeModal,
+  }
 
-  const onSubmit: SubmitHandler<FormData> = async({confirmationCode}) => {
-    mutate(confirmationCode, {
-      onError: (e) => setErrorMessage(e),
-      onSuccess: closeModal,
-    });
+  const onSubmit: SubmitHandler<ConfirmEmailFormData> = ({ confirmationCode }) => {
+    if (emailConfirmationType === 'update') {
+      update(confirmationCode, mutationOptions);
+    } else {
+      confirm(confirmationCode, mutationOptions);
+    }
   };
 
   return (

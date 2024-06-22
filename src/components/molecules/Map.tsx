@@ -4,14 +4,14 @@ import { useEffect, memo } from 'react';
 import Radar from 'radar-sdk-js';
 import 'radar-sdk-js/dist/radar.css';
 
-type Props = {
+interface MapProps {
   coordinates: {
     latitude: number,
     longitude: number,
   }
-};
+}
 
-const Map: React.FC<Props> = ({ coordinates }) => {
+const Map: React.FC<MapProps> = ({ coordinates }) => {
   const { latitude, longitude } = coordinates;
   const radarKey = process.env.NEXT_PUBLIC_RADAR_KEY;
 

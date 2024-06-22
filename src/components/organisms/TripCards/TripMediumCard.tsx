@@ -23,11 +23,11 @@ import { useUser } from "@/src/store/user";
 import { Routes } from "@/src/lib/constants";
 import { useCopyUrlToClipboard } from "@/src/hooks";
 
-type Props = {
+interface TripMediumCardProps {
   card: ICard;
-};
+}
 
-const TripMediumCard: React.FC<Props> = ({ card }) => {
+const TripMediumCard: React.FC<TripMediumCardProps> = ({ card }) => {
   const { user } = useUser();
   const { id: collectionId } = useParams();
   const [isAddToCollectionModal, setIsAddToCollectionModal] = useState(false);
@@ -46,7 +46,7 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
     e.preventDefault();
     push(Routes.MY_CARDS.EDIT(card.id));
   };
-  
+
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsDeleteCardModal(true);
@@ -127,7 +127,7 @@ const TripMediumCard: React.FC<Props> = ({ card }) => {
         </div>
         <Divider />
 
-        <Heading5 text={card.name} font="medium" />
+        <Heading5 text={card.name} font="medium" classes="line-clamp-2" />
         <TextBase text={card.whereIs} font="normal" classes="grow" />
       </div>
 

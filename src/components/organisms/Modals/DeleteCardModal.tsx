@@ -23,7 +23,7 @@ const DeleteCardModal: React.FC<DeleteCardModalProps> = ({
   const handleDeleteCard = () => {
     mutate(cardId, { 
       onError: (e) => setErrorMessage(e),
-      onSuccess: () => onClose(),
+      onSuccess: onClose,
     });
   };
 

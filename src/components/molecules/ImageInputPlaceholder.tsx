@@ -4,11 +4,12 @@ import { memo, useEffect, useState } from "react";
 import Image from "next/image";
 import { Heading5, Icons, TextBase } from "@/src/components/atoms";
 
-type Props = {
+interface ImageInputPlaceholderProps {
   image?: File,
-};
+}
 
-const ImageInputPlaceholder: React.FC<Props> = ({ image }) => {
+const ImageInputPlaceholder: React.FC<ImageInputPlaceholderProps> 
+= ({ image }) => {
   const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {

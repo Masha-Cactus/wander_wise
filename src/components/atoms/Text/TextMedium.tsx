@@ -1,12 +1,12 @@
 import { memo } from "react";
 
-interface TextProps {
+interface TextMediumProps {
   text: string;
   classes?: string;
   font: "semibold" | "normal";
 }
 
-const TextMedium: React.FC<TextProps> = ({ text, classes, font }) => {
+const TextMedium: React.FC<TextMediumProps> = ({ text, classes, font }) => {
   return <p className={`font-${font} text-sm text-black ${classes}`}>{text}</p>;
 };
 

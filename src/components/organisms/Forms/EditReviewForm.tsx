@@ -2,10 +2,9 @@
 
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useParams } from "next/navigation";
 import { useNormalizedError } from "@/src/hooks";
-import { useCreateComment } from "@/src/queries";
-import { ICreateComment } from "@/src/services";
+import { useUpdateComment } from "@/src/queries";
+import { IComment, IUpdateComment } from "@/src/services";
 import { reviewSchema } from "@/src/validation";
 import { ErrorText } from "@/src/components/atoms";
 import { 
@@ -14,33 +13,34 @@ import {
   StarsInput, 
 } from "@/src/components/molecules";
 
-interface CreateReviewFormProps {
+interface EditReviewFormProps {
   closeModal: () => void,
+  review: IComment,
 }
 
-type CreateReviewFormData = Omit<ICreateComment, 'cardId'>;
+type EditReviewFormData = Omit<IUpdateComment, 'id' | 'cardId'>;
 
-const CreateReviewForm: React.FC<CreateReviewFormProps> = ({ closeModal }) => {
-  const { id } = useParams();
+const EditReviewForm: React.FC<EditReviewFormProps> = ({ closeModal, review }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = reviewSchema();
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<CreateReviewFormData>({
+  } = useForm<EditReviewFormData>({
     values: {
-      text: "",
-      stars: 0,
+      text: review.text,
+      stars: review.stars,
     },
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useCreateComment();
+  const { isPending, mutate, isError } = useUpdateComment();
 
-  const onSubmit: SubmitHandler<CreateReviewFormData> = (data) => {
-    mutate({...data, cardId: +id}, {
+  const onSubmit: SubmitHandler<EditReviewFormData> = (data) => {
+    mutate({...data, cardId: review.cardId, id: review.id}, {
       onError: (e) => setErrorMessage(e),
       onSuccess: closeModal,
     });
@@ -68,4 +68,4 @@ const CreateReviewForm: React.FC<CreateReviewFormProps> = ({ closeModal }) => {
   );
 };
 
-export default CreateReviewForm;
+export default EditReviewForm;

@@ -1,11 +1,11 @@
 import { memo } from "react";
 import { Icons } from "@/src/components/atoms";
 
-type Props = {
+interface StarsProps {
   stars: number[];
-};
+}
 
-const Stars: React.FC<Props> = ({ stars }) => {
+const Stars: React.FC<StarsProps> = ({ stars }) => {
   return (
     <div className='flex h-6 gap-1'>
       {stars.map((star, i) => (

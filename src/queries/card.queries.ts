@@ -1,4 +1,5 @@
 import { 
+  useInfiniteQuery,
   useMutation, 
   useQuery, 
   useQueryClient 
@@ -8,6 +9,7 @@ import {
   IUpdateCard,
   IAddCardImages,
   ISearchCard,
+  ISearchCardResponse,
   IReportCard,
   cardService,
 } from "@/src/services";
@@ -32,10 +34,16 @@ export function useCreateCard() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: ICreateCard) => cardService.createCard(data),
+    mutationFn: (data: ICreateCard) => {
+      if (user?.banned) {
+        return Promise.reject('Email confirmation is required for this action.')
+      }
+      
+      return cardService.createCard(data);
+    },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ['user-collections', {userId: user?.id, type: 'Created'}],
+        queryKey: ['user-collections', { userId: user?.id }],
       });
     },
   });
@@ -46,7 +54,13 @@ export function useUpdateCard() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: IUpdateCard) => cardService.updateCard(data),
+    mutationFn: (data: IUpdateCard) => {
+      if (user?.banned) {
+        return Promise.reject('Email confirmation is required for this action.')
+      }
+
+      return cardService.updateCard(data)
+    },
     onSuccess: async ({ id }) => {
       await Promise.all([
         queryClient.invalidateQueries({
@@ -65,7 +79,13 @@ export function useAddCardImages() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: IAddCardImages) => cardService.addImages(data),
+    mutationFn: (data: IAddCardImages) => {
+      if (user?.banned) {
+        return Promise.reject('Email confirmation is required for this action.')
+      }
+
+      return cardService.addImages(data);
+    },
     onSuccess: async ({id}) => {
       await Promise.all([
         queryClient.invalidateQueries({
@@ -86,9 +106,14 @@ export function useDeleteCard() {
   return useMutation({
     mutationFn: (cardId: number) => cardService.deleteCard(cardId),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
+      await Promise.all([
+      queryClient.invalidateQueries({
         queryKey: ["user-collections", { userId: user?.id }],
-      });
+      }),
+      queryClient.invalidateQueries({
+        queryKey: ['user-comments', { userId: user?.id }],
+      }),
+    ]);
     },
   });
 }
@@ -102,7 +127,7 @@ export function useLikeCard() {
     onSuccess: async (_, cardId) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: ['user-collections', {userId: user?.id, type: 'Liked'}],
+          queryKey: ['user-collections', { userId: user?.id }],
         }),
         queryClient.invalidateQueries({
           queryKey: ["card-details", { cardId }],
@@ -121,7 +146,7 @@ export function useRemoveLikeFromCard() {
     onSuccess: async (_, cardId) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: ['user-collections', {userId: user?.id, type: 'Liked'}],
+          queryKey: ['user-collections', { userId: user?.id }],
         }),
         queryClient.invalidateQueries({
           queryKey: ["card-details", { cardId }],
@@ -139,7 +164,7 @@ export function useSaveCard() {
     mutationFn: (cardId: number) => cardService.addToSaved(cardId),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ['user-collections', {userId: user?.id, type: 'Saved'}],
+        queryKey: ['user-collections', { userId: user?.id }],
       });
     },
   });
@@ -153,7 +178,7 @@ export function useRemoveCardFromSaved() {
     mutationFn: (cardId: number) => cardService.removeFromSaved(cardId),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ['user-collections', {userId: user?.id, type: 'Saved'}],
+        queryKey: ['user-collections', { userId: user?.id }],
       });
     },
   });
@@ -172,16 +197,20 @@ export function usePopularCards(page: number) {
   });
 }
 
-export function useSearchCards(page: number, filterParams: ISearchCard | null) {
-  return useQuery({
-    queryKey: ['cards', page, filterParams],
-    queryFn: ({ signal }) => {
+export function useSearchCards(filterParams: ISearchCard | null) {
+  return useInfiniteQuery({
+    queryKey: ['cards', filterParams],
+    queryFn: ({ pageParam, signal }) => {
       if (filterParams) {
-        return cardService.searchCards(page, filterParams, signal);
+        return cardService.searchCards(pageParam, filterParams, signal);
       }
 
-      return null;
+      return Promise.reject("Filter parameters are required");
     },
-    enabled: !!(filterParams && page >= 0),
+    enabled: !!filterParams,
+    initialPageParam: 0,
+    getNextPageParam: (data: ISearchCardResponse) => data.currentPage + 1,
+    getPreviousPageParam: (data: ISearchCardResponse) => data.currentPage - 1,
+
   });
 }

@@ -8,11 +8,11 @@ import { LinkButton, Stars } from "@/src/components/molecules";
 import { useGetCardDetails } from "@/src/queries";
 import { Routes } from "@/src/lib/constants";
 
-type Props = {
+interface ReviewCardLongProps {
   review: IComment,
-};
+}
 
-const ReviewCardLong: React.FC<Props> = ({ review }) => {
+const ReviewCardLong: React.FC<ReviewCardLongProps> = ({ review }) => {
   const { data: card } = useGetCardDetails(review.cardId);
   const stars = new Array(5).fill(0).fill(1, 0, review.stars);
 

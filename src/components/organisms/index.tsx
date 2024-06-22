@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-export { default as Tab } from "./Tab";
+export { default as Tabs } from "./Tabs";
 export { default as Gallery } from "./Lists/Gallery";
 export { default as InfiniteList } from "./Lists/InfiniteList";
 export { default as ReviewsList } from "./Lists/ReviewsList";
@@ -26,6 +26,7 @@ export { default as ChangeUserEmailModal } from "./Modals/ChangeUserEmailModal";
 export { default as ChangeUserPasswordModal } from "./Modals/ChangeUserPasswordModal";
 export { default as CreateReportModal } from "./Modals/CreateReportModal";
 export { default as CreateReviewModal } from "./Modals/CreateReviewModal";
+export { default as EditReviewModal } from "./Modals/EditReviewModal";
 export { default as DeleteReviewModal } from "./Modals/DeleteReviewModal";
 export { default as AddCardToCollectionModal } from "./Modals/AddCardToCollectionModal";
 export { default as RemoveTripFromCollectionModal} from "./Modals/RemoveTripFromCollectionModal";
@@ -41,7 +42,6 @@ export { default as SignInForm } from "./Forms/SignInForm";
 export { default as SearchCardsForm } from "./Forms/SearchCardsForm";
 export { default as FilterForm } from "./Forms/FilterForm";
 export { default as ConfirmEmailForm } from "./Forms/ConfirmEmailForm";
-export { default as ConfirmNewEmailForm } from "./Forms/ConfirmNewEmailForm";
 export { default as RestorePasswordForm } from "./Forms/RestorePasswordForm";
 export { default as SignUpForm } from "./Forms/SignUpForm";
 export { default as ChangeEmailForm } from "./Forms/ChangeEmailForm";
@@ -54,6 +54,7 @@ export { default as CreateCardForm } from "./Forms/CreateCardForm";
 export { default as EditCardForm } from "./Forms/EditCardForm";
 export { default as UploadCardImagesForm } from "./Forms/UploadCardImagesForm";
 export { default as CreateReviewForm } from "./Forms/CreateReviewForm";
+export { default as EditReviewForm } from "./Forms/EditReviewForm";
 export { default as ReportForm } from "./Forms/ReportForm";
 export { default as ChangeCollectionNameForm} from "./Forms/ChangeCollectionNameForm";
 export { default as AddCardToCollectionForm} from "./Forms/AddCardToCollectionForm";
@@ -61,8 +62,7 @@ export { default as UploadProfileImageForm} from "./Forms/UploadProfileImageForm
 
 export { default as RecentlyLikedSection } from "./Sections/RecentlyLikedSection";
 export { default as RecentlyReviewsSection } from "./Sections/RecentlyReviewsSection";
-export { default as SavedCardsSection } from "./Sections/SavedCardsSection";
-export { default as CreatedCardsSection } from "./Sections/CreatedCardsSection";
+export { default as FilteredCardsSection } from "./Sections/FilteredCardsSection";
 export { default as CardImagesSection } from "./Sections/CardImagesSection";
 export { default as SearchedCardsSection } from "./Sections/SearchedCardsSection";
 export { default as PopularCardsSection } from "./Sections/PopularCardsSection";

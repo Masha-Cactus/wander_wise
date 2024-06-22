@@ -8,11 +8,11 @@ import { IconButton } from "@/src/components/molecules";
 import { Icons } from "@/src/components/atoms";
 import "swiper/css";
 
-type Props = {
+interface HomeSliderProps {
   slides: string[];
-};
+}
 
-const HomeSlider: React.FC<Props> = ({ slides }) => {
+const HomeSlider: React.FC<HomeSliderProps> = ({ slides }) => {
   const [swiperRef, setSwiperRef] = useState<SwiperClass>();
 
   const handlePrevious = useCallback(() => {

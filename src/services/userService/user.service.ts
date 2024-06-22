@@ -9,7 +9,8 @@ import {
   IUpdatePassword,
   IToken, 
   IComment,
-  ICollection
+  ICollection,
+  IAuthResponse
 } from "@/src/services";
 
 class UserService {
@@ -46,7 +47,7 @@ class UserService {
   };
 
   updateEmail ({userId, newEmail}: IUpdateEmail) {
-    return authClient.put<never, IToken>(
+    return authClient.put<never, IAuthResponse>(
       `${this.BASE_URL}/update-user-email/${userId}`,
       { email: newEmail },
     );

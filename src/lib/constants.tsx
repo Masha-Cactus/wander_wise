@@ -38,6 +38,6 @@ export const ApiEndpoints = {
   AUTH: "/auth",
 };
 
-export const CARDS_PER_PAGE = 9;
+export const CARDS_PER_PAGE = 12;
 export const CARD_IMAGES_LIMIT = 10;
 export const SITE_NAME = 'Wander Wise';

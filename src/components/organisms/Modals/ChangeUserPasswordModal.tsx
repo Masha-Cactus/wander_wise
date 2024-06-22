@@ -16,11 +16,9 @@ const ChangeUserPasswordModal: React.FC<ChangeUserPasswordModalProps> = ({
     <ModalTemplate onClose={onClose}>
       <Heading2 text="Change password" font="semibold" classes="self-start"/>
 
-      <ChangePasswordForm closeModal={onClose} />
-
-      <UnstyledButton
-        text="Forgot Password?"
-        onClick={onOpenRestorePasswordModal}
+      <ChangePasswordForm 
+        closeModal={onClose} 
+        openRestorePasswordModal={onOpenRestorePasswordModal} 
       />
     </ModalTemplate>
   );

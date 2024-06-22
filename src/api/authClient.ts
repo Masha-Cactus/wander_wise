@@ -1,7 +1,8 @@
 import { createClient } from "./client";
-import { onRequest, onResponseSuccess } from "./interceptors";
+import { onBaseRequest, onAuthRequest, onResponseSuccess } from "./interceptors";
 
 export const authClient = createClient();
 
-authClient.interceptors.request.use(onRequest);
+authClient.interceptors.request.use(onBaseRequest);
+authClient.interceptors.request.use(onAuthRequest);
 authClient.interceptors.response.use(onResponseSuccess);

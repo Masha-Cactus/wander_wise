@@ -6,16 +6,14 @@ import {
   SearchedCardsSection,
   PopularCardsSection 
 } from "@/src/components/organisms";
-import { ISearchCard } from "@/src/services";
+import { ISearchCard, TripsPageView } from "@/src/services";
 import { Heading2 } from "@/src/components/atoms";
 import { ViewSwitcher } from "@/src/components/molecules";
 import { ScreenHeightLayout } from "@/src/components/templates";
 
-type View = 'Gallery' | 'List';
-
 const TripsPage = () => {
   const [filterParams, setFilterParams] = useState<ISearchCard | null>(null);
-  const [view, setView] = useState<View>('Gallery');
+  const [view, setView] = useState<TripsPageView>(TripsPageView.Gallery);
 
   return (
     <ScreenHeightLayout>

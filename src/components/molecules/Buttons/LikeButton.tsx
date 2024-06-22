@@ -2,30 +2,32 @@
 
 import { memo, useMemo, useRef } from "react";
 import { 
-  useGetUserLikedCards, 
+  useGetUserCollections,
   useLikeCard, 
   useRemoveLikeFromCard 
 } from "@/src/queries";
 import { Icons } from "@/src/components/atoms";
 import { IconButton } from "@/src/components/molecules";
 import { useUser } from "@/src/store/user";
+import { selectLikedCards } from "@/src/lib/collectionSelectors";
+import { ICollection } from "@/src/services";
 
-type Props = {
+interface LikeButtonProps {
   cardLikes: number,
   cardId: number,
   classes: string,
-};
+}
 
-const LikeButton: React.FC<Props> = ({ cardId, cardLikes, classes}) => {
+const LikeButton: React.FC<LikeButtonProps> = ({ cardId, cardLikes, classes}) => {
   const { user } = useUser();
   const { mutate: like } = useLikeCard();
   const { mutate: removeLike } = useRemoveLikeFromCard();
   const likes = useRef(cardLikes);
 
-  const { data: likedCards } = useGetUserLikedCards();
+  const { data: likedCollection } = useGetUserCollections<ICollection>(selectLikedCards);
   const isCardLikedByUser = useMemo(() => 
-    likedCards?.some(likedCard => likedCard.id === cardId), 
-  [likedCards, cardId]);
+    likedCollection?.cardDtos.some(likedCard => likedCard.id === cardId), 
+  [likedCollection, cardId]);
 
   const handleLikeClick = () => {
     if (isCardLikedByUser) {

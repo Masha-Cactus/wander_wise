@@ -21,7 +21,7 @@ const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
   const handleDeleteProfile = () => {
     mutate(undefined, { 
       onError: (e) => setErrorMessage(e),
-      onSuccess: () => onClose(),
+      onSuccess: onClose,
     });
   };
 

@@ -14,15 +14,15 @@ const EditCardPage = () => {
   const { id } = useParams();
   const { push } = useRouter();
   const { user } = useUser();
-  const { data: card, error } = useGetCardDetails(+id);
+  const { data: card, isError } = useGetCardDetails(+id);
   const [isAddCardImagesModal, setIsAddCardImagesModal] = useState(false);
-  const isCardCreatedByUser = card?.author === user?.pseudonym;
+  const isCardCreatedByUser =  card && user && card.author === user.pseudonym;
 
   useEffect(() => {
-    if (isNaN(+id) || error || !isCardCreatedByUser) {
+    if (isNaN(+id) || isError || (card && !isCardCreatedByUser)) {
       push(Routes.NOT_FOUND);
     }
-  }, [id, error, isCardCreatedByUser, push]);
+  }, [id, isError, isCardCreatedByUser, push]);
 
   return (
     <StandardPageLayout>

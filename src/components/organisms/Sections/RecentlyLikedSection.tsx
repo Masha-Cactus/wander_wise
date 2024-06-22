@@ -6,21 +6,23 @@ import { PrimaryButton } from "@/src/components/molecules";
 import { TripShortCard } from "@/src/components/organisms";
 import { Heading5, Heading3 } from "@/src/components/atoms";
 import { Routes } from "@/src/lib/constants";
-import { useGetUserLikedCards } from "@/src/queries";
+import { useGetUserCollections } from "@/src/queries";
+import { selectLikedCards } from "@/src/lib/collectionSelectors";
+import { ICollection } from "@/src/services";
 
 const RecentlyLikedSection: React.FC = () => {
   const { push } = useRouter();
-  const { data: likedCards } = useGetUserLikedCards();
+  const { data: likedCollection } = useGetUserCollections<ICollection>(selectLikedCards);
 
   return (
     <section
       className="flex w-full flex-col gap-2 rounded-2xl bg-white px-10 py-12"
     >
       <Heading3 text="Cards you&apos;ve recently liked" />
-      {likedCards && likedCards.length > 0 ? (
+      {!!likedCollection?.cardDtos.length ? (
         <div className="mt-4 flex w-full items-center gap-5 overflow-x-scroll">
-          {likedCards.map((trip) => (
-            <TripShortCard key={trip.id} card={trip} />
+          {likedCollection.cardDtos.map((card) => (
+            <TripShortCard key={card.id} card={card} />
           ))}
         </div>
       ) : (

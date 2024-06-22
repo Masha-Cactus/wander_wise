@@ -5,11 +5,11 @@ import { TextMedium } from "@/src/components/atoms";
 import { ICollection } from "@/src/services";
 import { Routes } from "@/src/lib/constants";
 
-type Props = {
+interface CollectionProps {
   collection: ICollection,
-};
+}
 
-const Collection: React.FC<Props> = ({ collection }) => {
+const Collection: React.FC<CollectionProps> = ({ collection }) => {
   const collectionCards = collection.cardDtos.slice(0, 4);
 
   return (
@@ -50,6 +50,7 @@ const Collection: React.FC<Props> = ({ collection }) => {
               width={120}
               height={120}
               className="h-32 w-32"
+              priority={true}
             />
           </div>
         )}

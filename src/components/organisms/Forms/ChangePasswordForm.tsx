@@ -7,20 +7,24 @@ import { useUpdatePassword } from "@/src/queries";
 import { IUpdatePassword } from "@/src/services";
 import { changePasswordSchema } from "@/src/validation";
 import { ErrorText } from "@/src/components/atoms";
-import { PasswordInput, PrimaryButton } from "@/src/components/molecules";
+import { PasswordInput, PrimaryButton, UnstyledButton } from "@/src/components/molecules";
 
-type Props = {
+interface ChangePasswordFormProps {
   closeModal: () => void;
-};
+  openRestorePasswordModal: () => void;
+}
 
-const ChangePasswordForm: React.FC<Props> = ({ closeModal }) => {
+type ChangePasswordFormData = Omit<IUpdatePassword, 'userId'>
+
+const ChangePasswordForm: React.FC<ChangePasswordFormProps> 
+= ({ closeModal, openRestorePasswordModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = changePasswordSchema();
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<Omit<IUpdatePassword, 'userId'>>({
+  } = useForm<ChangePasswordFormData>({
     values: {
       oldPassword: "",
       password: "",
@@ -31,8 +35,7 @@ const ChangePasswordForm: React.FC<Props> = ({ closeModal }) => {
 
   const { isPending, mutate, isError } = useUpdatePassword();
 
-  const onSubmit: SubmitHandler<Omit<IUpdatePassword, 'userId'>> 
-  = async(data) => {
+  const onSubmit: SubmitHandler<ChangePasswordFormData> = (data) => {
     mutate(data, {
       onError: (e) => setErrorMessage(e),
       onSuccess: closeModal,
@@ -62,6 +65,11 @@ const ChangePasswordForm: React.FC<Props> = ({ closeModal }) => {
           control={control}
           errorText={errors.password?.message}
           disabled={isPending}
+        />
+
+        <UnstyledButton
+          text="Forgot Password?"
+          onClick={openRestorePasswordModal}
         />
       </div>
       <div className="row-start-2">

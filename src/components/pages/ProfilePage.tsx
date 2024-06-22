@@ -15,11 +15,11 @@ const ProfilePage: React.FC = () => {
       <Divider />
       <div 
         className="grid h-full w-full grid-cols-[380px,1fr] 
-        justify-center gap-9 overflow-auto px-10 py-8"
+        justify-center gap-9 overflow-y-auto px-10 py-8"
       >
         <ProfileInfo />
 
-        <div className="flex flex-col gap-6">
+        <div className="flex min-w-0 flex-col gap-6">
           <RecentlyLikedSection />
 
           <RecentlyReviewsSection />

@@ -3,7 +3,7 @@ import { Control, FieldPath, FieldValues } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 import { InputControllerWrapper } from "@/src/components/molecules";
 
-interface TextareaProps<T extends FieldValues> {
+interface TextAreaInputProps<T extends FieldValues> {
   name: FieldPath<T>;
   control: Control<T>;
   errorText?: string;
@@ -19,7 +19,7 @@ const TextAreaInput = <T extends FieldValues>({
   disabled,
   placeholder,
   label,
-}: TextareaProps<T>) => {
+}: TextAreaInputProps<T>) => {
   return (
     <InputControllerWrapper
       label={label}

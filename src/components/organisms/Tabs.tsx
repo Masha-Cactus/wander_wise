@@ -6,12 +6,12 @@ import { Divider, TextBase, Heading5 } from "@/src/components/atoms";
 import { Map } from "@/src/components/molecules";
 import { ICardTabs } from "@/src/services";
 
-type Props = {
+interface TabsProps {
   tabs: ICardTabs;
   location: 'Page' | 'Card',
-};
+}
 
-const Tab: React.FC<Props> = ({ tabs, location }) => {
+const Tabs: React.FC<TabsProps> = ({ tabs, location }) => {
   const [active, setActive] 
   = useState<keyof ICardTabs>('Description');
   const displayedReasons = location === 'Card'
@@ -97,4 +97,4 @@ const Tab: React.FC<Props> = ({ tabs, location }) => {
   );
 };
 
-export default memo(Tab);
+export default memo(Tabs);

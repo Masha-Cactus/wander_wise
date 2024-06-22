@@ -2,16 +2,16 @@ import { memo } from "react";
 import { twMerge } from "tailwind-merge";
 import { TextBase, TextSmall } from "@/src/components/atoms";
 
-type Props = {
+interface IconButtonProps {
   icon: React.ReactNode;
   onClick?: (arg: any) => void;
   text?: string;
   classes: string;
   size?: 'small',
   disabled?: boolean,
-};
+}
 
-const IconButton: React.FC<Props> 
+const IconButton: React.FC<IconButtonProps> 
 = ({ icon, onClick, text, classes, size, disabled }) => {
   return (
     <button 

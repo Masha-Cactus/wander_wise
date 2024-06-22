@@ -11,13 +11,13 @@ import { StandardPageLayout } from "@/src/components/templates";
 const TripPage = () => {
   const { id } = useParams();
   const { push } = useRouter();
-  const { data: card, error, isLoading } = useGetCardDetails(+id);
+  const { data: card, isError, isLoading } = useGetCardDetails(+id);
 
   useEffect(() => {
-    if (isNaN(+id) || error) {
+    if (isNaN(+id) || isError) {
       push(Routes.NOT_FOUND);
     }
-  }, [id, error, push]);
+  }, [id, isError, push]);
 
   return (
     <StandardPageLayout>
@@ -27,7 +27,7 @@ const TripPage = () => {
         {card && (
           <>
             <TripLongCard card={card} />
-            <ReviewsList reviews={card?.comments}/>
+            <ReviewsList reviews={card.comments}/>
           </>
         )}
       </LoadedContentStateController>

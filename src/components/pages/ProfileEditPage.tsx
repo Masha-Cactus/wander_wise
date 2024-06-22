@@ -141,7 +141,6 @@ const ProfileEditPage = () => {
           <ConfirmEmailModal
             key="confirmEmailModal"
             onClose={() => setIsShowConfirmEmailModal(false)}
-            type="Update"
           />
         )}
 

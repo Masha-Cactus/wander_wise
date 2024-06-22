@@ -6,19 +6,21 @@ import { IconButton, Stars } from "@/src/components/molecules";
 import { Icons, TextBase, Heading5 } from "@/src/components/atoms";
 import { 
   DeleteReviewModal, 
-  CreateReportModal 
+  CreateReportModal,
+  EditReviewModal
 } from "@/src/components/organisms";
 import { IComment } from "@/src/services";
 import { useUser } from "@/src/store/user";
 
-type Props = {
+interface ReviewCardProps {
   review: IComment;
-};
+}
 
-const ReviewCard: React.FC<Props> = ({ review }) => {
+const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
   const stars = new Array(5).fill(0).fill(1, 0, review.stars);
   const [isDeleteReviewModal, setIsDeleteReviewModal] = useState(false);
   const [isReportReviewModal, setIsReportReviewModal] = useState(false);
+  const [isEditReviewModal, setIsEditReviewModal] = useState(false);
   const { user } = useUser();
   const isReviewedByUser = user?.pseudonym === review.author;
 
@@ -34,21 +36,26 @@ const ReviewCard: React.FC<Props> = ({ review }) => {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <IconButton 
-            icon={<Icons.report className="h-6 w-6 text-gray-70" />} 
-            classes="p-0"
-            onClick={() => setIsReportReviewModal(true)}
-          />
-
-          {isReviewedByUser && (
+        {isReviewedByUser ? (
+          <div className="flex items-center gap-2">
+            <IconButton
+              icon={<Icons.edit className="h-6 w-6 text-gray-70" />}
+              classes="p-0"
+              onClick={() => setIsEditReviewModal(true)}
+            />
             <IconButton
               icon={<Icons.delete className="h-6 w-6 text-gray-70" />}
               classes="p-0"
               onClick={() => setIsDeleteReviewModal(true)}
             />
-          )}
-        </div>
+          </div>
+        ) : (
+          <IconButton 
+            icon={<Icons.report className="h-6 w-6 text-gray-70" />} 
+            classes="p-0"
+            onClick={() => setIsReportReviewModal(true)}
+          />
+        )}
       </div>
       
       <TextBase text={review.text} font="normal" classes="text-gray-80" />
@@ -59,6 +66,14 @@ const ReviewCard: React.FC<Props> = ({ review }) => {
             key="deleteReviewModal"
             commentId={review.id} 
             onClose={() => setIsDeleteReviewModal(false)} 
+          />
+        )}
+
+        {isEditReviewModal && (
+          <EditReviewModal 
+            key="editReviewModal"
+            review={review} 
+            onClose={() => setIsEditReviewModal(false)} 
           />
         )}
 

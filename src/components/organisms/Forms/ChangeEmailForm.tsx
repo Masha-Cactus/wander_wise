@@ -9,11 +9,11 @@ import { ErrorText } from '@/src/components/atoms';
 import { PrimaryButton, TextInput } from '@/src/components/molecules';
 import { changeEmailSchema } from '@/src/validation';
 
-type Props = {
+interface ChangeEmailFormProps {
   openConfirmEmailModal: () => void;
-};
+}
 
-const ChangeEmailForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
+const ChangeEmailForm: React.FC<ChangeEmailFormProps> = ({ openConfirmEmailModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = changeEmailSchema();
 
@@ -30,7 +30,7 @@ const ChangeEmailForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
 
   const { isPending, mutate, isError } = useRequestUpdateEmail();
 
-  const onSubmit: SubmitHandler<IEmail> = async(data) => {
+  const onSubmit: SubmitHandler<IEmail> = (data) => {
     mutate(data.email, {
       onError: (e) => setErrorMessage(e),
       onSuccess: openConfirmEmailModal,

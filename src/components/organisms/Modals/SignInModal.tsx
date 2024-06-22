@@ -38,12 +38,9 @@ const SignInModal: React.FC<SignInModalProps> = ({
 
       <Divider classes="mb-2" />
 
-      <SignInForm closeModal={onClose} />
-
-      <UnstyledButton
-        text="Forgot password?"
-        classes="font-bold self-start"
-        onClick={handleRestorePasswordClick}
+      <SignInForm 
+        closeModal={onClose} 
+        openRestorePasswordModal={handleRestorePasswordClick} 
       />
 
       <Divider classes="mb-2" />

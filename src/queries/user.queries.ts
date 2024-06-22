@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { 
   IUpdateInfo, 
   IUpdatePassword, 
+  ICollection,
+  ICard,
   userService 
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
@@ -38,7 +40,7 @@ export function useGetUserSocials() {
   });
 }
 
-export function useGetUserCollections() {
+export function useGetUserCollections<T>(select: (data: ICollection[]) => T) {
   const user = useUser((state) => state.user);
 
   return useQuery({
@@ -51,63 +53,7 @@ export function useGetUserCollections() {
       return Promise.reject('No user authorized');
     },
     enabled: !!user,
-    select: (collections) => collections.filter(collection => 
-      !['Saved cards', 'Liked cards', 'Created cards']
-        .includes(collection.name)),
-  });
-}
-
-export function useGetUserSavedCards() {
-  const user = useUser((state) => state.user);
-
-  return useQuery({
-    queryKey: ['user-collections', {userId: user?.id, type: 'Saved'}],
-    queryFn: () => {
-      if (user) {
-        return userService.getCollections(user.id);
-      }
-
-      return Promise.reject('No user authorized');
-    },
-    enabled: !!user,
-    select: (collections) => collections.find(
-      (collection) => collection.name === "Saved cards")?.cardDtos,
-  });
-}
-
-export function useGetUserCreatedCards() {
-  const user = useUser((state) => state.user);
-
-  return useQuery({
-    queryKey: ['user-collections', {userId: user?.id, type: 'Created'}],
-    queryFn: () => {
-      if (user) {
-        return userService.getCollections(user.id);
-      }
-
-      return Promise.reject('No user authorized');
-    },
-    enabled: !!user,
-    select: (collections) => collections.find(
-      (collection) => collection.name === "Created cards")?.cardDtos,
-  });
-}
-
-export function useGetUserLikedCards() {
-  const user = useUser((state) => state.user);
-
-  return useQuery({
-    queryKey: ['user-collections', {userId: user?.id, type: 'Liked'}],
-    queryFn: () => {
-      if (user) {
-        return userService.getCollections(user.id);
-      }
-
-      return Promise.reject('No user authorized');
-    },
-    enabled: !!user,
-    select: (collections) => collections.find(
-      (collection) => collection.name === "Liked cards")?.cardDtos,
+    select,
   });
 }
 
@@ -180,10 +126,10 @@ export function useDeleteUser() {
     },
     onSuccess: () => {
       setUser(null);
-      deleteCookie('userId');
       deleteCookie('token');
       deleteCookie('confirmationCode');
-      push (Routes.HOME);
+      deleteCookie('email');
+      push(Routes.HOME);
     }
   });
 }
@@ -202,14 +148,15 @@ export function useRequestUpdateEmail() {
     },
     onSuccess: (user) => {
       setUser(user);
+      localStorage.setItem('emailConfirmationType', 'update');
       setCookie('confirmationCode', user.emailConfirmCode);
     }
   });
 }
 
 export function useUpdateEmail() {
-  const [user, unbanUser] = useUser((state) => 
-    [state.user, state.unbanUser]);
+  const [user, setUser] = useUser((state) => 
+    [state.user, state.setUser]);
   const confirmationCode = getCookie('confirmationCode');
     
   return useMutation({
@@ -224,9 +171,10 @@ export function useUpdateEmail() {
         
       return Promise.reject('No user authorized');
     },
-    onSuccess: ({ token }) => {
-      unbanUser();
+    onSuccess: ({ user, token }) => {
+      setUser(user);
       setCookie('token', token);
+      localStorage.removeItem('emailConfirmationType');
       deleteCookie('confirmationCode');
     },
   });

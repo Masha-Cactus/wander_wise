@@ -6,14 +6,14 @@ import Link from "next/link";
 import { ModalTemplate } from "@/src/components/organisms";
 import { PrimaryButton } from "@/src/components/molecules";
 
-type Props =  {
+interface EmptyFallbackModalProps {
   title: string;
   subtitle: string;
   buttonText: string;
   path: string;
-};
+}
 
-const EmptyFallbackModal: React.FC<Props> 
+const EmptyFallbackModal: React.FC<EmptyFallbackModalProps> 
 = ({ title, subtitle, buttonText, path }) => {
   const router = useRouter();
 

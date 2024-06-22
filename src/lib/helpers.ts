@@ -30,23 +30,29 @@ export const normalizeError = (error: AxiosError): string => {
     return errorResponse?.exception?.message;
   }
 
+  if (error.message) {
+    return error.message;
+  }
+
   return "Unexpected server error";
 };
 
 export const getFilteredCards 
 = (cards: ICard[], filterParams: IFilterParams) => {
   return cards.filter(card => {
-    const isTripType = card.tripTypes
-      .some(tripType => filterParams.tripTypes.includes(tripType));
-    const isClimate = filterParams.climates.includes(card.climate);
-    const isCountry = filterParams.countries
-      .includes(card.whereIs.split(',')[2].trim());
-    const isSpecial = card.specialRequirements
+    const isTripType = !filterParams.tripTypes.length 
+      || card.tripTypes.some(tripType => filterParams.tripTypes.includes(tripType));
+    const isClimate = !filterParams.climates.length 
+      || filterParams.climates.includes(card.climate);
+    const isCountry = !filterParams.countries.length 
+      || filterParams.countries.includes(card.whereIs.split(',')[2].trim());
+    const isSpecial = !filterParams.specialRequirements.length 
+      || card.specialRequirements
       .some(special => filterParams.specialRequirements.includes(special));
-    const isAuthor = filterParams.authors
-      .includes(card.author as CardAuthorsType);
+    const isAuthor = !filterParams.authors.length 
+      || filterParams.authors.includes(card.author as CardAuthorsType);
   
-    return isTripType || isClimate || isCountry || isSpecial || isAuthor;
+    return isTripType && isClimate && isCountry && isSpecial && isAuthor;
   }
   );
 };

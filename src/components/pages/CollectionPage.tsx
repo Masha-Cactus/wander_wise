@@ -23,7 +23,7 @@ const CollectionPage = () => {
   const { id: collectionId } = useParams();
   const { 
     data: collection, 
-    error, 
+    isError, 
     isLoading 
   } = useGetCollection(+collectionId);
 
@@ -31,10 +31,10 @@ const CollectionPage = () => {
   const [isDeleteCollectionModal, setIsDeleteCollectionModal] = useState(false);
 
   useEffect(() => {
-    if (isNaN(+collectionId) || error) {
+    if (isNaN(+collectionId) || isError) {
       push(Routes.NOT_FOUND);
     }
-  }, [collectionId, error, push]);
+  }, [collectionId, isError, push]);
 
   return (
     <StandardPageLayout>

@@ -1,11 +1,11 @@
 import { memo } from "react";
 
-interface HeadingProps {
+interface Heading3Props {
   text: string;
   classes?: string;
 }
 
-const Heading3: React.FC<HeadingProps> = ({ text, classes }) => {
+const Heading3: React.FC<Heading3Props> = ({ text, classes }) => {
   return <h3 className={`text-3xl font-semibold text-black ${classes}`}>{text}</h3>;
 };
 

@@ -17,7 +17,7 @@ import {
 } from "@/src/components/molecules";
 import { 
   CardImagesSection, 
-  Tab, 
+  Tabs, 
   CreateReportModal 
 } from "@/src/components/organisms";
 import { useCopyUrlToClipboard } from "@/src/hooks";
@@ -25,11 +25,11 @@ import { Routes } from "@/src/lib/constants";
 import { ICard, ICardTabs } from "@/src/services";
 import { useUser } from "@/src/store/user";
 
-type Props = {
+interface TripLongCardProps {
   card: ICard;
-};
+}
 
-const TripLongCard: React.FC<Props> = ({ card }) => {
+const TripLongCard: React.FC<TripLongCardProps> = ({ card }) => {
   const tabs: ICardTabs = {
     'Description': card.description,
     'Why this place?': card.whyThisPlace,
@@ -50,7 +50,7 @@ const TripLongCard: React.FC<Props> = ({ card }) => {
     >
       <Heading2 text={card.name} classes="self-start mb-1" font="semibold" />
 
-      <div className="grid grid-cols-12 gap-x-6 gap-y-5">
+      <div className="grid w-full grid-cols-12 gap-x-6 gap-y-5">
         <div className="col-span-5 row-span-1">
           <div className="flex w-full gap-2">
             <Icons.location className="h-8 w-8" />
@@ -127,7 +127,7 @@ const TripLongCard: React.FC<Props> = ({ card }) => {
             className="max-h-[546px] overflow-hidden rounded-3xl 
             border-2 border-gray-300 bg-white p-8"
           >
-            <Tab tabs={tabs} location="Page" />
+            <Tabs tabs={tabs} location="Page" />
           </div>
           <SaveButton cardId={card.id} />
         </div>

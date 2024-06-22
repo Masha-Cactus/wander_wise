@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import { twMerge } from "tailwind-merge";
 
-export interface LoaderProps {
+interface LoaderProps {
   classes?: string;
 }
 

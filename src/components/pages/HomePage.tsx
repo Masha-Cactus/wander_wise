@@ -7,9 +7,7 @@ import { Routes, SLIDER_IMAGES } from "@/src/lib/constants";
 import { PrimaryButton, HomeSlider } from "@/src/components/molecules";
 import { Heading2, TitleText } from "@/src/components/atoms";
 
-type Props = {};
-
-const HomePage: React.FC<Props> = ({}) => {
+const HomePage = () => {
   const { push } = useRouter();
 
   return (

@@ -5,15 +5,15 @@ import { ICard } from "@/src/services";
 import { TextMedium } from "@/src/components/atoms";
 import { TripImage } from "@/src/components/molecules";
 
-type Props = {
+interface TripShortCardProps {
   card: ICard;
-};
+}
 
-const TripShortCard: React.FC<Props> = ({ card }) => {
+const TripShortCard: React.FC<TripShortCardProps> = ({ card }) => {
   return (
     <Link 
       href={Routes.TRIP(card.id)} 
-      className="relative h-40 w-60 overflow-hidden rounded-2xl"
+      className="relative h-40 w-60 overflow-hidden rounded-2xl shrink-0"
     >
       <TripImage 
         imageLinks={card.imageLinks}

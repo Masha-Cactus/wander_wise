@@ -11,15 +11,15 @@ import { ErrorText } from "@/src/components/atoms";
 import { TextInput, PrimaryButton } from "@/src/components/molecules";
 import { changeCollectionNameSchema } from "@/src/validation";
 
-type Props = {
+interface ChangeCollectionNameFormProps {
   closeModal: () => void,
-};
+}
 
-type FormData = {
+interface ChangeCollectionNameFormData {
   newName: string;
-};
+}
 
-const ChangeCollectionNameForm: React.FC<Props> 
+const ChangeCollectionNameForm: React.FC<ChangeCollectionNameFormProps> 
 = ({ closeModal }) => {
   const { user } = useUser();
   const [errorMessage, setErrorMessage] = useNormalizedError();
@@ -32,7 +32,7 @@ const ChangeCollectionNameForm: React.FC<Props>
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<ChangeCollectionNameFormData>({
     defaultValues: {
       newName: collection?.name,
     },
@@ -41,7 +41,7 @@ const ChangeCollectionNameForm: React.FC<Props>
 
   const { isPending, mutate, isError } = useUpdateCollection();
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = (data: ChangeCollectionNameFormData) => {
     const { newName } = trimObjectFields(data);
     
     if (user && collection) {

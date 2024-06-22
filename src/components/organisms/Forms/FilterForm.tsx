@@ -1,7 +1,7 @@
 "use client";
 
 import { Dispatch, memo, SetStateAction, useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Divider,
@@ -13,7 +13,8 @@ import {
 } from "@/src/components/molecules";
 import {
   IFilterParams,
-  ICard
+  ICard,
+  ICollection
 } from "@/src/services";
 import { filterCardsSchema } from "@/src/validation";
 import { getFilterOptions, trimObjectFields } from "@/src/lib/helpers";
@@ -23,16 +24,20 @@ import {
   CLIMATES, 
   SPECIALS 
 } from "@/src/lib/cardParameters";
-import { useGetUserCreatedCards, useGetUserSavedCards } from "@/src/queries";
+import { useGetUserCollections } from "@/src/queries";
+import { selectCreatedCards, selectSavedCards } from "@/src/lib/collectionSelectors";
 
-type Props = {
+interface FilterFormProps {
   type: 'Saved' | 'Created',
   setFilterParams: Dispatch<SetStateAction<IFilterParams | null>>
-};
+}
 
-const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
-  const { data: savedCards } = useGetUserSavedCards();
-  const { data: createdCards } = useGetUserCreatedCards();
+const FilterForm: React.FC<FilterFormProps> = ({ type, setFilterParams }) => {
+  const selectFn = type === 'Saved'
+    ? selectSavedCards
+    : selectCreatedCards;
+
+  const { data: collection } = useGetUserCollections<ICollection>(selectFn);
 
   const { 
     atmospheres, 
@@ -43,10 +48,8 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
   } = useMemo(() => {
     let cardsToFilter: ICard[] = [];
 
-    if (type === 'Saved' && savedCards) {
-      cardsToFilter = savedCards;
-    } else if (type === 'Created' && createdCards) {
-      cardsToFilter = createdCards;
+    if (collection) {
+      cardsToFilter = collection.cardDtos;
     }
 
     const filterOptions = getFilterOptions(cardsToFilter);
@@ -70,7 +73,7 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
       authors, 
       countries, 
     };
-  }, [savedCards, createdCards, type]);
+  }, [collection, type]);
 
   const validationSchema = filterCardsSchema();
   const {
@@ -89,7 +92,7 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
     resolver: yupResolver(validationSchema),
   });
   
-  const onSubmit = async (data: IFilterParams) => {
+  const onSubmit: SubmitHandler<IFilterParams> = (data) => {
     const trimmedData = trimObjectFields(data);
   
     setFilterParams(trimmedData);

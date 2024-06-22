@@ -19,15 +19,15 @@ const RecentlyLikedSection: React.FC = () => {
       <Heading3 text="Reviews you've recently added" />
 
       {reviews && reviews?.length > 0 ? (
-        <>
-          <Divider classes="mt-6" />
+        <div>
+          <Divider classes="mt-4" />
           {reviews.map((review) => (
             <div key={review.id}>
               <ReviewCardLong review={review} />
               <Divider />
             </div>
           ))}
-        </>
+        </div>
       ) : (
         <div className="flex flex-col gap-4">
           <Heading5

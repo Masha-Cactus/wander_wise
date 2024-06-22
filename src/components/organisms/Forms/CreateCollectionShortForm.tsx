@@ -1,6 +1,6 @@
 'use client';
 
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
@@ -12,15 +12,16 @@ import {
 } from "@/src/components/molecules";
 import { createCollectionShortSchema } from "@/src/validation";
 
-type CreateCollectionShortData = {
-  name: string;
-};
-
-type Props = {
+interface CreateCollectionShortFormProps {
   closeForm: () => void;
-};
+}
 
-const CreateCollectionShortForm: React.FC<Props> = ({ closeForm }) => {
+interface CreateCollectionShortData {
+  name: string;
+}
+
+const CreateCollectionShortForm: React.FC<CreateCollectionShortFormProps> 
+= ({ closeForm }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
   const validationSchema = createCollectionShortSchema();
@@ -38,14 +39,10 @@ const CreateCollectionShortForm: React.FC<Props> = ({ closeForm }) => {
 
   const { isPending, mutate, isError } = useCreateCollection();
 
-  const onSubmit = async (data: CreateCollectionShortData) => {
+  const onSubmit: SubmitHandler<CreateCollectionShortData> = (data) => {
     const { name } = trimObjectFields(data);
 
-    mutate({
-      name,
-      cardIds: [],
-    },
-    {
+    mutate({ name, cardIds: [] }, {
       onError: (e) => setErrorMessage(e),
       onSuccess: closeForm,
     }

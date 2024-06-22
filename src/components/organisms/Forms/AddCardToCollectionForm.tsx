@@ -15,17 +15,17 @@ import {
 import { ICollection } from "@/src/services";
 import { addCardToCollectionSchema } from "@/src/validation";
 
-type Props = {
+interface AddCardToCollectionFormProps {
   cardId: number,
   collections: ICollection[],
   closeModal: () => void;
-};
+}
 
-type AddCardToCollectionFormData = {
+interface AddCardToCollectionFormData {
   selectedCollectionIds: number[];
-};
+}
 
-const AddCardToCollectionForm: React.FC<Props> 
+const AddCardToCollectionForm: React.FC<AddCardToCollectionFormProps> 
 = ({ cardId, collections, closeModal }) => {
   const collectionsWithoutCard = useMemo(() => 
     collections.filter(c =>! c.cardDtos.find(card => card.id === cardId)), 
@@ -51,7 +51,7 @@ const AddCardToCollectionForm: React.FC<Props>
     isError,
   } = useUpdateCollection();
 
-  const onSubmit = async (data: AddCardToCollectionFormData) => {
+  const onSubmit = (data: AddCardToCollectionFormData) => {
     const { selectedCollectionIds } = trimObjectFields(data);
 
     collectionsWithoutCard.forEach(collection => {

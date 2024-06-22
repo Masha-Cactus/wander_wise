@@ -1,69 +1,68 @@
 'use client';
 
-import React, { memo, useEffect, useMemo, useRef, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { useSearchCards } from "@/src/queries";
-import { ICard, ISearchCard, ISearchCardResponse } from "@/src/services";
+import { ICard, ISearchCard, ISearchCardResponse, TripsPageView } from "@/src/services";
 import { 
   LoadedContentStateController, 
-  CardsSkeleton 
+  CardsSkeleton,
+  IconButton
 } from "@/src/components/molecules";
-import { Heading4 } from "@/src/components/atoms";
-import { Pagination, Gallery, InfiniteList } from "@/src/components/organisms";
-import { CARDS_PER_PAGE } from "@/src/lib/constants";
+import { Heading4, Icons } from "@/src/components/atoms";
+import { Gallery, InfiniteList } from "@/src/components/organisms";
 
-type Props = {
+interface PaginatedCardsSectionProps {
   filterParams: ISearchCard | null;
-  view: 'Gallery' | 'List';
-};
+  view: TripsPageView;
+}
 
-const PaginatedCardsSection: React.FC<Props> = ({ filterParams, view }) => {
+const PaginatedCardsSection: React.FC<PaginatedCardsSectionProps> 
+= ({ filterParams, view }) => {
   const [page, setPage] = useState(0);
-  const [displayedCards, setDisplayedCards] = useState<ICard[]>([]);
   const [lastPage, setLastPage] = useState<number | undefined>(undefined);
 
   const { 
     data, 
-    error, 
+    fetchNextPage, 
+    fetchPreviousPage, 
+    isFetchNextPageError,
+    isFetchingNextPage,
+    isFetchingPreviousPage,
+    isFetched,
     isLoading,
     fetchStatus,
-  } = useSearchCards(page, filterParams);
+  } = useSearchCards(filterParams);
 
-  const queryClient = useQueryClient();
-  const pageCards = useMemo(() => 
-    queryClient.getQueryData<ISearchCardResponse | undefined>(
-      ['cards', page, filterParams]
-    )?.cards,
-  [page, queryClient, data]);
-
-  const isShowSkeleton = isLoading && fetchStatus !== 'idle' 
-    && view === 'Gallery';
-  const isShowEmpty = !!(lastPage && lastPage < 0);
+  const pageCards = data?.pages?.[page]?.cards;
 
   useEffect(() => {
-    if (data && data.cards.length) {
-      if (data.cards.length < CARDS_PER_PAGE) {
-        setLastPage(page);
-      }
-      
-      setDisplayedCards(curr => [...curr, ...data.cards]);
-    }
-  }, [data, filterParams, page]);
-
-  useEffect(() => {
-    if (error) {
-      setPage(page => page - 1);
+    if (isFetchNextPageError) {
+      setPage(curr => curr - 1);
       setLastPage(page - 1);
     }
-  }, [error]);
+  }, [isFetchNextPageError])
+
+  const handleNextPage = () => {
+    setPage(curr => curr + 1);
+    fetchNextPage();
+  };
+
+  const handlePrevPage = () => {
+    setPage(curr => curr - 1);
+    fetchPreviousPage();
+  };
+
+  const isShowSkeleton = ((isLoading && fetchStatus !== 'idle') || isFetchingNextPage) 
+    && view === TripsPageView.Gallery;
+  const isShowEmpty = isFetched && !data;
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (scrollRef && view === 'Gallery') {
+    if (scrollRef && view === TripsPageView.Gallery) {
       scrollRef.current?.scrollIntoView({ block: "end", behavior: 'smooth' });
     }
-  }, [pageCards, view]);
+  }, [isFetchingNextPage, view]);
 
   return (
     <>
@@ -87,26 +86,41 @@ const PaginatedCardsSection: React.FC<Props> = ({ filterParams, view }) => {
         isLoading={isShowSkeleton}
         loadingFallbackComponent={<CardsSkeleton />}
       >
-        {view === 'Gallery' ? (
+        {view === TripsPageView.Gallery ? (
           <>
             {pageCards && (
               <Gallery cards={pageCards} />
             )}
 
-            <Pagination 
-              page={page} 
-              setPage={setPage} 
-              isLastPage={page === lastPage}
-            />
+            <div className="flex w-full gap-4 justify-center items-center">
+              <IconButton 
+                icon={<Icons.left className="h-6 w-6 text-inherit order-2" />} 
+                text="Previous" 
+                classes="text-gray-80 hover:text-gray-70 disabled:text-gray-50" 
+                onClick={handlePrevPage}
+                disabled={isFetchingPreviousPage || page === 0}
+              />
+              <IconButton 
+                icon={<Icons.right className="h-6 w-6 text-inherit" />} 
+                text="Next" 
+                classes="text-gray-80 hover:text-gray-70 disabled:text-gray-50" 
+                onClick={handleNextPage}
+                disabled={isFetchingNextPage || page === lastPage}
+              />
+            </div>
           </>
         ) : (
-          <InfiniteList 
-            cards={displayedCards} 
-            setPage={setPage} 
-            isLastPage={page === lastPage}
-            page={page}
-            isFetchingNextPage={isLoading && fetchStatus !== 'idle'}
-          />
+          <>
+            {data?.pages && (
+              <InfiniteList 
+                pages={data.pages} 
+                isLastPage={page === lastPage}
+                page={page}
+                isFetchingNextPage={isFetchingNextPage}
+                handleNextPage={handleNextPage}
+              />
+            )}
+          </>
         )}
       </LoadedContentStateController>
     </>

@@ -26,7 +26,7 @@ const DeleteReviewModal: React.FC<DeleteReviewModalProps> = ({
     if (cardId) {
       mutate({commentId, cardId: +cardId}, { 
         onError: (e) => setErrorMessage(e),
-        onSuccess: () => onClose(),
+        onSuccess: onClose,
       });
     }
   };

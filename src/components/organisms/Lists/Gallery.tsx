@@ -4,11 +4,11 @@ import { memo } from "react";
 import { TripMediumCard } from "@/src/components/organisms";
 import { ICard } from "@/src/services";
 
-type Props = {
+interface GalleryProps {
   cards: ICard[];
-};
+}
 
-const Gallery: React.FC<Props> = ({ cards }) => {
+const Gallery: React.FC<GalleryProps> = ({ cards }) => {
   return (
     <section
       className="col-span-3 col-start-2 row-start-2 
