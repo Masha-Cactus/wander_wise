@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { 
   useGetUserCollections,
   useRemoveCardFromSaved, 
@@ -20,16 +20,18 @@ const SaveButton: React.FC<SaveButtonProps> = ({ cardId }) => {
   const { mutate: save } = useSaveCard();
   const { mutate: removeFromSaved } = useRemoveCardFromSaved();
 
-  const { data: savedCollection } = useGetUserCollections<ICollection>(selectSavedCards);
+  const { 
+    data: savedCollection, 
+  } = useGetUserCollections<ICollection>(selectSavedCards);
   const isCardSavedByUser = useMemo(() => 
     savedCollection?.cardDtos.some(savedCard => savedCard.id === cardId), 
   [savedCollection, cardId]);
   
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     isCardSavedByUser
       ? removeFromSaved(cardId)
       : save(cardId);
-  };
+  }, [isCardSavedByUser, cardId]);
 
   return (
     <PrimaryButton

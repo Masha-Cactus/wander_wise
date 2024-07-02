@@ -5,7 +5,6 @@ import {
   IUpdateInfo, 
   IUpdatePassword, 
   ICollection,
-  ICard,
   userService 
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
@@ -34,7 +33,7 @@ export function useGetUserSocials() {
         return userService.getSocials(user.id);
       }
 
-      return Promise.reject('No user authorized');
+      return Promise.reject(new Error('No user authorized'));
     },
     enabled: !!user,
   });
@@ -50,7 +49,7 @@ export function useGetUserCollections<T>(select: (data: ICollection[]) => T) {
         return userService.getCollections(user.id);
       }
 
-      return Promise.reject('No user authorized');
+      return Promise.reject(new Error('No user authorized'));
     },
     enabled: !!user,
     select,
@@ -67,7 +66,7 @@ export function useGetUserComments() {
         return userService.getComments(user.id);
       }
     
-      return Promise.reject('No user authorized');
+      return Promise.reject(new Error('No user authorized'));
     },
     enabled: !!user,
   });
@@ -83,7 +82,7 @@ export function useUpdateUserInfo() {
         return userService.updateUserInfo({...data, userId: user.id});
       }
 
-      return Promise.reject('No user authorized');
+      return Promise.reject(new Error('No user authorized'));
     },
     onSuccess: (user) => {
       setUser(user);
@@ -103,7 +102,7 @@ export function useUpdateUserImage() {
         return userService.updateImage({ image: data, id: user.id});
       }
 
-      return Promise.reject('No user authorized'); 
+      return Promise.reject(new Error('No user authorized')); 
     },
     onSuccess: (user) => {
       setUser(user);
@@ -122,7 +121,7 @@ export function useDeleteUser() {
         return userService.deleteUser(user.id);
       }
 
-      return Promise.reject('No user to delete');
+      return Promise.reject(new Error('No user to delete'));
     },
     onSuccess: () => {
       setUser(null);
@@ -144,11 +143,12 @@ export function useRequestUpdateEmail() {
         return userService.requestUpdateEmail({userId: user.id, newEmail});
       }
     
-      return Promise.reject('No user authorized');
+      return Promise.reject(new Error('No user authorized'));
     },
-    onSuccess: (user) => {
+    onSuccess: (user, newEmail) => {
       setUser(user);
       localStorage.setItem('emailConfirmationType', 'update');
+      setCookie('email', newEmail);
       setCookie('confirmationCode', user.emailConfirmCode);
     }
   });
@@ -157,25 +157,27 @@ export function useRequestUpdateEmail() {
 export function useUpdateEmail() {
   const [user, setUser] = useUser((state) => 
     [state.user, state.setUser]);
+  const newEmail = getCookie('email');
   const confirmationCode = getCookie('confirmationCode');
     
   return useMutation({
     mutationFn: (codeFromUser: string) => {
-      if (user) {
+      if (user && newEmail) {
         if (codeFromUser !== confirmationCode) {
-          return Promise.reject('Wrong confirmation code');
+          return Promise.reject(new Error('Wrong confirmation code'));
         }
 
-        return userService.updateEmail({userId: user.id, newEmail: user.email});
+        return userService.updateEmail({userId: user.id, newEmail});
       }
         
-      return Promise.reject('No user authorized');
+      return Promise.reject(new Error('No user authorized'));
     },
     onSuccess: ({ user, token }) => {
       setUser(user);
       setCookie('token', token);
       localStorage.removeItem('emailConfirmationType');
       deleteCookie('confirmationCode');
+      deleteCookie('email');
     },
   });
 }
@@ -189,7 +191,7 @@ export function useUpdatePassword() {
         return userService.updatePassword({...data, userId: user.id});
       }
 
-      return Promise.reject('No user authorized');
+      return Promise.reject(new Error('No user authorized'));
     },
     onSuccess: ({ token }) => {
       setCookie('token', token);

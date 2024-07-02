@@ -20,7 +20,7 @@ interface RemoveTripFromCollectionModalProps {
 const RemoveTripFromCollectionModal: React.FC<
 RemoveTripFromCollectionModalProps
 > = ({ trip, collectionId, onClose }) => {
-  const { isPending, mutate, isError } = useUpdateCollection();
+  const { isPending, mutate } = useUpdateCollection();
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const { data: collection } = useGetCollection(collectionId);
 
@@ -69,7 +69,7 @@ RemoveTripFromCollectionModalProps
         />
       </div>
 
-      {(isError) && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </ModalTemplate>
   );
 };

@@ -1,14 +1,12 @@
 'use client';
 
-import { memo, useEffect, useMemo, useRef, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { memo, useEffect, useRef, useState } from "react";
 import { usePopularCards } from "@/src/queries";
-import { ICard, ISearchCardResponse, TripsPageView } from "@/src/services";
-import { LoadedContentStateController } from "@/src/components/molecules";
-import { Heading } from "@/src/components/atoms";
-import { Pagination, Gallery, InfiniteList } from "@/src/components/organisms";
-import { CARDS_PER_PAGE } from "@/src/lib/constants";
-import { AnimatePresence } from "framer-motion";
+import { ISearchCardResponse, TripsPageView } from "@/src/services";
+import { Heading, Loader, Icons } from "@/src/components/atoms";
+import { Gallery, InfiniteList } from "@/src/components/organisms";
+import { LoadingStateWrapper } from "@/src/components/templates";
+import { IconButton } from "@/src/components/molecules";
 
 interface PopularCardsSectionProps {
   view: TripsPageView;
@@ -16,85 +14,124 @@ interface PopularCardsSectionProps {
 
 const PopularCardsSection: React.FC<PopularCardsSectionProps> = ({ view }) => {
   const [page, setPage] = useState(0);
-  const [displayedCards, setDisplayedCards] = useState<ISearchCardResponse[]>([]);
+  const [displayedCards, setDisplayedCards] 
+  = useState<ISearchCardResponse[]>([]);
   const [lastPage, setLastPage] = useState<number | undefined>(undefined);
 
   const { 
     data, 
-    isError, 
-    isLoading
+    fetchNextPage, 
+    fetchPreviousPage,
+    isFetchNextPageError,
+    isFetchingNextPage,
+    isFetchingPreviousPage,
+    hasNextPage,
+    hasPreviousPage,
+    isFetched,
+    isLoading,
   } = usePopularCards(page);
 
-  const queryClient = useQueryClient();
-  const pageCards = useMemo(() => 
-    queryClient.getQueryData<ICard[] | undefined>(['popular-cards', { page }]),
-  [page, queryClient, data]);
-
-  const isShowSkeleton = isLoading && view === TripsPageView.Gallery;
-  const isShowEmpty = !!(lastPage && lastPage < 0);
+  const pageCards = data?.pages?.[page];
 
   useEffect(() => {
-    if (data && data.length) {
-      if (data.length < CARDS_PER_PAGE) {
-        setLastPage(page);
-      }
-      
-      setDisplayedCards(curr => [...curr, {currentPage: page, cards: data}]);
+    if (data) {
+      setDisplayedCards(curr => [...curr, {
+        currentPage: page, 
+        cards: data.pages[page]
+      }]);
     }
-  }, [data, page]);
+  }, [data]);
 
   useEffect(() => {
-    if (isError) {
+    if (isFetchNextPageError) {
       setPage(page => page - 1);
       setLastPage(page - 1);
     }
-  }, [isError]);
+  }, [isFetchNextPageError]);
+
+  const handleNextPage = () => {
+    setPage(curr => curr + 1);
+
+    if (!data?.pages?.[page + 1]) {
+      fetchNextPage();
+    }
+  };
+
+  const handlePrevPage = () => {
+    setPage(curr => curr - 1);
+
+    if (!data?.pages?.[page - 1]) {
+      fetchPreviousPage();
+    }
+  };
+
+  const isShowLoader = (isLoading || isFetchingNextPage) 
+    && view === TripsPageView.Gallery;
+  const isShowEmpty = isFetched && !data;
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (scrollRef.current && view === TripsPageView.Gallery) {
-      scrollRef.current.scrollIntoView({ block: "end", behavior: 'smooth' });
+    if (view === TripsPageView.Gallery) {
+      scrollRef.current?.scrollIntoView({ 
+        block: "end", behavior: 'smooth'
+      });
     }
   }, [page, view]);
 
   return (
-    <>
-      <div className="absolute left-0 top-0 h-px" ref={scrollRef} />
-      <LoadedContentStateController
-        isEmpty={isShowEmpty}
-        emptyFallbackComponent={
-          <Heading 
-            text="No cards found 😢" 
-            font="normal"
-            classes="m-auto"
-          />
-        }
-        isLoading={isShowSkeleton}
-      >
-        {view === TripsPageView.Gallery ? (
-          <>
-            {pageCards && (
-              <Gallery cards={pageCards} />
-            )}
+    <LoadingStateWrapper
+      isEmpty={isShowEmpty}
+      emptyFallbackComponent={
+        <Heading 
+          text="No cards found 😢" 
+          font="normal"
+          classes="m-auto"
+        />
+      }
+      isLoading={isShowLoader}
+      loadingFallbackComponent={<Loader size="lg" />}
+    >
+      {view === TripsPageView.Gallery ? (
+        <>
+          <div className="absolute left-0 top-0 h-px" ref={scrollRef} />
 
-            <Pagination 
-              page={page} 
-              setPage={setPage} 
-              lastPage={lastPage}
+          {pageCards && (
+            <Gallery cards={pageCards} />
+          )}
+
+          <div className="flex w-full items-center justify-center gap-4">
+            <IconButton 
+              icon={<Icons.left className="order-2 h-6 w-6 text-inherit" />} 
+              text="Previous" 
+              classes="text-gray-80 hover:text-gray-70 disabled:text-gray-50" 
+              onClick={handlePrevPage}
+              disabled={isFetchingPreviousPage || !hasPreviousPage}
             />
-          </>
-        ) : (
-          <InfiniteList 
-            pages={displayedCards} 
-            handleNextPage={() => setPage(curr => curr + 1)}
-            isLastPage={page === lastPage}
-            page={page}
-            isFetchingNextPage={isLoading}
-          />
-        )}
-      </LoadedContentStateController>
-    </>
+            <IconButton 
+              icon={<Icons.right className="h-6 w-6 text-inherit" />} 
+              text="Next" 
+              classes="text-gray-80 hover:text-gray-70 disabled:text-gray-50" 
+              onClick={handleNextPage}
+              disabled={isFetchingNextPage || !hasNextPage || page === lastPage}
+            />
+          </div>
+        </>
+      ) : (
+        <>
+          {data?.pages && (
+            <InfiniteList 
+              pages={displayedCards} 
+              handleNextPage={handleNextPage}
+              isLastPage={lastPage === page}
+              page={page}
+              isFetchingNextPage={isFetchingNextPage}
+            />
+          )}
+        </>
+        
+      )}
+    </LoadingStateWrapper>
   );
 };
 

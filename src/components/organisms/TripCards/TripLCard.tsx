@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { 
@@ -25,11 +25,11 @@ import { Routes } from "@/src/lib/constants";
 import { ICard, ICardTabs } from "@/src/services";
 import { useUser } from "@/src/store/user";
 
-interface TripLongCardProps {
+interface TripLCardProps {
   card: ICard;
 }
 
-const TripLongCard: React.FC<TripLongCardProps> = ({ card }) => {
+const TripLCard: React.FC<TripLCardProps> = ({ card }) => {
   const tabs: ICardTabs = {
     'Description': card.description,
     'Why this place?': card.whyThisPlace,
@@ -76,7 +76,7 @@ const TripLongCard: React.FC<TripLongCardProps> = ({ card }) => {
             <LikeButton
               cardId={card.id}
               cardLikes={card.likes}
-              classes=""
+              classes="disabled:text-gray-50"
             />
 
             <Divider classes="h-full w-px" />
@@ -96,8 +96,10 @@ const TripLongCard: React.FC<TripLongCardProps> = ({ card }) => {
               icon={<Icons.report className="h-5 w-5" />}
               text="Report Issue"
               classes="bg-transparent border border-error 
-              text-error rounded-full"
+              text-error rounded-full 
+              disabled:text-gray-50 disabled:border-gray-50"
               onClick={() => setIsReportCardModal(true)}
+              disabled={!user}
             />
 
             {isCardCreatedByUser && (
@@ -106,7 +108,6 @@ const TripLongCard: React.FC<TripLongCardProps> = ({ card }) => {
 
                 <IconButton 
                   icon={<Icons.edit className="h-6 w-6" />} 
-                  classes=""
                   onClick={() => push(Routes.MY_CARDS.EDIT(card.id))}
                 />
               </>
@@ -117,14 +118,13 @@ const TripLongCard: React.FC<TripLongCardProps> = ({ card }) => {
             <IconButton 
               icon={<Icons.share className="h-6 w-6" />} 
               onClick={copy}
-              classes=""
             />
           </div>
         </div>
 
         <div className="col-span-5 row-span-1 flex flex-col gap-6">
           <div 
-            className="max-h-[546px] overflow-hidden rounded-3xl 
+            className="max-h-[546px] grow overflow-hidden rounded-3xl 
             border-2 border-gray-300 bg-white p-8"
           >
             <Tabs tabs={tabs} location="Page" />
@@ -150,4 +150,4 @@ const TripLongCard: React.FC<TripLongCardProps> = ({ card }) => {
   );
 };
 
-export default memo(TripLongCard);
+export default TripLCard;

@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { twMerge } from "tailwind-merge";
 
 interface DividerProps {
@@ -11,4 +10,4 @@ const Divider: React.FC<DividerProps> = ({ classes }) => {
   );
 };
 
-export default memo(Divider);
+export default Divider;

@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Heading2 } from "@/src/components/atoms";
 import { 
   CreateCardForm, 
@@ -48,4 +48,4 @@ const CreateCardPage = () => {
   );
 };
 
-export default memo(CreateCardPage);
+export default CreateCardPage;

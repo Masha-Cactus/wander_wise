@@ -1,6 +1,13 @@
 "use client";
 
-import { Dispatch, memo, SetStateAction, useEffect, useMemo } from "react";
+import { 
+  Dispatch, 
+  memo, 
+  SetStateAction, 
+  useCallback, 
+  useEffect, 
+  useMemo 
+} from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -25,7 +32,10 @@ import {
   SPECIALS 
 } from "@/src/lib/cardParameters";
 import { useGetUserCollections } from "@/src/queries";
-import { selectCreatedCards, selectSavedCards } from "@/src/lib/collectionSelectors";
+import { 
+  selectCreatedCards, 
+  selectSavedCards 
+} from "@/src/lib/collectionSelectors";
 
 interface FilterFormProps {
   type: 'Saved' | 'Created',
@@ -73,7 +83,7 @@ const FilterForm: React.FC<FilterFormProps> = ({ type, setFilterParams }) => {
       authors, 
       countries, 
     };
-  }, [collection, type]);
+  }, [collection]);
 
   const validationSchema = filterCardsSchema();
   const {
@@ -98,10 +108,10 @@ const FilterForm: React.FC<FilterFormProps> = ({ type, setFilterParams }) => {
     setFilterParams(trimmedData);
   };
 
-  const onClear = () => {
+  const onClear = useCallback(() => {
     reset();
     setFilterParams(null);
-  };
+  }, [reset, setFilterParams]);
 
   useEffect(() => {
     if (!isDirty) {

@@ -1,4 +1,3 @@
-import { memo } from "react";
 import Link from "next/link";
 import { Heading5, TextBase } from "@/src/components/atoms";
 
@@ -35,4 +34,4 @@ const LinkButton: React.FC<LinkButtonProps> = ({
   );
 };
 
-export default memo(LinkButton);
+export default LinkButton;

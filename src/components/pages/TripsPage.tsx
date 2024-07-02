@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useState } from "react";
+import { useState } from "react";
 import { 
   SearchCardsForm, 
   SearchedCardsSection,
@@ -23,7 +23,7 @@ const TripsPage = () => {
         </div>
 
         <div
-          className="flex flex-col items-center 
+          className="relative flex flex-col items-center
           justify-between gap-8 overflow-auto px-10 py-8"
         >
           <div className="flex w-full justify-between">
@@ -54,4 +54,4 @@ const TripsPage = () => {
   );
 };
 
-export default memo(TripsPage);
+export default TripsPage;

@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
 import { Heading2, TextBase } from "@/src/components/atoms";
@@ -22,7 +22,7 @@ const EditCardPage = () => {
     if (isNaN(+id) || isError || (card && !isCardCreatedByUser)) {
       push(Routes.NOT_FOUND);
     }
-  }, [id, isError, isCardCreatedByUser, push]);
+  }, [id, isError, isCardCreatedByUser, card, push]);
 
   return (
     <StandardPageLayout>
@@ -63,4 +63,4 @@ const EditCardPage = () => {
   );
 };
 
-export default memo(EditCardPage);
+export default EditCardPage;

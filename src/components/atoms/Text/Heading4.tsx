@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 interface Heading4Props {
   text: string;
   classes?: string;
@@ -10,4 +8,4 @@ const Heading4: React.FC<Heading4Props> = ({ text, classes, font }) => {
   return <h4 className={`font-${font} text-2xl text-black ${classes}`}>{text}</h4>;
 };
 
-export default memo(Heading4);
+export default Heading4;

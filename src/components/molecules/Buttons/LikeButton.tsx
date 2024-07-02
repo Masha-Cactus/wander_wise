@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useMemo, useRef } from "react";
+import { memo, useCallback, useMemo, useRef } from "react";
 import { 
   useGetUserCollections,
   useLikeCard, 
@@ -18,18 +18,21 @@ interface LikeButtonProps {
   classes: string,
 }
 
-const LikeButton: React.FC<LikeButtonProps> = ({ cardId, cardLikes, classes}) => {
+const LikeButton: React.FC<LikeButtonProps> 
+= ({ cardId, cardLikes, classes }) => {
   const { user } = useUser();
   const { mutate: like } = useLikeCard();
   const { mutate: removeLike } = useRemoveLikeFromCard();
   const likes = useRef(cardLikes);
 
-  const { data: likedCollection } = useGetUserCollections<ICollection>(selectLikedCards);
+  const { 
+    data: likedCollection, 
+  } = useGetUserCollections<ICollection>(selectLikedCards);
   const isCardLikedByUser = useMemo(() => 
     likedCollection?.cardDtos.some(likedCard => likedCard.id === cardId), 
   [likedCollection, cardId]);
 
-  const handleLikeClick = () => {
+  const handleLikeClick = useCallback(() => {
     if (isCardLikedByUser) {
       removeLike(cardId);
       likes.current -= 1;
@@ -37,7 +40,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ cardId, cardLikes, classes}) =>
       likes.current +=1;
       like(cardId);
     }
-  };
+  }, [isCardLikedByUser, cardId]);
 
   return (
     <IconButton

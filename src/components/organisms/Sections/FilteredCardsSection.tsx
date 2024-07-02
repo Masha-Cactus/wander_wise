@@ -6,16 +6,18 @@ import { Gallery, Pagination } from "@/src/components/organisms";
 import { LinkButton } from "@/src/components/molecules";
 import { ICard, IFilterParams } from "@/src/services";
 import { getFilteredCards } from "@/src/lib/helpers";
-import { CARDS_PER_PAGE, Routes } from "@/src/lib/constants";
+import { CARDS_PER_PAGE } from "@/src/lib/constants";
 
 interface FilteredCardsSectionProps {
   filterParams: IFilterParams | null;
   cards: ICard[];
   title: string;
+  linkText: string;
+  linkPath: string;
 }
 
 const FilteredCardsSection: React.FC<FilteredCardsSectionProps> 
-= ({ filterParams, cards, title }) => {
+= ({ filterParams, cards, title, linkText, linkPath }) => {
   const [page, setPage] = useState(0);
 
   const [filteredCards, setFilteredCards] = useState<ICard[]>([]);
@@ -38,7 +40,7 @@ const FilteredCardsSection: React.FC<FilteredCardsSectionProps>
 
   return (
     <section 
-      className="flex w-full min-h-full flex-col items-center gap-8 px-10 py-8"
+      className="flex min-h-full w-full flex-col items-center gap-8 px-10 py-8"
     >
       <div className="align-center flex w-full justify-between">
         <div className="flex items-center gap-2">
@@ -50,8 +52,8 @@ const FilteredCardsSection: React.FC<FilteredCardsSectionProps>
           />
         </div>
         <LinkButton 
-          path={Routes.MY_CARDS.CREATE}
-          text="+ New card"
+          path={linkPath}
+          text={linkText}
         />
       </div>
 
@@ -82,7 +84,7 @@ const FilteredCardsSection: React.FC<FilteredCardsSectionProps>
         </div>
       )}
     </section>
-  )
-}
+  );
+};
 
 export default memo(FilteredCardsSection);

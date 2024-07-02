@@ -20,14 +20,14 @@ interface EditReviewFormProps {
 
 type EditReviewFormData = Omit<IUpdateComment, 'id' | 'cardId'>;
 
-const EditReviewForm: React.FC<EditReviewFormProps> = ({ closeModal, review }) => {
+const EditReviewForm: React.FC<EditReviewFormProps> 
+= ({ closeModal, review }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = reviewSchema();
 
   const {
     control,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<EditReviewFormData>({
     values: {
@@ -37,7 +37,7 @@ const EditReviewForm: React.FC<EditReviewFormProps> = ({ closeModal, review }) =
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useUpdateComment();
+  const { isPending, mutate } = useUpdateComment();
 
   const onSubmit: SubmitHandler<EditReviewFormData> = (data) => {
     mutate({...data, cardId: review.cardId, id: review.id}, {
@@ -61,9 +61,9 @@ const EditReviewForm: React.FC<EditReviewFormProps> = ({ closeModal, review }) =
         errorText={errors.text?.message}
       />
 
-      <PrimaryButton text="Send" type="submit" disabled={isPending} />
+      <PrimaryButton text="Save" type="submit" disabled={isPending} />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

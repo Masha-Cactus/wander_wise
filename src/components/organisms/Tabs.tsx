@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { Divider, TextBase, Heading5 } from "@/src/components/atoms";
 import { Map } from "@/src/components/molecules";
@@ -18,8 +18,17 @@ const Tabs: React.FC<TabsProps> = ({ tabs, location }) => {
     ? tabs['Why this place?'].slice(0, 3)
     : tabs['Why this place?'];
 
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const [mapHeight, setMapHeight] = useState(0);
+  
+  useEffect(() => {
+    if (mapContainerRef.current && active === 'Map') {
+      setMapHeight(mapContainerRef.current.clientHeight - 90);
+    }
+  }, [active]);
+
   return (
-    <div className="flex h-full w-full flex-col gap-2">
+    <div className="flex h-full w-full flex-col gap-2" ref={mapContainerRef}>
       <div className="flex justify-between">
         {Object.keys(tabs).map((tab) => (
           <li
@@ -28,7 +37,7 @@ const Tabs: React.FC<TabsProps> = ({ tabs, location }) => {
               location === 'Page' && 'p-2',
               active === tab 
               && `after:bg-gray-800 after:h-1 after:w-full after:absolute 
-              after:rounded-full after:inset-x-0 after:-bottom-2`,
+              after:rounded-full after:inset-x-0 after:-bottom-3`,
             )}
             key={tab}
           >
@@ -36,12 +45,12 @@ const Tabs: React.FC<TabsProps> = ({ tabs, location }) => {
               {location === 'Page' ? (
                 <Heading5 
                   text={tab} 
-                  font={active === tab ? 'semibold' : 'normal'} 
+                  font={active === tab ? 'semibold' : 'medium'} 
                 />
               ) : (
                 <TextBase
                   text={tab} 
-                  font={active === tab ? 'semibold' : 'normal'}  
+                  font={active === tab ? 'semibold' : 'medium'}  
                 />
               )}
               
@@ -50,9 +59,18 @@ const Tabs: React.FC<TabsProps> = ({ tabs, location }) => {
         ))}
       </div>
 
-      <Divider classes="mb-1" />
+      <Divider 
+        classes={twMerge(
+          'h-1 rounded-full mb-6', location === 'Card' && "mb-1" 
+        )} 
+      />
 
-      <div className={twMerge(location === 'Card' && 'line-clamp-4')}>
+      <div 
+        className={twMerge(
+          'overflow-y-scroll', 
+          location === 'Card' && 'line-clamp-4'
+        )} 
+      >
         {active === 'Description' && (
           <TextBase 
             text={tabs['Description']} 
@@ -72,11 +90,11 @@ const Tabs: React.FC<TabsProps> = ({ tabs, location }) => {
         )}
 
         {tabs["Map"] && active === 'Map' && (
-          <Map coordinates={tabs['Map']} />
+          <Map coordinates={tabs['Map']} height={`${mapHeight}px`} />
         )}
 
         {tabs["Distance"] && active === 'Distance' && (
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 py-4">
             {!!tabs["Distance"].value && (
               <TextBase 
                 text={`This place is ${tabs["Distance"].value} km from you.`} 

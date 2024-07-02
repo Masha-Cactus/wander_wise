@@ -39,7 +39,7 @@ const ChangeCollectionNameForm: React.FC<ChangeCollectionNameFormProps>
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useUpdateCollection();
+  const { isPending, mutate } = useUpdateCollection();
 
   const onSubmit = (data: ChangeCollectionNameFormData) => {
     const { newName } = trimObjectFields(data);
@@ -78,7 +78,7 @@ const ChangeCollectionNameForm: React.FC<ChangeCollectionNameFormProps>
         disabled={isPending} 
       />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

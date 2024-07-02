@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { 
   useInfiniteQuery,
   useMutation, 
@@ -5,6 +6,7 @@ import {
   useQueryClient 
 } from "@tanstack/react-query";
 import {
+  ICard,
   ICreateCard,
   IUpdateCard,
   IAddCardImages,
@@ -14,6 +16,7 @@ import {
   cardService,
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
+import { CARDS_PER_PAGE } from "@/src/lib/constants";
 
 export function useGetCardDetails(cardId: number | null) {
   return useQuery({
@@ -26,6 +29,7 @@ export function useGetCardDetails(cardId: number | null) {
       return null;
     },
     enabled: typeof cardId === 'number',
+    staleTime: 0,
   });
 }
 
@@ -36,7 +40,9 @@ export function useCreateCard() {
   return useMutation({
     mutationFn: (data: ICreateCard) => {
       if (user?.banned) {
-        return Promise.reject('Email confirmation is required for this action.')
+        return Promise.reject(new Error(
+          'Email confirmation is required for this action.'
+        ));
       }
       
       return cardService.createCard(data);
@@ -56,10 +62,12 @@ export function useUpdateCard() {
   return useMutation({
     mutationFn: (data: IUpdateCard) => {
       if (user?.banned) {
-        return Promise.reject('Email confirmation is required for this action.')
+        return Promise.reject(new Error(
+          'Email confirmation is required for this action.'
+        ));
       }
 
-      return cardService.updateCard(data)
+      return cardService.updateCard(data);
     },
     onSuccess: async ({ id }) => {
       await Promise.all([
@@ -81,7 +89,9 @@ export function useAddCardImages() {
   return useMutation({
     mutationFn: (data: IAddCardImages) => {
       if (user?.banned) {
-        return Promise.reject('Email confirmation is required for this action.')
+        return Promise.reject(new Error(
+          'Email confirmation is required for this action.'
+        ));
       }
 
       return cardService.addImages(data);
@@ -107,13 +117,13 @@ export function useDeleteCard() {
     mutationFn: (cardId: number) => cardService.deleteCard(cardId),
     onSuccess: async () => {
       await Promise.all([
-      queryClient.invalidateQueries({
-        queryKey: ["user-collections", { userId: user?.id }],
-      }),
-      queryClient.invalidateQueries({
-        queryKey: ['user-comments', { userId: user?.id }],
-      }),
-    ]);
+        queryClient.invalidateQueries({
+          queryKey: ["user-collections", { userId: user?.id }],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['user-comments', { userId: user?.id }],
+        }),
+      ]);
     },
   });
 }
@@ -191,13 +201,29 @@ export function useReportCard() {
 }
 
 export function usePopularCards(page: number) {
-  return useQuery({
-    queryKey: ['popular-cards', { page }],
-    queryFn: () => cardService.getPopular(),
+  return useInfiniteQuery({
+    queryKey: ['popular-cards'],
+    queryFn: ({ signal }) => cardService.getPopular(signal),
+    initialPageParam: 0,
+    getNextPageParam: (data: ICard[], _, __, allPageParams) => {
+      if (data.length < CARDS_PER_PAGE 
+        && page === allPageParams[allPageParams.length - 1]) {
+        return undefined;
+      }
+
+      return page + 1;
+    },
+    getPreviousPageParam: (data: ICard[]) => {
+      if (page - 1 < 0) {
+        return undefined;
+      }
+      
+      return page - 1;
+    },
   });
 }
 
-export function useSearchCards(filterParams: ISearchCard | null) {
+export function useSearchCards(filterParams: ISearchCard | null, page: number) {
   return useInfiniteQuery({
     queryKey: ['cards', filterParams],
     queryFn: ({ pageParam, signal }) => {
@@ -205,12 +231,24 @@ export function useSearchCards(filterParams: ISearchCard | null) {
         return cardService.searchCards(pageParam, filterParams, signal);
       }
 
-      return Promise.reject("Filter parameters are required");
+      return Promise.reject(new Error("Filter parameters are required"));
     },
     enabled: !!filterParams,
     initialPageParam: 0,
-    getNextPageParam: (data: ISearchCardResponse) => data.currentPage + 1,
-    getPreviousPageParam: (data: ISearchCardResponse) => data.currentPage - 1,
+    getNextPageParam: (data: ISearchCardResponse, _, __, allPageParams) => {
+      if (data.cards.length < CARDS_PER_PAGE
+        && page === allPageParams[allPageParams.length - 1]) {
+        return undefined;
+      }
 
+      return page + 1;
+    },
+    getPreviousPageParam: (data: ISearchCardResponse) => {
+      if (page - 1 < 0) {
+        return undefined;
+      }
+
+      return page - 1;
+    },
   });
 }

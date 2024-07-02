@@ -71,8 +71,11 @@ class CardService {
     );
   };
 
-  getPopular() {
-    return baseClient.get<never, ICard[]>(`${this.BASE_URL}/random/${CARDS_PER_PAGE}`);
+  getPopular(signal: AbortSignal) {
+    return baseClient.get<never, ICard[]>(
+      `${this.BASE_URL}/random/${CARDS_PER_PAGE}`,
+      { signal }
+    );
   }
 }
 

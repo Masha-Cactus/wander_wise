@@ -7,14 +7,18 @@ import { useUpdatePassword } from "@/src/queries";
 import { IUpdatePassword } from "@/src/services";
 import { changePasswordSchema } from "@/src/validation";
 import { ErrorText } from "@/src/components/atoms";
-import { PasswordInput, PrimaryButton, UnstyledButton } from "@/src/components/molecules";
+import { 
+  PasswordInput, 
+  PrimaryButton, 
+  UnstyledButton 
+} from "@/src/components/molecules";
 
 interface ChangePasswordFormProps {
   closeModal: () => void;
   openRestorePasswordModal: () => void;
 }
 
-type ChangePasswordFormData = Omit<IUpdatePassword, 'userId'>
+type ChangePasswordFormData = Omit<IUpdatePassword, 'userId'>;
 
 const ChangePasswordForm: React.FC<ChangePasswordFormProps> 
 = ({ closeModal, openRestorePasswordModal }) => {
@@ -33,7 +37,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps>
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useUpdatePassword();
+  const { isPending, mutate } = useUpdatePassword();
 
   const onSubmit: SubmitHandler<ChangePasswordFormData> = (data) => {
     mutate(data, {
@@ -44,43 +48,46 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps>
 
   return (
     <form
-      className="grid h-full w-full grid-cols-2 gap-x-4 gap-y-6"
+      className="flex h-full w-full flex-col justify-center gap-4 pt-2"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="col-span-1">
-        <PasswordInput 
-          name="oldPassword"
-          label="Current password"
-          control={control}
-          errorText={errors.oldPassword?.message}
-          disabled={isPending}
-        />
-      </div>
+      <div className="grid h-full w-full grid-cols-2 gap-x-4 gap-y-6">
+        <div className="col-span-1">
+          <PasswordInput 
+            name="oldPassword"
+            label="Current password"
+            control={control}
+            errorText={errors.oldPassword?.message}
+            disabled={isPending}
+          />
+        </div>
 
 
-      <div className="row-start-2">
-        <PasswordInput 
-          name="password"
-          label="New password"
-          control={control}
-          errorText={errors.password?.message}
-          disabled={isPending}
-        />
+        <div className="row-start-2">
+          <PasswordInput 
+            name="password"
+            label="New password"
+            control={control}
+            errorText={errors.password?.message}
+            disabled={isPending}
+          />
+        </div>
+        <div className="row-start-2">
+          <PasswordInput 
+            name="repeatPassword"
+            label="Repeat new password"
+            control={control}
+            errorText={errors.repeatPassword?.message}
+            disabled={isPending}
+          />
+        </div>
+      </div>
 
-        <UnstyledButton
-          text="Forgot Password?"
-          onClick={openRestorePasswordModal}
-        />
-      </div>
-      <div className="row-start-2">
-        <PasswordInput 
-          name="repeatPassword"
-          label="Repeat new password"
-          control={control}
-          errorText={errors.repeatPassword?.message}
-          disabled={isPending}
-        />
-      </div>
+      <UnstyledButton
+        text="Forgot Password?"
+        onClick={openRestorePasswordModal}
+        classes="mb-4 self-start"
+      />
 
       <PrimaryButton 
         text="Save" 
@@ -89,7 +96,7 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps>
         classes="row-start-3 col-span-2" 
       />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

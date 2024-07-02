@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 "use client";
 
-import { memo } from "react";
 import { useRouter } from "next/navigation";
 import { Routes, SLIDER_IMAGES } from "@/src/lib/constants";
 import { PrimaryButton, HomeSlider } from "@/src/components/molecules";
@@ -12,7 +11,7 @@ const HomePage = () => {
 
   return (
     <section
-      className="h-full w-full px-10 pb-10 text-white bg-white"
+      className="h-full w-full bg-white px-10 pb-10 text-white"
     >
       <div className="relative h-full w-full">
         <HomeSlider slides={SLIDER_IMAGES} />
@@ -41,4 +40,4 @@ const HomePage = () => {
   );
 };
 
-export default memo(HomePage);
+export default HomePage;

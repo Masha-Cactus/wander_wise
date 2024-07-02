@@ -1,9 +1,8 @@
 'use client';
 
-import { memo } from "react";
 import { useRouter } from "next/navigation";
 import { PrimaryButton } from "@/src/components/molecules";
-import { TripShortCard } from "@/src/components/organisms";
+import { TripSCard } from "@/src/components/organisms";
 import { Heading5, Heading3 } from "@/src/components/atoms";
 import { Routes } from "@/src/lib/constants";
 import { useGetUserCollections } from "@/src/queries";
@@ -12,7 +11,9 @@ import { ICollection } from "@/src/services";
 
 const RecentlyLikedSection: React.FC = () => {
   const { push } = useRouter();
-  const { data: likedCollection } = useGetUserCollections<ICollection>(selectLikedCards);
+  const { 
+    data: likedCollection, 
+  } = useGetUserCollections<ICollection>(selectLikedCards);
 
   return (
     <section
@@ -22,7 +23,7 @@ const RecentlyLikedSection: React.FC = () => {
       {!!likedCollection?.cardDtos.length ? (
         <div className="mt-4 flex w-full items-center gap-5 overflow-x-scroll">
           {likedCollection.cardDtos.map((card) => (
-            <TripShortCard key={card.id} card={card} />
+            <TripSCard key={card.id} card={card} />
           ))}
         </div>
       ) : (
@@ -41,4 +42,4 @@ const RecentlyLikedSection: React.FC = () => {
   );
 };
 
-export default memo(RecentlyLikedSection);
+export default RecentlyLikedSection;

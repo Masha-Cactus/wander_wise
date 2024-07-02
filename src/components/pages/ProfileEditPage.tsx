@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useUser } from "@/src/store/user";
 import { Divider, Heading2, Heading5, TextBase } from "@/src/components/atoms";
@@ -59,7 +59,7 @@ const ProfileEditPage = () => {
               <TextBase 
                 text={user?.email || ''} 
                 font="normal" 
-                classes="text-gray-70" 
+                classes="text-gray-50" 
               />
             </div>
             <div className="w-32">
@@ -77,7 +77,7 @@ const ProfileEditPage = () => {
               <TextBase 
                 text="********" 
                 font="normal" 
-                classes="text-gray-70" 
+                classes="text-gray-50" 
               />
             </div>
             <div className="w-32">
@@ -155,4 +155,4 @@ const ProfileEditPage = () => {
   );
 };
 
-export default memo(ProfileEditPage);
+export default ProfileEditPage;

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, memo } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { twMerge } from "tailwind-merge";
 import { Icons } from "@/src/components/atoms";
 import { IconButton } from "@/src/components/molecules";
@@ -39,4 +39,4 @@ const ViewSwitcher: React.FC<ViewSwitcherProps> = ({ view, setView }) => {
   );
 };
 
-export default memo(ViewSwitcher);
+export default ViewSwitcher;

@@ -12,6 +12,11 @@ const CardImagesSection: React.FC<CardImagesSectionProps>
 = ({ images }) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [displayedImages, setDisplayedImages] = useState(images);
+  const handleImageError = (image: string) => {
+    setDisplayedImages((currImages) => currImages
+      .filter(currImage => currImage !== image)
+    );
+  };
 
   return (
     <section 
@@ -35,11 +40,7 @@ const CardImagesSection: React.FC<CardImagesSectionProps>
                     sizes="160px"
                     className="cursor-pointer object-cover"
                     onClick={() => setSelectedImage(index)}
-                    onError={() => {
-                      setDisplayedImages((currImages) => currImages
-                        .filter(currImage => currImage !== image)
-                      );
-                    }}
+                    onError={() => handleImageError(image)}
                   />
                 </div>
               ))}
@@ -48,8 +49,8 @@ const CardImagesSection: React.FC<CardImagesSectionProps>
         </>
       ) : (
         <div 
-          className="flex w-full items-center justify-center 
-            rounded-3xl bg-gray-30 py-[14%] relative"
+          className="relative flex w-full items-center 
+            justify-center rounded-3xl bg-gray-30 py-[14%]"
         >
           <Image 
             src="/trip-default.webp" 

@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { Heading3 } from "@/src/components/atoms";
 import { CreateCollectionForm } from "@/src/components/organisms";
 import { StandardPageLayout } from "@/src/components/templates";
@@ -21,4 +20,4 @@ const CreateCollectionPage = () => {
   );
 };
 
-export default memo(CreateCollectionPage);
+export default CreateCollectionPage;

@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { twMerge } from "tailwind-merge";
 import { TextBase, TextSmall } from "@/src/components/atoms";
 
@@ -6,13 +5,14 @@ interface IconButtonProps {
   icon: React.ReactNode;
   onClick?: (arg: any) => void;
   text?: string;
-  classes: string;
-  size?: 'small',
-  disabled?: boolean,
+  classes?: string;
+  size?: 'small';
+  disabled?: boolean;
+  truncateText?: boolean;
 }
 
 const IconButton: React.FC<IconButtonProps> 
-= ({ icon, onClick, text, classes, size, disabled }) => {
+= ({ icon, onClick, text, classes, size, disabled, truncateText }) => {
   return (
     <button 
       className={twMerge(
@@ -28,9 +28,17 @@ const IconButton: React.FC<IconButtonProps>
       {text && (
         <>
           {size === 'small' ? (
-            <TextSmall text={text} font="semibold" classes="text-inherit" />
+            <TextSmall 
+              text={text} 
+              font="semibold" 
+              classes={twMerge('text-inherit', truncateText && 'truncate')} 
+            />
           ) : (
-            <TextBase text={text} font="normal" classes="text-inherit" />
+            <TextBase 
+              text={text} 
+              font="normal" 
+              classes={twMerge('text-inherit', truncateText && 'truncate')} 
+            />
           )}
         </>
       )}
@@ -38,4 +46,4 @@ const IconButton: React.FC<IconButtonProps>
   );
 };
 
-export default memo(IconButton);
+export default IconButton;

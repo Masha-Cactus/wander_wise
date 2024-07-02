@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 interface TextMediumProps {
   text: string;
   classes?: string;
@@ -10,4 +8,4 @@ const TextMedium: React.FC<TextMediumProps> = ({ text, classes, font }) => {
   return <p className={`font-${font} text-sm text-black ${classes}`}>{text}</p>;
 };
 
-export default memo(TextMedium);
+export default TextMedium;

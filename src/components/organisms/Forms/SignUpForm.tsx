@@ -1,6 +1,5 @@
 "use client";
 
-import { memo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ISignUp } from "@/src/services";
@@ -36,10 +35,9 @@ const SignUpForm: React.FC<SignUpFormProps>
       repeatPassword: "",
     },
     resolver: yupResolver(validationSchema),
-    mode: 'onBlur',
   });
   
-  const { isPending, mutate, isError } = useSignUp();
+  const { isPending, mutate } = useSignUp();
 
   const onSubmit: SubmitHandler<ISignUp> = (data) => {
     const trimmedUserData = trimObjectFields(data);
@@ -86,16 +84,16 @@ const SignUpForm: React.FC<SignUpFormProps>
         placeholder="Confirm password"
       />
 
-      {isError && <ErrorText errorText={errorMessage} />}
-
       <PrimaryButton
         text="Create Account"
         classes=""
         type="submit"
         disabled={isPending}
       />
+
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };
 
-export default memo(SignUpForm);
+export default SignUpForm;

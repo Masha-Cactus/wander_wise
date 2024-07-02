@@ -64,7 +64,7 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ setNewCardId }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useCreateCard();
+  const { isPending, mutate } = useCreateCard();
   
   const onSubmit: SubmitHandler<CreateCardFormData> = (data) => {
     const {
@@ -188,7 +188,7 @@ const CreateCardForm: React.FC<CreateCardFormProps> = ({ setNewCardId }) => {
 
       <PrimaryButton text="Create" type="submit" disabled={isPending} />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

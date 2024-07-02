@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 "use client";
 
-import { memo, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -93,4 +93,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default memo(Header);
+export default Header;

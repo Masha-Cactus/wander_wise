@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { twMerge } from "tailwind-merge";
 
 interface PrimaryButtonProps {
@@ -37,4 +36,4 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
   );
 };
 
-export default memo(PrimaryButton);
+export default PrimaryButton;

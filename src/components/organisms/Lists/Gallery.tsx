@@ -1,7 +1,7 @@
 "use client";
 
 import { memo } from "react";
-import { TripMediumCard } from "@/src/components/organisms";
+import { TripMCard } from "@/src/components/organisms";
 import { ICard } from "@/src/services";
 
 interface GalleryProps {
@@ -16,7 +16,7 @@ const Gallery: React.FC<GalleryProps> = ({ cards }) => {
       justify-center gap-x-5 gap-y-6"
     >
       {cards.map((card) => (
-        <TripMediumCard key={card.id} card={card} />
+        <TripMCard key={card.id} card={card} />
       ))}
     </section>
   );

@@ -25,7 +25,6 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionModalProps> = ({
   const [isCreateCollection, setIsCreateCollection] = useState(false);
 
   const {
-    isError,
     data: collections,
     error,
   } = useGetUserCollections<ICollection[]>(selectOtherCollections);
@@ -64,7 +63,7 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionModalProps> = ({
           />
         )}
 
-        {isError && <ErrorText errorText={errorMessage} />}
+        {errorMessage && <ErrorText errorText={errorMessage} />}
       </div>
     </ModalTemplate>
   );

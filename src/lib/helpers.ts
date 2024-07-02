@@ -41,14 +41,15 @@ export const getFilteredCards
 = (cards: ICard[], filterParams: IFilterParams) => {
   return cards.filter(card => {
     const isTripType = !filterParams.tripTypes.length 
-      || card.tripTypes.some(tripType => filterParams.tripTypes.includes(tripType));
+      || card.tripTypes.some(tripType => 
+        filterParams.tripTypes.includes(tripType));
     const isClimate = !filterParams.climates.length 
       || filterParams.climates.includes(card.climate);
     const isCountry = !filterParams.countries.length 
       || filterParams.countries.includes(card.whereIs.split(',')[2].trim());
     const isSpecial = !filterParams.specialRequirements.length 
       || card.specialRequirements
-      .some(special => filterParams.specialRequirements.includes(special));
+        .some(special => filterParams.specialRequirements.includes(special));
     const isAuthor = !filterParams.authors.length 
       || filterParams.authors.includes(card.author as CardAuthorsType);
   

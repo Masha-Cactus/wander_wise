@@ -1,19 +1,18 @@
-import { memo } from "react";
 import Link from "next/link";
 import { Routes } from "@/src/lib/constants";
 import { ICard } from "@/src/services";
 import { TextMedium } from "@/src/components/atoms";
 import { TripImage } from "@/src/components/molecules";
 
-interface TripShortCardProps {
+interface TripSCardProps {
   card: ICard;
 }
 
-const TripShortCard: React.FC<TripShortCardProps> = ({ card }) => {
+const TripSCard: React.FC<TripSCardProps> = ({ card }) => {
   return (
     <Link 
       href={Routes.TRIP(card.id)} 
-      className="relative h-40 w-60 overflow-hidden rounded-2xl shrink-0"
+      className="relative h-40 w-60 shrink-0 overflow-hidden rounded-2xl"
     >
       <TripImage 
         imageLinks={card.imageLinks}
@@ -35,4 +34,4 @@ const TripShortCard: React.FC<TripShortCardProps> = ({ card }) => {
   );
 };
 
-export default memo(TripShortCard);
+export default TripSCard;

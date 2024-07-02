@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, memo, SetStateAction, useCallback, useEffect } from "react";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -81,10 +81,10 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
     });
   };
 
-  const onClear = () => {
+  const onClear = useCallback(() => {
     reset();
     setFilterParams(null);
-  };
+  }, [reset, setFilterParams]);
 
   useEffect(() => {
     if (!isDirty) {
@@ -228,4 +228,4 @@ const SearchCardsForm: React.FC<Props> = ({ setFilterParams }) => {
   );
 };
 
-export default SearchCardsForm;
+export default memo(SearchCardsForm);

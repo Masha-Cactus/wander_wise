@@ -1,6 +1,5 @@
 'use client';
 
-import { memo } from "react";
 import { useRouter } from "next/navigation";
 import { PrimaryButton } from "@/src/components/molecules";
 import { ReviewCardLong } from "@/src/components/organisms";
@@ -8,7 +7,7 @@ import { Heading3, Heading5, Divider } from "@/src/components/atoms";
 import { useGetUserComments } from "@/src/queries";
 import { Routes } from "@/src/lib/constants";
 
-const RecentlyLikedSection: React.FC = () => {
+const RecentReviewsSection: React.FC = () => {
   const { push } = useRouter();
   const { data: reviews } = useGetUserComments();
 
@@ -47,4 +46,4 @@ const RecentlyLikedSection: React.FC = () => {
   );
 };
 
-export default memo(RecentlyLikedSection);
+export default RecentReviewsSection;

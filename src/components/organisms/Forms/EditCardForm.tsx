@@ -75,7 +75,7 @@ const EditCardForm: React.FC<EditCardFormProps> = ({ card }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useUpdateCard();
+  const { isPending, mutate } = useUpdateCard();
   
   const onSubmit: SubmitHandler<UpdateCardFormData> = (data) => {
     const {
@@ -83,15 +83,16 @@ const EditCardForm: React.FC<EditCardFormProps> = ({ card }) => {
       ...trimmedData
     } = trimObjectFields(data);
 
-    const currentLocation = card.whereIs.split(',');
+    const [populatedLocality, region, country, continent] 
+    = card.whereIs.split(',');
     
     mutate({
       ...trimmedData,
       id: card.id,
-      populatedLocality: location?.city || currentLocation[0].trim(),
-      // region: currentLocation[1].trim(),
-      country: location?.country || currentLocation[2].trim(),
-      // continent: currentLocation[3].trim(),
+      populatedLocality: location?.city || populatedLocality.trim(),
+      region: location ? '' : region.trim(),
+      country: location?.country || country.trim(),
+      continent: location ? '' : continent.trim(),
     },
     {
       onError: (e) => setErrorMessage(e),
@@ -115,7 +116,7 @@ const EditCardForm: React.FC<EditCardFormProps> = ({ card }) => {
 
   useEffect(() => {
     setValue('imageLinks', card.imageLinks);
-  }, [card]);
+  }, [card, setValue]);
 
   return (
     <form
@@ -261,7 +262,7 @@ const EditCardForm: React.FC<EditCardFormProps> = ({ card }) => {
 
       <PrimaryButton text="Save changes" type="submit" disabled={isPending} />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

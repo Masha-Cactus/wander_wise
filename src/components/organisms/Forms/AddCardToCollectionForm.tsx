@@ -45,11 +45,7 @@ const AddCardToCollectionForm: React.FC<AddCardToCollectionFormProps>
     resolver: yupResolver(validationSchema),
   });
 
-  const {
-    isPending,
-    mutate,
-    isError,
-  } = useUpdateCollection();
+  const { isPending, mutate } = useUpdateCollection();
 
   const onSubmit = (data: AddCardToCollectionFormData) => {
     const { selectedCollectionIds } = trimObjectFields(data);
@@ -117,7 +113,7 @@ const AddCardToCollectionForm: React.FC<AddCardToCollectionFormProps>
         />
       </div>
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

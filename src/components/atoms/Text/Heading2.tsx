@@ -3,7 +3,7 @@ import { memo } from "react";
 interface Heading2Props {
   text: string;
   classes?: string;
-  font: "semibold" | "normal";
+  font: "semibold"| "medium" | "normal";
 }
 
 const Heading2: React.FC<Heading2Props> = ({ text, classes, font }) => {

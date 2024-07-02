@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { ICollection, IFilterParams } from "@/src/services";
 import { 
@@ -9,21 +9,25 @@ import {
   EmptyFallbackModal 
 } from "@/src/components/organisms";
 import { Loader } from "@/src/components/atoms";
-import { LoadedContentStateController } from "@/src/components/molecules";
 import { Routes } from "@/src/lib/constants";
 import { useGetUserCollections } from "@/src/queries";
-import { ScreenHeightLayout } from "@/src/components/templates";
+import { 
+  ScreenHeightLayout, 
+  LoadingStateWrapper 
+} from "@/src/components/templates";
 import { selectCreatedCards } from "@/src/lib/collectionSelectors";
 
 const MyCardsPage = () => {
   const [filterParams, setFilterParams] = useState<IFilterParams | null>(null);
-  const { data: createdCollection, isLoading } 
-    = useGetUserCollections<ICollection>(selectCreatedCards);
+  const { 
+    data: createdCollection, 
+    isLoading, 
+  } = useGetUserCollections<ICollection>(selectCreatedCards);
 
   return (
     <ScreenHeightLayout>
       <AnimatePresence>
-        <LoadedContentStateController
+        <LoadingStateWrapper
           isEmpty={createdCollection && !createdCollection.cardDtos.length}
           emptyFallbackComponent={
             <EmptyFallbackModal
@@ -37,13 +41,14 @@ const MyCardsPage = () => {
           isLoading={isLoading}
           loadingFallbackComponent={
             <div className="flex h-full w-full items-center justify-center">
-              <Loader />
+              <Loader size="lg" />
             </div>
           }
         >
           {!!createdCollection?.cardDtos.length && (
             <div 
-              className="grid h-full w-full grid-cols-[345px,1fr] overflow-hidden"
+              className="grid h-full w-full 
+              grid-cols-[345px,1fr] overflow-hidden"
             >
               <div className="overflow-y-scroll">
                 <FilterForm type="Created" setFilterParams={setFilterParams} />
@@ -54,14 +59,16 @@ const MyCardsPage = () => {
                   filterParams={filterParams} 
                   cards={createdCollection.cardDtos} 
                   title="My created cards" 
+                  linkText="+ New card"
+                  linkPath={Routes.MY_CARDS.CREATE}
                 />
               </div>
             </div>
           )}
-        </LoadedContentStateController> 
+        </LoadingStateWrapper> 
       </AnimatePresence>   
     </ScreenHeightLayout>
   );
 };
 
-export default memo(MyCardsPage);
+export default MyCardsPage;

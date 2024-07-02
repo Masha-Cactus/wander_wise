@@ -37,7 +37,7 @@ const CreateCollectionShortForm: React.FC<CreateCollectionShortFormProps>
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useCreateCollection();
+  const { isPending, mutate } = useCreateCollection();
 
   const onSubmit: SubmitHandler<CreateCollectionShortData> = (data) => {
     const { name } = trimObjectFields(data);
@@ -72,7 +72,7 @@ const CreateCollectionShortForm: React.FC<CreateCollectionShortFormProps>
         classes="w-full h-10"
       />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

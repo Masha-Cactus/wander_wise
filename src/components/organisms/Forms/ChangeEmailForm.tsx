@@ -13,7 +13,8 @@ interface ChangeEmailFormProps {
   openConfirmEmailModal: () => void;
 }
 
-const ChangeEmailForm: React.FC<ChangeEmailFormProps> = ({ openConfirmEmailModal }) => {
+const ChangeEmailForm: React.FC<ChangeEmailFormProps> 
+= ({ openConfirmEmailModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = changeEmailSchema();
 
@@ -28,7 +29,7 @@ const ChangeEmailForm: React.FC<ChangeEmailFormProps> = ({ openConfirmEmailModal
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useRequestUpdateEmail();
+  const { isPending, mutate } = useRequestUpdateEmail();
 
   const onSubmit: SubmitHandler<IEmail> = (data) => {
     mutate(data.email, {
@@ -53,7 +54,7 @@ const ChangeEmailForm: React.FC<ChangeEmailFormProps> = ({ openConfirmEmailModal
 
       <PrimaryButton text="Save" disabled={isPending} type='submit' />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

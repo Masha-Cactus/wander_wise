@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
@@ -41,7 +41,7 @@ const UploadProfileImageForm: React.FC<UploadProfileImageFormProps>
 
   const uploadedImage = useWatch({control, name: 'image'});
 
-  const { isPending, mutate, isError } = useUpdateUserImage();
+  const { isPending, mutate } = useUpdateUserImage();
   
   const onSubmit: SubmitHandler<UploadProfileImageFormData> = ({ image }) => {
     mutate(image,
@@ -52,12 +52,12 @@ const UploadProfileImageForm: React.FC<UploadProfileImageFormProps>
     );
   };
 
-  const deleteImage = () => {
+  const deleteImage = useCallback(() => {
     mutate(null, { 
       onError: (e) => setErrorMessage(e), 
       onSuccess: () => setImageUrl('/user-default.webp') 
     });
-  };
+  }, []);
 
   const { user } = useUser();
   const [imageUrl, setImageUrl] = useState(
@@ -106,7 +106,7 @@ const UploadProfileImageForm: React.FC<UploadProfileImageFormProps>
         <div className="flex grow flex-col justify-center gap-4">
           <PrimaryButton 
             type="submit"
-            text="Replace" 
+            text={user?.profileImage ? "Replace" : "Add"} 
             disabled={isPending || !uploadedImage}
           />
 
@@ -128,7 +128,7 @@ const UploadProfileImageForm: React.FC<UploadProfileImageFormProps>
         </div>
       </div>
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

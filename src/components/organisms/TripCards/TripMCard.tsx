@@ -23,11 +23,11 @@ import { useUser } from "@/src/store/user";
 import { Routes } from "@/src/lib/constants";
 import { useCopyUrlToClipboard } from "@/src/hooks";
 
-interface TripMediumCardProps {
+interface TripMCardProps {
   card: ICard;
 }
 
-const TripMediumCard: React.FC<TripMediumCardProps> = ({ card }) => {
+const TripMCard: React.FC<TripMCardProps> = ({ card }) => {
   const { user } = useUser();
   const { id: collectionId } = useParams();
   const [isAddToCollectionModal, setIsAddToCollectionModal] = useState(false);
@@ -65,7 +65,7 @@ const TripMediumCard: React.FC<TripMediumCardProps> = ({ card }) => {
         {isCopied && (
           <span 
             className="absolute inset-x-2 top-2 z-10 flex 
-         items-center justify-center rounded-3xl bg-gray-10 py-2"
+         items-center justify-center rounded-2xl bg-gray-10 py-2"
           >
             <TextBase text="Copied to clipboard!" font="medium" />
           </span>
@@ -188,4 +188,4 @@ const TripMediumCard: React.FC<TripMediumCardProps> = ({ card }) => {
   );
 };
 
-export default memo(TripMediumCard);
+export default memo(TripMCard);

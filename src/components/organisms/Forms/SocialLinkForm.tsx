@@ -12,7 +12,7 @@ import {
 import { useUser } from "@/src/store/user";
 import { socialLinkSchema } from "@/src/validation";
 import { ErrorText } from "@/src/components/atoms";
-import { TextInput, PrimaryButton } from "@/src/components/molecules";
+import { TextInput, UnstyledButton } from "@/src/components/molecules";
 import { SocialLinkName } from "@/src/services";
 
 interface SocialLinkFormProps {
@@ -45,14 +45,14 @@ const SocialLinkForm: React.FC<SocialLinkFormProps> = ({ name }) => {
   const { 
     isPending: isPendingAdd, 
     mutate: add, 
-    isError: isAddError 
   } = useAddSocial();
 
   const { 
     isPending: isPendingUpdate, 
     mutate: update, 
-    isError: isUpdateError 
   } = useUpdateSocial();
+
+  const isPending = isPendingAdd || isPendingUpdate;
 
   const onSubmit: SubmitHandler<SocialLinkFormData> = (data) => {
     const { link } = trimObjectFields(data);
@@ -70,15 +70,12 @@ const SocialLinkForm: React.FC<SocialLinkFormProps> = ({ name }) => {
     }
   };
 
-  const isPending = isPendingAdd || isPendingUpdate;
-  const isError = isAddError || isUpdateError;
-
   return (
     <form 
       onSubmit={handleSubmit(onSubmit)} 
       className="flex w-full flex-col gap-6"
     >
-      <div className="flex items-end gap-3">
+      <div className="flex gap-3">
         <div className="grow">
           <TextInput
             type="text"
@@ -89,15 +86,16 @@ const SocialLinkForm: React.FC<SocialLinkFormProps> = ({ name }) => {
             label={name}
           />
         </div>
-        <PrimaryButton 
+        
+        <UnstyledButton 
           text={currentSocial ? "Update" : "Add"} 
-          classes="h-12 w-1/4 rounded-md"
+          classes="mt-10 h-[50px] px-3 rounded-md disabled:text-gray-50"
           disabled={isPending}
           type="submit"
         />
       </div>
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

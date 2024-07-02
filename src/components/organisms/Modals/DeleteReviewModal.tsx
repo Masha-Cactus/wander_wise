@@ -18,13 +18,13 @@ const DeleteReviewModal: React.FC<DeleteReviewModalProps> = ({
   commentId,
 }) => {
   const { id: cardId } = useParams();
-  const { isPending, mutate, isError } = useDeleteComment();
+  const { isPending, mutate } = useDeleteComment();
 
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
   const handleDeleteReview = () => {
     if (cardId) {
-      mutate({commentId, cardId: +cardId}, { 
+      mutate({ commentId, cardId: +cardId }, { 
         onError: (e) => setErrorMessage(e),
         onSuccess: onClose,
       });
@@ -51,7 +51,7 @@ const DeleteReviewModal: React.FC<DeleteReviewModalProps> = ({
         />
       </div>
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </ModalTemplate>
   );
 };

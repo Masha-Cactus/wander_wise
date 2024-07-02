@@ -14,7 +14,7 @@ interface DeleteProfileModalProps {
 const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
   onClose,
 }) => {
-  const { isPending, mutate, isError } = useDeleteUser();
+  const { isPending, mutate } = useDeleteUser();
 
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
@@ -45,7 +45,7 @@ const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
         />
       </div>
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </ModalTemplate>
   );
 };

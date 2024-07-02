@@ -29,14 +29,16 @@ const UploadCardImagesForm: React.FC<UploadCardImagesFormProps>
   const {
     control,
     handleSubmit,
+    formState: { errors }
   } = useForm<UploadCardImagesFormData>({
     defaultValues: {
       images: [],
     },
     resolver: yupResolver(validationSchema),
+    mode: 'onChange',
   });
 
-  const { isPending, mutate, isError } = useAddCardImages();
+  const { isPending, mutate } = useAddCardImages();
   
   const onSubmit: SubmitHandler<UploadCardImagesFormData> = ({ images }) => {
     const formData = new FormData();
@@ -73,10 +75,13 @@ const UploadCardImagesForm: React.FC<UploadCardImagesFormProps>
         disabled={isPending}
         control={control}
       />
+
+      {errors.images?.message 
+      && <ErrorText errorText={errors.images.message} />}
         
       <PrimaryButton text="Add" type="submit" disabled={isPending} />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

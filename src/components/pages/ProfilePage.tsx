@@ -1,10 +1,9 @@
 "use client";
 
-import { memo } from "react";
 import { ProfileInfo } from "@/src/components/organisms";
 import {
   RecentlyLikedSection,
-  RecentlyReviewsSection,
+  RecentReviewsSection,
 } from "@/src/components/organisms";
 import { Divider } from "@/src/components/atoms";
 
@@ -22,11 +21,11 @@ const ProfilePage: React.FC = () => {
         <div className="flex min-w-0 flex-col gap-6">
           <RecentlyLikedSection />
 
-          <RecentlyReviewsSection />
+          <RecentReviewsSection />
         </div>
       </div>
     </section>
   );
 };
 
-export default memo(ProfilePage);
+export default ProfilePage;

@@ -2,6 +2,7 @@
 
 import React, { 
   memo, 
+  useCallback, 
   useEffect, 
   useMemo, 
   useRef, 
@@ -25,19 +26,20 @@ interface InfiniteListProps {
 const InfiniteList: React.FC<InfiniteListProps> 
 = ({ pages, isLastPage, page, isFetchingNextPage, handleNextPage }) => {
   const allCards = useMemo(() => pages.reduce((acc, page) => 
-  [...acc, ...page.cards], [] as ICard[]), [pages]);
+    [...acc, ...page.cards], [] as ICard[]), [pages]);
 
   const [selectedCard, setSelectedCard] = useState(page * CARDS_PER_PAGE);
   const handleSelectCard = (pageIndex: number, cardIndex: number) => {
     setSelectedCard((pageIndex * CARDS_PER_PAGE) + cardIndex);
   };
 
-  const handlePrevious = () => {
+  const handlePrevious = useCallback(() => {
     setSelectedCard(prevSelected => prevSelected - 1);
-  };
-  const handleNext = () => {
+  }, []);
+
+  const handleNext = useCallback(() => {
     setSelectedCard(prevSelected => prevSelected + 1);
-  };
+  }, []);
 
   const pageRefs = useRef<{[key: number]: HTMLDivElement | null}>({});
   const pageContainerRef = useRef<HTMLDivElement>(null);
@@ -45,8 +47,10 @@ const InfiniteList: React.FC<InfiniteListProps>
   useEffect(() => {
     if (pageRefs.current[page] && pageContainerRef.current) {
       const childOffsetTop = pageRefs.current[page]?.offsetTop;
+      
       if (childOffsetTop) {
         const offsetTop = childOffsetTop - pageContainerRef.current.offsetTop;
+        
         pageContainerRef.current.scrollTop = offsetTop;
       }
     }
@@ -86,11 +90,13 @@ const InfiniteList: React.FC<InfiniteListProps>
       className="grid max-h-[814px]
       w-full grid-cols-[1fr,210px] justify-items-center"
     >
-      <div className="relative w-full flex justify-center items-end">
+      <div className="relative flex w-full items-end justify-center">
         <AnimatePresence mode="popLayout">
           <TripXLCard key={selectedCard} card={allCards[selectedCard]} /> 
         </AnimatePresence>
-        <div className="absolute bottom-0 right-12 w-fit h-fit flex flex-col gap-5">
+        <div 
+          className="absolute bottom-0 right-12 flex h-fit w-fit flex-col gap-5"
+        >
           <IconButton 
             icon={<Icons.up className="h-8 w-8 text-inherit"/>}
             disabled={selectedCard === 0}
@@ -106,7 +112,10 @@ const InfiniteList: React.FC<InfiniteListProps>
         </div>
       </div>
 
-      <div ref={pageContainerRef} className="flex h-full flex-col gap-6 overflow-y-scroll relative">
+      <div 
+        ref={pageContainerRef} 
+        className="relative flex h-full flex-col gap-6 overflow-y-scroll"
+      >
         {pages.map((page, pageIndex) => (
           <div 
             key={pageIndex} 
@@ -126,7 +135,7 @@ const InfiniteList: React.FC<InfiniteListProps>
         <div className="h-1 shrink-0" ref={observerElem}>
           {isFetchingNextPage && (
             <div className="h-12">
-              <Loader classes="w-8 h-8 gap-0.5" />
+              <Loader size="sm" />
             </div>
           )}
         </div>

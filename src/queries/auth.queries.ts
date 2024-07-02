@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { getCookie, deleteCookie, setCookie } from "cookies-next";
 import { authService, IEmail, ISignIn, ISignUp } from "@/src/services";
 import { useUser } from "@/src/store/user";
@@ -25,13 +25,13 @@ export function useConfirmEmail() {
     mutationFn: (codeFromUser: string) => {
       if (confirmationCode && userEmail) {
         if (codeFromUser !== confirmationCode) {
-          return Promise.reject('Wrong confirmation code');
+          return Promise.reject(new Error('Wrong confirmation code'));
         }
 
         return authService.confirmEmail(userEmail);
       }
     
-      return Promise.reject('User has not completed registration');
+      return Promise.reject(new Error('User has not completed registration'));
     },
     onSuccess: ({ user, token }) => {
       setUser(user);
@@ -71,7 +71,7 @@ export function useLogout() {
         return authService.logout(token);
       }
 
-      return Promise.reject('User not authorized');
+      return Promise.reject(new Error('User not authorized'));
     },
 
     onSuccess: () => {
@@ -92,7 +92,7 @@ export function useRefreshToken() {
         return authService.refresh();
       }
 
-      return Promise.reject("User not authorized");
+      return Promise.reject(new Error("User not authorized"));
     },
     retry: false,
     onSuccess: ({ user, token }) => {
@@ -100,7 +100,7 @@ export function useRefreshToken() {
       setCookie('token', token);
     }, 
     onError: () => {
-        deleteCookie('token');
+      deleteCookie('token');
     },
   });
 }

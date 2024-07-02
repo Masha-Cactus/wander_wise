@@ -1,5 +1,3 @@
-import { memo } from "react";
-
 interface TextBaseProps {
   text: string;
   classes?: string;
@@ -10,4 +8,4 @@ const TextBase: React.FC<TextBaseProps> = ({ text, classes, font }) => {
   return <p className={`font-${font} text-base text-black ${classes}`}>{text}</p>;
 };
 
-export default memo(TextBase);
+export default TextBase;

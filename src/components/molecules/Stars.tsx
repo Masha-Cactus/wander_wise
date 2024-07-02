@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { Icons } from "@/src/components/atoms";
 
 interface StarsProps {
@@ -17,4 +16,4 @@ const Stars: React.FC<StarsProps> = ({ stars }) => {
   );
 };
 
-export default memo(Stars);
+export default Stars;

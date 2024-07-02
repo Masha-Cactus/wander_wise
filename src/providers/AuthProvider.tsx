@@ -2,7 +2,7 @@
 
 import { PropsWithChildren, useEffect, useState } from "react";
 import { useRefreshToken } from "@/src/queries";
-import { LoadedContentStateController } from "@/src/components/molecules";
+import { LoadingStateWrapper } from "@/src/components/templates";
 
 export const AuthProvider = ({children}: PropsWithChildren) => {
   const [isInitialAuthorizing, setIsInitialAuthorizing] = useState(true);
@@ -11,14 +11,14 @@ export const AuthProvider = ({children}: PropsWithChildren) => {
   useEffect(() => {
     refresh(undefined, {
       onSettled: () => setIsInitialAuthorizing(false),
-    })
+    });
   }, []);
     
   return (
-    <LoadedContentStateController 
+    <LoadingStateWrapper 
       isLoading={isInitialAuthorizing}
     >
       {children}
-    </LoadedContentStateController>
+    </LoadingStateWrapper>
   );
 };

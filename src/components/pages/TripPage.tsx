@@ -1,12 +1,15 @@
 "use client";
 
-import { memo, useEffect } from "react";
+import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { LoadedContentStateController } from "@/src/components/molecules";
-import { TripLongCard, ReviewsList } from "@/src/components/organisms";
+import { TripLCard, ReviewsList } from "@/src/components/organisms";
+import { Loader } from "@/src/components/atoms";
 import { useGetCardDetails } from "@/src/queries";
 import { Routes } from "@/src/lib/constants";
-import { StandardPageLayout } from "@/src/components/templates";
+import { 
+  StandardPageLayout, 
+  LoadingStateWrapper 
+} from "@/src/components/templates";
 
 const TripPage = () => {
   const { id } = useParams();
@@ -21,18 +24,19 @@ const TripPage = () => {
 
   return (
     <StandardPageLayout>
-      <LoadedContentStateController
+      <LoadingStateWrapper
         isLoading={isLoading}
+        loadingFallbackComponent={<Loader size="lg" />}
       >
         {card && (
           <>
-            <TripLongCard card={card} />
+            <TripLCard card={card} />
             <ReviewsList reviews={card.comments}/>
           </>
         )}
-      </LoadedContentStateController>
+      </LoadingStateWrapper>
     </StandardPageLayout>
   );
 };
 
-export default memo(TripPage);
+export default TripPage;

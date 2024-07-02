@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 "use client";
 
-import { memo, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -49,7 +49,7 @@ const ProfileEditForm = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useUpdateUserInfo();
+  const { isPending, mutate } = useUpdateUserInfo();
 
   const onSubmit: SubmitHandler<ProfileEditFormData> = (data) => {
     const { location, ...trimmedData } = trimObjectFields(data);
@@ -127,14 +127,15 @@ const ProfileEditForm = () => {
         label="Bio"
       />
 
-      {isError && <ErrorText errorText={errorMessage} />}
       <PrimaryButton 
         type="submit" 
         text="Save changes" 
         disabled={isPending} 
       />
+
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };
 
-export default memo(ProfileEditForm);
+export default ProfileEditForm;

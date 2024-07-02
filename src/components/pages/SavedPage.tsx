@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { 
   FilterForm, 
@@ -8,11 +8,13 @@ import {
   EmptyFallbackModal 
 } from "@/src/components/organisms";
 import { Loader } from "@/src/components/atoms";
-import { LoadedContentStateController } from "@/src/components/molecules";
 import { IFilterParams, ICollection } from "@/src/services";
 import { Routes } from "@/src/lib/constants";
 import { useGetUserCollections } from "@/src/queries";
-import { ScreenHeightLayout } from "@/src/components/templates";
+import { 
+  ScreenHeightLayout, 
+  LoadingStateWrapper 
+} from "@/src/components/templates";
 import { selectSavedCards } from "@/src/lib/collectionSelectors";
 
 const SavedPage = () => {
@@ -23,7 +25,7 @@ const SavedPage = () => {
   return (
     <ScreenHeightLayout>
       <AnimatePresence>
-        <LoadedContentStateController
+        <LoadingStateWrapper
           isEmpty={savedCollection && !savedCollection.cardDtos.length}
           emptyFallbackComponent={
             <EmptyFallbackModal
@@ -37,13 +39,14 @@ const SavedPage = () => {
           isLoading={isLoading}
           loadingFallbackComponent={
             <div className="flex h-full w-full items-center justify-center">
-              <Loader />
+              <Loader size="lg" />
             </div>
           }
         >
           {!!savedCollection?.cardDtos.length && (
             <div 
-              className="grid h-full w-full grid-cols-[345px,1fr] overflow-hidden"
+              className="grid h-full w-full 
+              grid-cols-[345px,1fr] overflow-hidden"
             >
               <div className="overflow-y-scroll">
                 <FilterForm type="Saved" setFilterParams={setFilterParams} />
@@ -54,14 +57,16 @@ const SavedPage = () => {
                   filterParams={filterParams} 
                   cards={savedCollection.cardDtos} 
                   title="My saved cards" 
+                  linkText="My collections"
+                  linkPath={Routes.COLLECTIONS.MAIN}
                 />
               </div>
             </div>
           )}
-        </LoadedContentStateController>
+        </LoadingStateWrapper>
       </AnimatePresence>
     </ScreenHeightLayout>
   );
 };
 
-export default memo(SavedPage);
+export default SavedPage;

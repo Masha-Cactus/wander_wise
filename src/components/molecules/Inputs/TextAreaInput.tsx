@@ -29,20 +29,23 @@ const TextAreaInput = <T extends FieldValues>({
       isErrorLabelVisible
     >
       {(field) => (
-        <textarea
-          className={twMerge(
-            `w-full h-64 px-4 py-3 border border-gray-50
-            text-base bg-white placeholder:text-gray-50
-          text-black rounded-lg resize-none
-            transition-colors focus:outline-none`,
-            errorText && 'border-error',
-          )}
-          id={name}
-          {...field}
-          maxLength={5000}
-          disabled={disabled}
-          placeholder={placeholder}
-        />
+        <div className={twMerge(
+          `h-64 border border-gray-50
+          rounded-lg overflow-hidden
+          transition-colors px-4 py-3`,
+          errorText && 'border-error',
+        )}>
+          <textarea
+            className="h-full w-full resize-none bg-white 
+              text-base text-black 
+              placeholder:text-gray-50 focus:outline-none"
+            id={name}
+            {...field}
+            maxLength={4000}
+            disabled={disabled}
+            placeholder={placeholder}
+          />
+        </div>
       )}
     </InputControllerWrapper>
   );

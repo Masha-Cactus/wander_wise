@@ -7,10 +7,11 @@ export { default as Header } from "./Header";
 export { default as Collection } from "./Collection";
 export { default as Pagination } from "./Pagination";
 export { default as ProfileInfo } from "./ProfileInfo";
+export { default as ConfirmEmailButton } from "./ConfirmEmailButton";
 
-export { default as TripShortCard } from "./TripCards/TripShortCard";
-export { default as TripMediumCard } from "./TripCards/TripMediumCard";
-export { default as TripLongCard } from "./TripCards/TripLongCard";
+export { default as TripSCard } from "./TripCards/TripSCard";
+export { default as TripMCard } from "./TripCards/TripMCard";
+export { default as TripLCard } from "./TripCards/TripLCard";
 export { default as TripXLCard } from "./TripCards/TripXLCard";
 export { default as TripXSCard } from "./TripCards/TripXSCard";
 
@@ -61,7 +62,7 @@ export { default as AddCardToCollectionForm} from "./Forms/AddCardToCollectionFo
 export { default as UploadProfileImageForm} from "./Forms/UploadProfileImageForm";
 
 export { default as RecentlyLikedSection } from "./Sections/RecentlyLikedSection";
-export { default as RecentlyReviewsSection } from "./Sections/RecentlyReviewsSection";
+export { default as RecentReviewsSection } from "./Sections/RecentReviewsSection";
 export { default as FilteredCardsSection } from "./Sections/FilteredCardsSection";
 export { default as CardImagesSection } from "./Sections/CardImagesSection";
 export { default as SearchedCardsSection } from "./Sections/SearchedCardsSection";

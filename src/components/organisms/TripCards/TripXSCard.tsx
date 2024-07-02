@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { TripImage } from "@/src/components/molecules";
 import { Heading5, TextBase } from "@/src/components/atoms";
 import { ICard } from "@/src/services";
@@ -40,4 +39,4 @@ const TripXSCard: React.FC<TripXSCardProps> = ({ card }) => {
   );
 };
 
-export default memo(TripXSCard);
+export default TripXSCard;

@@ -1,11 +1,10 @@
-import { memo } from 'react';
 import { Divider, Heading5 } from '@/src/components/atoms';
 
 const CardsSkeleton = () => {
-  const cards = new Array(6).fill(1);
+  const cards = new Array(3).fill(1);
 
   return (
-    <>
+    <div className="m-auto flex w-full flex-col gap-8">
       <Heading5 
         text="Generating cards for you. This might take a couple of minutes..." 
         font="medium"
@@ -34,8 +33,8 @@ const CardsSkeleton = () => {
           </article>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
-export default memo(CardsSkeleton);
+export default CardsSkeleton;

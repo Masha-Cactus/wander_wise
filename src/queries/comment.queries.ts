@@ -14,7 +14,9 @@ export function useCreateComment() {
   return useMutation({
     mutationFn: (data: ICreateComment) => {
       if (user?.banned) {
-        return Promise.reject('Email confirmation is required for this action.')
+        return Promise.reject(new Error(
+          'Email confirmation is required for this action.'
+        ));
       }
       
       return commentService.createComment(data);

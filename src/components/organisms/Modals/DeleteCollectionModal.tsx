@@ -19,7 +19,7 @@ const DeleteCollectionModal: React.FC<DeleteCollectionModalProps> = ({
   collectionId,
 }) => {
   const { push } = useRouter();
-  const { isPending, mutate, isError } = useDeleteCollection();
+  const { isPending, mutate } = useDeleteCollection();
 
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
@@ -50,7 +50,7 @@ const DeleteCollectionModal: React.FC<DeleteCollectionModalProps> = ({
         />
       </div>
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </ModalTemplate>
   );
 };

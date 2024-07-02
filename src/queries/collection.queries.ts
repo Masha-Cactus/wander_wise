@@ -24,7 +24,7 @@ export function useCreateCollection() {
         return collectionService.createCollection({...data, userId: user.id});
       }
 
-      return Promise.reject('No user authorized');
+      return Promise.reject(new Error('No user authorized'));
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({

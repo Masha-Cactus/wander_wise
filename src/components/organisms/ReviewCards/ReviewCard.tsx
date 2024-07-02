@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { IconButton, Stars } from "@/src/components/molecules";
 import { Icons, TextBase, Heading5 } from "@/src/components/atoms";
@@ -36,26 +36,29 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
           </div>
         </div>
 
-        {isReviewedByUser ? (
-          <div className="flex items-center gap-2">
-            <IconButton
-              icon={<Icons.edit className="h-6 w-6 text-gray-70" />}
+        
+        <div className="flex items-center gap-2 py-1">
+          {isReviewedByUser ? (
+            <>
+              <IconButton
+                icon={<Icons.edit className="h-6 w-6 text-gray-70" />}
+                classes="p-0"
+                onClick={() => setIsEditReviewModal(true)}
+              />
+              <IconButton
+                icon={<Icons.delete className="h-6 w-6 text-gray-70" />}
+                classes="p-0"
+                onClick={() => setIsDeleteReviewModal(true)}
+              />
+            </>
+          ) : (
+            <IconButton 
+              icon={<Icons.report className="h-6 w-6 text-gray-70" />} 
               classes="p-0"
-              onClick={() => setIsEditReviewModal(true)}
+              onClick={() => setIsReportReviewModal(true)}
             />
-            <IconButton
-              icon={<Icons.delete className="h-6 w-6 text-gray-70" />}
-              classes="p-0"
-              onClick={() => setIsDeleteReviewModal(true)}
-            />
-          </div>
-        ) : (
-          <IconButton 
-            icon={<Icons.report className="h-6 w-6 text-gray-70" />} 
-            classes="p-0"
-            onClick={() => setIsReportReviewModal(true)}
-          />
-        )}
+          )}
+        </div>
       </div>
       
       <TextBase text={review.text} font="normal" classes="text-gray-80" />
@@ -90,4 +93,4 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
   );
 };
 
-export default memo(ReviewCard);
+export default ReviewCard;

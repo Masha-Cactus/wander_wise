@@ -21,7 +21,8 @@ interface ReportFormData {
   text: string;
 }
 
-const ReportForm: React.FC<ReportFormProps> = ({ closeModal, type, comment }) => {
+const ReportForm: React.FC<ReportFormProps> 
+= ({ closeModal, type, comment }) => {
   const { id } = useParams();
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
@@ -41,17 +42,14 @@ const ReportForm: React.FC<ReportFormProps> = ({ closeModal, type, comment }) =>
   const { 
     isPending: isReportCardPending, 
     mutate: reportCard, 
-    isError: isReportCardError, 
   } = useReportCard();
 
   const { 
     isPending: isReportCommentPending, 
     mutate: reportComment,
-    isError: isReportCommentError,
   } = useReportComment();
 
   const isPending = isReportCardPending || isReportCommentPending;
-  const isError = isReportCardError || isReportCommentError;
 
   const mutationOptions = {
     onError: (e: any) => setErrorMessage(e),
@@ -89,11 +87,10 @@ const ReportForm: React.FC<ReportFormProps> = ({ closeModal, type, comment }) =>
         disabled={isPending}
         placeholder="Type your issue here..."
       />
+
       <PrimaryButton type="submit" text="Send" disabled={isPending} />
 
-      {isError && (
-        <ErrorText errorText={errorMessage} />
-      )}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

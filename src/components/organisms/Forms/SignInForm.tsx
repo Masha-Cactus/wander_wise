@@ -1,12 +1,15 @@
 "use client";
 
-import { memo } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { ISignIn } from "@/src/services";
 import { signInSchema } from "@/src/validation";
-import { PrimaryButton, TextInput, UnstyledButton } from "@/src/components/molecules";
+import { 
+  PrimaryButton, 
+  TextInput, 
+  UnstyledButton 
+} from "@/src/components/molecules";
 import { useSignIn } from "@/src/queries";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { ErrorText } from "@/src/components/atoms";
@@ -34,10 +37,9 @@ const SignInForm: React.FC<SignInFormProps>
       password: "",
     },
     resolver: yupResolver(validationSchema),
-    mode: 'onBlur'
   });
 
-  const { isPending, mutate, isError } = useSignIn();
+  const { isPending, mutate } = useSignIn();
   const { push } = useRouter();
 
   const onSubmit: SubmitHandler<ISignIn> = (data) => {
@@ -82,15 +84,15 @@ const SignInForm: React.FC<SignInFormProps>
         />
       </div>
 
-      {isError && <ErrorText errorText={errorMessage} />}
-
       <PrimaryButton
         text="Login"
         type="submit"
         disabled={isPending}
       />
+
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };
 
-export default memo(SignInForm);
+export default SignInForm;

@@ -7,7 +7,8 @@ interface EditReviewModalProps {
   review: IComment
 }
 
-const EditReviewModal: React.FC<EditReviewModalProps> = ({ onClose, review }) => {
+const EditReviewModal: React.FC<EditReviewModalProps> 
+= ({ onClose, review }) => {
   return (
     <ModalTemplate 
       onClose={onClose}

@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { twMerge } from "tailwind-merge";
 
 interface RoundedButtonProps {
@@ -43,4 +42,4 @@ const RoundedButton: React.FC<RoundedButtonProps> = ({
   );
 };
 
-export default memo(RoundedButton);
+export default RoundedButton;

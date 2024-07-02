@@ -16,7 +16,7 @@ const DeleteCardModal: React.FC<DeleteCardModalProps> = ({
   onClose,
   cardId,
 }) => {
-  const { isPending, mutate, isError } = useDeleteCard();
+  const { isPending, mutate } = useDeleteCard();
 
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
@@ -46,7 +46,8 @@ const DeleteCardModal: React.FC<DeleteCardModalProps> = ({
           style="light"
         />
       </div>
-      {isError && <ErrorText errorText={errorMessage} />}
+
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </ModalTemplate>
   );
 };

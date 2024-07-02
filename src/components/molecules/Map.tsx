@@ -8,10 +8,11 @@ interface MapProps {
   coordinates: {
     latitude: number,
     longitude: number,
-  }
+  },
+  height: string,
 }
 
-const Map: React.FC<MapProps> = ({ coordinates }) => {
+const Map: React.FC<MapProps> = ({ coordinates, height }) => {
   const { latitude, longitude } = coordinates;
   const radarKey = process.env.NEXT_PUBLIC_RADAR_KEY;
 
@@ -33,7 +34,10 @@ const Map: React.FC<MapProps> = ({ coordinates }) => {
   }, [radarKey, latitude, longitude]);
 
   return (
-    <div className="relative h-72 w-full overflow-hidden rounded-2xl">
+    <div 
+      className="relative w-full overflow-hidden rounded-2xl"
+      style={{ height }}
+    >
       <div 
         id="map-container" 
         style={{ height: '100%', position: 'absolute', width: '100%' }}

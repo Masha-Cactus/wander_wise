@@ -37,7 +37,7 @@ const CreateReviewForm: React.FC<CreateReviewFormProps> = ({ closeModal }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useCreateComment();
+  const { isPending, mutate } = useCreateComment();
 
   const onSubmit: SubmitHandler<CreateReviewFormData> = (data) => {
     mutate({...data, cardId: +id}, {
@@ -63,7 +63,7 @@ const CreateReviewForm: React.FC<CreateReviewFormProps> = ({ closeModal }) => {
 
       <PrimaryButton text="Send" type="submit" disabled={isPending} />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

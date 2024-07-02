@@ -1,7 +1,6 @@
 import { memo } from "react";
 import { Heading2 } from "@/src/components/atoms";
 import { ModalTemplate, ChangePasswordForm } from "@/src/components/organisms";
-import { UnstyledButton } from "@/src/components/molecules";
 
 interface ChangeUserPasswordModalProps {
   onClose: () => void;

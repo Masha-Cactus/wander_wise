@@ -15,7 +15,7 @@ interface RestorePasswordFormProps {
 }
 
 const RestorePasswordForm: React.FC<RestorePasswordFormProps> 
-= ({setIsSubmitted}) => {
+= ({ setIsSubmitted }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = restorePasswordSchema();
 
@@ -30,7 +30,7 @@ const RestorePasswordForm: React.FC<RestorePasswordFormProps>
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useRestorePassword();
+  const { isPending, mutate } = useRestorePassword();
 
   const onSubmit: SubmitHandler<IEmail> = (data) => {
     mutate(data, {
@@ -59,7 +59,7 @@ const RestorePasswordForm: React.FC<RestorePasswordFormProps>
         type='submit' 
       />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

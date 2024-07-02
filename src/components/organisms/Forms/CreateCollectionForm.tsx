@@ -22,7 +22,9 @@ type CreateCollectionFormData = Omit<ICreateCollection, 'userId'>;
 const CreateCollectionForm = () => {
   const { push } = useRouter();
   const [errorMessage, setErrorMessage] = useNormalizedError();
-  const { data: savedCollection } = useGetUserCollections<ICollection>(selectSavedCards);
+  const { 
+    data: savedCollection, 
+  } = useGetUserCollections<ICollection>(selectSavedCards);
 
   const validationSchema = createCollectionSchema();
 
@@ -38,7 +40,7 @@ const CreateCollectionForm = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useCreateCollection();
+  const { isPending, mutate } = useCreateCollection();
 
   const onSubmit: SubmitHandler<CreateCollectionFormData> = (data) => {
     const trimmedData = trimObjectFields(data);
@@ -95,7 +97,7 @@ const CreateCollectionForm = () => {
 
       <PrimaryButton type="submit" text="Create" disabled={isPending} />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

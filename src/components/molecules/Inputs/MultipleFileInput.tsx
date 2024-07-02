@@ -15,7 +15,6 @@ import {
   IconButton 
 } from "@/src/components/molecules";
 import { Icons } from "@/src/components/atoms";
-import { CARD_IMAGES_LIMIT } from "@/src/lib/constants";
 
 interface MultipleFileInputProps<T extends FieldValues> {
   name: FieldPath<T>;
@@ -57,7 +56,7 @@ const MultipleFileInput = <T extends FieldValues>({
       control={control}
       name={name}
       isLabelVisible={false}
-      isErrorLabelVisible
+      isErrorLabelVisible={false}
     >
       {(field) => (
         <div className="flex w-full flex-col gap-3">
@@ -66,10 +65,7 @@ const MultipleFileInput = <T extends FieldValues>({
             id={name}
             type="file"
             accept="image/png, image/jpeg"
-            disabled={
-              disabled 
-              || field.value.length >= CARD_IMAGES_LIMIT
-            }
+            disabled={disabled}
             multiple={true}
             value={value}
             onChange={(e) => handleAdd(field, e)}

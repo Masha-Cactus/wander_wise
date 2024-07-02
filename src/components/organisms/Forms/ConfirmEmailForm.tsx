@@ -36,21 +36,19 @@ const ConfirmEmailForm: React.FC<ConfirmEmailFormProps> = ({ closeModal }) => {
   const { 
     isPending: isConfirmPending, 
     mutate: confirm, 
-    isError: isConfirmError 
   } = useConfirmEmail();
   const { 
     isPending: isUpdatePending, 
     mutate: update, 
-    isError: isUpdateError 
   } = useUpdateEmail();
   const isPending = isConfirmPending || isUpdatePending;
-  const isError = isConfirmError || isUpdateError;
   const mutationOptions = {
     onError: (e: any) => setErrorMessage(e),
     onSuccess: closeModal,
-  }
+  };
 
-  const onSubmit: SubmitHandler<ConfirmEmailFormData> = ({ confirmationCode }) => {
+  const onSubmit: SubmitHandler<ConfirmEmailFormData> 
+  = ({ confirmationCode }) => {
     if (emailConfirmationType === 'update') {
       update(confirmationCode, mutationOptions);
     } else {
@@ -66,14 +64,15 @@ const ConfirmEmailForm: React.FC<ConfirmEmailFormProps> = ({ closeModal }) => {
       <TextInput 
         type="text"
         name="confirmationCode"
-        label="Confirmation Code"
         placeholder="Enter code from email"
         control={control}
         errorText={errors.confirmationCode?.message}
         disabled={isPending}
       />
+
       <PrimaryButton type="submit" text="Confirm" disabled={isPending}/>
-      {isError && <ErrorText errorText={errorMessage} />}
+
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

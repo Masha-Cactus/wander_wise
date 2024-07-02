@@ -22,14 +22,12 @@ export { default as CheckboxInput } from "./Inputs/CheckboxInput";
 export { default as ButtonFileInput } from "./Inputs/ButtonFileInput";
 export { default as MultipleFileInput } from "./Inputs/MultipleFileInput";
 
-export { default as LoadedContentStateController } from "./LoadedContentStateController";
 export { default as ImageInputPlaceholder} from "./ImageInputPlaceholder";
 export { default as Map } from "./Map";
 export { default as ViewSwitcher} from "./ViewSwitcher";
 export { default as Navbar } from "./Navbar";
 export { default as CardSlider } from "./sliders/CardSlider";
 export { default as HomeSlider } from "./sliders/HomeSlider";
-export { default as InfiniteListSlider } from "./sliders/InfiniteListSlider";
 export { default as TripImage } from "./TripImage";
 export { default as CardsSkeleton} from "./CardsSkeleton";
 export { default as Stars } from "./Stars";

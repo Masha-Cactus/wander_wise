@@ -18,8 +18,7 @@
    - [Prerequisites](#prerequisites)
    - [Installation](#installation)
    - [Running the Application](#running-the-application)
-7. [Figma Design](#figma-design)
-8. [License](#license)
+7. [License](#license)
 
 ## Description
 
@@ -117,11 +116,6 @@ You can get a Radar API key for authenticated requests by registering on [their 
 
 2. **Open the application in your browser:**
  [http://localhost:3000](http://localhost:3000)
-
-
-## Figma Design
-
-<a href="" target="_blank">Design</a>
 
 ## License
 
