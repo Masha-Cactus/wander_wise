@@ -1,4 +1,4 @@
-import { ICard } from "../cardService/card.types";
+import { ICard } from "@/src/services";
 
 export interface ICollection {
   id: number,
@@ -8,7 +8,6 @@ export interface ICollection {
   isPublic: boolean,
   cardDtos: ICard[],
 }
-// export type ShortCollection = Omit<ICollection, 'cardWithoutDistanceDtos'>;
 
 export interface ICreateCollection {
   userId: number,

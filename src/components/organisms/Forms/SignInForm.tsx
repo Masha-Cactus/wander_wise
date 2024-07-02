@@ -1,26 +1,30 @@
 "use client";
 
-import { memo, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/navigation";
 import { ISignIn } from "@/src/services";
 import { signInSchema } from "@/src/validation";
-import { PrimaryButton, TextInput } from "@/src/components/moleculs";
+import { 
+  PrimaryButton, 
+  TextInput, 
+  UnstyledButton 
+} from "@/src/components/molecules";
 import { useSignIn } from "@/src/queries";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { ErrorText } from "@/src/components/atoms";
-import { PasswordInput } from "@/src/components/moleculs";
-import { useRouter } from "next/navigation";
-import { useNormalizedError } from "@/src/hooks/useNormalizedError";
-import { saveCookies } from "@/src/actions/manageCookies";
+import { PasswordInput } from "@/src/components/molecules";
+import { useNormalizedError } from "@/src/hooks";
+import { Routes } from "@/src/lib/constants";
 
-type Props = {
+interface SignInFormProps {
   closeModal: () => void;
-};
+  openRestorePasswordModal: () => void;
+}
 
-const SignInForm: React.FC<Props> = ({ closeModal }) => {
+const SignInForm: React.FC<SignInFormProps> 
+= ({ closeModal, openRestorePasswordModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
-  const [isShowPassword, setIsShowPassword] = useState(false);
   const validationSchema = signInSchema();
 
   const {
@@ -33,37 +37,26 @@ const SignInForm: React.FC<Props> = ({ closeModal }) => {
       password: "",
     },
     resolver: yupResolver(validationSchema),
-    mode: 'onBlur'
   });
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
-
-  const { isPending, mutate, isError, isSuccess, data } = useSignIn();
+  const { isPending, mutate } = useSignIn();
   const { push } = useRouter();
 
-  const onSubmit = async (data: ISignIn) => {
+  const onSubmit: SubmitHandler<ISignIn> = (data) => {
     const trimmedUserData = trimObjectFields(data);
 
     mutate(trimmedUserData, {
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
+      onSuccess: () => {
+        closeModal();
+        push(Routes.PROFILE.MAIN);
+      }
     });
   };
 
-  useEffect(() => {
-    if (isSuccess) {
-      saveCookies({token: data.token, userId: data.user.id})
-        .then(() => {
-          closeModal();
-          push("/profile");
-        });
-    }
-  }, [isSuccess]);
-
   return (
     <form
-      className="flex flex-col gap-4 h-full w-full"
+      className="flex h-full w-full flex-col gap-4"
       onSubmit={handleSubmit(onSubmit)}
     >
       <TextInput
@@ -75,27 +68,31 @@ const SignInForm: React.FC<Props> = ({ closeModal }) => {
         disabled={isPending}
       />
 
-      <PasswordInput
-        name="password"
-        label="Password"
-        placeholder="Enter your password"
-        control={control}
-        errorText={errors.password?.message}
-        disabled={isPending}
-        isShown={isShowPassword}
-        onClick={() => setIsShowPassword(!isShowPassword)}
-      />
-
-      {isError && <ErrorText errorText={errorMessage} />}
+      <div className="flex w-full flex-col gap-3">
+        <PasswordInput
+          name="password"
+          label="Password"
+          placeholder="Enter your password"
+          control={control}
+          errorText={errors.password?.message}
+          disabled={isPending}
+        />
+        <UnstyledButton
+          text="Forgot password?"
+          classes="font-bold self-start"
+          onClick={openRestorePasswordModal}
+        />
+      </div>
 
       <PrimaryButton
         text="Login"
-        classes=""
         type="submit"
         disabled={isPending}
       />
+
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };
 
-export default memo(SignInForm);
+export default SignInForm;

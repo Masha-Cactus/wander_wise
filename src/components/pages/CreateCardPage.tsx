@@ -1,13 +1,12 @@
 'use client';
 
+import { useEffect, useRef, useState } from "react";
 import { Heading2 } from "@/src/components/atoms";
 import { 
   CreateCardForm, 
   UploadCardImagesForm 
 } from "@/src/components/organisms";
-import { useEffect, useRef, useState } from "react";
-import { FormPageLayout } from "@/src/components/layouts";
-
+import { StandardPageLayout } from "@/src/components/templates";
 
 const CreateCardPage = () => {
   const [newCardId, setNewCardId] = useState<number| null>(null);
@@ -15,14 +14,14 @@ const CreateCardPage = () => {
 
   useEffect(() => {
     if (newCardId && scrollRef.current) {
-      scrollRef.current.scrollIntoView();
+      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [newCardId]);
 
   return (
-    <FormPageLayout>
-      <article className="w-[670px] self-center flex flex-col gap-6 
-      items-center bg-white px-10 py-12 rounded-3xl">
+    <StandardPageLayout>
+      <article className="flex w-[670px] flex-col items-center gap-6 
+      self-center rounded-3xl bg-white px-10 py-12">
         <Heading2 
           text="Create a new card" 
           font="semibold" 
@@ -35,8 +34,8 @@ const CreateCardPage = () => {
       {newCardId && (
         <article 
           ref={scrollRef}
-          className="w-[670px] self-center flex flex-col gap-6 
-          items-center bg-white px-10 py-12 rounded-3xl">
+          className="flex w-[670px] flex-col items-center gap-6 
+          self-center rounded-3xl bg-white px-10 py-12">
           <Heading2 
             text="Upload images for your new card" 
             font="semibold" 
@@ -45,7 +44,7 @@ const CreateCardPage = () => {
           <UploadCardImagesForm cardId={newCardId} />
         </article>
       )}
-    </FormPageLayout>
+    </StandardPageLayout>
   );
 };
 

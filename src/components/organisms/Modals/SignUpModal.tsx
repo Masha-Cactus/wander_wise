@@ -1,7 +1,7 @@
 import { memo } from "react";
-import { ModalSkeleton, SignUpForm } from "@/src/components/organisms";
+import { ModalTemplate, SignUpForm } from "@/src/components/organisms";
 import { Heading, Heading4, TextBase, Divider } from "@/src/components/atoms";
-import { UnstyledButton } from "@/src/components/moleculs";
+import { UnstyledButton } from "@/src/components/molecules";
 
 interface SignUpModalProps {
   onClose: () => void;
@@ -9,7 +9,7 @@ interface SignUpModalProps {
   onOpenConfirmEmail: () => void;
 }
 
-const SignInModal: React.FC<SignUpModalProps> 
+const SignUpModal: React.FC<SignUpModalProps> 
 = ({ onClose, onOpenSignIn, onOpenConfirmEmail }) => {
   const handleSignInClick = () => {
     onClose();
@@ -22,30 +22,37 @@ const SignInModal: React.FC<SignUpModalProps>
   };
 
   return (
-    <ModalSkeleton onClose={onClose}>
+    <ModalTemplate onClose={onClose}>
       <div className="flex gap-2">
         <Heading text="Welcome to" font="normal" />
         <Heading text="Wander Wise" font="medium" classes="font-maven" />
       </div>
 
-      <Heading4 text="Let’s begin the adventure ✨" font="normal" />
+      <Heading4 
+        text="Let’s begin the adventure ✨" 
+        font="normal" 
+        classes="text-gray-80"
+      />
 
-      <Divider classes="w-full h-px" />
+      <Divider classes="mb-2" />
 
-      <SignUpForm openConfirmEmailModal={handleFormSubmit} />
+      <SignUpForm 
+        openConfirmEmailModal={handleFormSubmit} 
+        openSignInModal={handleSignInClick} 
+      />
 
-      <Divider classes="w-full h-px" />
+      <Divider classes="mb-2" />
 
-      <div className="flex gap-2">
+      <div className="flex justify-center gap-2">
         <TextBase text="Already have an account?" font="normal" />
         <UnstyledButton
-          text="Log In"
+          text="Log in"
           classes="font-bold"
           onClick={handleSignInClick}
         />
       </div>
-    </ModalSkeleton>
+    </ModalTemplate>
   );
 };
 
-export default memo(SignInModal);
+export default memo(SignUpModal);

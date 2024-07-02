@@ -1,22 +1,22 @@
 "use client";
 
-import { TripMediumCard } from "@/src/components/organisms";
-import { ICard } from "@/src/services";
 import { memo } from "react";
+import { TripMCard } from "@/src/components/organisms";
+import { ICard } from "@/src/services";
 
-type Props = {
+interface GalleryProps {
   cards: ICard[];
-};
+}
 
-const Gallery: React.FC<Props> = ({ cards }) => {
+const Gallery: React.FC<GalleryProps> = ({ cards }) => {
   return (
     <section
-      className="w-full grid grid-cols-[repeat(auto-fill,325px)] 
-      auto-rows-fr justify-center gap-y-6 gap-x-5  
-      col-start-2 col-span-3 row-start-2"
+      className="col-span-3 col-start-2 row-start-2 
+      grid w-full auto-rows-min grid-cols-[repeat(auto-fill,325px)]  
+      justify-center gap-x-5 gap-y-6"
     >
       {cards.map((card) => (
-        <TripMediumCard key={card.id} card={card} />
+        <TripMCard key={card.id} card={card} />
       ))}
     </section>
   );

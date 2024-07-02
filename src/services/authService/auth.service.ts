@@ -1,19 +1,25 @@
-import { baseClient, authClient } from "@/src/api";;
-import { IBannedUser, IEmail, ISignIn, ISignUp, IToken } from "@/src/services";
-import { ISignInResponse } from "./auth.types";
+import { baseClient, authClient } from "@/src/api";
+import { ApiEndpoints } from "@/src/lib/constants";
+import { 
+  IUser, 
+  IEmail, 
+  ISignIn, 
+  ISignUp, 
+  IAuthResponse 
+} from "@/src/services";
 
 class AuthService {
-  private BASE_URL = '/auth';
+  private BASE_URL = ApiEndpoints.AUTH;
 
   signUp (data: ISignUp) {
-    return baseClient.post<never, IBannedUser>(
+    return baseClient.post<never, IUser>(
       this.BASE_URL + '/register', 
       data,
     );
   };
 
   signIn (data: ISignIn) {
-    return baseClient.post<never, ISignInResponse>(
+    return baseClient.post<never, IAuthResponse>(
       this.BASE_URL + '/login', 
       data,
     );
@@ -24,14 +30,14 @@ class AuthService {
   };
 
   confirmEmail (email: string) {
-    return baseClient.post<never, IToken>(
-      this.BASE_URL + '/login', 
+    return baseClient.post<never, IAuthResponse>(
+      this.BASE_URL + '/confirm-email', 
       { email },  
     );
   };
 
   refresh () {
-    return authClient.get<never, IToken>(this.BASE_URL + '/refresh-jwt');
+    return authClient.get<never, IAuthResponse>(this.BASE_URL + '/refresh-jwt');
   };
 
   logout (token: string) {

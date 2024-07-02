@@ -1,14 +1,11 @@
-import { memo } from "react";
-
-interface HeadingProps {
+interface Heading5Props {
   text: string;
   classes?: string;
   font: "medium" | "normal" | "semibold";
 }
 
-//this is for 20px
-const Heading5: React.FC<HeadingProps> = ({ text, classes, font }) => {
-  return <h5 className={`text-xl text-black font-${font} ${classes}`}>{text}</h5>;
+const Heading5: React.FC<Heading5Props> = ({ text, classes, font }) => {
+  return <h5 className={`font-${font} text-xl text-black ${classes}`}>{text}</h5>;
 };
 
-export default memo(Heading5);
+export default Heading5;

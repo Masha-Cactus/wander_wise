@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import * as Yup from "yup";
-import { CardAuthors, Climate, SpecialRequirements, TravelDistance, TripTypes } from "../services";
+import { CardAuthors, Climate, SpecialRequirements, TravelDistance, TripTypes } from "@/src/services";
 
 export const TEXT_INPUT_LENGTH = {
   userName: {
@@ -19,17 +19,15 @@ export const TEXT_INPUT_LENGTH = {
 
 export const ONLY_SPACES_PATTERN = /^(?!\s+$).+$/;
 export const PASSWORD_PATTERN = /^(?!.*\s).{8,128}$/;
+const GOOGLE_MAPS_LINK_PATTERN = /^https:\/\/(www\.)?(google\.com\/maps\/place\/|maps\.app\.goo\.gl\/)/i;
 
 const requiredText = "is required";
 
 
 export const genericValidationSchema = {
-  //email
   email: Yup.string()
     .required(`Email ${requiredText}`)
     .email("Email must be valid"),
-
-  //passwords
   password: Yup.string()
     .required(`Password ${requiredText}`)
     .min(
@@ -51,8 +49,6 @@ export const genericValidationSchema = {
       }
     ),
   passwordWithoutTips: Yup.string().required(`Password ${requiredText}`),
-
-  //names
   pseudonym: Yup.string()
     .trim()
     .required(`Username ${requiredText}`)
@@ -68,8 +64,6 @@ export const genericValidationSchema = {
   
   firstName: Yup.string().trim(),
   lastName: Yup.string().trim(),
-
-  // mix
   description: Yup.string().trim().max(5000, 'Description may be maximum 5000 characters'),
   name: Yup.string().trim()
     .required(`Name ${requiredText}`)
@@ -81,7 +75,6 @@ export const genericValidationSchema = {
       TEXT_INPUT_LENGTH.cardAndCollectionName.max,
       `Name must be maximum ${TEXT_INPUT_LENGTH.cardAndCollectionName.max} characters`
     ),
-
   tripTypes: Yup.array().required(`Trip type ${requiredText}`)
     .of(Yup.string().trim()
       .oneOf(Object.values(TripTypes)).required()),
@@ -89,21 +82,26 @@ export const genericValidationSchema = {
     .of(Yup.string().trim()
       .oneOf(Object.values(CardAuthors)).required()),
   climateString: Yup.string().trim()
-    .oneOf(Object.values(Climate)).required('Climate is required'),
+    .transform((val, orig) => orig === "" ? undefined : val)
+    .required('Climate is required')
+    .oneOf(Object.values(Climate)),
   climateArray: Yup.array().required(`Climate ${requiredText}`)
     .of(Yup.string().trim()
       .oneOf(Object.values(Climate)).required()),
   whyThisPlace: Yup.array().required(`This field ${requiredText}`)
     .min(1, 'You must provide at least one reason')
     .of(Yup.string().trim().required()),
-  travelDistance: Yup.array().required(`Travel distance ${requiredText}`)
-    .min(1, 'Choose at least one option')
-    .of(Yup.string().trim()
-      .oneOf(Object.values(TravelDistance)).required()),
+  travelDistance: Yup.string().trim()
+    .oneOf(Object.values(TravelDistance)).required(`Travel distance ${requiredText}`),
   specialRequirements: Yup.array().required(`Special requirements ${requiredText}`)
     .of(Yup.string().trim()
       .oneOf(Object.values(SpecialRequirements)).required()),
   link: Yup.string().url().required(`Link ${requiredText}`),
+  mapLink: Yup
+    .string()
+    .required('Google Maps link is required')
+    .url('Must be a valid URL')
+    .matches(GOOGLE_MAPS_LINK_PATTERN, 'A valid Google Maps link must start with "https://google.com/maps/place/" or "https://maps.app.goo.gl/"'),
   confirmationCode: Yup.string()
     .trim()
     .required(`Confirmation code ${requiredText}`),

@@ -16,6 +16,8 @@ export interface ICard {
   description: string;
   whyThisPlace: string[];
   imageLinks: string[];
+  latitude: number;
+  longitude: number;
   mapLink: string;
   distance: number;
   likes: number;
@@ -50,7 +52,7 @@ export interface IReportCard {
 
 export interface IAddCardImages {
   id: number,
-  images: File[],
+  images: FormData,
 }
 
 export interface ISearchCard {

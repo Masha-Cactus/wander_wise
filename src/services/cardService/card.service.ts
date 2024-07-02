@@ -1,5 +1,5 @@
-import { formDataClient, authClient, baseClient } from "@/src/api";
-import { CARDS_PER_PAGE } from "@/src/lib/constants";
+import { authClient, baseClient } from "@/src/api";
+import { ApiEndpoints, CARDS_PER_PAGE } from "@/src/lib/constants";
 import { 
   ICard, 
   IAddCardImages, 
@@ -7,11 +7,11 @@ import {
   ISearchCard, 
   IUpdateCard,
   IReportCard, 
+  ISearchCardResponse
 } from "@/src/services";
-import { ISearchCardResponse } from "./card.types";
 
 class CardService {
-  private BASE_URL = "/cards";
+  private BASE_URL = ApiEndpoints.CARDS;
 
   getCards(): Promise<ICard[]> {
     return authClient.get<never, ICard[]>(this.BASE_URL);
@@ -36,29 +36,25 @@ class CardService {
     );
   }
 
-  addImages (data: IAddCardImages) {
-    return formDataClient.put<never, ICard>(
-      `${this.BASE_URL}/add-images/${data.id}`,
-      data,
+  addImages ({id, images}: IAddCardImages) {
+    return authClient.putForm<never, ICard>(
+      `${this.BASE_URL}/add-images/${id}`,
+      images,
     );
   };
 
-  //currently on the server the method is put
   addToSaved(cardId: number) {
     return authClient.get(`${this.BASE_URL}/add-to-saved/${cardId}`);
   }
 
-  //currently on the server the method is put
   removeFromSaved(cardId: number) {
     return authClient.get(`${this.BASE_URL}/remove-from-saved/${cardId}`);
   }
 
-  //currently on the server the method is put
   likeCard(cardId: number) {
     return authClient.get(`${this.BASE_URL}/post-like/${cardId}`);
   }
 
-  //currently on the server the method is put
   unlikeCard(cardId: number) {
     return authClient.get(`${this.BASE_URL}/remove-like/${cardId}`);
   }
@@ -67,12 +63,20 @@ class CardService {
     return authClient.delete(`${this.BASE_URL}/${id}`);
   };
 
-  searchCards(page: number, data: ISearchCard) {
+  searchCards(page: number, data: ISearchCard, signal: AbortSignal) {
     return baseClient.post<never, ISearchCardResponse>(
       `${this.BASE_URL}/search?page=${page}&size=${CARDS_PER_PAGE}&sort=asc`, 
       data,
+      { signal }
     );
   };
+
+  getPopular(signal: AbortSignal) {
+    return baseClient.get<never, ICard[]>(
+      `${this.BASE_URL}/random/${CARDS_PER_PAGE}`,
+      { signal }
+    );
+  }
 }
 
 export const cardService = new CardService();

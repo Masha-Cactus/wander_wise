@@ -1,15 +1,15 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { getCookie, deleteCookie, setCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 import { 
   IUpdateInfo, 
-  IUpdateImage, 
   IUpdatePassword, 
+  ICollection,
   userService 
 } from "@/src/services";
 import { useUser } from "@/src/store/user";
-import { deleteCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
+import { Routes } from "@/src/lib/constants";
 
-// this query is currently used only for auto-authorization on first load
 export function useGetUserProfile(userId: number | null) {
   return useQuery({
     queryKey: ['user-profile', {userId}],
@@ -18,11 +18,8 @@ export function useGetUserProfile(userId: number | null) {
         return userService.getProfile(userId);
       }
 
-      return Promise.reject('No user authorized');
+      return null;
     },
-    enabled: typeof userId === 'number',
-    staleTime: Infinity,
-    gcTime: Infinity,
   });
 }
 
@@ -36,13 +33,13 @@ export function useGetUserSocials() {
         return userService.getSocials(user.id);
       }
 
-      return Promise.reject('No user authorized');
+      return Promise.reject(new Error('No user authorized'));
     },
     enabled: !!user,
   });
 }
 
-export function useGetUserCollections() {
+export function useGetUserCollections<T>(select: (data: ICollection[]) => T) {
   const user = useUser((state) => state.user);
 
   return useQuery({
@@ -52,9 +49,10 @@ export function useGetUserCollections() {
         return userService.getCollections(user.id);
       }
 
-      return Promise.reject('No user authorized');
+      return Promise.reject(new Error('No user authorized'));
     },
     enabled: !!user,
+    select,
   });
 }
 
@@ -68,7 +66,7 @@ export function useGetUserComments() {
         return userService.getComments(user.id);
       }
     
-      return Promise.reject('No user authorized');
+      return Promise.reject(new Error('No user authorized'));
     },
     enabled: !!user,
   });
@@ -84,7 +82,7 @@ export function useUpdateUserInfo() {
         return userService.updateUserInfo({...data, userId: user.id});
       }
 
-      return Promise.reject('No user authorized');
+      return Promise.reject(new Error('No user authorized'));
     },
     onSuccess: (user) => {
       setUser(user);
@@ -97,12 +95,14 @@ export function useUpdateUserImage() {
   const setUser = useUser((state) => state.setUser);
 
   return useMutation({
-    mutationFn: (data: Omit<IUpdateImage, 'id'>) => {
+    mutationFn: (image: File | null) => {
+      const data = image || new Uint8Array(0);
+
       if (user) {
-        return userService.updateImage({...data, id: user.id});
+        return userService.updateImage({ image: data, id: user.id});
       }
 
-      return Promise.reject('No user authorized'); 
+      return Promise.reject(new Error('No user authorized')); 
     },
     onSuccess: (user) => {
       setUser(user);
@@ -121,14 +121,14 @@ export function useDeleteUser() {
         return userService.deleteUser(user.id);
       }
 
-      return Promise.reject('No user to delete');
+      return Promise.reject(new Error('No user to delete'));
     },
     onSuccess: () => {
       setUser(null);
-      deleteCookie('userId');
       deleteCookie('token');
       deleteCookie('confirmationCode');
-      push ('/');
+      deleteCookie('email');
+      push(Routes.HOME);
     }
   });
 }
@@ -143,33 +143,41 @@ export function useRequestUpdateEmail() {
         return userService.requestUpdateEmail({userId: user.id, newEmail});
       }
     
-      return Promise.reject('No user authorized');
+      return Promise.reject(new Error('No user authorized'));
     },
-    onSuccess: (user) => {
+    onSuccess: (user, newEmail) => {
       setUser(user);
+      localStorage.setItem('emailConfirmationType', 'update');
+      setCookie('email', newEmail);
+      setCookie('confirmationCode', user.emailConfirmCode);
     }
   });
 }
 
 export function useUpdateEmail() {
-  const [user, unbanUser] = useUser((state) => 
-    [state.user, state.unbanUser]);
+  const [user, setUser] = useUser((state) => 
+    [state.user, state.setUser]);
+  const newEmail = getCookie('email');
+  const confirmationCode = getCookie('confirmationCode');
     
   return useMutation({
-    mutationFn: (confirmationCode: string) => {
-      if (user) {
-        if (user.emailConfirmCode !== confirmationCode) {
-          return Promise.reject('Wrong confirmation code');
+    mutationFn: (codeFromUser: string) => {
+      if (user && newEmail) {
+        if (codeFromUser !== confirmationCode) {
+          return Promise.reject(new Error('Wrong confirmation code'));
         }
 
-        return userService.updateEmail({userId: user.id, newEmail: user.email});
+        return userService.updateEmail({userId: user.id, newEmail});
       }
         
-      return Promise.reject('No user authorized');
+      return Promise.reject(new Error('No user authorized'));
     },
-    onSuccess: () => {
-      unbanUser();
+    onSuccess: ({ user, token }) => {
+      setUser(user);
+      setCookie('token', token);
+      localStorage.removeItem('emailConfirmationType');
       deleteCookie('confirmationCode');
+      deleteCookie('email');
     },
   });
 }
@@ -183,7 +191,10 @@ export function useUpdatePassword() {
         return userService.updatePassword({...data, userId: user.id});
       }
 
-      return Promise.reject('No user authorized');
+      return Promise.reject(new Error('No user authorized'));
     },
+    onSuccess: ({ token }) => {
+      setCookie('token', token);
+    }
   });
 }

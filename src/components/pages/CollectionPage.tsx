@@ -1,67 +1,128 @@
 'use client';
 
-import { useDeleteCollection, useGetCollection } from '@/src/queries';
-import { useParams } from 'next/navigation';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { Heading, Heading2, Heading4, Icons } from '../atoms';
-import { BackButton, IconButton, PrimaryButton } from '../moleculs';
-import { ChangeCollectionNameForm, Gallery } from '../organisms';
+import { useEffect, useState } from 'react';
+import { AnimatePresence } from "framer-motion";
+import { useParams, useRouter } from 'next/navigation';
+import { Routes } from '@/src/lib/constants';
+import { useGetCollection } from '@/src/queries';
+import { 
+  Heading2, 
+  Icons, 
+  Loader, 
+  Divider, 
+  Heading5,
+  Heading4
+} from '@/src/components/atoms';
+import { IconButton } from '@/src/components/molecules';
+import { 
+  RenameCollectionModal, 
+  DeleteCollectionModal, 
+  Gallery,
+} from '@/src/components/organisms';
+import { 
+  StandardPageLayout,
+  LoadingStateWrapper 
+} from '@/src/components/templates';
+import { useCopyUrlToClipboard } from '@/src/hooks';
 
 const CollectionPage = () => {
   const { push } = useRouter();
   const { id: collectionId } = useParams();
-  const { data: collection } = useGetCollection(+collectionId);
+  const { 
+    data: collection, 
+    isError, 
+    isLoading 
+  } = useGetCollection(+collectionId);
 
-  const { mutate: deleteCollection } = useDeleteCollection();
+  const [isRenameCollectionModal, setIsRenameCollectionModal] = useState(false);
+  const [isDeleteCollectionModal, setIsDeleteCollectionModal] = useState(false);
 
-  const [isEditName, setIsEditName] = useState(false);
+  const [isCopied, copy] = useCopyUrlToClipboard(
+    Routes.COLLECTION(+collectionId)
+  );
+
+  useEffect(() => {
+    if (isNaN(+collectionId) || isError) {
+      push(Routes.NOT_FOUND);
+    }
+  }, [collectionId, isError, push]);
 
   return (
-    <main className="w-full h-full bg-gray10">
-      <div className="mx-10 my-10 flex flex-col gap-8">
-        <BackButton />
-        
-        <div className="w-full flex justify-between">
-          {collection && isEditName ? (
-            <ChangeCollectionNameForm 
-              collection={collection}
-              hideForm={() => setIsEditName(false)}
-            />
-          ) : (
-            <Heading2 text={collection?.name || 'Collection'} font="semibold" />
-          )}
+    <StandardPageLayout>
+      <LoadingStateWrapper
+        isLoading={isLoading}
+        loadingFallbackComponent={<Loader size="lg" />}
+      > 
+        <div className="flex w-full items-center justify-between">
+          <Heading2 text={collection?.name || 'Collection'} font="semibold" />
 
-          <div className="flex gap-4">
+          <div className="relative flex h-8 items-center gap-5">
+            <div className="flex h-fit gap-4">
+              <IconButton 
+                text="Rename collection" 
+                icon={<Icons.edit />} 
+                classes="border border-black rounded-3xl"
+                onClick={() => setIsRenameCollectionModal(true)}
+              />
+              <IconButton 
+                text="Delete collection" 
+                icon={<Icons.delete />} 
+                classes="border border-error text-error rounded-3xl"
+                onClick={() => setIsDeleteCollectionModal(true)}
+              />
+            </div>
+
+            <Divider classes="h-full w-px" />
+
             <IconButton 
-              text="Rename collection" 
-              icon={<Icons.edit />} 
-              classes="border border-black rounded-3xl"
-              onClick={() => setIsEditName(true)} 
+              icon={<Icons.share className="h-6 w-6" />} 
+              onClick={copy}
+              classes="p-0"
             />
-            <IconButton 
-              text="Delete collection" 
-              icon={<Icons.delete />} 
-              classes="border border-error text-error rounded-3xl"
-              onClick={() => deleteCollection(+collectionId)}
-            />
-          </div>
+
+            {isCopied && (
+              <span 
+                className="absolute bottom-[44px] right-0 flex 
+                items-center  justify-center rounded-2xl bg-white px-6 py-2"
+              >
+                <Heading5 
+                  text="Copied to clipboard!" 
+                  font="medium" 
+                  classes="text-gray-80" 
+                />
+              </span>
+            )}
+          </div> 
         </div>
 
         {collection && collection.cardDtos.length ? (
           <Gallery cards={collection.cardDtos} />
         ) : (
-          <div className="flex flex-col gap-4 justify-center text-center">
-            <Heading 
-              text="You don’t have any cards in this collection yet." 
-              font="normal" 
-            />
-            <Heading4 text="Explore our community 🌏" font="medium" />
-            <PrimaryButton text="Continue" onClick={() => push('/trips')} />
-          </div>
+          <Heading4 
+            text="You don’t have any cards in this collection yet." 
+            font="normal"
+            classes="pt-4" 
+          />
         )}
-      </div>
-    </main>
+      </LoadingStateWrapper>
+
+      <AnimatePresence>
+        {isRenameCollectionModal && (
+          <RenameCollectionModal
+            key="renameCollectionModal"
+            onClose={() => setIsRenameCollectionModal(false)} 
+          />
+        )}
+
+        {isDeleteCollectionModal && (
+          <DeleteCollectionModal
+            key="deleteCollectionModal"
+            onClose={() => setIsDeleteCollectionModal(false)} 
+            collectionId={collection!.id}
+          />
+        )}
+      </AnimatePresence>
+    </StandardPageLayout>
   );
 };
 

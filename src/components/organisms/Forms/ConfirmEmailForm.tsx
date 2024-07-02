@@ -1,25 +1,24 @@
 'use client';
 
-import { useConfirmEmail } from "@/src/queries/auth.queries";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { PrimaryButton } from "@/src/components/moleculs/";
+import { PrimaryButton, TextInput } from "@/src/components/molecules";
 import { ErrorText } from "@/src/components/atoms";
-import { TextInput }from "@/src/components/moleculs";
-import { confirmEmailSchema } from "@/src/validation/confirmEmailSchema";
-import { useNormalizedError } from "@/src/hooks/useNormalizedError";
-import { useEffect } from "react";
-import { saveCookies } from "@/src/actions/manageCookies";
+import { useConfirmEmail, useUpdateEmail } from "@/src/queries";
+import { confirmEmailSchema } from "@/src/validation";
+import { useNormalizedError } from "@/src/hooks";
 
-interface FormData {
+interface ConfirmEmailFormProps {
+  closeModal: () => void;
+}
+
+interface ConfirmEmailFormData {
   confirmationCode: string,
 };
 
-type Props = {
-  closeModal: () => void;
-};
+const ConfirmEmailForm: React.FC<ConfirmEmailFormProps> = ({ closeModal }) => {
+  const emailConfirmationType = localStorage.getItem('emailConfirmationType');
 
-const ConfirmEmailForm: React.FC<Props> = ({ closeModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = confirmEmailSchema();
 
@@ -27,50 +26,53 @@ const ConfirmEmailForm: React.FC<Props> = ({ closeModal }) => {
     handleSubmit,
     control,
     formState: { errors }, 
-  } = useForm<FormData>({
+  } = useForm<ConfirmEmailFormData>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
       confirmationCode: '',
     },
   });
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
+  const { 
+    isPending: isConfirmPending, 
+    mutate: confirm, 
+  } = useConfirmEmail();
+  const { 
+    isPending: isUpdatePending, 
+    mutate: update, 
+  } = useUpdateEmail();
+  const isPending = isConfirmPending || isUpdatePending;
+  const mutationOptions = {
+    onError: (e: any) => setErrorMessage(e),
+    onSuccess: closeModal,
   };
 
-  const { isPending, mutate, isError, isSuccess, data } = useConfirmEmail();
-
-  const onSubmit: SubmitHandler<FormData> = async({confirmationCode}) => {
-    mutate(confirmationCode, {
-      onError: handleError,
-    });
-  };
-
-  useEffect(() => {
-    if (isSuccess) {
-      saveCookies({token: data.token})
-        .then(() => {
-          closeModal();
-        });
+  const onSubmit: SubmitHandler<ConfirmEmailFormData> 
+  = ({ confirmationCode }) => {
+    if (emailConfirmationType === 'update') {
+      update(confirmationCode, mutationOptions);
+    } else {
+      confirm(confirmationCode, mutationOptions);
     }
-  }, [isSuccess]);
+  };
 
   return (
     <form 
-      className="flex flex-col gap-4 h-full w-full"
+      className="flex h-full w-full flex-col gap-4"
       onSubmit={handleSubmit(onSubmit)}
     >
       <TextInput 
         type="text"
         name="confirmationCode"
-        label="Confirmation Code"
         placeholder="Enter code from email"
         control={control}
         errorText={errors.confirmationCode?.message}
         disabled={isPending}
       />
+
       <PrimaryButton type="submit" text="Confirm" disabled={isPending}/>
-      {isError && <ErrorText errorText={errorMessage} />}
+
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

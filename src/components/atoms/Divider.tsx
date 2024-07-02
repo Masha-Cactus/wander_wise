@@ -1,10 +1,13 @@
-import { memo } from "react";
 import { twMerge } from "tailwind-merge";
 
-const Divider = ({ classes }: { classes: string }) => {
+interface DividerProps {
+  classes?: string,
+}
+
+const Divider: React.FC<DividerProps> = ({ classes }) => {
   return (
-    <div className={twMerge('bg-gray-300', classes)}></div>
+    <div className={twMerge('bg-gray-30 w-full h-px', classes)}></div>
   );
 };
 
-export default memo(Divider);
+export default Divider;

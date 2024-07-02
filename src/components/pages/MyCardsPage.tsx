@@ -1,46 +1,73 @@
 'use client';
 
-import { useGetCreatedCards } from "@/src/hooks";
-import { IFilterParams } from "@/src/services";
 import { useState } from "react";
-import { FilterForm, CreatedCardsSection } from "@/src/components/organisms";
-import { Heading, Heading4 } from "@/src/components/atoms";
-import { PrimaryButton } from "@/src/components/moleculs";
-import { useRouter } from "next/navigation";
+import { AnimatePresence } from "framer-motion";
+import { ICollection, IFilterParams } from "@/src/services";
+import { 
+  FilterForm, 
+  FilteredCardsSection, 
+  EmptyFallbackModal 
+} from "@/src/components/organisms";
+import { Loader } from "@/src/components/atoms";
+import { Routes } from "@/src/lib/constants";
+import { useGetUserCollections } from "@/src/queries";
+import { 
+  ScreenHeightLayout, 
+  LoadingStateWrapper 
+} from "@/src/components/templates";
+import { selectCreatedCards } from "@/src/lib/collectionSelectors";
 
 const MyCardsPage = () => {
   const [filterParams, setFilterParams] = useState<IFilterParams | null>(null);
-  const createdCards = useGetCreatedCards();
-  const { push } = useRouter();
+  const { 
+    data: createdCollection, 
+    isLoading, 
+  } = useGetUserCollections<ICollection>(selectCreatedCards);
 
   return (
-    <main className="grow overflow-hidden
-      grid grid-cols-12 text-black bg-gray10">
+    <ScreenHeightLayout>
+      <AnimatePresence>
+        <LoadingStateWrapper
+          isEmpty={createdCollection && !createdCollection.cardDtos.length}
+          emptyFallbackComponent={
+            <EmptyFallbackModal
+              key="emptyFallbackModal"
+              title="You don’t have any created cards yet."
+              subtitle="Create your first card now! 🌏"
+              buttonText="Create"
+              path={Routes.MY_CARDS.CREATE}
+            />
+          }
+          isLoading={isLoading}
+          loadingFallbackComponent={
+            <div className="flex h-full w-full items-center justify-center">
+              <Loader size="lg" />
+            </div>
+          }
+        >
+          {!!createdCollection?.cardDtos.length && (
+            <div 
+              className="grid h-full w-full 
+              grid-cols-[345px,1fr] overflow-hidden"
+            >
+              <div className="overflow-y-scroll">
+                <FilterForm type="Created" setFilterParams={setFilterParams} />
+              </div>
 
-      {createdCards && createdCards.length ? (
-        <>
-          <div className="col-span-3 overflow-y-scroll">
-            <FilterForm type="Created" setFilterParams={setFilterParams} />
-          </div>
-
-          <div className="col-span-9 overflow-y-scroll">
-            <CreatedCardsSection filterParams={filterParams} />
-          </div>
-        </>
-      ) : (
-        <div className="col-span-12 flex items-center
-          flex-col gap-8 justify-center text-center">
-          <Heading text="You don’t have any created cards yet." font="normal" />
-          <Heading4 text="Create your first card now! 🌏" font="medium" />
-          <PrimaryButton 
-            text="Create" 
-            onClick={() => push('/my-cards/create')}
-            classes="w-1/3"
-          />
-        </div>
-      )}
-      
-    </main>
+              <div className="overflow-y-scroll">
+                <FilteredCardsSection 
+                  filterParams={filterParams} 
+                  cards={createdCollection.cardDtos} 
+                  title="My created cards" 
+                  linkText="+ New card"
+                  linkPath={Routes.MY_CARDS.CREATE}
+                />
+              </div>
+            </div>
+          )}
+        </LoadingStateWrapper> 
+      </AnimatePresence>   
+    </ScreenHeightLayout>
   );
 };
 

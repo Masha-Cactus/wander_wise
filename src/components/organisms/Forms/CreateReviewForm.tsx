@@ -1,34 +1,35 @@
 'use client';
 
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useParams } from "next/navigation";
 import { useNormalizedError } from "@/src/hooks";
 import { useCreateComment } from "@/src/queries";
 import { ICreateComment } from "@/src/services";
-import { createReviewSchema } from "@/src/validation";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { reviewSchema } from "@/src/validation";
 import { ErrorText } from "@/src/components/atoms";
 import { 
   PrimaryButton, 
   TextAreaInput, 
   StarsInput, 
-} from "@/src/components/moleculs";
-import { useParams } from "next/navigation";
+} from "@/src/components/molecules";
 
-type Props = {
+interface CreateReviewFormProps {
   closeModal: () => void,
-};
+}
 
-const CreateReviewForm: React.FC<Props> = ({ closeModal }) => {
+type CreateReviewFormData = Omit<ICreateComment, 'cardId'>;
+
+const CreateReviewForm: React.FC<CreateReviewFormProps> = ({ closeModal }) => {
   const { id } = useParams();
   const [errorMessage, setErrorMessage] = useNormalizedError();
-  const validationSchema = createReviewSchema();
+  const validationSchema = reviewSchema();
 
   const {
     control,
     handleSubmit,
-    reset,
     formState: { errors },
-  } = useForm<Omit<ICreateComment, 'cardId'>>({
+  } = useForm<CreateReviewFormData>({
     values: {
       text: "",
       stars: 0,
@@ -36,27 +37,19 @@ const CreateReviewForm: React.FC<Props> = ({ closeModal }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
+  const { isPending, mutate } = useCreateComment();
 
-  const { isPending, mutate, isError } = useCreateComment();
-
-  const onSubmit: SubmitHandler<Omit<ICreateComment, 'cardId'>> 
-  = async(data) => {
+  const onSubmit: SubmitHandler<CreateReviewFormData> = (data) => {
     mutate({...data, cardId: +id}, {
-      onError: handleError,
-      onSuccess: () => {
-        reset();
-        closeModal();
-      },
+      onError: (e) => setErrorMessage(e),
+      onSuccess: closeModal,
     });
   };
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full flex flex-col gap-6"
+      className="flex w-full flex-col gap-6"
     >
       <StarsInput control={control} name="stars" />
 
@@ -70,7 +63,7 @@ const CreateReviewForm: React.FC<Props> = ({ closeModal }) => {
 
       <PrimaryButton text="Send" type="submit" disabled={isPending} />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

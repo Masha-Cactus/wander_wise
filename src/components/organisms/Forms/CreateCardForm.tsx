@@ -1,5 +1,9 @@
 'use client';
 
+import { Dispatch, SetStateAction } from "react";
+import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { useCreateCard } from "@/src/queries";
@@ -8,23 +12,23 @@ import {
   SpecialRequirementsType, 
   TripTypesType 
 } from "@/src/services";
-import { useForm } from "react-hook-form";
 import { Divider, ErrorText, Heading5 } from "@/src/components/atoms";
 import { 
   DropdownInput, 
   LocationInput, 
-  SelectInput, 
+  ListInput, 
   TextAreaInput, 
   TextInput,
-  CheckboxInput,
+  RadioButtonInput,
   PrimaryButton,
-  SquareCheckboxInput
-} from "@/src/components/moleculs";
+  CheckboxInput
+} from "@/src/components/molecules";
 import { createCardSchema } from "@/src/validation";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Dispatch, SetStateAction } from "react";
-import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
-import { ATMOSPHERES, CLIMATES, SPECIALS } from "@/src/lib/constants";
+import { ATMOSPHERES, CLIMATES, SPECIALS } from "@/src/lib/cardParameters";
+
+interface CreateCardFormProps {
+  setNewCardId: Dispatch<SetStateAction<number | null>>,
+}
 
 export interface CreateCardFormData {
   name: string,
@@ -34,13 +38,10 @@ export interface CreateCardFormData {
   specialRequirements: SpecialRequirementsType[],
   description: string,
   whyThisPlace: string[],
+  mapLink: string;
 }
 
-type Props = {
-  setNewCardId: Dispatch<SetStateAction<number | null>>,
-};
-
-const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
+const CreateCardForm: React.FC<CreateCardFormProps> = ({ setNewCardId }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   
   const validationSchema = createCardSchema();
@@ -58,17 +59,14 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
       specialRequirements: [],
       description: "",
       whyThisPlace: [],
+      mapLink: "",
     },
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useCreateCard();
-
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
+  const { isPending, mutate } = useCreateCard();
   
-  const onSubmit = async (data: CreateCardFormData) => {
+  const onSubmit: SubmitHandler<CreateCardFormData> = (data) => {
     const {
       location,
       ...trimmedData
@@ -78,10 +76,9 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
       ...trimmedData,
       populatedLocality: location?.city || '',
       country: location?.country || '',
-      mapLink: `https://www.google.com/maps/search/?api=1&query=${location?.latitude},${location?.longitude}`,
     },
     {
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
       onSuccess: ({id}) => setNewCardId(id),
     }
     );
@@ -90,7 +87,7 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full flex flex-col gap-6"
+      className="flex w-full flex-col gap-6"
     >
       <TextInput
         type="text"
@@ -111,6 +108,16 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
         errorText={errors.location?.message}
       />
 
+      <TextInput
+        type="text"
+        name="mapLink"
+        control={control}
+        errorText={errors.mapLink?.message}
+        disabled={isPending}
+        placeholder="Enter a valid Google Maps link"
+        label="Google Maps link"
+      />
+
       <TextAreaInput
         name="description"
         control={control}
@@ -120,7 +127,7 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
         label="Description"
       />
 
-      <SelectInput
+      <ListInput
         name="whyThisPlace"
         control={control}
         errorText={errors.whyThisPlace?.message}
@@ -138,13 +145,13 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
         label="Type of this place" 
       />
 
-      <div className="flex justify-between gap-5">
-        <div className="flex flex-col gap-4 grow">
+      <div className="grid grid-cols-2 gap-5">
+        <div className="flex flex-col gap-4">
           <Heading5 text="Special" font="medium" />
-          <Divider classes="w-full h-px" />
+          <Divider />
           <div className="flex flex-col gap-2">
             {SPECIALS.map((special) => (
-              <SquareCheckboxInput
+              <CheckboxInput
                 key={special}
                 control={control}
                 name="specialRequirements"
@@ -158,18 +165,17 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
             )}
           </div>
         </div>
-        <div className="flex flex-col gap-4 grow">
+        <div className="flex flex-col gap-4">
           <Heading5 text="Climate" font="medium" />
-          <Divider classes="w-full h-px" />
+          <Divider />
           <div className="flex flex-col gap-2">
             {CLIMATES.map((climate) => (
-              <CheckboxInput
+              <RadioButtonInput
                 key={climate}
                 control={control}
                 name="climate"
                 value={climate}
                 text={climate}
-                radio={true}
               />
             ))}
 
@@ -182,7 +188,7 @@ const CreateCardForm: React.FC<Props> = ({ setNewCardId }) => {
 
       <PrimaryButton text="Create" type="submit" disabled={isPending} />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

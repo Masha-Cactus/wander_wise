@@ -1,39 +1,44 @@
 import { useMutation } from "@tanstack/react-query";
+import { getCookie, deleteCookie, setCookie } from "cookies-next";
 import { authService, IEmail, ISignIn, ISignUp } from "@/src/services";
 import { useUser } from "@/src/store/user";
-import { getCookie, deleteCookie } from "cookies-next";
 
 export function useSignUp() {
-  const setUser = useUser((state) => state.setUser);
-
   return useMutation({
     mutationFn: (data: ISignUp) => authService.signUp(data),
     onSuccess: (user) => {
-      setUser(user);
+      setCookie('email', user.email);
+      localStorage.setItem('emailConfirmationType', 'initial');
+      if (user.emailConfirmCode) {
+        setCookie('confirmationCode', user.emailConfirmCode);
+      }
     },
   });
 }
 
 export function useConfirmEmail() {
-  const [user, unbanUser] = useUser((state) => 
-    [state.user, state.unbanUser]);
+  const setUser = useUser((state) => state.setUser);
   const confirmationCode = getCookie('confirmationCode');
+  const userEmail = getCookie('email');
 
   return useMutation({
     mutationFn: (codeFromUser: string) => {
-      if (user && confirmationCode) {
+      if (confirmationCode && userEmail) {
         if (codeFromUser !== confirmationCode) {
-          return Promise.reject('Wrong confirmation code');
+          return Promise.reject(new Error('Wrong confirmation code'));
         }
 
-        return authService.confirmEmail(user.email);
+        return authService.confirmEmail(userEmail);
       }
     
-      return Promise.reject('User has not completed registration');
+      return Promise.reject(new Error('User has not completed registration'));
     },
-    onSuccess: () => {
-      unbanUser();
+    onSuccess: ({ user, token }) => {
+      setUser(user);
+      setCookie('token', token);
+      localStorage.removeItem('emailConfirmationType');
       deleteCookie('confirmationCode');
+      deleteCookie('email');
     }
   });
 }
@@ -43,8 +48,9 @@ export function useSignIn() {
 
   return useMutation({
     mutationFn: (data: ISignIn) => authService.signIn(data),
-    onSuccess: async({ user }) => {
+    onSuccess: ({ user, token }) => {
       setUser(user);
+      setCookie('token', token);
     },
   });
 }
@@ -65,11 +71,36 @@ export function useLogout() {
         return authService.logout(token);
       }
 
-      return Promise.reject('User not authorized');
+      return Promise.reject(new Error('User not authorized'));
     },
 
     onSuccess: () => {
       setUser(null);
+      deleteCookie('token');
     }
+  });
+}
+
+// this mutation is currently used only for auto-authorization on first load
+export function useRefreshToken() {
+  const token = getCookie('token');
+  const setUser = useUser((state) => state.setUser);
+
+  return useMutation({
+    mutationFn: () => {
+      if (token) {
+        return authService.refresh();
+      }
+
+      return Promise.reject(new Error("User not authorized"));
+    },
+    retry: false,
+    onSuccess: ({ user, token }) => {
+      setUser(user);
+      setCookie('token', token);
+    }, 
+    onError: () => {
+      deleteCookie('token');
+    },
   });
 }

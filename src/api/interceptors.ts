@@ -1,11 +1,16 @@
 import { 
-  AxiosError, 
   AxiosResponse, 
   InternalAxiosRequestConfig, 
 } from "axios";
 import { getCookie } from "cookies-next";
 
-export function onRequest(req: InternalAxiosRequestConfig) {
+export function onBaseRequest(req: InternalAxiosRequestConfig) {
+  req.headers['Accept-Language'] = 'en-US,en;q=0.9';
+
+  return req;
+}
+
+export function onAuthRequest(req: InternalAxiosRequestConfig) {
   const accessToken = getCookie('token');
   
   if (accessToken) {
@@ -18,18 +23,5 @@ export function onRequest(req: InternalAxiosRequestConfig) {
 
 export function onResponseSuccess(res: AxiosResponse) {
   return res.data;
-}
-
-export function onResponseError(error: AxiosError) {
-  throw error;
-  // const { status } = error.response as AxiosResponse ?? {};
-  
-  // if (status !== 401) {
-  //   throw error;
-  // } else {
-  //   deleteCookie('userId');
-  //   deleteCookie('token');
-  //   window.location.href = '/';
-  // }
 }
 

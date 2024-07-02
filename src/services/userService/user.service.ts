@@ -1,4 +1,5 @@
-import { authClient, baseClient, formDataClient } from "@/src/api";
+import { authClient, baseClient } from "@/src/api";
+import { ApiEndpoints } from "@/src/lib/constants";
 import { 
   ISocial,
   IUser,
@@ -8,11 +9,12 @@ import {
   IUpdatePassword,
   IToken, 
   IComment,
+  ICollection,
+  IAuthResponse
 } from "@/src/services";
-import { ICollection } from "../collectionService/collection.types";
 
 class UserService {
-  private BASE_URL = '/users';
+  private BASE_URL = ApiEndpoints.USERS;
 
   getSocials (userId: number) {
     return baseClient.get<never, ISocial[]>(`${this.BASE_URL}/${userId}/social-links`);
@@ -45,7 +47,7 @@ class UserService {
   };
 
   updateEmail ({userId, newEmail}: IUpdateEmail) {
-    return authClient.put<never, IToken>(
+    return authClient.put<never, IAuthResponse>(
       `${this.BASE_URL}/update-user-email/${userId}`,
       { email: newEmail },
     );
@@ -59,11 +61,11 @@ class UserService {
   };
 
   updateImage (data: IUpdateImage) {
-    return formDataClient.put<never, IUser>(
+    return authClient.putForm<never, IUser>(
       `${this.BASE_URL}/update-user-image/${data.id}`,
       data, 
     );
-  }
+  };
 
   deleteUser (userId: number) {
     return authClient.delete(`${this.BASE_URL}/delete-user/${userId}`);

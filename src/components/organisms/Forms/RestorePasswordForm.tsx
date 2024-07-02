@@ -1,25 +1,25 @@
 'use client';
 
-import { useNormalizedError } from '@/src/hooks/useNormalizedError';
-import { useRestorePassword } from '@/src/queries';
-import { IEmail } from '@/src/services';
-import { restorePasswordSchema } from '@/src/validation/restorePasswordSchema';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { Dispatch, SetStateAction } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useNormalizedError } from '@/src/hooks';
+import { useRestorePassword } from '@/src/queries';
+import { IEmail } from '@/src/services';
+import { restorePasswordSchema } from '@/src/validation';
 import { ErrorText } from '@/src/components/atoms';
-import { PrimaryButton, TextInput } from '@/src/components/moleculs';
+import { PrimaryButton, TextInput } from '@/src/components/molecules';
 
-type Props = {
+interface RestorePasswordFormProps {
   setIsSubmitted: Dispatch<SetStateAction<boolean>>,
-};
+}
 
-const RestorePasswordForm: React.FC<Props> = ({setIsSubmitted}) => {
+const RestorePasswordForm: React.FC<RestorePasswordFormProps> 
+= ({ setIsSubmitted }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = restorePasswordSchema();
 
   const {
-    reset,
     control,
     handleSubmit,
     formState: { errors },
@@ -30,25 +30,18 @@ const RestorePasswordForm: React.FC<Props> = ({setIsSubmitted}) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useRestorePassword();
+  const { isPending, mutate } = useRestorePassword();
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
-
-  const onSubmit: SubmitHandler<IEmail> = async(data) => {
+  const onSubmit: SubmitHandler<IEmail> = (data) => {
     mutate(data, {
-      onError: handleError,
-      onSuccess: () => {
-        reset();
-        setIsSubmitted(true);
-      },
+      onError: (e) => setErrorMessage(e),
+      onSuccess: () => setIsSubmitted(true),
     });
   };
 
   return (
     <form
-      className="flex flex-col gap-4 h-full w-full"
+      className="flex h-full w-full flex-col gap-12"
       onSubmit={handleSubmit(onSubmit)}
     >
       <TextInput 
@@ -64,10 +57,9 @@ const RestorePasswordForm: React.FC<Props> = ({setIsSubmitted}) => {
         text="Continue" 
         disabled={isPending} 
         type='submit' 
-        classes='mt-8' 
       />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

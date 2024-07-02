@@ -12,7 +12,15 @@ export function useCreateComment() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: ICreateComment) => commentService.createComment(data),
+    mutationFn: (data: ICreateComment) => {
+      if (user?.banned) {
+        return Promise.reject(new Error(
+          'Email confirmation is required for this action.'
+        ));
+      }
+      
+      return commentService.createComment(data);
+    },
     onSuccess: async(_, { cardId }) => {
       await Promise.all([
         queryClient.invalidateQueries({

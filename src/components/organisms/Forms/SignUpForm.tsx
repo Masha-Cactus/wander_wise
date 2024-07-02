@@ -1,28 +1,27 @@
 "use client";
 
-import { memo, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ISignUp } from "@/src/services";
 import { signUpSchema } from "@/src/validation";
 import {
   PrimaryButton,
   TextInput,
-} from "@/src/components/moleculs";
+} from "@/src/components/molecules";
 import { useSignUp } from "@/src/queries";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { ErrorText } from "@/src/components/atoms";
-import { PasswordInput } from "@/src/components/moleculs";
-import { useNormalizedError } from "@/src/hooks/useNormalizedError";
-import { saveCookies } from "@/src/actions/manageCookies";
+import { PasswordInput } from "@/src/components/molecules";
+import { useNormalizedError } from "@/src/hooks";
 
-type Props = {
+interface SignUpFormProps {
   openConfirmEmailModal: () => void;
-};
+  openSignInModal: () => void;
+}
 
-const SignUpForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
+const SignUpForm: React.FC<SignUpFormProps> 
+= ({ openConfirmEmailModal, openSignInModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
-  const [isShowPassword, setIsShowPassword] = useState(false);
   const validationSchema = signUpSchema();
 
   const {
@@ -36,35 +35,26 @@ const SignUpForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
       repeatPassword: "",
     },
     resolver: yupResolver(validationSchema),
-    mode: 'onBlur',
   });
+  
+  const { isPending, mutate } = useSignUp();
 
-  const handleError = (error: any) => {
-    setErrorMessage(error);
-  };
-
-  const { isPending, mutate, isError, isSuccess, data } = useSignUp();
-
-  const onSubmit = async (data: ISignUp) => {
+  const onSubmit: SubmitHandler<ISignUp> = (data) => {
     const trimmedUserData = trimObjectFields(data);
 
     mutate(trimmedUserData, {
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
+      onSuccess: (user) => {
+        user.banned 
+          ? openConfirmEmailModal()
+          : openSignInModal();
+      }
     });
   };
 
-  useEffect(() => {
-    if (isSuccess) {
-      saveCookies({userId: data.id, confirmationCode: data.emailConfirmCode})
-        .then(() => {
-          openConfirmEmailModal();
-        });
-    }
-  }, [isSuccess]);
-
   return (
     <form
-      className="flex flex-col gap-4 h-full w-full" 
+      className="flex h-full w-full flex-col gap-4" 
       onSubmit={handleSubmit(onSubmit)}
     >
       <TextInput
@@ -82,8 +72,6 @@ const SignUpForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
         control={control}
         errorText={errors.password?.message}
         disabled={isPending}
-        isShown={isShowPassword}
-        onClick={() => setIsShowPassword(!isShowPassword)}
         placeholder="Enter your password"
       />
 
@@ -93,12 +81,8 @@ const SignUpForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
         control={control}
         errorText={errors.repeatPassword?.message}
         disabled={isPending}
-        isShown={isShowPassword}
-        onClick={() => setIsShowPassword(!isShowPassword)}
         placeholder="Confirm password"
       />
-
-      {isError && <ErrorText errorText={errorMessage} />}
 
       <PrimaryButton
         text="Create Account"
@@ -106,8 +90,10 @@ const SignUpForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
         type="submit"
         disabled={isPending}
       />
+
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };
 
-export default memo(SignUpForm);
+export default SignUpForm;

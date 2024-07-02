@@ -1,33 +1,53 @@
 "use client";
 
+import { 
+  Dispatch, 
+  memo, 
+  SetStateAction, 
+  useCallback, 
+  useEffect, 
+  useMemo 
+} from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Divider,
   TextBase,
 } from "@/src/components/atoms";
 import {
   RoundedButton,
-  FilterButton,
-} from "@/src/components/moleculs";
+  ButtonCheckboxInput,
+} from "@/src/components/molecules";
 import {
   IFilterParams,
-  ICard
+  ICard,
+  ICollection
 } from "@/src/services";
-import { useForm } from "react-hook-form";
 import { filterCardsSchema } from "@/src/validation";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { getFilterOptions, trimObjectFields } from "@/src/lib/helpers";
-import { useGetCreatedCards, useGetSavedCards } from "@/src/hooks";
-import { Dispatch, memo, SetStateAction, useMemo } from "react";
-import { ATMOSPHERES, AUTHORS, CLIMATES, SPECIALS } from "@/src/lib/constants";
+import { 
+  ATMOSPHERES, 
+  AUTHORS, 
+  CLIMATES, 
+  SPECIALS 
+} from "@/src/lib/cardParameters";
+import { useGetUserCollections } from "@/src/queries";
+import { 
+  selectCreatedCards, 
+  selectSavedCards 
+} from "@/src/lib/collectionSelectors";
 
-type Props = {
+interface FilterFormProps {
   type: 'Saved' | 'Created',
   setFilterParams: Dispatch<SetStateAction<IFilterParams | null>>
-};
+}
 
-const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
-  const savedCards = useGetSavedCards();
-  const createdCards = useGetCreatedCards();
+const FilterForm: React.FC<FilterFormProps> = ({ type, setFilterParams }) => {
+  const selectFn = type === 'Saved'
+    ? selectSavedCards
+    : selectCreatedCards;
+
+  const { data: collection } = useGetUserCollections<ICollection>(selectFn);
 
   const { 
     atmospheres, 
@@ -38,10 +58,8 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
   } = useMemo(() => {
     let cardsToFilter: ICard[] = [];
 
-    if (type === 'Saved' && savedCards) {
-      cardsToFilter = savedCards;
-    } else if (type === 'Created' && createdCards) {
-      cardsToFilter = createdCards;
+    if (collection) {
+      cardsToFilter = collection.cardDtos;
     }
 
     const filterOptions = getFilterOptions(cardsToFilter);
@@ -56,15 +74,16 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .filter(([_, authorValue]) => filterOptions.authors
         .includes(authorValue));
+    const countries = Array.from(new Set(filterOptions.countries));
     
     return { 
       atmospheres, 
       climates, 
       specials, 
       authors, 
-      countries: filterOptions.countries 
+      countries, 
     };
-  }, [savedCards, createdCards, type]);
+  }, [collection]);
 
   const validationSchema = filterCardsSchema();
   const {
@@ -83,102 +102,136 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
     resolver: yupResolver(validationSchema),
   });
   
-  const onSubmit = async (data: IFilterParams) => {
+  const onSubmit: SubmitHandler<IFilterParams> = (data) => {
     const trimmedData = trimObjectFields(data);
   
     setFilterParams(trimmedData);
   };
 
+  const onClear = useCallback(() => {
+    reset();
+    setFilterParams(null);
+  }, [reset, setFilterParams]);
+
+  useEffect(() => {
+    if (!isDirty) {
+      setFilterParams(null);
+    }
+  }, [isDirty, setFilterParams]);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col 
-      bg-white border-2 border-gray-30 gap-8"
+      className="flex min-h-full flex-col justify-between
+      border-r border-gray-30 bg-white pt-8"
     >
+      <div className="flex w-full flex-col gap-8">
 
-      <div className="flex flex-col mx-10">
-        <TextBase
-          text="Country"
-          font="semibold"
-        />
-        <div className="flex flex-wrap gap-2 mt-3">
-          {countries.map((country) => (
-            <FilterButton
-              key={country}
-              control={control}
-              name="countries"
-              value={country}
-            />
-          ))}
-        </div>
+        {!!countries.length && (
+          <>
+            <div className="mx-10 flex flex-col">
+              <TextBase
+                text="Country"
+                font="semibold"
+              />
+              <div className="mt-3 flex flex-wrap gap-2">
+                {countries.map((country) => (
+                  <ButtonCheckboxInput
+                    key={country}
+                    control={control}
+                    name="countries"
+                    value={country}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <Divider />
+          </>
+        )}
+      
+        {!!atmospheres.length && (
+          <>
+            <div className="mx-10 flex flex-col">
+              <TextBase text="Type" font="semibold" />
+              <div className="mt-3 flex flex-wrap gap-2">
+                {atmospheres.map((atmosphere) => (
+                  <ButtonCheckboxInput
+                    key={atmosphere}
+                    control={control}
+                    name="tripTypes"
+                    value={atmosphere}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <Divider />
+          </>
+        )}
+      
+
+        {!!climates.length && (
+          <>
+            <div className="mx-10 flex flex-col">
+              <TextBase text="Climate" font="semibold" />
+              <div className="mt-3 flex flex-wrap gap-2">
+                {climates.map((climate) => (
+                  <ButtonCheckboxInput
+                    key={climate}
+                    control={control}
+                    name="climates"
+                    value={climate}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <Divider />
+          </>
+        )}
+      
+        {!!specials.length && (
+          <>
+            <div className="mx-10 flex flex-col">
+              <TextBase text="Special requirements" font="semibold" />
+              <div className="mt-3 flex flex-wrap gap-2">
+                {specials.map((special) => (
+                  <ButtonCheckboxInput
+                    key={special}
+                    control={control}
+                    name="specialRequirements"
+                    value={special}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <Divider />
+          </>
+        )}
+      
+        {!!authors.length && (
+          <>
+            <div className="mx-10 flex flex-col">
+              <TextBase text="Cards are" font="semibold" />
+              <div className="mt-3 flex flex-wrap gap-2">
+                {authors.map(([authorText, authorValue]) => (
+                  <ButtonCheckboxInput 
+                    key={authorValue}
+                    name="authors"
+                    control={control}
+                    text={authorText}
+                    value={authorValue}
+                  />
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
-      <Divider classes="h-px w-full" />
-
-      <div className="flex flex-col mx-10">
-        <TextBase text="Type" font="semibold" />
-        <div className="flex flex-wrap gap-2 mt-3">
-          {atmospheres.map((atmosphere) => (
-            <FilterButton
-              key={atmosphere}
-              control={control}
-              name="tripTypes"
-              value={atmosphere}
-            />
-          ))}
-        </div>
-      </div>
-
-      <Divider classes="h-px w-full" />
-
-      <div className="flex flex-col mx-10">
-        <TextBase text="Climate" font="semibold" />
-        <div className="flex flex-wrap gap-2 mt-3">
-          {climates.map((climate) => (
-            <FilterButton
-              key={climate}
-              control={control}
-              name="climates"
-              value={climate}
-            />
-          ))}
-        </div>
-      </div>
-
-      <Divider classes="h-px w-full" />
-
-      <div className="flex flex-col mx-10">
-        <TextBase text="Special requirements" font="semibold" />
-        <div className="flex flex-wrap gap-2 mt-3">
-          {specials.map((special) => (
-            <FilterButton
-              key={special}
-              control={control}
-              name="specialRequirements"
-              value={special}
-            />
-          ))}
-        </div>
-      </div>
-
-      <Divider classes="h-px w-full" />
-
-      <div className="flex flex-col mx-10">
-        <TextBase text="Cards are" font="semibold" />
-        <div className="flex flex-wrap gap-2 mt-3">
-          {authors.map(([authorText, authorValue]) => (
-            <FilterButton 
-              key={authorValue}
-              name="authors"
-              control={control}
-              text={authorText}
-              value={authorValue}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="flex gap-4 mx-10 my-8">
+      <div className="mx-10 my-8 flex gap-4">
         <RoundedButton
           text="Apply"
           type="submit"
@@ -186,12 +239,9 @@ const FilterForm: React.FC<Props> = ({ type, setFilterParams }) => {
         />
         <RoundedButton
           text="Clear"
-          type="reset"
+          type="button"
           style="light"
-          onClick={() => {
-            reset();
-            setFilterParams(null);
-          }}
+          onClick={onClear}
           disabled={!isDirty}
         />
       </div>

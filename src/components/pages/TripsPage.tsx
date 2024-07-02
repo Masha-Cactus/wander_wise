@@ -1,135 +1,57 @@
 'use client';
 
+import { useState } from "react";
 import { 
-  Gallery, 
   SearchCardsForm, 
-  Pagination 
+  SearchedCardsSection,
+  PopularCardsSection 
 } from "@/src/components/organisms";
-import { useNormalizedError } from "@/src/hooks";
-import { useSearchCards } from "@/src/queries";
-import { ICard, ISearchCard } from "@/src/services";
-import { memo, useEffect, useState } from "react";
-import { ErrorText, Heading2 } from "@/src/components/atoms";
-import defaultCards from "@/public/defaultCards.json";
-import { useQueryClient } from "@tanstack/react-query";
-import { LoadedContentStateController } from "@/src/components/moleculs";
-
-// replace with infinite query
+import { ISearchCard, TripsPageView } from "@/src/services";
+import { Heading2 } from "@/src/components/atoms";
+import { ViewSwitcher } from "@/src/components/molecules";
+import { ScreenHeightLayout } from "@/src/components/templates";
 
 const TripsPage = () => {
-  const [errorMessage, setErrorMessage] = useNormalizedError();
   const [filterParams, setFilterParams] = useState<ISearchCard | null>(null);
-  const [page, setPage] = useState(0);
-
-  const queryClient = useQueryClient();
-  const [isQueryEnabled, setIsQueryEnabled] = useState(false);
-
-  const { 
-    data, 
-    isPlaceholderData, 
-    error, 
-    isLoading, 
-  } = useSearchCards(page, filterParams);
-
-  const getCachedPageData = (page) => {
-    const cachedData = queryClient.getQueryData(['cards']);
-
-    if (cachedData) {
-      const pageData = cachedData.pages.find(
-        (_, index) => index === page
-      );
-      return pageData;
-    }
-    return null;
-  };
-
-  useEffect(() => {
-    if (error) {
-      setErrorMessage(error);
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (!filterParams) {
-      queryClient.removeQueries({
-        queryKey: ['cards'],
-      });
-      setIsQueryEnabled(false);
-    } else {
-      if (!isQueryEnabled) {
-        setIsQueryEnabled(true);
-      }
-    }
-  }, [filterParams]);
+  const [view, setView] = useState<TripsPageView>(TripsPageView.Gallery);
 
   return (
-    <main className="grow overflow-hidden grid grid-cols-12 
-      text-black bg-gray10">
-      <div className="col-span-3 overflow-y-scroll">
-        <SearchCardsForm setFilterParams={setFilterParams} />
-      </div>
+    <ScreenHeightLayout>
+      <div className="grid h-full w-full grid-cols-[345px,1fr] overflow-hidden">
+        <div className="overflow-y-scroll">
+          <SearchCardsForm setFilterParams={setFilterParams} />
+        </div>
 
-      <div
-        className="flex flex-col justify-between items-center gap-8 
-          col-span-9 px-10 py-8 overflow-y-scroll"
-      >
-
-        {isQueryEnabled ? (
-          <LoadedContentStateController
-            isError={isGlobalError}
-            errorAlertFallbackComponent={
-              <Heading2 
-                text="No cards matching your preferences found. 
-                    Try setting other filter parameters" 
-                font="semibold"
-                classes="m-auto"
-              />
-            }
-            isLoading={isLoading}
-            loadingFallbackComponent={
-              <Heading2 
-                text="Generating cards for you. 
-                    This might take a couple of minutes..." 
-                font="semibold"
-                classes="m-auto animate-pulse"
-              />
-            }
-          >
-            {!!data && (
-              <>
-                {errorMessage && <ErrorText errorText={errorMessage} />}
-
-                <Heading2 
-                  text="Places that suit your preferences" 
-                  font="semibold"
-                  classes="self-start"
-                />
-
-                <Gallery cards={data.cards} />
-
-                <Pagination 
-                  page={page} 
-                  setPage={setPage} 
-                  isPlaceholderData={isPlaceholderData}
-                  isLastPage={isLastPage}
-                />
-              </>
-            )}
-          </LoadedContentStateController>
-        ) : (
-          <>
+        <div
+          className="relative flex flex-col items-center
+          justify-between gap-8 overflow-auto px-10 py-8"
+        >
+          <div className="flex w-full justify-between">
             <Heading2 
-              text="Top places preferred by our users" 
+              text={filterParams 
+                ? "Places that suit your preferences" 
+                : "Top places preferred by our users"
+              } 
               font="semibold"
               classes="self-start"
             />
 
-            <Gallery cards={defaultCards as ICard[]} />
-          </>
-        )}
+            <ViewSwitcher view={view} setView={setView} />
+          </div>
+
+          {!!filterParams ? (
+            <SearchedCardsSection 
+              key={JSON.stringify(filterParams)} 
+              filterParams={filterParams} 
+              view={view} 
+            />
+          ) : (
+            <PopularCardsSection view={view} />
+          )}
+        </div>
       </div>
-    </main>
+    </ScreenHeightLayout>
   );
 };
 
-export default memo(TripsPage);
+export default TripsPage;

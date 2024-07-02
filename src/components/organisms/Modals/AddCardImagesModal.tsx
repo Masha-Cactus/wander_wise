@@ -1,7 +1,6 @@
 import { memo } from "react";
-import { Heading } from "@/src/components/atoms";
 import { 
-  ModalSkeleton, 
+  ModalTemplate, 
   UploadCardImagesForm 
 } from "@/src/components/organisms";
 
@@ -15,11 +14,12 @@ const AddCardImagesModal: React.FC<AddCardImagesModalProps> = ({
   cardId,
 }) => {
   return (
-    <ModalSkeleton onClose={onClose}>
-      <Heading text="Add images for your card" font="normal"/>
-
+    <ModalTemplate 
+      onClose={onClose}
+      title="Add images for your card"
+    >
       <UploadCardImagesForm cardId={cardId} closeModal={onClose} />
-    </ModalSkeleton>
+    </ModalTemplate>
   );
 };
 

@@ -8,21 +8,28 @@ import {
   IoIosArrowUp,
   IoMdExit,
 } from "react-icons/io";
+import { 
+  FaPlus, 
+  FaTwitter, 
+  FaInstagram, 
+  FaStar, 
+  FaRegStar,
+} from "react-icons/fa";
+import { 
+  MdErrorOutline, 
+  MdOutlineMail, 
+  MdOutlineFileDownload,
+  MdOutlineFolder
+} from "react-icons/md";
 import { IoShareSocialOutline } from "react-icons/io5";
-import { MdErrorOutline } from "react-icons/md";
-import { HiOutlineUserCircle } from "react-icons/hi2";
+import { HiOutlineUserCircle, HiMiniSquares2X2 } from "react-icons/hi2";
 import { GiRobotAntennas } from "react-icons/gi";
 import { TiArrowLeftThick, TiArrowRightThick } from "react-icons/ti";
-import { FiEdit2 } from "react-icons/fi";
+import { FiEdit2, FiGlobe } from "react-icons/fi";
 import { GrLocation } from "react-icons/gr";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { MdOutlineMail } from "react-icons/md";
-import { RiGlobalLine } from "react-icons/ri";
-import { FaRegEye } from "react-icons/fa6";
-import { FaRegEyeSlash } from "react-icons/fa6";
-import { FaStar, FaRegStar } from "react-icons/fa";
-import { FaPlus, FaTwitter, FaInstagram } from "react-icons/fa";
-import { FaCheck, FaGlobe } from "react-icons/fa6";
+import { RiDeleteBinLine, RiGlobalLine } from "react-icons/ri";
+import { FaRegEye, FaRegEyeSlash, FaCheck } from "react-icons/fa6";
+import { TbLayoutListFilled } from "react-icons/tb";
 
 const Icons = {
   close: IoIosClose,
@@ -52,7 +59,11 @@ const Icons = {
   checked: FaCheck,
   twitter: FaTwitter,
   insta: FaInstagram,
-  website: FaGlobe,
+  website: FiGlobe,
+  download: MdOutlineFileDownload,
+  folder: MdOutlineFolder,
+  list: TbLayoutListFilled,
+  gallery: HiMiniSquares2X2,
 };
 
 export default Icons;

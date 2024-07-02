@@ -1,14 +1,11 @@
-import { memo } from "react";
-
-interface HeadingProps {
+interface Heading4Props {
   text: string;
   classes?: string;
   font: "medium" | "normal" | "semibold";
 }
 
-//this is for 24px
-const Heading4: React.FC<HeadingProps> = ({ text, classes, font }) => {
-  return <h4 className={`text-2xl text-black font-${font} ${classes}`}>{text}</h4>;
+const Heading4: React.FC<Heading4Props> = ({ text, classes, font }) => {
+  return <h4 className={`font-${font} text-2xl text-black ${classes}`}>{text}</h4>;
 };
 
-export default memo(Heading4);
+export default Heading4;

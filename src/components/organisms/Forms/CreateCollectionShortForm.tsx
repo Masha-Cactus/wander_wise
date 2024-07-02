@@ -1,26 +1,27 @@
 'use client';
 
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { useCreateCollection } from "@/src/queries";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
 import { 
   PrimaryButton, 
   TextInput,
-} from "@/src/components/moleculs";
+} from "@/src/components/molecules";
 import { createCollectionShortSchema } from "@/src/validation";
 
-type CreateCollectionShortData = {
+interface CreateCollectionShortFormProps {
+  closeForm: () => void;
+}
+
+interface CreateCollectionShortData {
   name: string;
-};
+}
 
-type Props = {
-  closeModal: () => void;
-};
-
-const CreateCollectionShortForm: React.FC<Props> = ({ closeModal }) => {
+const CreateCollectionShortForm: React.FC<CreateCollectionShortFormProps> 
+= ({ closeForm }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
   const validationSchema = createCollectionShortSchema();
@@ -36,22 +37,14 @@ const CreateCollectionShortForm: React.FC<Props> = ({ closeModal }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useCreateCollection();
+  const { isPending, mutate } = useCreateCollection();
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
-
-  const onSubmit = async (data: CreateCollectionShortData) => {
+  const onSubmit: SubmitHandler<CreateCollectionShortData> = (data) => {
     const { name } = trimObjectFields(data);
 
-    mutate({
-      name,
-      cardIds: [],
-    },
-    {
-      onError: handleError,
-      onSuccess: () => closeModal(),
+    mutate({ name, cardIds: [] }, {
+      onError: (e) => setErrorMessage(e),
+      onSuccess: closeForm,
     }
     );
   };
@@ -59,9 +52,9 @@ const CreateCollectionShortForm: React.FC<Props> = ({ closeModal }) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full flex flex-col gap-2"
+      className="flex w-full flex-col gap-2"
     >
-      <div className="flex gap-2">
+      <div className="w-full">
         <TextInput
           type="text"
           name="name"
@@ -69,17 +62,17 @@ const CreateCollectionShortForm: React.FC<Props> = ({ closeModal }) => {
           errorText={errors.name?.message}
           disabled={isPending}
           placeholder="My wished place to visit"
-          label="Name of your collection"
         />
+      </div>     
 
-        <PrimaryButton 
-          type="submit" 
-          text="Create" 
-          disabled={isPending} 
-        />
-      </div>
+      <PrimaryButton 
+        type="submit" 
+        text="Create" 
+        disabled={isPending} 
+        classes="w-full h-10"
+      />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

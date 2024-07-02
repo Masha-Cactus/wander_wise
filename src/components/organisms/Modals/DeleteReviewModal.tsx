@@ -1,12 +1,12 @@
 "use client";
 
-import { memo, useState } from "react";
-import ModalSkeleton from "./ModalSkeleton";
-import { ErrorText, Heading, Heading4 } from "@/src/components/atoms";
-import { RoundedButton } from "@/src/components/moleculs";
-import { useDeleteComment } from "@/src/queries";
-import { normalizeError } from "@/src/lib/helpers";
+import { memo } from "react";
 import { useParams } from "next/navigation";
+import { ModalTemplate } from "@/src/components/organisms";
+import { ErrorText } from "@/src/components/atoms";
+import { RoundedButton } from "@/src/components/molecules";
+import { useDeleteComment } from "@/src/queries";
+import { useNormalizedError } from "@/src/hooks";
 
 interface DeleteReviewModalProps {
   onClose: () => void;
@@ -18,46 +18,41 @@ const DeleteReviewModal: React.FC<DeleteReviewModalProps> = ({
   commentId,
 }) => {
   const { id: cardId } = useParams();
-  const { isPending, mutate, isError } = useDeleteComment();
+  const { isPending, mutate } = useDeleteComment();
 
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const handleError = (error: any) => {
-    setErrorMessage(normalizeError(error.message));
-  };
+  const [errorMessage, setErrorMessage] = useNormalizedError();
 
   const handleDeleteReview = () => {
     if (cardId) {
-      mutate({commentId, cardId: +cardId}, { 
-        onError: handleError,
-        onSuccess: () => onClose(),
+      mutate({ commentId, cardId: +cardId }, { 
+        onError: (e) => setErrorMessage(e),
+        onSuccess: onClose,
       });
     }
   };
 
   return (
-    <ModalSkeleton onClose={onClose}>
-      <Heading text="Delete your review?" font="normal"/>
-      <Heading4 text="This action cannot be undone 🫣" font="normal"/>
-
-      <div className="flex w-full gap-5 justify-between">
+    <ModalTemplate 
+      onClose={onClose}
+      title="Delete your review?"
+      subtitle="This action cannot be undone 🫣"
+    >
+      <div className="grid w-full grid-cols-2 gap-5">
         <RoundedButton
           text="Delete"
           onClick={handleDeleteReview}
-          classes="grow"
           style='red'
           disabled={isPending}
         />
         <RoundedButton
           text="Cancel"
           onClick={onClose}
-          classes="grow"
           style="light"
         />
       </div>
 
-      {isError && <ErrorText errorText={errorMessage} />}
-    </ModalSkeleton>
+      {errorMessage && <ErrorText errorText={errorMessage} />}
+    </ModalTemplate>
   );
 };
 

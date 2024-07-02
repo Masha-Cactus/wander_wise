@@ -1,29 +1,34 @@
 'use client';
 
-import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useNormalizedError } from "@/src/hooks";
 import { useUpdatePassword } from "@/src/queries";
 import { IUpdatePassword } from "@/src/services";
 import { changePasswordSchema } from "@/src/validation";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
-import { PasswordInput, PrimaryButton } from "@/src/components/moleculs";
-import { useEffect, useState } from "react";
-import { saveCookies } from "@/src/actions/manageCookies";
+import { 
+  PasswordInput, 
+  PrimaryButton, 
+  UnstyledButton 
+} from "@/src/components/molecules";
 
-type Props = {
+interface ChangePasswordFormProps {
   closeModal: () => void;
-};
+  openRestorePasswordModal: () => void;
+}
 
-const ChangePasswordForm: React.FC<Props> = ({ closeModal }) => {
+type ChangePasswordFormData = Omit<IUpdatePassword, 'userId'>;
+
+const ChangePasswordForm: React.FC<ChangePasswordFormProps> 
+= ({ closeModal, openRestorePasswordModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
-  const [isShowPassword, setIsShowPassword] = useState(false);
   const validationSchema = changePasswordSchema();
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<Omit<IUpdatePassword, 'userId'>>({
+  } = useForm<ChangePasswordFormData>({
     values: {
       oldPassword: "",
       password: "",
@@ -32,67 +37,57 @@ const ChangePasswordForm: React.FC<Props> = ({ closeModal }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError, isSuccess, data } = useUpdatePassword();
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
+  const { isPending, mutate } = useUpdatePassword();
 
-  const onSubmit: SubmitHandler<Omit<IUpdatePassword, 'userId'>> 
-  = async(data) => {
+  const onSubmit: SubmitHandler<ChangePasswordFormData> = (data) => {
     mutate(data, {
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
+      onSuccess: closeModal,
     });
   };
 
-  useEffect(() => {
-    if (isSuccess) {
-      saveCookies({token: data.token})
-        .then(() => {
-          closeModal();
-        });
-    }
-  }, [isSuccess]);
-
   return (
     <form
-      className="grid grid-cols-2 gap-y-6 gap-x-4 h-full w-full"
+      className="flex h-full w-full flex-col justify-center gap-4 pt-2"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="col-span-1">
-        <PasswordInput 
-          name="oldPassword"
-          label="Current password"
-          control={control}
-          errorText={errors.oldPassword?.message}
-          disabled={isPending}
-          isShown={isShowPassword}
-          onClick={() => setIsShowPassword(!isShowPassword)}
-        />
-      </div>
+      <div className="grid h-full w-full grid-cols-2 gap-x-4 gap-y-6">
+        <div className="col-span-1">
+          <PasswordInput 
+            name="oldPassword"
+            label="Current password"
+            control={control}
+            errorText={errors.oldPassword?.message}
+            disabled={isPending}
+          />
+        </div>
 
 
-      <div className="row-start-2">
-        <PasswordInput 
-          name="password"
-          label="New password"
-          control={control}
-          errorText={errors.password?.message}
-          disabled={isPending}
-          isShown={isShowPassword}
-          onClick={() => setIsShowPassword(!isShowPassword)}
-        />
+        <div className="row-start-2">
+          <PasswordInput 
+            name="password"
+            label="New password"
+            control={control}
+            errorText={errors.password?.message}
+            disabled={isPending}
+          />
+        </div>
+        <div className="row-start-2">
+          <PasswordInput 
+            name="repeatPassword"
+            label="Repeat new password"
+            control={control}
+            errorText={errors.repeatPassword?.message}
+            disabled={isPending}
+          />
+        </div>
       </div>
-      <div className="row-start-2">
-        <PasswordInput 
-          name="repeatPassword"
-          label="Repeat new password"
-          control={control}
-          errorText={errors.repeatPassword?.message}
-          disabled={isPending}
-          isShown={isShowPassword}
-          onClick={() => setIsShowPassword(!isShowPassword)}
-        />
-      </div>
+
+      <UnstyledButton
+        text="Forgot Password?"
+        onClick={openRestorePasswordModal}
+        classes="mb-4 self-start"
+      />
 
       <PrimaryButton 
         text="Save" 
@@ -101,7 +96,7 @@ const ChangePasswordForm: React.FC<Props> = ({ closeModal }) => {
         classes="row-start-3 col-span-2" 
       />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

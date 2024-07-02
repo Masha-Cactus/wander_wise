@@ -1,4 +1,5 @@
 import { authClient } from "@/src/api";
+import { ApiEndpoints } from "@/src/lib/constants";
 import {
   ICollection,
   ICreateCollection,
@@ -6,7 +7,7 @@ import {
 } from "@/src/services";
 
 class CollectionService {
-  private BASE_URL = "/collections";
+  private BASE_URL = ApiEndpoints.COLLECTIONS;
 
   getCollection(collectionId: number) {
     return authClient.get<never, ICollection>(

@@ -9,7 +9,7 @@
     "project": "./tsconfig.json",
     "sourceType": "module"
   },
-  "plugins": ["react", "react-hooks", "@typescript-eslint", "unused-imports", "jsx-a11y", "import"],
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "unused-imports", "jsx-a11y", "import", "tailwindcss"],
 
   "rules": {
     "semi": [2, "always"],
@@ -43,6 +43,7 @@
       { "blankLine": "always", "prev": "directive", "next": "*" },
       { "blankLine": "always", "prev": "block-like", "next": "*" }
     ],
+    "tailwindcss/classnames-order": "warn",
 
     // React
     "react/prop-types": 0,

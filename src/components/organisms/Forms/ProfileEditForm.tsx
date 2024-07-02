@@ -1,22 +1,22 @@
 /* eslint-disable no-param-reassign */
 "use client";
 
-import { memo, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useMemo } from "react";
+import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { editProfileSchema } from "@/src/validation";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { ErrorText } from "@/src/components/atoms";
 import { useUpdateUserInfo } from "@/src/queries";
 import { useUser } from "@/src/store/user";
-import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import { useNormalizedError } from "@/src/hooks";
 import { 
   PrimaryButton, 
   TextAreaInput, 
   LocationInput, 
   TextInput 
-} from "@/src/components/moleculs";
-import { RadarAutocompleteAddress } from "radar-sdk-js/dist/types";
+} from "@/src/components/molecules";
 
 export interface ProfileEditFormData {
   pseudonym: string,
@@ -31,13 +31,13 @@ const ProfileEditForm = () => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = editProfileSchema();
 
-  const defaultValues = {
+  const defaultValues = useMemo(() => ({
     pseudonym: user?.pseudonym || '',
     firstName: user?.firstName || '',
     lastName: user?.lastName || '',
     location: null,
     bio: user?.bio || '',
-  };
+  }), [user]);
 
   const {
     control,
@@ -49,32 +49,30 @@ const ProfileEditForm = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const handleError = (error: any) => {
-    setErrorMessage(error);
-  };
+  const { isPending, mutate } = useUpdateUserInfo();
 
-  const { isPending, mutate, isError } = useUpdateUserInfo();
-
-  const onSubmit = async (data: ProfileEditFormData) => {
+  const onSubmit: SubmitHandler<ProfileEditFormData> = (data) => {
     const { location, ...trimmedData } = trimObjectFields(data);
 
     mutate({
       ...trimmedData, 
-      location: location ? `${location.city}, ${location.country}` : ''
+      location: location 
+        ? `${location.city}, ${location.country}` 
+        : user?.location,
     }, {
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
     }
     );
   };
 
   useEffect(() => {
     reset(defaultValues);
-  }, [user]);
+  }, [user, reset, defaultValues]);
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full flex flex-col gap-6"
+      className="flex w-full flex-col gap-6"
     >
       <TextInput
         type="text"
@@ -86,7 +84,7 @@ const ProfileEditForm = () => {
         label="Username"
       />
 
-      <div className="w-full flex gap-4">
+      <div className="flex w-full gap-4">
         <div className="grow">
           <TextInput
             type="text"
@@ -129,14 +127,15 @@ const ProfileEditForm = () => {
         label="Bio"
       />
 
-      {isError && <ErrorText errorText={errorMessage} />}
       <PrimaryButton 
         type="submit" 
         text="Save changes" 
         disabled={isPending} 
       />
+
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };
 
-export default memo(ProfileEditForm);
+export default ProfileEditForm;

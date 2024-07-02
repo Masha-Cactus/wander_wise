@@ -1,7 +1,11 @@
 import { ProfilePage } from "@/src/components/pages";
-
-const Page = () => {
-  return (<ProfilePage />);
+import { Metadata } from 'next';
+ 
+export const metadata: Metadata = {
+  title: 'Profile',
 };
 
-export default Page;
+export default function Page () {
+  return <ProfilePage />;
+}
+

@@ -1,43 +1,42 @@
 "use client";
 
-import { memo, useEffect } from "react";
-import { BackButton } from "@/src/components/moleculs";
-import { TripLongCard, ReviewsList } from "@/src/components/organisms";
-import { useParams } from "next/navigation";
+import { useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { TripLCard, ReviewsList } from "@/src/components/organisms";
+import { Loader } from "@/src/components/atoms";
 import { useGetCardDetails } from "@/src/queries";
-import { useNormalizedError } from "@/src/hooks";
-import { ErrorText } from "@/src/components/atoms";
+import { Routes } from "@/src/lib/constants";
+import { 
+  StandardPageLayout, 
+  LoadingStateWrapper 
+} from "@/src/components/templates";
 
 const TripPage = () => {
   const { id } = useParams();
-  const { data: card, error } = useGetCardDetails(+id);
-  const [errorMessage, setErrorMessage] = useNormalizedError();
+  const { push } = useRouter();
+  const { data: card, isError, isLoading } = useGetCardDetails(+id);
 
   useEffect(() => {
-    if (error) {
-      setErrorMessage(error);
+    if (isNaN(+id) || isError) {
+      push(Routes.NOT_FOUND);
     }
-  }, [error]);
+  }, [id, isError, push]);
 
   return (
-    <main className="w-full h-full bg-gray10">
-      <div className="mx-10 my-10 flex flex-col gap-8">
-        <BackButton />
-
-        {card ? (
+    <StandardPageLayout>
+      <LoadingStateWrapper
+        isLoading={isLoading}
+        loadingFallbackComponent={<Loader size="lg" />}
+      >
+        {card && (
           <>
-            <TripLongCard card={card} />
-            <ReviewsList reviews={card?.comments}/>
-          </>
-        ) : (
-          <>
-            {error && <ErrorText errorText={errorMessage} />}
+            <TripLCard card={card} />
+            <ReviewsList reviews={card.comments}/>
           </>
         )}
-        
-      </div>
-    </main>
+      </LoadingStateWrapper>
+    </StandardPageLayout>
   );
 };
 
-export default memo(TripPage);
+export default TripPage;

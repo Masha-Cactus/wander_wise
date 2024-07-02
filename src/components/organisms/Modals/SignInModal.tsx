@@ -1,7 +1,7 @@
 import { memo } from "react";
-import { ModalSkeleton, SignInForm } from "@/src/components/organisms";
+import { ModalTemplate, SignInForm } from "@/src/components/organisms";
 import { Heading, Heading4, TextBase, Divider } from "@/src/components/atoms";
-import { UnstyledButton } from "@/src/components/moleculs";
+import { UnstyledButton } from "@/src/components/molecules";
 
 interface SignInModalProps {
   onClose: () => void;
@@ -25,38 +25,37 @@ const SignInModal: React.FC<SignInModalProps> = ({
   };
 
   return (
-    <ModalSkeleton onClose={onClose}>
+    <ModalTemplate onClose={onClose}>
       <div className="flex gap-2">
         <Heading text="Welcome back to " font="normal" />
         <Heading text="Wander Wise" font="medium" classes="font-maven" />
       </div>
-      <Heading4 text="Let's continue our trip planning 🌍" font="normal" />
-
-      <Divider classes="w-full h-px" />
-
-      <SignInForm closeModal={onClose} />
-
-      <UnstyledButton
-        text="Forgot password?"
-        classes="font-bold self-start"
-        onClick={handleRestorePasswordClick}
+      <Heading4 
+        text="Let's continue our trip planning 🌍" 
+        font="normal" 
+        classes="text-gray-80"
       />
 
-      <Divider classes="w-full h-px" />
+      <Divider classes="mb-2" />
 
-      <div className="flex gap-2">
+      <SignInForm 
+        closeModal={onClose} 
+        openRestorePasswordModal={handleRestorePasswordClick} 
+      />
+
+      <Divider classes="mb-2" />
+
+      <div className="flex justify-center gap-2">
         <TextBase
           text="Don’t have an account yet?"
-          classes="text-nowrap"
           font="normal"
         />
         <UnstyledButton
           text="Create account"
-          classes="text-nowrap font-bold"
           onClick={handleSignUpClick}
         />
       </div>
-    </ModalSkeleton>
+    </ModalTemplate>
   );
 };
 

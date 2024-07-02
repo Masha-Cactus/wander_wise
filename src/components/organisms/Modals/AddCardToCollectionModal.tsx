@@ -2,21 +2,22 @@
 
 import { memo, useEffect, useState } from "react";
 import { 
-  ModalSkeleton, 
+  ModalTemplate, 
   AddCardToCollectionForm,
   CreateCollectionShortForm,
 } from "@/src/components/organisms";
-import { ErrorText, Heading, Heading4, Divider } from "@/src/components/atoms";
-import { ICard } from "@/src/services";
+import { ErrorText, Heading4, Divider } from "@/src/components/atoms";
+import { ICard, ICollection } from "@/src/services";
 import { useGetUserCollections } from "@/src/queries";
 import { useNormalizedError } from "@/src/hooks";
+import { selectOtherCollections } from "@/src/lib/collectionSelectors";
 
-interface AddCardToCollectionProps {
+interface AddCardToCollectionModalProps {
   onClose: () => void;
   card: ICard;
 }
 
-const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
+const AddCardToCollectionModal: React.FC<AddCardToCollectionModalProps> = ({
   onClose,
   card,
 }) => {
@@ -24,35 +25,37 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
   const [isCreateCollection, setIsCreateCollection] = useState(false);
 
   const {
-    isError,
     data: collections,
     error,
-  } = useGetUserCollections();
-
+  } = useGetUserCollections<ICollection[]>(selectOtherCollections);
 
   useEffect(() => {
     if (error) {
       setErrorMessage(error);
     }
-  }, [error]);
+  }, [error, setErrorMessage]);
 
   return (
-    <ModalSkeleton onClose={onClose}>
-      <div className="flex flex-col gap-6">
-        <Heading text={`Add “${card.name}” to a collection?`} font="normal"/>
-        <Divider classes="h-px w-full" />
+    <ModalTemplate onClose={onClose}>
+      <div className="flex w-full flex-col gap-8">
+        <h1 className="text-4xl font-normal leading-normal">
+          Add “
+          <span className="font-medium">{card.name}</span>
+          ” to a collection?
+        </h1>
+        <Divider />
 
         {isCreateCollection ? (
-          <CreateCollectionShortForm
-            closeModal={onClose}
+          <CreateCollectionShortForm 
+            closeForm={() => setIsCreateCollection(false)}  
           />
         ) : (
-          <button onClick={() => setIsCreateCollection(true)}>
+          <button onClick={() => setIsCreateCollection(true)} className="w-fit">
             <Heading4 text="+ Create new collection" font="medium" />
           </button>
         )}
 
-        {!!(collections && collections.length) && (
+        {!!collections?.length && (
           <AddCardToCollectionForm
             closeModal={onClose}
             cardId={card.id}
@@ -60,9 +63,9 @@ const AddCardToCollectionModal: React.FC<AddCardToCollectionProps> = ({
           />
         )}
 
-        {isError && <ErrorText errorText={errorMessage} />}
+        {errorMessage && <ErrorText errorText={errorMessage} />}
       </div>
-    </ModalSkeleton>
+    </ModalTemplate>
   );
 };
 

@@ -1,25 +1,39 @@
 'use client';
 
-import { Heading2, Heading5 } from "@/src/components/atoms";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { AnimatePresence } from "framer-motion";
+import { Heading2, TextBase } from "@/src/components/atoms";
 import { EditCardForm, AddCardImagesModal } from "@/src/components/organisms";
-import { FormPageLayout } from "@/src/components/layouts";
-import { useState } from "react";
-import { useParams } from "next/navigation";
+import { useGetCardDetails } from "@/src/queries";
+import { Routes } from "@/src/lib/constants";
+import { useUser } from "@/src/store/user";
+import { StandardPageLayout } from "@/src/components/templates";
 
 const EditCardPage = () => {
   const { id } = useParams();
+  const { push } = useRouter();
+  const { user } = useUser();
+  const { data: card, isError } = useGetCardDetails(+id);
   const [isAddCardImagesModal, setIsAddCardImagesModal] = useState(false);
+  const isCardCreatedByUser =  card && user && card.author === user.pseudonym;
+
+  useEffect(() => {
+    if (isNaN(+id) || isError || (card && !isCardCreatedByUser)) {
+      push(Routes.NOT_FOUND);
+    }
+  }, [id, isError, isCardCreatedByUser, card, push]);
 
   return (
-    <FormPageLayout>
-      <article className="w-[670px] self-center flex flex-col gap-6 
-      items-center bg-white px-10 py-12 rounded-3xl relative">
+    <StandardPageLayout>
+      <article className="relative flex w-[670px] flex-col items-center 
+      gap-6 self-center rounded-3xl bg-white px-10 py-12">
         <button
           type="button"
           onClick={() => setIsAddCardImagesModal(true)}
-          className="absolute top-2.5 right-2.5"
+          className="absolute right-5 top-5"
         >
-          <Heading5
+          <TextBase
             text="+ Add photo" 
             font="semibold" 
             classes="underline underline-offset-8"
@@ -31,16 +45,21 @@ const EditCardPage = () => {
           classes="self-start" 
         />
 
-        <EditCardForm />
-
+        {!!card && (
+          <EditCardForm card={card} />
+        )}
+      </article>
+      
+      <AnimatePresence>
         {(isAddCardImagesModal && id) && (
           <AddCardImagesModal 
+            key="addCardImagesModal"
             cardId={+id} 
             onClose={() => setIsAddCardImagesModal(false)} 
           />
         )}
-      </article>
-    </FormPageLayout>
+      </AnimatePresence>
+    </StandardPageLayout>
   );
 };
 

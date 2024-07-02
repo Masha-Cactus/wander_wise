@@ -1,38 +1,63 @@
 'use client';
 
-import { Heading3, Divider } from "@/src/components/atoms";
-import { LinkButton } from "@/src/components/moleculs";
+import { Heading3, Divider, Heading4, Loader } from "@/src/components/atoms";
+import { LinkButton } from "@/src/components/molecules";
 import { useGetUserCollections } from "@/src/queries";
 import { Collection } from "@/src/components/organisms";
-import { FormPageLayout } from "@/src/components/layouts";
+import { Routes } from "@/src/lib/constants";
+import { 
+  StandardPageLayout,
+  LoadingStateWrapper 
+} from "@/src/components/templates";
+import { selectOtherCollections } from "@/src/lib/collectionSelectors";
+import { ICollection } from "@/src/services";
 
 const CollectionsPage = () => {
-  const { data: collections } = useGetUserCollections();
+  const { 
+    data: collections, 
+    isLoading 
+  } = useGetUserCollections<ICollection[]>(selectOtherCollections);
 
   return (
-    <FormPageLayout>
-      <article className="w-[670px] self-center flex flex-col gap-6 
-      items-center bg-white px-10 py-12 rounded-3xl">
-        <div className="w-full flex justify-between">
+    <StandardPageLayout>
+      <article className="flex w-[670px] flex-col items-center gap-6 
+      self-center rounded-3xl bg-white px-10 py-12">
+        <div className="flex w-full items-center justify-between">
           <Heading3 
             text="My collections" 
           />
           <LinkButton 
-            path="/saved/collections/create"
+            path={Routes.COLLECTIONS.CREATE}
             text="+ Create new collection"
           />
         </div>
 
-        <Divider classes="w-full h-px" />
+        <Divider />
 
-        <div className="w-full grid gap-5
-          grid-cols-[repeat(2,282px)]">
-          {collections?.map(collection => (
-            <Collection key={collection.id} collection={collection} />
-          ))}
-        </div>
+        <LoadingStateWrapper
+          isEmpty={collections && !collections.length}
+          emptyFallbackComponent={
+            <Heading4 
+              text="You don’t have any collection yet." 
+              classes="text-gray-80 self-start" 
+              font="normal"
+            />
+          }
+          isLoading={isLoading}
+          loadingFallbackComponent={
+            <Loader classes="my-8" size="md" />
+          }
+        >
+          {!!collections?.length && (
+            <div className="grid w-full grid-cols-[repeat(2,282px)] gap-5">
+              {collections.map(collection => (
+                <Collection key={collection.id} collection={collection} />
+              ))}
+            </div>
+          )}
+        </LoadingStateWrapper>
       </article>
-    </FormPageLayout>
+    </StandardPageLayout>
   );
 };
 

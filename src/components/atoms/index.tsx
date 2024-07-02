@@ -1,7 +1,6 @@
 export { default as Divider } from "./Divider";
 export { default as Icons } from "./Icons";
 export { default as Loader } from "./Loader";
-export { default as EmptyStateText } from "./EmptyStateText";
 
 export { default as Heading } from "./Text/Heading";
 export { default as Heading2 } from "./Text/Heading2";

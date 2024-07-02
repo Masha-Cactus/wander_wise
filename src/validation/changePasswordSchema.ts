@@ -1,10 +1,9 @@
-import { ObjectSchema } from "yup";
 import * as Yup from "yup";
 import { IUpdatePassword } from "@/src/services";
-import { genericValidationSchema } from "./genericSchema";
+import { genericValidationSchema } from "@/src/validation";
 
 export const changePasswordSchema 
-= (): ObjectSchema<Omit<IUpdatePassword, 'userId'>> =>
+= (): Yup.ObjectSchema<Omit<IUpdatePassword, 'userId'>> =>
   Yup.object().shape({
     oldPassword: genericValidationSchema.passwordWithoutTips,
     password: genericValidationSchema.password,

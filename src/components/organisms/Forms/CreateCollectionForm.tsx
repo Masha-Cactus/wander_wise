@@ -1,25 +1,30 @@
 'use client';
 
-import { useNormalizedError, useGetSavedCards } from "@/src/hooks";
-import { trimObjectFields } from "@/src/lib/helpers";
-import { useCreateCollection } from "@/src/queries";
-import { ICreateCollection } from "@/src/services";
-import { createCollectionSchema } from "@/src/validation";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useNormalizedError } from "@/src/hooks";
+import { trimObjectFields } from "@/src/lib/helpers";
+import { useCreateCollection, useGetUserCollections } from "@/src/queries";
+import { ICollection, ICreateCollection } from "@/src/services";
+import { createCollectionSchema } from "@/src/validation";
 import { Divider, ErrorText, Heading5 } from "@/src/components/atoms";
 import { 
   PrimaryButton, 
   TextInput,
-  SquareCheckboxInput
-} from "@/src/components/moleculs";
+  CheckboxInput
+} from "@/src/components/molecules";
+import { Routes } from "@/src/lib/constants";
+import { selectSavedCards } from "@/src/lib/collectionSelectors";
 
+type CreateCollectionFormData = Omit<ICreateCollection, 'userId'>;
 
 const CreateCollectionForm = () => {
   const { push } = useRouter();
   const [errorMessage, setErrorMessage] = useNormalizedError();
-  const savedCards = useGetSavedCards();
+  const { 
+    data: savedCollection, 
+  } = useGetUserCollections<ICollection>(selectSavedCards);
 
   const validationSchema = createCollectionSchema();
 
@@ -27,7 +32,7 @@ const CreateCollectionForm = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<Omit<ICreateCollection, 'userId'>>({
+  } = useForm<CreateCollectionFormData>({
     values: {
       name: "",
       cardIds: [],
@@ -35,19 +40,15 @@ const CreateCollectionForm = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useCreateCollection();
+  const { isPending, mutate } = useCreateCollection();
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
-
-  const onSubmit = async (data: Omit<ICreateCollection, "userId">) => {
+  const onSubmit: SubmitHandler<CreateCollectionFormData> = (data) => {
     const trimmedData = trimObjectFields(data);
 
     mutate(trimmedData,
       {
-        onError: handleError,
-        onSuccess: () => push("/saved/collections"),
+        onError: (e) => setErrorMessage(e),
+        onSuccess: () => push(Routes.COLLECTIONS.MAIN),
       }
     );
   };
@@ -55,7 +56,7 @@ const CreateCollectionForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full flex flex-col gap-6"
+      className="flex w-full flex-col gap-8"
     >
       <TextInput
         type="text"
@@ -67,33 +68,36 @@ const CreateCollectionForm = () => {
         label="Name of your collection"
       />
 
-      {!!savedCards?.length && (
-        <>
+      {!!savedCollection?.cardDtos.length && (
+        <div className="flex w-full flex-col gap-4">
           <Heading5 text="Choose cards to add" font="semibold" />
-          <Divider classes="w-full h-px" />
+          <Divider />
 
-          <div className="flex flex-col max-h-64 overflow-y-scroll">
-            {savedCards?.map(card => (
-              <div key={card.id} className="flex justify-between items-center">
+          <div className="flex max-h-64 flex-col gap-4 overflow-y-scroll">
+            {savedCollection.cardDtos.map(card => (
+              <div 
+                key={card.id} 
+                className="flex items-center justify-between gap-4"
+              >
                 <Heading5 
                   text={`${card.name}, ${card.whereIs}`} 
-                  font="normal" 
+                  font="normal"
+                  classes="truncate"
                 />
-                <SquareCheckboxInput
-                  text="" 
+                <CheckboxInput
                   name="cardIds" 
                   control={control} 
-                  value={card.id} 
+                  value={card.id}
                 />
               </div>
             ))}
           </div>
-        </>
+        </div>
       )}
 
       <PrimaryButton type="submit" text="Create" disabled={isPending} />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

@@ -34,5 +34,5 @@ export interface IUpdateInfo {
 
 export interface IUpdateImage {
   id: number,
-  image: File,
+  image: File | Uint8Array,
 }

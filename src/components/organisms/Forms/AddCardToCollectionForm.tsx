@@ -1,31 +1,36 @@
 'use client';
 
-import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import { useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { useUpdateCollection } from "@/src/queries";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import { ErrorText } from "@/src/components/atoms";
+import { ErrorText, Heading4, Icons } from "@/src/components/atoms";
 import { 
-  SquareCheckboxInput, 
+  CheckboxInput, 
   PrimaryButton, 
   RoundedButton 
-} from "@/src/components/moleculs";
+} from "@/src/components/molecules";
 import { ICollection } from "@/src/services";
 import { addCardToCollectionSchema } from "@/src/validation";
 
-type Props = {
+interface AddCardToCollectionFormProps {
   cardId: number,
   collections: ICollection[],
   closeModal: () => void;
-};
+}
 
-type AddCardToCollectionFormData = {
+interface AddCardToCollectionFormData {
   selectedCollectionIds: number[];
-};
+}
 
-const AddCardToCollectionForm: React.FC<Props> 
+const AddCardToCollectionForm: React.FC<AddCardToCollectionFormProps> 
 = ({ cardId, collections, closeModal }) => {
+  const collectionsWithoutCard = useMemo(() => 
+    collections.filter(c =>! c.cardDtos.find(card => card.id === cardId)), 
+  [collections, cardId]);
+
   const [errorMessage, setErrorMessage] = useNormalizedError();
 
   const validationSchema = addCardToCollectionSchema();
@@ -40,56 +45,62 @@ const AddCardToCollectionForm: React.FC<Props>
     resolver: yupResolver(validationSchema),
   });
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
+  const { isPending, mutate } = useUpdateCollection();
 
-  const {
-    isPending,
-    mutate,
-    isError,
-  } = useUpdateCollection();
-
-  const onSubmit = async (data: AddCardToCollectionFormData) => {
+  const onSubmit = (data: AddCardToCollectionFormData) => {
     const { selectedCollectionIds } = trimObjectFields(data);
 
-    collections?.forEach(collection => {
+    collectionsWithoutCard.forEach(collection => {
       if (selectedCollectionIds.includes(collection.id)) {
         mutate({
-          ...collection, 
+          id: collection.id,
+          name: collection.name,
+          isPublic: collection.isPublic,
           cardIds: [...collection.cardDtos.map(c => c.id), cardId]
+        }, {
+          onError: (e) => setErrorMessage(e),
+          onSuccess: closeModal,
         });
       }
-    },
-    {
-      onError: handleError,
-      onSuccess: () => closeModal(),
-    }
-    );
+    });
   };
 
   return (
     <form 
       onSubmit={handleSubmit(onSubmit)} 
-      className="w-full flex flex-col gap-6"
+      className="flex w-full flex-col gap-8"
     >
-      <div className="flex flex-col gap-4 max-h-52 overflow-y-scroll">
-        {collections.map(collection => (
-          <SquareCheckboxInput
-            key={collection.id}
-            text={collection.name}
-            value={collection.id}
-            control={control}
-            name="selectedCollectionIds"
-          />
-        ))}  
-      </div>
+      {!!collectionsWithoutCard.length && (
+        <div className="flex max-h-52 flex-col gap-5 overflow-y-scroll">
+          {collectionsWithoutCard.map(collection => (
+            <div
+              key={collection.id}
+              className="flex w-full items-center justify-between"
+            >
+              <div className="flex items-center gap-2">
+                <Icons.folder className="h-6 w-6" />
+                <Heading4 
+                  text={collection.name} 
+                  font="normal" 
+                  classes="text-gray-80" 
+                />
+              </div>
+
+              <CheckboxInput
+                value={collection.id}
+                control={control}
+                name="selectedCollectionIds"
+              />
+            </div>
+          ))}  
+        </div>
+      )}
       
-      <div className="flex w-full gap-5 items-center">
+      <div className="grid w-full grid-cols-2 gap-5">
         <RoundedButton
+          type="button"
           text="Cancel"
           style="light"
-          classes="grow"
           onClick={closeModal}
           disabled={isPending}
         />
@@ -97,11 +108,12 @@ const AddCardToCollectionForm: React.FC<Props>
         <PrimaryButton 
           type="submit"
           text="Add" 
-          disabled={isPending} 
-          classes="grow" 
+          disabled={isPending}
+          classes="h-full" 
         />
       </div>
-      {isError && <ErrorText errorText={errorMessage} />}
+
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

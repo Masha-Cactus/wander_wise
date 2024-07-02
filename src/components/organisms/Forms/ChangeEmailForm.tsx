@@ -1,21 +1,20 @@
 'use client';
 
-import { useNormalizedError } from '@/src/hooks/useNormalizedError';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useNormalizedError } from '@/src/hooks';
 import { useRequestUpdateEmail } from '@/src/queries';
 import { IEmail } from '@/src/services';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { ErrorText } from '@/src/components/atoms';
-import { PrimaryButton, TextInput } from '@/src/components/moleculs';
+import { PrimaryButton, TextInput } from '@/src/components/molecules';
 import { changeEmailSchema } from '@/src/validation';
-import { useEffect } from 'react';
-import { saveCookies } from '@/src/actions/manageCookies';
 
-type Props = {
+interface ChangeEmailFormProps {
   openConfirmEmailModal: () => void;
-};
+}
 
-const ChangeEmailForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
+const ChangeEmailForm: React.FC<ChangeEmailFormProps> 
+= ({ openConfirmEmailModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const validationSchema = changeEmailSchema();
 
@@ -30,36 +29,18 @@ const ChangeEmailForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const { 
-    isPending, 
-    mutate, 
-    isError, 
-    data, 
-    isSuccess 
-  } = useRequestUpdateEmail();
+  const { isPending, mutate } = useRequestUpdateEmail();
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
-
-  const onSubmit: SubmitHandler<IEmail> = async(data) => {
+  const onSubmit: SubmitHandler<IEmail> = (data) => {
     mutate(data.email, {
-      onError: handleError,
+      onError: (e) => setErrorMessage(e),
+      onSuccess: openConfirmEmailModal,
     });
   };
 
-  useEffect(() => {
-    if (isSuccess) {
-      saveCookies({confirmationCode: data.emailConfirmCode})
-        .then(() => {
-          openConfirmEmailModal();
-        });
-    }
-  }, [isSuccess]);
-
   return (
     <form
-      className="flex flex-col gap-8 h-full w-full"
+      className="flex h-full w-full flex-col gap-8"
       onSubmit={handleSubmit(onSubmit)}
     >
       <TextInput 
@@ -73,7 +54,7 @@ const ChangeEmailForm: React.FC<Props> = ({ openConfirmEmailModal }) => {
 
       <PrimaryButton text="Save" disabled={isPending} type='submit' />
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

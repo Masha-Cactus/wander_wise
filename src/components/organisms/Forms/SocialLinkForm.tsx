@@ -1,6 +1,8 @@
 'use client';
 
-import { useNormalizedError } from "@/src/hooks/useNormalizedError";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useNormalizedError } from "@/src/hooks";
 import { trimObjectFields } from "@/src/lib/helpers";
 import { 
   useAddSocial, 
@@ -8,22 +10,20 @@ import {
   useUpdateSocial 
 } from "@/src/queries";
 import { useUser } from "@/src/store/user";
-import { socialLinkSchema } from "@/src/validation/socialLinkSchema";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+import { socialLinkSchema } from "@/src/validation";
 import { ErrorText } from "@/src/components/atoms";
-import { TextInput, PrimaryButton } from "@/src/components/moleculs";
+import { TextInput, UnstyledButton } from "@/src/components/molecules";
 import { SocialLinkName } from "@/src/services";
 
-type Props = {
+interface SocialLinkFormProps {
   name: SocialLinkName,
-};
+}
 
-type FormData = {
+interface SocialLinkFormData {
   link: string;
-};
+}
 
-const SocialLinkForm: React.FC<Props> = ({ name }) => {
+const SocialLinkForm: React.FC<SocialLinkFormProps> = ({ name }) => {
   const { user } = useUser();
   const [errorMessage, setErrorMessage] = useNormalizedError();
   const { data: userSocials } = useGetUserSocials();
@@ -35,54 +35,47 @@ const SocialLinkForm: React.FC<Props> = ({ name }) => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<SocialLinkFormData>({
     values: {
       link: currentSocial?.link || '',
     },
     resolver: yupResolver(validationSchema),
   });
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
-
   const { 
     isPending: isPendingAdd, 
     mutate: add, 
-    isError: isAddError 
   } = useAddSocial();
 
   const { 
     isPending: isPendingUpdate, 
     mutate: update, 
-    isError: isUpdateError 
   } = useUpdateSocial();
 
-  const onSubmit = async (data: FormData) => {
+  const isPending = isPendingAdd || isPendingUpdate;
+
+  const onSubmit: SubmitHandler<SocialLinkFormData> = (data) => {
     const { link } = trimObjectFields(data);
     
     if (user && currentSocial?.link !== link) {
       if (currentSocial) {
         update({ link, name, id: currentSocial.id, userId: user.id}, {
-          onError: handleError,
+          onError: (e) => setErrorMessage(e),
         });
       } else {
         add({ link, name, userId: user.id}, {
-          onError: handleError,
+          onError: (e) => setErrorMessage(e),
         });
       }
     }
   };
 
-  const isPending = isPendingAdd || isPendingUpdate;
-  const isError = isAddError || isUpdateError;
-
   return (
     <form 
       onSubmit={handleSubmit(onSubmit)} 
-      className="w-full flex flex-col gap-6"
+      className="flex w-full flex-col gap-6"
     >
-      <div className="flex items-end gap-3">
+      <div className="flex gap-3">
         <div className="grow">
           <TextInput
             type="text"
@@ -93,15 +86,16 @@ const SocialLinkForm: React.FC<Props> = ({ name }) => {
             label={name}
           />
         </div>
-        <PrimaryButton 
+        
+        <UnstyledButton 
           text={currentSocial ? "Update" : "Add"} 
-          classes="h-10 w-1/4"
+          classes="mt-10 h-[50px] px-3 rounded-md disabled:text-gray-50"
           disabled={isPending}
           type="submit"
         />
       </div>
 
-      {isError && <ErrorText errorText={errorMessage} />}
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

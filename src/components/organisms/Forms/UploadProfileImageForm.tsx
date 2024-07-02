@@ -1,22 +1,30 @@
 'use client';
 
+import { useCallback, useEffect, useState } from "react";
+import { SubmitHandler, useForm, useWatch } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import Image from "next/image";
 import { useNormalizedError } from "@/src/hooks";
 import { useUpdateUserImage } from "@/src/queries";
 import { uploadProfileImageSchema } from "@/src/validation";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
 import { ErrorText } from "@/src/components/atoms";
-import { ImageInput, PrimaryButton } from "@/src/components/moleculs";
+import { 
+  ButtonFileInput, 
+  PrimaryButton, 
+  RoundedButton 
+} from "@/src/components/molecules";
+import { useUser } from "@/src/store/user";
 
-type UploadProfileImageFormData = {
-  image: File,
-};
-
-type Props = {
+interface UploadProfileImageFormProps {
   closeModal: () => void;
-};
+}
 
-const UploadProfileImageForm: React.FC<Props> = ({ closeModal }) => {
+interface UploadProfileImageFormData {
+  image: File,
+}
+
+const UploadProfileImageForm: React.FC<UploadProfileImageFormProps> 
+= ({ closeModal }) => {
   const [errorMessage, setErrorMessage] = useNormalizedError();
   
   const validationSchema = uploadProfileImageSchema();
@@ -24,7 +32,6 @@ const UploadProfileImageForm: React.FC<Props> = ({ closeModal }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors }
   } = useForm<UploadProfileImageFormData>({
     defaultValues: {
       image: undefined,
@@ -32,44 +39,96 @@ const UploadProfileImageForm: React.FC<Props> = ({ closeModal }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const { isPending, mutate, isError } = useUpdateUserImage();
+  const uploadedImage = useWatch({control, name: 'image'});
 
-  const handleError = (error: any) => {
-    setErrorMessage(error.message);
-  };
+  const { isPending, mutate } = useUpdateUserImage();
   
-  const onSubmit = async (data: UploadProfileImageFormData) => {
-    mutate(data,
+  const onSubmit: SubmitHandler<UploadProfileImageFormData> = ({ image }) => {
+    mutate(image,
       {
-        onError: handleError,
-        onSuccess: () => closeModal(),
+        onError: (e) => setErrorMessage(e),
+        onSuccess: closeModal,
       }
     );
   };
 
+  const deleteImage = useCallback(() => {
+    mutate(null, { 
+      onError: (e) => setErrorMessage(e), 
+      onSuccess: () => setImageUrl('/user-default.webp') 
+    });
+  }, []);
+
+  const { user } = useUser();
+  const [imageUrl, setImageUrl] = useState(
+    user?.profileImage || '/user-default.webp'
+  );
+
+  useEffect(() => {
+    if (uploadedImage) {
+      const url = URL.createObjectURL(uploadedImage);
+
+      setImageUrl(url);
+
+      return () => {
+        URL.revokeObjectURL(url);
+      };
+    }
+  }, [uploadedImage]);
+
   return (
     <form 
       onSubmit={handleSubmit(onSubmit)} 
-      className="w-full flex flex-col gap-6"
+      className="flex w-full flex-col gap-6"
     >
-      <ImageInput
-        name="image"
-        multiple={false}
-        disabled={isPending}
-        control={control}
-      />
+      <div className="flex gap-8">
+        <div className="flex flex-col gap-2">
+          <div 
+            className="relative h-[200px] w-[200px] 
+            overflow-hidden rounded-full"
+          >
+            <Image 
+              src={imageUrl} 
+              alt="Uploaded image"
+              fill
+              sizes="200px"
+              className="object-cover" 
+            />
+          </div>
 
-      {errors.image?.message && (
-        <ErrorText errorText={errors.image.message} />
-      )}
-        
-      <PrimaryButton 
-        text="Add" 
-        type="submit" 
-        disabled={isPending} 
-      />
+          <ButtonFileInput
+            name="image"
+            disabled={isPending}
+            control={control}
+          />
+        </div>
 
-      {isError && <ErrorText errorText={errorMessage} />}
+        <div className="flex grow flex-col justify-center gap-4">
+          <PrimaryButton 
+            type="submit"
+            text={user?.profileImage ? "Replace" : "Add"} 
+            disabled={isPending || !uploadedImage}
+          />
+
+          <RoundedButton
+            type="button"
+            text="Delete"
+            style="red"
+            onClick={deleteImage}
+            disabled={isPending || !user?.profileImage}
+          />
+
+          <RoundedButton
+            type="button"
+            text="Cancel"
+            style="light"
+            onClick={closeModal}
+            disabled={isPending}
+          />  
+        </div>
+      </div>
+
+      {errorMessage && <ErrorText errorText={errorMessage} />}
     </form>
   );
 };

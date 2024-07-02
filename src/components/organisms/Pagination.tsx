@@ -1,31 +1,26 @@
 'use client';
 
-import classNames from "classnames";
 import { Dispatch, SetStateAction, useState, memo, useEffect } from "react";
+import { twMerge } from "tailwind-merge";
 import { Icons, TextSmall } from "@/src/components/atoms";
+import { IconButton } from "../molecules";
 
-type Props = {
+interface PaginationProps {
   page: number,
   setPage: Dispatch<SetStateAction<number>>,
-  isPlaceholderData: boolean,
-  isLastPage: boolean,
-  total?: number,
-};
+  lastPage: number | undefined,
+}
 
-const Pagination: React.FC<Props> = ({
-  page, setPage, isPlaceholderData, isLastPage, total
+const Pagination: React.FC<PaginationProps> = ({
+  page, setPage, lastPage
 }) => {
   const [pagesList, setPagesList] = useState<number[]>([]);
 
   useEffect(() => {
     const maxPages = 5;
-    let length = maxPages;
-
-    if (total) {
-      length = Math.min(maxPages, total);
-    } else if (isLastPage) {
-      length = Math.min(maxPages, page + 1);
-    }
+    const length = typeof lastPage === 'number' 
+      ? Math.min(maxPages, lastPage + 1)
+      : maxPages;
 
     const startPage = Math.max(page - length + 1, 0);
 
@@ -34,36 +29,24 @@ const Pagination: React.FC<Props> = ({
       (_, index) => startPage + index);
 
     setPagesList(newPagesList);
-  }, [page, isLastPage, total]);
+  }, [page, lastPage]);
 
   return (
-    <div className="h-8 flex gap-2 items-center">
-      <button
-        className="text-black disabled:text-gray70 h-full w-8 
-          flex items-center justify-center"
+    <div className="flex h-8 items-center gap-2">
+      <IconButton 
+        icon={<Icons.left className="h-6 w-6"/>} 
+        classes="p-0 disabled:text-gray-70" 
         onClick={() => setPage(Math.max(page - 1, 0))}
         disabled={page === 0}
-      >
-        <Icons.left className="w-6 h-6"/>
-      </button>
-
-      {pagesList[0] !== 0 && (
-        <button
-          className="text-black h-8 w-8"
-        >
-          <TextSmall 
-            text="..." 
-            font="semibold" 
-          />
-        </button>
-      )}
+      />
 
       {pagesList.map(pageNumber => (
         <button
           key={pageNumber}
-          className={classNames("h-8 w-8", {
-            "rounded-full bg-black text-white": page === pageNumber,
-          })}
+          className={twMerge(
+            'h-8 w-8', 
+            page === pageNumber && 'rounded-full bg-black text-white',
+          )}
           onClick={() => setPage(pageNumber)}
           disabled={page === pageNumber}
         >
@@ -75,25 +58,12 @@ const Pagination: React.FC<Props> = ({
         </button> 
       ))}
 
-      {!isLastPage && (
-        <button
-          className="text-black h-full w-8"
-        >
-          <TextSmall 
-            text="..." 
-            font="semibold" 
-          />
-        </button>
-      )} 
-
-      <button
-        className="text-black disabled:text-gray70 h-full w-8
-          flex items-center justify-center"
+      <IconButton 
+        icon={<Icons.right className="h-6 w-6"/>} 
+        classes="p-0 disabled:text-gray-70" 
         onClick={() => setPage(page + 1)}
-        disabled={isPlaceholderData || isLastPage}
-      >
-        <Icons.right className="w-6 h-6"/>
-      </button>
+        disabled={page === lastPage}
+      />
     </div>
   );
 };

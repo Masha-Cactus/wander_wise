@@ -1,11 +1,11 @@
 "use client";
 
-import { memo, useState } from "react";
-import ModalSkeleton from "./ModalSkeleton";
-import { ErrorText, Heading, Heading4 } from "@/src/components/atoms";
-import { RoundedButton } from "@/src/components/moleculs";
+import { memo } from "react";
+import { ModalTemplate } from "@/src/components/organisms";
+import { ErrorText } from "@/src/components/atoms";
+import { RoundedButton } from "@/src/components/molecules";
 import { useDeleteUser } from "@/src/queries";
-import { normalizeError } from "@/src/lib/helpers";
+import { useNormalizedError } from "@/src/hooks";
 
 interface DeleteProfileModalProps {
   onClose: () => void;
@@ -14,44 +14,39 @@ interface DeleteProfileModalProps {
 const DeleteProfileModal: React.FC<DeleteProfileModalProps> = ({
   onClose,
 }) => {
-  const { isPending, mutate, isError } = useDeleteUser();
+  const { isPending, mutate } = useDeleteUser();
 
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const handleError = (error: any) => {
-    setErrorMessage(normalizeError(error.message));
-  };
+  const [errorMessage, setErrorMessage] = useNormalizedError();
 
   const handleDeleteProfile = () => {
     mutate(undefined, { 
-      onError: handleError,
-      onSuccess: () => onClose(),
+      onError: (e) => setErrorMessage(e),
+      onSuccess: onClose,
     });
   };
 
   return (
-    <ModalSkeleton onClose={onClose}>
-      <Heading text="Delete your profile?" font="normal"/>
-      <Heading4 text="This action cannot be undone 🫣" font="normal"/>
-
-      <div className="flex w-full gap-5 justify-between">
+    <ModalTemplate 
+      onClose={onClose}
+      title="Delete your profile?"
+      subtitle="This action cannot be undone 🫣"
+    >
+      <div className="grid w-full grid-cols-2 gap-5">
         <RoundedButton
           text="Delete"
           onClick={handleDeleteProfile}
-          classes="grow"
           style='red'
           disabled={isPending}
         />
         <RoundedButton
           text="Cancel"
           onClick={onClose}
-          classes="grow"
           style="light"
         />
       </div>
 
-      {isError && <ErrorText errorText={errorMessage} />}
-    </ModalSkeleton>
+      {errorMessage && <ErrorText errorText={errorMessage} />}
+    </ModalTemplate>
   );
 };
 
